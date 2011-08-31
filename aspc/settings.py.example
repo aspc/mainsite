@@ -1,4 +1,4 @@
-from aspc.configuration import *
+from configuration import *
 
 # Django settings for aspc project.
 
