@@ -1,0 +1,16 @@
+{% load markup %}
+{% load pages %}
+<h1>{{ title }}</h1>
+{% breadcrumbs_list page as breadcrumbs %}
+<ol>
+{% for b in breadcrumbs %}
+<li>{{ b }}</li>
+{% endfor %}
+</ol>
+{{ body|markdown }}
+
+<ol>
+{% for child in page.page_set.all %}
+  <li>{{ child }}</li>
+{% endfor %}
+</ol>
