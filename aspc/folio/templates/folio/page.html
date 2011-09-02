@@ -14,3 +14,18 @@
   <li>{{ child }}</li>
 {% endfor %}
 </ol>
+
+{% root_navigation_list as navigation %}
+<ol>
+{% for n in navigation %}
+<li><a href="{{ n.get_absolute_url }}">{{ n.0 }}</a>
+  {% if n.1 %}
+  <ol>
+    {% for sub in n.1 %}
+    <li><a href="{{ sub.get_absolute_url }}">{{ sub }}</a></li>
+    {% endfor %}
+  </ol>
+  {% endif %}
+</li>
+{% endfor %}
+</ol>

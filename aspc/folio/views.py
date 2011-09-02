@@ -3,10 +3,10 @@ from django.shortcuts import render
 from django.http import Http404
 from aspc.folio.models import Page
 
-def page_view(request, slug_path, section):
+def page_view(request, slug_path):
     '''slug_path: ^(?P<slug_path>(?:[\w\-\d]+/)+)$ '''
     slug_parts = slug_path.rstrip('/').split('/')
-    pages = Page.objects.filter(section=section)
+    pages = Page.objects.all()
     for part in slug_parts:
         try:
             new_page = pages.get(slug=part)
