@@ -15,4 +15,10 @@ def page_view(request, slug_path):
         else:
             pages = new_page.page_set.all()
     
-    return render(request, "folio/page.html", {"title": new_page.title, "body": new_page.body, "page": new_page})
+    return render(request, "folio/page.html", {
+        "title": new_page.title,
+        "body": new_page.body, 
+        "page": new_page,
+        "active_section": new_page.path()[0].slug,
+        "active_section_root": new_page.section_root,
+    })

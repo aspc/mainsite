@@ -1,0 +1,94 @@
+{% load pages %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ASPC &mdash; {% block "title" %}The Associated Students of Pomona College{% endblock %}</title>
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/styles.css" type="text/css" media="screen">
+    <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  </head>
+  <body>
+  <nav id="topnav" class="container">
+    <div class="row">
+      <div id="user">
+        <span class="userinfo">Some Guy</span>
+        <span id="username">ces02005</span> &middot; <a href="">log out?</a>
+
+         <form action="">
+          <input type="text" name="username" placeholder="username">
+          <input type="password" name="password" placeholder="password">
+          <select name="college" id="college">
+            <option selected value="PO">Pomona</option>
+          </select>
+          <input type="submit" value="Log In">
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  <header id="aspc_main" class="container">
+    <hgroup class="row">
+      <h1>ASPC</h1>
+      <h2>Associated Students of Pomona College</h2>
+      <a id="logo" href="/"></a>
+      <form>
+        <input type="text" name="q" placeholder="search ASPC">
+      </form>
+    </hgroup>
+  </header>
+  
+  <div class="container">
+  <div id="content_main" class="row"> 
+    {% block "content" %}
+    {% endblock %}
+  <nav id="sitewide" class="secondary">
+    <ul>
+      <li id="food" class="group"><h1>Food &amp; Drink</h1>
+        <ul>
+          <li><a href="">Dining Halls<span class="note">until 2 am</span></a></li>
+          <!-- <li><a href="">On-campus Eateries<span class="note">until 2 am</span></a></li>
+          <li><a href="">Restaurants<span class="note">until 2 am</span></a></li> -->
+        </ul>
+      </li>
+      <li id="services" class="group"><h1>Services</h1>
+        <ul>
+          <li><a href="">Course Search</a></li>
+          <li><a href="">Course Reviews</a></li>
+          <li><a href="">Housing Search</a></li>
+          <!-- <li><a href="">Connection47</a></li>
+          <li><a href="">Events Calendar</a></li> -->
+        </ul>
+      </li>
+      {% root_navigation_list information as navigation %}
+      {% include "navigation_fragment.html" %}
+      
+      {% root_navigation_list senate as navigation %}
+      {% include "navigation_fragment.html" %}
+      
+      {% root_navigation_list as navigation excluding senate,information %}
+      {% include "navigation_fragment.html" %}
+      
+      <li id="partners" class="group"><h1>Partners</h1>
+        <ul>
+          <li><a href="http://www.kspc.org/">KSPC 88.7</a></li>
+          <li><a href="http://tsl.pomona.edu/">The Student Life</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+  
+  </div> <!-- end content main -->
+  </div>
+  <footer>
+    <p>&copy; 2011 Associated Students of Pomona College</p>
+    <p>Directory and course information provided by and copyright Pomona College.</p>
+    <p>Design and code by Joseph Long &rsquo;14.</p>
+  </footer>
+  </div>
+  </body>
+</html>

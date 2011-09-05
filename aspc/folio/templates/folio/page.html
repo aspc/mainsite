@@ -1,31 +1,28 @@
+{% extends "base.html" %}
 {% load markup %}
 {% load pages %}
-<h1>{{ title }}</h1>
-{% breadcrumbs_list page as breadcrumbs %}
-<ol>
-{% for b in breadcrumbs %}
-<li>{{ b }}</li>
-{% endfor %}
-</ol>
-{{ body|markdown }}
-
-<ol>
-{% for child in page.page_set.all %}
-  <li>{{ child }}</li>
-{% endfor %}
-</ol>
-
-{% root_navigation_list as navigation %}
-<ol>
-{% for n in navigation %}
-<li><a href="{{ n.get_absolute_url }}">{{ n.0 }}</a>
-  {% if n.1 %}
-  <ol>
-    {% for sub in n.1 %}
-    <li><a href="{{ sub.get_absolute_url }}">{{ sub }}</a></li>
+{% block "content" %}
+<section class="group primary page">
+  {% if page.parent %}
+  {% breadcrumbs_list page as breadcrumbs %}
+  <ol class="breadcrumbs">
+    {% for b in breadcrumbs %}
+    <li><a href="{{ b.get_absolute_url }}"><span class="title">{{ b }}</span><span class="short_title">{{ b.display_title }}</span></a></li>
     {% endfor %}
   </ol>
   {% endif %}
-</li>
-{% endfor %}
-</ol>
+  <h1>{{ title }}</h1>
+  <div class="content{% if page.section_root %} section_root{% endif %}">
+    <div class="body">
+    {{ body|markdown }}
+    </div>
+    {% if page.page_set.count %}
+    <ol class="children">
+    {% for child in page.page_set.all %}
+      <li><a href="{{ child.get_absolute_url }}">{{ child }}</a><p class="summary">{{ child.summary }}</p></li>
+    {% endfor %}
+    </ol>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

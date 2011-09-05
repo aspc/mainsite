@@ -38,6 +38,12 @@ class Page(models.Model):
     def __unicode__(self):
         return self.title
     
+    def display_title(self):
+        if self.short_title:
+            return self.short_title
+        else:
+            return self.title
+    
     def get_siblings(self):
         if self.parent:
             return Page.objects.filter(parent=self.parent)
