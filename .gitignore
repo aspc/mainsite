@@ -1,3 +1,5 @@
 settings.py
 *.sqlite3
 *.pyc
+.DS_Store
+Thumbs.db
