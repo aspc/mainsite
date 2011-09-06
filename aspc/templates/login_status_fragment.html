@@ -1,0 +1,17 @@
+{% if user.is_authenticated %}
+<span class="userinfo">{{ user.get_full_name }}</span>
+<span id="username">{{ user.username }}</span> &middot; <a href="">log out?</a>
+{% else %}
+ <form action="">
+  <input type="text" name="username" placeholder="username">
+  <input type="password" name="password" placeholder="password">
+  <select name="college" id="college">
+    <option selected value="PO">Pomona</option>
+    <option value="CMC">CMC</option>
+    <option value="PZ">Pitzer</option>
+    <option value="HMC">Mudd</option>
+    <option value="SCR">Scripps</option>
+  </select>
+  <input type="submit" value="Log In">
+</form>
+{% endif %}

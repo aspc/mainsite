@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import patterns, include, url
 from aspc.folio.models import Page
+from aspc.folio.views import HomeView
 
 from django.contrib import admin
 admin.autodiscover()
@@ -9,7 +10,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     
     (r'(?P<slug_path>(?:[\w\-\d]+/)+)$', 'aspc.folio.views.page_view',),
-    
+    (r'^$', HomeView.as_view(),),
     # Examples:
     # url(r'^$', 'aspc.views.home', name='home'),
     # url(r'^aspc/', include('aspc.foo.urls')),

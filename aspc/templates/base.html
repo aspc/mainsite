@@ -16,25 +16,15 @@
   <nav id="topnav" class="container">
     <div class="row">
       <div id="user">
-        <span class="userinfo">Some Guy</span>
-        <span id="username">ces02005</span> &middot; <a href="">log out?</a>
-
-         <form action="">
-          <input type="text" name="username" placeholder="username">
-          <input type="password" name="password" placeholder="password">
-          <select name="college" id="college">
-            <option selected value="PO">Pomona</option>
-          </select>
-          <input type="submit" value="Log In">
-        </form>
+        {% include "login_status_fragment.html" %}
       </div>
     </div>
   </nav>
 
   <header id="aspc_main" class="container">
     <hgroup class="row">
-      <h1>ASPC</h1>
-      <h2>Associated Students of Pomona College</h2>
+      <h1><a href="/">ASPC</a></h1>
+      <h2><a href="/">Associated Students of Pomona College</a></h2>
       <a id="logo" href="/"></a>
       <form>
         <input type="text" name="q" placeholder="search ASPC">
@@ -44,22 +34,22 @@
   
   <div class="container">
   <div id="content_main" class="row"> 
-    {% block "content" %}
+    {% block "content_prenav" %}
     {% endblock %}
-  <nav id="sitewide" class="secondary">
+  <nav id="sitewide" class="secondary{% if all_nav %} all{% endif %}">
     <ul>
       <li id="food" class="group"><h1>Food &amp; Drink</h1>
         <ul>
-          <li><a href="">Dining Halls<span class="note">until 2 am</span></a></li>
+          <li><a href="http://www.mikemaltese.com/5cmenu/">Dining Halls<span class="note">until 2 am</span></a></li>
           <!-- <li><a href="">On-campus Eateries<span class="note">until 2 am</span></a></li>
           <li><a href="">Restaurants<span class="note">until 2 am</span></a></li> -->
         </ul>
       </li>
       <li id="services" class="group"><h1>Services</h1>
         <ul>
-          <li><a href="">Course Search</a></li>
-          <li><a href="">Course Reviews</a></li>
-          <li><a href="">Housing Search</a></li>
+          <li><a href="http://labs.fairlyawesome.com/ourpomona/courses/schedule/">Course Search</a></li>
+          <li><a href="http://aspc.pomona.edu/course-reviews/">Course Reviews</a></li>
+          <li><a href="http://aspc.pomona.edu/housing/">Housing Search</a></li>
           <!-- <li><a href="">Connection47</a></li>
           <li><a href="">Events Calendar</a></li> -->
         </ul>
@@ -70,7 +60,7 @@
       {% root_navigation_list senate as navigation %}
       {% include "navigation_fragment.html" %}
       
-      {% root_navigation_list as navigation excluding senate,information %}
+      {% root_navigation_list as navigation excluding senate,information,home %}
       {% include "navigation_fragment.html" %}
       
       <li id="partners" class="group"><h1>Partners</h1>
@@ -81,7 +71,8 @@
       </li>
     </ul>
   </nav>
-  
+  {% block "content_postnav" %}
+  {% endblock %}
   </div> <!-- end content main -->
   </div>
   <footer>

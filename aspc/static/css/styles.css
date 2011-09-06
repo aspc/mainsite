@@ -43,7 +43,6 @@ body {
 h1, h2, h3, h4, h5, .breadcrumbs {
 	font-family: "Hammersmith One", Verdana, "Lucida Grande", Lucida, sans-serif;
 	font-weight: normal;
-	font-size: 1em;
 }
 
 table {
@@ -88,6 +87,8 @@ th {
 	padding: 0.5em;
 	margin: 1%;
 	width: 45%;
+	height: 6em;
+	float: left;
 	font-size: 0.85em;
 }
 
@@ -105,18 +106,18 @@ th {
 
 /* @group content */
 
-.page > h1, .breadcrumbs {
+.primary > h1, .breadcrumbs {
 	padding: 0.5em 1%;
 	margin: 0;
 }
 
-.page > h1 {
+.primary > h1 {
 	font-size: 1.5em;
 	background-color: #0071a6;
 	color: white;
 }
 
-.page .content {
+.primary .content {
 	padding: 0 1%;
 }
 
@@ -127,7 +128,8 @@ th {
 .breadcrumbs {
 	list-style-type: none;
 	background-color: #004d70;
-	font-size: 0.9em;
+	padding: 0.5em;
+	font-size: 1em;
 }
 
 .breadcrumbs a {
@@ -400,6 +402,9 @@ nav#sitewide li li {
 nav#sitewide a {
 	color: inherit;
 	text-decoration: none;
+}
+
+nav#sitewide a {
 	font-size: 0.9em;
 }
 
@@ -531,6 +536,11 @@ header#aspc_main h1, header#aspc_main h2 {
 header#aspc_main hgroup {
 	position: relative;
 	padding-top: 2em;
+}
+
+header#aspc_main a {
+	color: inherit;
+	text-decoration: none;
 }
 
 header#aspc_main h1, header#aspc_main h2 {
@@ -899,6 +909,8 @@ header#aspc_main hgroup {
 	font-size: 0.85em;
 	width: auto;
 	display: block;
+	float: none;
+	height: auto;
 }
 
 .page ol.children li > a {
@@ -992,7 +1004,7 @@ nav#sitewide .group {
 	display: none;
 }
 
-nav#sitewide.home .group {
+nav#sitewide.all .group {
 	display: block;
 }
 
