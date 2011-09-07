@@ -78,6 +78,7 @@ INSTALLED_APPS = (
     'django.contrib.markup',
     'south',
     'folio',
+    'senate',
 )
 
 # A sample logging configuration. The only tangible logging
