@@ -102,3 +102,33 @@ LOGGING = {
         },
     }
 }
+
+# LDAP Authentication information
+
+AUTHENTICATION_BACKENDS = (
+    'aspc.auth.backends.SimpleLDAPBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+AUTH_LDAP = {
+    'PO': {
+        'name': "Pomona",
+        'server': "ldap.pomona.edu",
+        'port': '389',
+        'bind_as': '{0}@CAMPUS',
+        'filter': '(cn={0})',
+        'base_dn': "OU=Student Accounts,OU=Users and Computers,OU=ZHOME,DC=campus,DC=pomona,DC=edu",
+    },
+    # 'CMC': {
+    #     'name': "CMC",
+    #     'server': "ldap.pomona.edu",
+    #     'port': '389',
+    #     'bind_as': '{0}@CAMPUS',
+    #     'filter': '(cn={0})',
+    #     'base_dn': "OU=Student Accounts,OU=Users and Computers,OU=ZHOME,DC=campus,DC=pomona,DC=edu",
+    # },
+}
+
+AUTH_LDAP_DEFAULT_COLLEGE = "PO"
+
+AUTH_LDAP_COLLEGES = ((i[0], i[1]['name']) for i in AUTH_LDAP.items())
