@@ -1,0 +1,24 @@
+{% extends "blog/base.html" %}
+{% load markup %}
+{% block "date_nav" %}
+<nav class="archive">
+  {% block "archive_nav" %}
+  <ol class="month_next_prev">
+    {% if next_month %}<li><a class="next_month" href="{% url "post_month" year=next_month|date:"Y" month=next_month|date:"b" %}">{{ next_month|date:"F" }} &rarr;</a></li>{% endif %}
+    <li><a class="previous_month" href="{% url "post_month" year=previous_month|date:"Y" month=previous_month|date:"b" %}">&larr; {{ previous_month|date:"F" }}</a></li>
+  </ol>
+  {% endblock %}
+</nav>
+{% endblock %}
+
+{% block "page_title" %}
+News from {{ month|date:"F, Y"}}
+{% endblock %}
+
+{% block "content" %}
+{% if posts %}
+{% include "blog/posts_fragment.html" %}
+{% else %}
+<p>No recent posts to display</p>
+{% endif %}
+{% endblock %}

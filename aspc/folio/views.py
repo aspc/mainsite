@@ -23,11 +23,3 @@ def page_view(request, slug_path):
         "active_section_root": new_page.section_root,
     })
 
-from django.views.generic import TemplateView
-
-class HomeView(TemplateView):
-    template_name = "temp_home.html"
-    def get_context_data(self):
-        context = super(HomeView, self).get_context_data()
-        context["all_nav"] = True
-        return context

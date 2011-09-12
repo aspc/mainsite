@@ -1,0 +1,15 @@
+{% extends "blog/base.html" %}
+{% load markup %}
+
+{% block "page_title" %}
+News from {{ year }}
+{% endblock %}
+
+{% block "content" %}
+  <ol class="months">
+  {% for d in date_list %}
+    <li><a href="{% url "post_month" year=year month=d|date:"b" %}">{{ d|date:"F" }}  &rarr;</a></li>
+  {% endfor %}
+  </ol>
+{% endblock %}
+

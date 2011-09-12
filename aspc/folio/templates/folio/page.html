@@ -11,7 +11,7 @@
     {% endfor %}
   </ol>
   {% endif %}
-  <h1>{{ title }}</h1>
+  <h1>{{ title }}{% if perms.folio.can_change_page %}&nbsp;<a href="{% url "admin:folio_page_change" page.id %}">(edit)</a>{% endif %}</h1>
   <div class="content{% if page.section_root %} section_root{% endif %}">
     <div class="body">
     {{ body|markdown }}

@@ -79,6 +79,8 @@ INSTALLED_APPS = (
     'south',
     'folio',
     'senate',
+    'blog',
+    'auth',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -103,6 +105,8 @@ LOGGING = {
         },
     }
 }
+
+LOGIN_REDIRECT_URL = '/'
 
 # LDAP Authentication information
 
@@ -133,3 +137,8 @@ AUTH_LDAP = {
 AUTH_LDAP_DEFAULT_COLLEGE = "PO"
 
 AUTH_LDAP_COLLEGES = ((i[0], i[1]['name']) for i in AUTH_LDAP.items())
+
+# Support new {% url %} syntax without {% load %}
+
+import django.template
+django.template.add_to_builtins('django.templatetags.future')

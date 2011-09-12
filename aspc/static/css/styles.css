@@ -1,4 +1,13 @@
-/* @override http://localhost:8000/static/css/styles.css */
+/* @override 
+	http://localhost:8000/static/css/styles.css
+	http://127.0.0.1:8000/static/css/styles.css
+*/
+
+/* temp */
+
+#report {
+	
+}
 
 /* @group Base */
 
@@ -21,7 +30,7 @@ nav ul, section > ul {
 
 .row {
 width: 100%;
-max-width: 1140px;
+max-width: 1000px;
 min-width: 765px;
 margin: 0 auto;
 overflow: hidden;
@@ -43,6 +52,16 @@ body {
 h1, h2, h3, h4, h5, .breadcrumbs {
 	font-family: "Hammersmith One", Verdana, "Lucida Grande", Lucida, sans-serif;
 	font-weight: normal;
+}
+
+h2 {
+	font-size: 1.3em;
+}
+
+blockquote {
+	background-color: #ededed;
+	padding: 0.5em;
+	margin: 1em 2em;
 }
 
 table {
@@ -73,34 +92,105 @@ th {
 
 /* @group Desktop */
 
-/* @group Pages */
+/* @group Blog */
 
-/* @group child page list */
+/* @group Post List */
 
-.page ol.children {
+.news > .content > ol {
 	list-style-type: none;
 	padding: 0;
 }
 
-.page ol.children li {
-	display: inline-block;
+.post_info {
 	padding: 0.5em;
-	margin: 1%;
-	width: 45%;
-	height: 6em;
-	float: left;
+	background-color: #eee;
+	border-bottom: 0.1em solid #aaa;
+	border-top: 0.1em solid #aaa;
+}
+
+.post_info > h1 {
+	margin: 0;
+}
+
+.post_info > h1 > a {
+	text-decoration: none;
+	color: #2889b7;
+}
+
+.post_info > .byline {
 	font-size: 0.85em;
 }
 
-.page ol.children li > a {
-	font-size: 1.25em;
-	text-decoration: none;
-	color: #0077af;
+.post_body {
+	padding: 0 0.75em;
 }
 
-.page ol.children li p {
-	font-style: italic;
+/* @end */
+
+/* @group Archive / Date Navigation */
+
+nav.archive {
+	background-color: #ddd;
+	padding: 0.5em;
 }
+
+nav.archive h2 {
+	margin: 0;
+	color: #666;
+	display: inline;
+	font-size: 1.125em;
+}
+
+nav.archive a {
+	text-decoration: none;
+	color: #0071a6;
+}
+
+/* @group Year Months */
+
+nav.archive ol {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	font-size: 1em;
+
+}
+
+nav.archive ol {
+	display: inline-block;
+	padding-left: 1em;
+}
+
+ol.months li {
+	display: inline-block;
+	font-size: 1.25em;
+}
+
+ol.months li a {
+	text-decoration: none;
+}
+
+/* @end */
+
+/* @group Next/Previous Months */
+
+nav.archive ol.month_next_prev:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+nav.archive a.previous_month {
+	float: left;
+}
+
+nav.archive a.next_month {
+	float: right;
+}
+
+/* @end */
+
+/* @end */
 
 /* @end */
 
@@ -117,8 +207,58 @@ th {
 	color: white;
 }
 
+.primary > h1 > a {
+	text-decoration: none;
+	color: #ddd;
+	font-size: 0.8em;
+	float: right;
+}
+
 .primary .content {
 	padding: 0 1%;
+}
+
+.primary .content h1, .primary .content h2, .primary .content h3, .primary .content h4, .primary .content h5 {
+	font: 14px Verdana, "Lucida Grande", Lucida, sans-serif;
+	font-weight: bold;
+}
+
+/* @end */
+
+/* @group Pages */
+
+/* @group child page list */
+
+.page ol.children {
+	list-style-type: none;
+	padding: 0;
+}
+
+.page ol.children:after, .page ol.children li:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.page ol.children li {
+	display: inline-block;
+	padding: 0.5em;
+	margin: 1%;
+	width: 45%;
+	height: 10em;
+	float: left;
+	overflow: hidden;
+	font-size: 0.85em;
+}
+
+.page ol.children li > a {
+	font-size: 1.25em;
+	text-decoration: none;
+	color: #0077af;
+}
+
+.page ol.children li p {
+	font-style: italic;
 }
 
 /* @end */
@@ -345,14 +485,14 @@ th {
 }
 
 .primary {
-	width: 84%;
+	width: 80%;
 	float: left;
 	background: white;
 	border-bottom: 0.4em solid #486285;
 }
 
 .secondary {
-	width: 16%;
+	width: 20%;
 	float: right;
 }
 
@@ -520,6 +660,7 @@ nav#topnav span#username:after {
 nav#topnav #user {
 	text-align: right;
 	float: right;
+	margin-bottom: 0.5em;
 }
 
 /* @end */

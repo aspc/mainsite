@@ -1,0 +1,7 @@
+from django.conf.urls.defaults import patterns, include, url
+from django.contrib.auth.views import login, logout
+
+urlpatterns = patterns('',
+    url(r'^login/$', login, {'template_name': 'auth/login.html',}, name="login"),
+    url(r'^logout/$', logout, {'template_name': 'auth/logged_out.html',}, name="logout"),
+)
