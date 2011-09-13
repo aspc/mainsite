@@ -34,6 +34,13 @@
   
   <div class="container">
   <div id="content_main" class="row"> 
+    {% if messages %}
+    <ul class="messages group">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     {% block "content_prenav" %}
     {% endblock %}
   <nav id="sitewide" class="secondary{% if all_nav %} all{% endif %}">
@@ -50,8 +57,8 @@
           <li><a href="http://labs.fairlyawesome.com/ourpomona/courses/schedule/">Course Search</a></li>
           <li><a href="http://aspc.pomona.edu/course-reviews/">Course Reviews</a></li>
           <li><a href="http://aspc.pomona.edu/housing/">Housing Search</a></li>
-          <!-- <li><a href="">Connection47</a></li>
-          <li><a href="">Events Calendar</a></li> -->
+          <li><a href="{% url "sagelist" %}">SageList</a></li>
+          <!-- <li><a href="">Events Calendar</a></li> -->
         </ul>
       </li>
       {% root_navigation_list information as navigation %}

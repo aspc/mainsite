@@ -1,0 +1,24 @@
+{% extends "sagelist/base.html" %}
+{% block "title" %}Sell a Book{% endblock %}
+{% block "breadcrumbs" %}
+  <li>Sell a Book</a></li>
+{% endblock %}
+{% block "content" %}
+<form action="." method="POST">
+  {% csrf_token %}
+  <ul>
+    <li><span class="faux_label">Seller:</span> {{ user.get_full_name }}</li>
+    {{ form.non_field_errors }}
+    <li>{{ form.title.errors }}<label for="id_title">Title:</label> {{ form.title }}</li>
+    <li>{{ form.authors.errors }}<label for="id_authors">Author(s):</label> {{ form.authors }}</li>
+    <li>{{ form.isbn.errors }}<label for="id_isbn">ISBN <span class="optional">(optional)</span>:</label> {{ form.isbn }}</li>
+    <li>{{ form.edition.errors }}<label for="id_edition">Edition <span class="optional">(optional)</span>:</label> {{ form.edition }}</li>
+    <li>{{ form.condition.errors }}<label for="id_condition">Condition:</label> {{ form.condition }}</li>
+    <li>{{ form.price.errors }}<label for="id_price">Price:</label> ${{ form.price }}</li>
+  </ul>
+  <p><strong>Note:</strong> by listing your book on SageList, you are agreeing
+    to sell it to the person who clicks "buy" on your listing page. If you sell
+    the book outside SageList, you must come back and delete your listing!</p>
+  <p><input type="submit" value="Post new listing" id="post"></p>
+</form>
+{% endblock %}

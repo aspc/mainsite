@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block "content_prenav" %}
+<section class="group primary sagelist">
+  {% block "full_content" %}
+  {% if not home %}
+  <ol class="breadcrumbs">
+    <li><a href="{% url "sagelist" %}">SageList</a></li>
+    {% block "breadcrumbs" %}{% endblock %}
+  </ol>
+  {% endif %}
+  <h1>{% block "title" %}{% endblock %}</h1>
+  <div class="content">
+    {% block "content" %}{% endblock %}
+  </div>
+  {% endblock %}
+</section>
+{% endblock %}

@@ -3,12 +3,6 @@
 	http://127.0.0.1:8000/static/css/styles.css
 */
 
-/* temp */
-
-#report {
-	
-}
-
 /* @group Base */
 
 @font-face {
@@ -76,7 +70,7 @@ td, th {
 }
 
 th {
-	background-color: #e6ebf0;
+	background-color: #c1d8ef;
 	font-weight: bold;
 }
 
@@ -88,9 +82,142 @@ th {
 	display: none;
 }
 
+form ul {
+	list-style-type: none;
+	padding: 1em;
+}
+
 /* @end */
 
 /* @group Desktop */
+
+/* @group SageList */
+
+.sagelist table {
+	width: 100%;
+}
+
+.sagelist table tr.nav_letter td {
+	background-color: #eee;
+}
+
+.sagelist .title, .sagelist .authors, .sagelist .edition, .sagelist .isbn, .sagelist .condition, .sagelist .price {
+	display: table-cell;	
+}
+
+
+.sagelist tr.empty {
+	display: none;
+}
+
+.sagelist td {
+	background-color: white;
+}
+
+.sagelist tr.nav_letter td {
+	font-size: 1.5em;
+	padding: 0.25em 1%;
+	font-weight: bold;
+}
+
+.sagelist form label, .sagelist form .faux_label {
+	width: 15em;
+	display: inline-block;
+	font-weight: bold;
+}
+
+.sagelist form label .optional {
+	color: #999;
+	font-weight: normal;
+}
+
+.sagelist form li {
+	margin-bottom: 0.5em;
+}
+
+.sagelist form input {
+	width: 10em;
+}
+
+.sagelist form #id_price {
+	width: 8em;
+
+}
+
+.sagelist form #id_title, .sagelist form #id_authors {
+	width: 20em;
+}
+
+.sagelist dl:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+ 
+.sagelist dl dt {
+    background: #c1d8ef;
+    float:left;
+    font-weight:bold;
+    margin-right:1em;
+    padding: 0.5em;
+    width:10em;
+	color: #003852;
+	margin-bottom: 0.33em;
+}
+ 
+.sagelist dl dd {
+    padding:0.5em 0;
+	margin-bottom: 0.33em;
+}
+
+.sagelist ol#alphanav {
+	margin: 0;
+	padding: 0;
+	padding: 0.5em 0;
+	text-align: center;
+	background-color: #003a54;
+}
+
+.sagelist ul.actions {
+	background-color: #004d70;
+	padding: 0.5em;
+}
+
+.sagelist ul.actions a {
+	color: white;
+}
+
+.sagelist ol#alphanav li {
+	display: inline-block;
+	padding: 0 0.5em;
+	margin: 0.25em 0;
+}
+
+.sagelist ol#alphanav a {
+	color: white;
+}
+
+.sagelist .info {
+	text-align: center;
+}
+
+.sagelist input[type="submit"] {
+	width: 33%;
+	height: 3em;
+	color: white;
+	display: block;
+	margin: 0 auto;
+}
+
+.sagelist #buy, .sagelist #post {
+	background-color: #0071a6;
+}
+
+.sagelist #delete {
+	background-color: #f7931e;
+}
+
+/* @end */
 
 /* @group Blog */
 
@@ -496,25 +623,27 @@ nav.archive a.next_month {
 	float: right;
 }
 
-.notification {
+.messages {
 	width: 100%;
 	text-align: center;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
 }
 
-.notification.info {
-	background-color: #fff8cd;
-}
-
-.notification.error {
-	background-color: #ffcdcd;
-}
-
-.notification.success {
-	background-color: #d6f0d9;
+.messages li {
+	background-color: #2e5d94;
+	padding: 0.5em;
+	color: white;
 }
 
 .primary > p {
 	margin: 0.5em;
+}
+
+p.list_empty {
+	text-align: center;
+	margin: 1em auto;
 }
 
 /* @end */
@@ -924,6 +1053,42 @@ footer p {
 
 @media handheld, only screen and (max-width: 767px) {
 
+/* @group SageList */
+
+.sagelist .authors, .sagelist .edition, .sagelist .isbn, .sagelist .condition {
+	display: none;	
+}
+
+.sagelist form label, .sagelist form .faux_label {
+	display: block;
+}
+
+.sagelist form ul {
+	margin-top: 0;
+}
+
+.sagelist ol#alphanav li {
+	display: inline-block;
+	padding: 0;
+	margin: 0.25em 0.25em;
+}
+
+.sagelist ol#alphanav a {
+	color: white;
+}
+
+.sagelist dl {
+	font-size: 0.85em;
+}
+
+.sagelist input[type="submit"] {
+	width: 100%;
+	font-size: 1em;
+	height: 2em;
+}
+
+/* @end */
+
 /* @group Stream */
 
 .stream > h1 {
@@ -1018,24 +1183,23 @@ header#aspc_main hgroup {
 	-webkit-box-shadow: none;
 }
 
-.group.notification {
-	border-radius: 0;
-}
-
-.notification p {
+.messages li {
 	font-size: 0.85em;
+	margin-bottom: 1em;
+	border-radius: 0.5em;
 }
 
-.page .content {
+.group.primary .content {
 	margin: 0;
 	background-color: white;
 	padding: 0.33em;
 	border-radius: 0 0 0.5em 0.5em;
 }
 
-.group.page {
+.group.primary {
 	background-color: #364d68;
 }
+
 
 .page .body {
 	padding: 0.25em;

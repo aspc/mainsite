@@ -1,0 +1,5 @@
+<p>Nobody has purchased this book yet. You can still remove this listing if you want.</p>
+<form action="{% url "sagelist_delete" pk=book.id %}" method="POST">
+  {% csrf_token %}
+  <p><input type="submit" value="Delete this listing" id="delete"></p>
+</form>

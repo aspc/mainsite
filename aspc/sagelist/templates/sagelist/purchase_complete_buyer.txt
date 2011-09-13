@@ -1,0 +1,13 @@
+Hi {{ buyer.get_full_name }}
+
+You have just purchased {{ booksale.title }} by
+{{ booksale.authors }} for ${{ booksale.price }}. The listing has been removed
+from the main list, but you can still get to it here:
+
+{{ protocol }}://{{ domain }}{{ booksale.get_absolute_url }}
+
+The seller ({{ seller.get_full_name }} <{{ seller.email }}>) has been notified,
+and should email you soon.
+
+SageList
+ASPC System

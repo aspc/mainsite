@@ -1,0 +1,58 @@
+{% extends "sagelist/base.html" %}
+{% block "title" %}SageList{% endblock %}
+{% block "full_content" %}
+<h1>SageList Textbook Sales</h1>
+<ul class="actions">
+  <li><a href="{% url "sagelist_create" %}">List a book for sale</a></li>
+</ul>
+{% if listings %}
+{% if listings.count > 20 %}
+<ol id="alphanav">
+  <li><a href="#A">A</a></li>
+  <li><a href="#B">B</a></li>
+  <li><a href="#C">C</a></li>
+  <li><a href="#D">D</a></li>
+  <li><a href="#E">E</a></li>
+  <li><a href="#F">F</a></li>
+  <li><a href="#G">G</a></li>
+  <li><a href="#H">H</a></li>
+  <li><a href="#I">I</a></li>
+  <li><a href="#J">J</a></li>
+  <li><a href="#K">K</a></li>
+  <li><a href="#L">L</a></li>
+  <li><a href="#M">M</a></li>
+  <li><a href="#N">N</a></li>
+  <li><a href="#O">O</a></li>
+  <li><a href="#P">P</a></li>
+  <li><a href="#Q">Q</a></li>
+  <li><a href="#R">R</a></li>
+  <li><a href="#S">S</a></li>
+  <li><a href="#T">T</a></li>
+  <li><a href="#U">U</a></li>
+  <li><a href="#V">V</a></li>
+  <li><a href="#W">W</a></li>
+  <li><a href="#X">X</a></li>
+  <li><a href="#Y">Y</a></li>
+  <li><a href="#Z">Z</a></li>
+</ol>
+{% endif %}
+<table>
+  <tr><th class="title">Title</th><th class="authors">Author(s)</th><th class="edition">Edition</th><th class="isbn">ISBN</th><th class="condition">Condition</th><th class="price">Price</th></tr>
+{% for group in listings_grouped %}
+{% if listings.count > 20 %}<tr class="nav_letter{% if not group.1 %} empty{% endif %}" id="{{ group.0 }}"><td colspan="6">{{ group.0 }}</td></tr>{% endif %}
+{% for book in group.1 %}
+  <tr>
+    <td class="title"><a href="{% url "sagelist_detail" pk=book.id %}">{{ book.title }}</a></td>
+    <td class="authors">{{ book.authors }}</td>
+    <td class="edition">{{ book.edition }}</td>
+    <td class="isbn">{{ book.isbn }}</td>
+    <td class="condition">{{ book.get_condition_display }}</td>
+    <td class="price">${{ book.price }}</td>
+  </tr>
+{% endfor %}
+{% endfor %}
+</table>
+{% else %}
+<p class="list_empty">No books are currently listed for sale. <a href="{% url "sagelist_create" %}">Post a new one?</a></p>
+{% endif %}
+{% endblock %}

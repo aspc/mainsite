@@ -1,0 +1,10 @@
+Hi {{ seller.name }}
+
+You have just listed {{ booksale.title }} by {{ booksale.authors }} for 
+${{ booksale.price }}. If you need to get to the listing (for example,
+to delete it if you sell the book somewhere else), you can get to it here:
+
+{{ protocol }}://{{ domain }}{{ booksale.get_absolute_url }}
+
+SageList
+ASPC System
