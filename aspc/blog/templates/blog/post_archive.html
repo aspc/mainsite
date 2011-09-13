@@ -1,13 +1,16 @@
 {% extends "blog/post_archive_month.html" %}
 {% load markup %}
 
+{% block "breadcrumbs" %}
+{% endblock %}
+
 {% block "page_title" %}
 Recent Posts
 {% endblock %}
 
 {% block "archive_nav" %}
   <h2>Years:</h2>
-  <ol>
+  <ol class="years">
   {% for y in years %}
     <li><a href="{% url "post_year" year=y %}">{{ y }}</a></li>
   {% endfor %}

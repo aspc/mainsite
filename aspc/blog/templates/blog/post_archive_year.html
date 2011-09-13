@@ -5,8 +5,15 @@
 News from {{ year }}
 {% endblock %}
 
+{% block "breadcrumbs" %}
+<ol class="breadcrumbs">
+  <li><a href="{% url "post_index" %}">News</a></li>
+  <li><a href="{% url "post_year" year=year %}">{{ year }}</a></li>
+</ol>
+{% endblock %}
+
 {% block "content" %}
-  <ol class="months">
+  <ol class="years">
   {% for d in date_list %}
     <li><a href="{% url "post_month" year=year month=d|date:"b" %}">{{ d|date:"F" }}  &rarr;</a></li>
   {% endfor %}

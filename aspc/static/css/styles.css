@@ -178,15 +178,6 @@ form ul {
 	background-color: #003a54;
 }
 
-.sagelist ul.actions {
-	background-color: #004d70;
-	padding: 0.5em;
-}
-
-.sagelist ul.actions a {
-	color: white;
-}
-
 .sagelist ol#alphanav li {
 	display: inline-block;
 	padding: 0 0.5em;
@@ -230,7 +221,7 @@ form ul {
 
 .post_info {
 	padding: 0.5em;
-	background-color: #eee;
+	background-color: #dfedf4;
 	border-bottom: 0.1em solid #aaa;
 	border-top: 0.1em solid #aaa;
 }
@@ -241,11 +232,18 @@ form ul {
 
 .post_info > h1 > a {
 	text-decoration: none;
-	color: #2889b7;
+	color: #046a9a;
 }
 
 .post_info > .byline {
 	font-size: 0.85em;
+}
+
+h2.byline {
+	background-color: #ddd;
+	margin: 0;
+	padding: 0.5em 1%;
+	font-size: 1em;
 }
 
 .post_body {
@@ -275,15 +273,27 @@ nav.archive a {
 
 /* @group Year Months */
 
+ol.years {
+	font-size: 1.25em;
+}
+
+ol.years a {
+	text-decoration: none;
+	color: #0071a6;
+}
+
 nav.archive ol {
 	list-style-type: none;
 	padding: 0;
 	margin: 0;
 	font-size: 1em;
-
 }
 
-nav.archive ol {
+nav.archive ol.years {
+	display: inline-block;
+}
+
+nav.archive ol.months {
 	display: inline-block;
 	padding-left: 1em;
 }
@@ -301,17 +311,18 @@ ol.months li a {
 
 /* @group Next/Previous Months */
 
+
 nav.archive ol.month_next_prev:after {
 	content: "";
 	display: block;
 	clear: both;
 }
 
-nav.archive a.previous_month {
+nav.archive .previous_month {
 	float: left;
 }
 
-nav.archive a.next_month {
+nav.archive .next_month {
 	float: right;
 }
 
@@ -348,6 +359,15 @@ nav.archive a.next_month {
 .primary .content h1, .primary .content h2, .primary .content h3, .primary .content h4, .primary .content h5 {
 	font: 14px Verdana, "Lucida Grande", Lucida, sans-serif;
 	font-weight: bold;
+}
+
+ul.actions {
+	background-color: #004d70;
+	padding: 0.5em;
+}
+
+ul.actions a {
+	color: white;
 }
 
 /* @end */

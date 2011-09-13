@@ -1,7 +1,8 @@
 from django.views.generic.dates import ArchiveIndexView
+from aspc.blog.views import PostArchive
 from aspc.blog.models import Post
 
-class HomeView(ArchiveIndexView):
+class HomeView(PostArchive):
     template_name = "home.html"
     model = Post
     date_field = 'posted'

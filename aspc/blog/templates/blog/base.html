@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% block "content_prenav" %}
 <section class="group primary news">
+  {% block "breadcrumbs" %}{% endblock %}
   <h1>{% block "page_title" %}{% endblock %}</h1>
-  {% block "date_nav" %}{% endblock %}
+  {% block "secondary_content" %}{% endblock %}
   <div class="content">
     {% block "content" %}
     {% endblock %}

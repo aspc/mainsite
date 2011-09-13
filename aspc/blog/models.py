@@ -22,4 +22,7 @@ class Post(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('Post', [self.id])
+        return ('post_detail', [
+            self.posted.strftime("%Y"),
+            self.posted.strftime("%b"),
+            self.slug])

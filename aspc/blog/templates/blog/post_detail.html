@@ -1,0 +1,20 @@
+{% extends "blog/base.html" %}
+{% load markup %}
+{% block "title" %}{{ post.title }}{% endblock %}
+{% block "page_title" %}{{ post.title }}{% endblock %}
+{% block "breadcrumbs" %}
+<ol class="breadcrumbs">
+  <li><a href="{% url "post_index" %}">News</a></li>
+  <li><a href="{% url "post_year" year=post.posted|date:"Y" %}">{{ post.posted|date:"Y" }}</a></li>
+  <li><a href="{% url "post_month" year=post.posted|date:"Y" month=post.posted|date:"b" %}">{{ post.posted|date:"F" }}</a></li>
+  <li><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
+</ol>
+{% endblock %}
+{% block "secondary_content" %}
+<h2 class=byline>posted by {{ post.author.user.get_full_name }}, {{ post.author.position.title }} on {{ post.posted }}</h2>
+{% endblock %}
+{% block "content" %}
+<div class="post_body">
+  {{ post.body|markdown }}
+</div>
+{% endblock %}

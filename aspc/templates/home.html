@@ -18,6 +18,14 @@
 </section> -->
 <section class="group primary news">
   <h1>ASPC News</h1>
+  <nav class="archive">
+    <h2>Years:</h2>
+    <ol class="years">
+    {% for y in years %}
+      <li><a href="{% url "post_year" year=y %}">{{ y }}</a></li>
+    {% endfor %}
+    </ol>
+  </nav>
   <div class="content">
     {% if posts %}
     {% include "blog/posts_fragment.html" %}
