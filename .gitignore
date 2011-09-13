@@ -3,3 +3,4 @@ settings.py
 *.pyc
 .DS_Store
 Thumbs.db
+temp/
