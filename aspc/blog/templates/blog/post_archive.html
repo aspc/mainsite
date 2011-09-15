@@ -9,10 +9,12 @@ Recent Posts
 {% endblock %}
 
 {% block "archive_nav" %}
+{% if years %}
   <h2>Years:</h2>
   <ol class="years">
   {% for y in years %}
     <li><a href="{% url "post_year" year=y %}">{{ y }}</a></li>
   {% endfor %}
   </ol>
+{% endif %}
 {% endblock %}
