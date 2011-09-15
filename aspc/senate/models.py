@@ -24,7 +24,7 @@ class Position(models.Model):
         help_text="Sort ordering")
     
     class Meta:
-        ordering = ['title']
+        ordering = ['sort_order', 'title']
 
     def __unicode__(self):
         return self.title
