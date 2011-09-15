@@ -7,6 +7,7 @@ class HomeView(PostArchive):
     model = Post
     date_field = 'posted'
     context_object_name = 'posts'
+    allow_empty = True
     
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
