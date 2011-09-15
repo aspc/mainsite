@@ -18,6 +18,7 @@
 </section> -->
 <section class="group primary news">
   <h1>ASPC News</h1>
+  {% if years %}
   <nav class="archive">
     <h2>Years:</h2>
     <ol class="years">
@@ -26,6 +27,7 @@
     {% endfor %}
     </ol>
   </nav>
+  {% endif %}
   <div class="content">
     {% if posts %}
     {% include "blog/posts_fragment.html" %}
