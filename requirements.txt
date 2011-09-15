@@ -6,4 +6,5 @@ django-reversion==1.4
 docutils==0.8.1
 gunicorn==0.13.1
 python-ldap==2.4.3
+setproctitle==1.1.2
 wsgiref==0.1.2
