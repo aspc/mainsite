@@ -1,6 +1,5 @@
 from django.db import models
 from django.core.exceptions import FieldError
-from aspc.folio.fields import MarkdownTextField
 
 class Page(models.Model):
     """A glorified static page with Markdown content"""
