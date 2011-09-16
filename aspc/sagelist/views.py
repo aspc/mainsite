@@ -119,11 +119,14 @@ class ListBookSalesView(ListView):
     def get_context_data(self, *args, **kwargs):
         context = super(ListBookSalesView, self).get_context_data(*args, **kwargs)
         groups = {}
-        for l in string.uppercase:
+        for l in string.uppercase + ['#']:
             groups[l] = []
         
         for b in self.object_list:
-            groups[b.title[0].upper()].append(b)
+            if b.title[0].upper() in groups.keys():
+              groups[b.title[0].upper()].append(b)
+            else:
+              groups['#'].append(b)
         context['listings_grouped'] = groups.items()
         context['listings_grouped'].sort()
         return context
