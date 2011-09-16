@@ -13,6 +13,8 @@
   <dd>{{ book.edition }}</dd>{% endif %}
   {% if book.isbn %}<dt>ISBN</dt>
   <dd>{{ book.isbn }}</dd>{% endif %}
+  <dt>Condition</dt>
+  <dd>{{ book.get_condition_display }}</dd>
   <dt>Price</dt>
   <dd>${{ book.price }}</dd>
   <dt>Posted by</dt>
