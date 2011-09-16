@@ -820,7 +820,7 @@ nav#topnav #user {
 
 
 header#aspc_main h1, header#aspc_main h2 {
-	font-family: Futura;
+	font-family: Futura, "Gill Sans", Verdana, Arial;
 }
 
 header#aspc_main hgroup {
