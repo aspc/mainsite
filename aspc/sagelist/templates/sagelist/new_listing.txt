@@ -6,5 +6,5 @@ to delete it if you sell the book somewhere else), you can get to it here:
 
 {{ protocol }}://{{ domain }}{{ booksale.get_absolute_url }}
 
-SageList
+SageBooks
 ASPC System

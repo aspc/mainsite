@@ -9,5 +9,5 @@ from the main list, but you can still get to it here:
 Their email is {{ buyer.email }}, and you should contact them to finish the
 sale.
 
-SageList
+SageBooks
 ASPC System

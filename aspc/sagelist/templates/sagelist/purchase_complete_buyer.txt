@@ -9,5 +9,5 @@ from the main list, but you can still get to it here:
 The seller ({{ seller.get_full_name }} <{{ seller.email }}>) has been notified,
 and should email you soon.
 
-SageList
+SageBooks
 ASPC System

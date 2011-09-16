@@ -26,7 +26,7 @@ class CreateBookSaleView(CreateView):
         sale.seller = self.request.user
         sale.save()
         sale.seller.email_user(
-            u"Posted {0} on SageList".format(sale.title),
+            u"Posted {0} on SageBooks".format(sale.title),
             render_to_string(
                 'sagelist/new_listing.txt',
                 {'seller': sale.seller, 'booksale': sale,},
