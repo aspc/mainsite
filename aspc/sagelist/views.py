@@ -56,7 +56,7 @@ class BookSaleDetailView(DetailView):
         }
         
         self.object.buyer.email_user(
-            "Purchase of {0} from {1}".format(
+            u"Purchase of {0} from {1}".format(
                 self.object.title,
                 self.object.seller.get_full_name()
             ),
@@ -68,7 +68,7 @@ class BookSaleDetailView(DetailView):
         )
         
         self.object.seller.email_user(
-            "Sale of {0} to {1}".format(
+            u"Sale of {0} to {1}".format(
                 self.object.title,
                 self.object.buyer.get_full_name()
             ),
@@ -80,7 +80,7 @@ class BookSaleDetailView(DetailView):
         )
         
         self.object.save()
-        messages.add_message(self.request, messages.SUCCESS, "Purchased {0}. An email has been sent to you and the seller.".format(self.object.title))
+        messages.add_message(self.request, messages.SUCCESS, u"Purchased {0}. An email has been sent to you and the seller.".format(self.object.title))
         return self.get(request, *args, **kwargs)
 
 class BookSaleDeleteView(DeleteView):
@@ -102,7 +102,7 @@ class BookSaleDeleteView(DeleteView):
         self.object = self.get_object()
         if self.object.seller == request.user:
             self.object.delete()
-            messages.add_message(request, messages.SUCCESS, "Deleted listing for {0}".format(self.object.title))
+            messages.add_message(request, messages.SUCCESS, u"Deleted listing for {0}".format(self.object.title))
             return HttpResponseRedirect(self.get_success_url())
         else:
             return self.get(request, *args, **kwargs)
