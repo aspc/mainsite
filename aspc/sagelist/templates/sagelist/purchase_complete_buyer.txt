@@ -1,7 +1,7 @@
 Hi {{ buyer.get_full_name }}
 
-You have just purchased {{ booksale.title }} by
-{{ booksale.authors }} for ${{ booksale.price }}. The listing has been removed
+You have just purchased {{ booksale.title|safe }} by
+{{ booksale.authors|safe }} for ${{ booksale.price }}. The listing has been removed
 from the main list, but you can still get to it here:
 
 {{ protocol }}://{{ domain }}{{ booksale.get_absolute_url }}

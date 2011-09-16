@@ -1,6 +1,6 @@
 Hi {{ seller.name }}
 
-You have just listed {{ booksale.title }} by {{ booksale.authors }} for 
+You have just listed {{ booksale.title|safe }} by {{ booksale.authors|safe }} for 
 ${{ booksale.price }}. If you need to get to the listing (for example,
 to delete it if you sell the book somewhere else), you can get to it here:
 
