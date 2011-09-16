@@ -357,7 +357,7 @@ nav.archive .next_month {
 }
 
 .primary .content h1, .primary .content h2, .primary .content h3, .primary .content h4, .primary .content h5 {
-	font: Verdana, "Lucida Grande", Lucida, sans-serif;
+	font-family: Verdana, "Lucida Grande", Lucida, sans-serif;
 	font-weight: bold;
 }
 
