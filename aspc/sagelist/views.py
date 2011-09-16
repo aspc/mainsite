@@ -119,7 +119,7 @@ class ListBookSalesView(ListView):
     def get_context_data(self, *args, **kwargs):
         context = super(ListBookSalesView, self).get_context_data(*args, **kwargs)
         groups = {}
-        for l in string.uppercase + ['#']:
+        for l in string.uppercase + '#':
             groups[l] = []
         
         for b in self.object_list:
