@@ -62,6 +62,7 @@ class Page(models.Model):
         return '/'.join([page.slug for page in self.path()]) + '/'
     
     def save(self, *args, **kwargs):
+        self.slug = self.slug.lower()
         if not self.id:
             if self.get_siblings().filter(slug=self.slug).count():
                 raise FieldError("Slugs must be unique for a given "

@@ -6,7 +6,7 @@ class Post(models.Model):
     author = models.ForeignKey('senate.Appointment')
     title = models.CharField(max_length=80)
     body = models.TextField()
-    posted = models.DateTimeField(auto_now_add=True)
+    posted = models.DateTimeField(editable=True)
     slug = models.SlugField()
     
     class Meta:
@@ -26,3 +26,7 @@ class Post(models.Model):
             self.posted.strftime("%Y"),
             self.posted.strftime("%b"),
             self.slug])
+    
+    def save(self, *args, **kwargs):
+      self.slug = self.slug.lower()
+      super(Post, self).save(*args, **kwargs)
