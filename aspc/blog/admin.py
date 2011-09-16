@@ -5,4 +5,4 @@ class PageAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
     list_display = ("title", "slug", "author", "posted")
 
-admin.site.register(Post)
+admin.site.register(Post, PostAdmin)
