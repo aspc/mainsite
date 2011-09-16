@@ -33,7 +33,7 @@ class CreateBookSaleView(CreateView):
                 context_instance=RequestContext(self.request)
             )
         )
-        messages.add_message(self.request, messages.SUCCESS, "Successfully listed {0} for sale".format(sale.title))
+        messages.add_message(self.request, messages.SUCCESS, u"Successfully listed {0} for sale".format(sale.title))
         return super(CreateBookSaleView, self).form_valid(form)
 
 
