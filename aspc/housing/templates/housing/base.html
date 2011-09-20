@@ -1,12 +1,26 @@
 {% extends 'base.html' %}
 
-{% block top_title %}Housing Reviews{% endblock top_title %}
+{% block "title" %}Housing Reviews{% endblock "title" %}
+{% block "content_prenav" %}
+<section class="group primary page">
+  {% block "breadcrumbs" %}
+  <ol class="breadcrumbs">
+    <li><a href="{% url "housing_home" %}"><span class="title">Housing Reviews</span><span class="short_title">Housing</span></a></li>
+  </ol>
+  {% endblock %}
+  <h1>{{ title }}</h1>
+  <div class="content">
+    {% block "content" %}
+    {% endblock %}
+  </div>
+</section>
+{% endblock %}
 
-{% block subsite_link %}{% url housing_home %}{% endblock subsite_link %}
+{% block subsite_link %}{% url "housing_home" %}{% endblock subsite_link %}
 {% block subsite_title %}housing reviews{% endblock subsite_title %}
 
 {% block nav %}
-	<li{% if browse_active %} class="active"{% endif %}><a href="{% url housing_browse %}">browse housing &rarr;</a></li>
-	<li{% if search_active %} class="active"{% endif %}><a href="{% url housing_search %}">search for rooms &rarr;</a></li>
-	<li{% if review_active %} class="active"{% endif %}><a href="{% url housing_review %}">review your room &rarr;</a></li>
+	<li{% if browse_active %} class="active"{% endif %}><a href="{% url "housing_browse" %}">browse housing &rarr;</a></li>
+	<li{% if search_active %} class="active"{% endif %}><a href="{% url "housing_search" %}">search for rooms &rarr;</a></li>
+	<li{% if review_active %} class="active"{% endif %}><a href="{% url "housing_review" %}">review your room &rarr;</a></li>
 {% endblock nav %}

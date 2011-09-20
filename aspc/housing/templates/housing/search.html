@@ -30,7 +30,7 @@
 		</tr>
 		{% for room in rooms %}
 			<tr>
-				<td><a href="{% url housing_browse_room room.floor.building.shortname,room.floor.number,room.number %}">{{ room.floor.building.name }} {{ room.number }}</a></td>
+				<td><a href="{% url "housing_browse_room" room.floor.building.shortname room.floor.number room.number %}">{{ room.floor.building.name }} {{ room.number }}</a></td>
 				<td>{{ room.floor.get_number_display }}</td>
 				<td>{{ room.size|floatformat }}</td>
 				<td>{{ room.get_occupancy_display }}</td>

@@ -9,7 +9,7 @@
 	</tr>
 	{% for review in results %}
 		<tr>
-			<td><a href="{% url housing_browse_room review.room.floor.building.shortname,review.room.floor.number,review.room.number %}#review_{{ review.get_timestamp }}">{{ review.create_ts }}</a></td>
+			<td><a href="{% url "housing_browse_room" review.room.floor.building.shortname review.room.floor.number review.room.number %}#review_{{ review.get_timestamp }}">{{ review.create_ts }}</a></td>
 			<td>{{ review.room.floor.building.name }} {{ review.room.number }}</td>
 			<td>{{ review.room.get_size_display }}</td>
 			<td>{{ review.room.get_occupancy_display }}</td>
