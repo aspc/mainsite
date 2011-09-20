@@ -92,6 +92,8 @@ INSTALLED_APPS = (
     'blog',
     'auth',
     'sagelist',
+    'college',
+    'housing',
 )
 
 # A sample logging configuration. The only tangible logging
