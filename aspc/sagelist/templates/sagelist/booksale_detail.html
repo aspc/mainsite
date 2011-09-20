@@ -1,6 +1,7 @@
 {% extends "sagelist/base.html" %}
-{% block "title" %}{{ book.title }}{% endblock %}
-{% block "breadcrumbs" %}
+{% block "subtitle" %}&mdash; {{ book.title }}{% block "subsubtitle" %}{% endblock %}{% endblock %}
+{% block "page_title" %}{{ book.title }}{% endblock %}
+{% block "sagelist_breadcrumbs" %}
   <li><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></li>
 {% endblock %}
 {% block "content" %}
