@@ -1,0 +1,32 @@
+{% extends 'housing/base.html' %}
+{% load room_tools %}
+
+{% block action_title %}{{ room.get_name }}{% endblock action_title %}
+
+{% block action_content %}
+	{% include "housing/room_info_fragment.html" %}
+	<div class="go_review"><a href="{% url housing_review_room room.floor.building.shortname,room.floor.number,room.number %}">review this room &rarr;</a></div>
+	<ul id="reviews">
+	{% for review in room.review_set.all %}
+		<li id="review_{{ review.get_timestamp }}">
+			<dl class="detail ratings">
+				<dt>overall</dt><dd>{% show_stars review.overall %}</dd>
+				<dt>quiet</dt><dd>{% show_stars review.quiet %}</dd>
+				<dt>spacious</dt><dd>{% show_stars review.spacious %}</dd>
+				<dt>temperate</dt><dd>{% show_stars review.temperate %}</dd>
+				<dt>well maintained</dt><dd>{% show_stars review.maintained %}</dd>
+				<dt>good cell reception</dt><dd>{% show_stars review.cellphone %}</dd>
+			</dl>
+			<div class="comments">
+				<h4>best thing about this room</h4>
+				{{ review.best|linebreaks }}
+				<h4>worst thing about this room</h4>
+				{{ review.worst|linebreaks }}
+				{% if review.comments %}
+				<h4>comments</h4>
+				{{ review.comments|linebreaks }}
+				{% endif %}
+			</div>
+		</li>
+	{% endfor %}
+{% endblock action_content %}

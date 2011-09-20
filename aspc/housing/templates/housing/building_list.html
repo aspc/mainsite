@@ -1,0 +1,15 @@
+{% extends 'housing/base.html' %}
+{% load columns %}
+{% block action_title %}browse buildings{% endblock action_title %}
+
+{% block action_content %}
+<div id="buildings">
+{% for col in buildings|rows:3 %}
+<ul class="col buildings">
+{% for building in col %}
+	<li><a href="{% url housing_browse_building_floor_first building.shortname %}">{{ building.name }}</a></li>	
+{% endfor %}
+</ul>
+{% endfor %}
+</div>
+{% endblock action_content %}

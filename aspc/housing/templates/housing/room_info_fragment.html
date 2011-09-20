@@ -1,0 +1,27 @@
+{% load room_tools %}
+<dl class="detail">
+	<dt>floor</dt><dd>{{ room.floor.number }}</dd>
+	{% if room.size %}
+	<dt>size</dt><dd>{{ room.size }} ft<sup>2</sup></dd>
+	{% endif %}
+	<dt>occupancy</dt><dd>{{ room.get_occupancy_display }}</dd>
+	{% if room.bathroom %}
+	<dt>bathroom</dt><dd>{{ room.get_bathroom_display }}</dd>
+	{% endif %}
+	{% if room.reserved %}
+	<dt>reserved for</dt><dd>{{ room.get_reserved_display }}</dd>
+	{% endif %}
+	{% if room.suite %}
+	<dt>suite</dt><dd>{{ room.suite.get_occupancy_display }} with {% suite room %}</dd>	
+	{% endif %}
+	{% if room.average_rating %}
+	<dt>average rating</dt><dd>{% show_stars room.average_rating %}</dd>
+	{% endif %}
+	{% if room.average_rating_quiet %}
+	<dt>quiet</dt><dd>{% show_stars room.average_rating_quiet %}</dd>
+	<dt>spacious</dt><dd>{% show_stars room.average_rating_spacious %}</dd>
+	<dt>temperate</dt><dd>{% show_stars room.average_rating_temperate %}</dd>
+	<dt>maintained</dt><dd>{% show_stars room.average_rating_maintained %}</dd>
+	<dt>cellphone</dt><dd>{% show_stars room.average_rating_cellphone %}</dd>
+	{% endif %}
+</dl>

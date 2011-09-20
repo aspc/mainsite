@@ -1,0 +1,30 @@
+<h3>how was your room?</h3>
+<p>
+	{{ form.quiet }}
+	{{ form.quiet.errors }}
+</p>
+<p>
+	{{ form.spacious }}
+	{{ form.spacious.errors }}
+</p>
+<p>
+	{{ form.temperate }}
+	{{ form.temperate.errors }}
+</p>
+<p>
+	{{ form.maintained }}
+	{{ form.maintained.errors }}
+</p>
+<p>
+	{{ form.cellphone }}
+	{{ form.cellphone.errors }}
+</p>
+<h3>what is the best thing about this room?</h3>
+{{ form.best.errors }}
+<p>{{ form.best }}</p>
+<h3>what is the worst thing about this room?</h3>
+{{ form.worst.errors }}
+<p>{{ form.worst }}</p>
+<h3>any other comments?</h3>
+{{ form.comments.errors }}
+<p>{{ form.comments }}</p>

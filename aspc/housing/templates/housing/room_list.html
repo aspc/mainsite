@@ -1,0 +1,14 @@
+{% extends 'housing/base.html' %}
+{% block action_title %}{{ floor.building.name }}{% endblock action_title %}
+
+{% block action_content %}
+{% if all_floors|length != 1 %}
+<ul id="floors">
+{% for c_floor in all_floors %}
+	<li {% if c_floor == floor %}class="active"{% endif %}><a href="{% url housing_browse_building_floor floor.building.shortname,c_floor.number %}">{{ c_floor.get_number_display }}</a></li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% include "housing/room_list_fragment.html" %}
+{% endblock action_content %}

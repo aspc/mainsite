@@ -1,0 +1,8 @@
+{% extends 'housing/base.html' %}
+{% block action_title %}latest reviews{% endblock action_title %}
+
+{% block action_content %}
+{% with latest as results %}
+	{% include "housing/review_list_fragment.html" %}
+{% endwith %}
+{% endblock action_content %}
