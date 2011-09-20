@@ -6,7 +6,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView
 from django.http import Http404
-from annoying.decorators import render_to
+from django.shortcuts import render
 from aspc.college.models import Building, Floor
 from aspc.housing.models import Review, Room
 from aspc.housing.forms import ReviewRoomForm, NewReviewForm, SearchForm, RefineForm
@@ -16,7 +16,6 @@ class Home(ArchiveIndexView):
     allow_empty = True
     queryset = Review.objects.all()
 
-@render_to('housing/search.html')
 def search(request):
     context = {'search_active': True,}
     if len(request.GET.keys()) > 0:
@@ -37,7 +36,7 @@ def search(request):
     else:
         form = SearchForm()
     context.update({'form': form,})
-    return context
+    return render(request, 'housing/search.html', context)
 
 class BrowseBuildings(ListView):
     template_name = "housing/building_list.html"
