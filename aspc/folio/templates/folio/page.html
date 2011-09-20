@@ -1,29 +1,31 @@
-{% extends "base.html" %}
+{% extends "base_page.html" %}
 {% load markup %}
 {% load pages %}
 {% block "title" %}{{ title }}{% endblock %}
-{% block "content_prenav" %}
-<section class="group primary page">
-  {% if page.parent %}
-  {% breadcrumbs_list page as breadcrumbs %}
-  <ol class="breadcrumbs">
-    {% for b in breadcrumbs %}
-    <li><a href="{{ b.get_absolute_url }}"><span class="title">{{ b }}</span><span class="short_title">{{ b.display_title }}</span></a></li>
-    {% endfor %}
-  </ol>
-  {% endif %}
-  <h1>{{ title }}{% if perms.page.can_change %}&nbsp;<a href="{% url "admin:folio_page_change" page.id %}">(edit)</a>{% endif %}</h1>
-  <div class="content{% if page.section_root %} section_root{% endif %}">
-    <div class="body">
-    {{ body|markdown }}
-    </div>
-    {% if page.page_set.count %}
-    <ol class="children">
-    {% for child in page.page_set.all %}
-      <li><a href="{{ child.get_absolute_url }}">{{ child }}</a><p class="summary">{{ child.summary }}</p></li>
-    {% endfor %}
-    </ol>
-    {% endif %}
-  </div>
-</section>
+{% block "page_class" %}page{% endblock %}
+{% block "breadcrumbs" %}
+{% if page.parent %}
+{% breadcrumbs_list page as breadcrumbs %}
+<ol class="breadcrumbs">
+  {% for b in breadcrumbs %}
+  <li><a href="{{ b.get_absolute_url }}"><span class="title">{{ b }}</span><span class="short_title">{{ b.display_title }}</span></a></li>
+  {% endfor %}
+</ol>
+{% endif %}
 {% endblock %}
+
+{% block "page_title" %}{{ title }}{% if perms.page.can_change %}&nbsp;<a href="{% url "admin:folio_page_change" page.id %}">(edit)</a>{% endif %}{% endblock %}
+
+{% block "content" %}
+<div class="body">
+{{ body|markdown }}
+</div>
+{% if page.page_set.count %}
+<ol class="children">
+{% for child in page.page_set.all %}
+  <li><a href="{{ child.get_absolute_url }}">{{ child }}</a><p class="summary">{{ child.summary }}</p></li>
+{% endfor %}
+</ol>
+{% endif %}
+{% endblock %}
+
