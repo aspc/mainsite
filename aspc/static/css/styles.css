@@ -93,10 +93,6 @@ form ul {
 
 /* @group SageList */
 
-.sagelist table {
-	width: 100%;
-}
-
 .sagelist table tr.nav_letter td {
 	background-color: #eee;
 }
@@ -146,28 +142,6 @@ form ul {
 
 .sagelist form #id_title, .sagelist form #id_authors {
 	width: 20em;
-}
-
-.sagelist dl:after {
-	content: "";
-	display: block;
-	clear: both;
-}
- 
-.sagelist dl dt {
-    background: #c1d8ef;
-    float:left;
-    font-weight:bold;
-    margin-right:1em;
-    padding: 0.5em;
-    width:10em;
-	color: #003852;
-	margin-bottom: 0.33em;
-}
- 
-.sagelist dl dd {
-    padding:0.5em 0;
-	margin-bottom: 0.33em;
 }
 
 .sagelist ol#alphanav {
@@ -333,6 +307,34 @@ nav.archive .next_month {
 /* @end */
 
 /* @group content */
+
+
+
+dl.detail:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+ 
+dl.detail dt {
+    background: #c1d8ef;
+    float:left;
+    font-weight:bold;
+    margin-right:1em;
+    padding: 0.5em;
+    width:10em;
+	color: #003852;
+	margin-bottom: 0.33em;
+}
+ 
+dl.detail dd {
+    padding:0.5em 0;
+	margin-bottom: 0.33em;
+}
+
+.primary > table {
+	width: 100%;
+}
 
 .primary > h1, .breadcrumbs {
 	padding: 0.5em 1%;
