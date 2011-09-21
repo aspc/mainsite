@@ -1,12 +1,17 @@
 {% extends 'housing/base.html' %}
 
-{% block action_title %}{{ room.get_name }}{% endblock action_title %}
+{% block "page_title" %}{{ room.get_name }}{% endblock "page_title" %}
 
-{% block action_content %}
+{% block "housing_breadcrumbs" %}
+<li>Write Review</li>
+{% endblock %}
+
+
+{% block "content" %}
 	{% include "housing/room_info_fragment.html" %}
 	<form action="." method="POST">
 		{% csrf_token %}
 		{% include "housing/review_form_fragment.html" %}
 		<p><input type="submit" value="submit review">
 	</form>
-{% endblock action_content %}
+{% endblock "content" %}

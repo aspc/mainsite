@@ -1,9 +1,15 @@
 {% extends 'housing/base.html' %}
 {% load room_tools %}
 
-{% block action_title %}{{ room.get_name }}{% endblock action_title %}
+{% block "page_title" %}{{ room.get_name }}{% endblock "page_title" %}
 
-{% block action_content %}
+{% block "housing_breadcrumbs" %}
+<li>{{ room.floor.building }}</li>
+<li>{{ room.floor }}</li>
+<li>{{ room }}</li>
+{% endblock %}
+
+{% block "content" %}
 	{% include "housing/room_info_fragment.html" %}
 	<div class="go_review"><a href="{% url "housing_review_room" room.floor.building.shortname room.floor.number room.number %}">review this room &rarr;</a></div>
 	<ul id="reviews">
@@ -29,4 +35,4 @@
 			</div>
 		</li>
 	{% endfor %}
-{% endblock action_content %}
+{% endblock "content" %}

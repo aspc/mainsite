@@ -2,9 +2,9 @@
 {% load room_tools %}
 {% block head %}
 {% endblock head %}
-{% block action_title %}search{% endblock action_title %}
+{% block "page_title" %}search{% endblock "page_title" %}
 
-{% block action_content %}
+{% block "content" %}
 <div id="search_control" class="{% if result_view %}result_view{% else %}begin_view{% endif %}">
 	<form action="." method="GET">
 		{% for field in form %}
@@ -42,4 +42,4 @@
 	</table>
 	</div>
 {% endif %}
-{% endblock action_content %}
+{% endblock "content" %}

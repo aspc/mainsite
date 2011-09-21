@@ -1,8 +1,12 @@
 {% extends 'housing/base.html' %}
 {% load columns %}
-{% block action_title %}browse buildings{% endblock action_title %}
+{% block "page_title" %}Browse Buildings{% endblock "page_title" %}
 
-{% block action_content %}
+{% block "housing_breadcrumbs" %}
+<li>Buildings</li>
+{% endblock %}
+
+{% block "content" %}
 <div id="buildings">
 {% for col in buildings|rows:3 %}
 <ul class="col buildings">
@@ -12,4 +16,4 @@
 </ul>
 {% endfor %}
 </div>
-{% endblock action_content %}
+{% endblock "content" %}
