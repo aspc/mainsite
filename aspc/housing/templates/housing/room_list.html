@@ -1,5 +1,11 @@
-{% extends 'housing/base.html' %}
+{% extends 'housing/building_list.html' %}
 {% block "page_title" %}{{ floor.building.name }}{% endblock "page_title" %}
+
+{% block "housing_breadcrumbs" %}
+{{ block.super }}
+<li><a href="{% url "housing_browse_building_floor_first" floor.building.shortname %}">{{ floor.building.name }}</a></li>
+<li><a href="{% url "housing_browse" %}">{{ floor.get_number_display }}</a></li>
+{% endblock %}
 
 {% block "content" %}
 {% if all_floors|length != 1 %}

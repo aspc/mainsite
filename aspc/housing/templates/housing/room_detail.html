@@ -9,9 +9,15 @@
 <li>{{ room }}</li>
 {% endblock %}
 
+{% block "actions" %}
+<ul class="actions">
+  <li><a href="{% url "housing_review_room" room.floor.building.shortname room.floor.number room.number %}">review this room</a></li>
+</ul>
+{% endblock %}
+
 {% block "content" %}
 	{% include "housing/room_info_fragment.html" %}
-	<div class="go_review"><a href="{% url "housing_review_room" room.floor.building.shortname room.floor.number room.number %}">review this room &rarr;</a></div>
+	<div class="go_review"></div>
 	<ul id="reviews">
 	{% for review in room.review_set.all %}
 		<li id="review_{{ review.get_timestamp }}">
@@ -32,6 +38,7 @@
 				<h4>comments</h4>
 				{{ review.comments|linebreaks }}
 				{% endif %}
+				<span class="posted">posted on {{ review.get_timestamp }}</span>
 			</div>
 		</li>
 	{% endfor %}

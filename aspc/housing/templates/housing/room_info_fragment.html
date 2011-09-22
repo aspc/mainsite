@@ -1,6 +1,6 @@
 {% load room_tools %}
 <dl class="detail">
-	<dt>floor</dt><dd>{{ room.floor.number }}</dd>
+	<dt>floor</dt><dd>{{ room.floor.get_number_display }}</dd>
 	{% if room.size %}
 	<dt>size</dt><dd>{{ room.size }} ft<sup>2</sup></dd>
 	{% endif %}

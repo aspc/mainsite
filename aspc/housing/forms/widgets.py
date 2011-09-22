@@ -125,8 +125,11 @@ class RatingRadioFieldRenderer(widgets.RadioFieldRenderer):
         last = input_tags.pop()
         first = input_tags.pop(0)
         
-        output = u'<label class="low">{0}</label> {1}\n'.format(conditional_escape(force_unicode(first.choice_label)), first.tag())
+        output = u'<label class="low">{0}</label><label class="mobile_high">{1}</label> <span class="rating_control">{2}\n'.format(
+            conditional_escape(force_unicode(first.choice_label)),
+            conditional_escape(force_unicode(last.choice_label)),
+            first.tag())
         for choice in input_tags:
             output += u'{0}\n'.format(choice.tag())
-        output += u'{1} <label class="high">{0}</label>\n'.format(conditional_escape(force_unicode(last.choice_label)), last.tag())
+        output += u'{1}</span> <label class="high">{0}</label>\n'.format(conditional_escape(force_unicode(last.choice_label)), last.tag())
         return mark_safe(output)

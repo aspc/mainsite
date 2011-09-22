@@ -1,10 +1,16 @@
 {% extends 'base_page.html' %}
 
+{% block "head" %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/housing.css" type="text/css" media="screen">
+{% endblock %}
+
+{% block "page_class" %}housing{% endblock %}
+
 {% block "title" %}Housing Reviews{% endblock "title" %}
 
 {% block "breadcrumbs" %}
 <ol class="breadcrumbs">
-  <li><a href="{% url "housing_home" %}"><span class="title">Housing Reviews</span><span class="short_title">Housing</span></a></li>
+  <li><a href="{% url "housing_home" %}">Housing Search</a></li>
   {% block "housing_breadcrumbs" %}
   {% endblock %}
 </ol>

@@ -325,11 +325,13 @@ dl.detail dt {
     width:10em;
 	color: #003852;
 	margin-bottom: 0.33em;
+	height: 1.2em;
 }
  
 dl.detail dd {
     padding:0.5em 0;
 	margin-bottom: 0.33em;
+	height: 1.2em;
 }
 
 .primary > table {
@@ -365,11 +367,17 @@ dl.detail dd {
 
 ul.actions {
 	background-color: #004d70;
-	padding: 0.5em;
+	padding-left: 1em;
 }
 
 ul.actions a {
-	color: white;
+	color: #baeaff;
+	display: inline-block;
+	padding: 0.5em;
+}
+
+ul.actions li {
+	display: inline;
 }
 
 /* @end */

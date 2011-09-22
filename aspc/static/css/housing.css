@@ -1,0 +1,40 @@
+/* @override http://localhost:8000/static/css/housing.css */
+
+.housing form label.mobile_high {
+	display: none;
+}
+
+@media handheld, only screen and (max-width: 767px) 
+{
+
+.housing form label.low {
+	float: left;
+}
+
+.housing form label.mobile_high {
+	float: right;
+	display: inline;
+}
+
+.housing form label.high {
+	display: none;
+}
+
+.housing form .rating_control {
+	display: block;
+	margin: 0 auto;
+	clear: both;
+	text-align: center;
+}
+
+.housing form p.rating {
+	background-color: #ededed;
+	padding: 1em;
+}
+
+.housing form p.rating:after {
+	display: block;
+	content: "";
+	clear: both;
+}
+}
