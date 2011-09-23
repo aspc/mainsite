@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.decorators import method_decorator
 from aspc.sagelist.models import BookSale
+from functools import wraps
 import string
 
 class BookSaleForm(ModelForm):
@@ -87,25 +88,35 @@ class BookSaleDeleteView(DeleteView):
     model = BookSale
     context_object_name = "book"
     
+    class AccessDenied(Exception):
+        pass
+    
     def get_success_url(self):
         return reverse('sagelist')
     
-    def get_object(self, *args, **kwargs):
-        object = super(BookSaleDeleteView, self).get_object(
-            *args, **kwargs)
-        if object.seller != self.request.user:
-            raise Http403("Only the seller of a book or an administrator may"
-                " delete a listing")
-        return object
+    def user_can_delete(self):
+        return (self.get_object().seller == self.request.user or
+                self.request.user.has_perm('sagelist.delete_booksale'))
+    
+    def dispatch(self, *args, **kwargs):
+        try:
+            return super(BookSaleDeleteView, self).dispatch(*args, **kwargs)
+        except BookSaleDeleteView.AccessDenied:
+            return HttpResponseForbidden("Only the seller or an administrator may delete this listing")
+    
+    def get_object(self):
+        obj = super(BookSaleDeleteView, self).get_object()
+        if not (obj.seller == self.request.user or
+                self.request.user.has_perm('sagelist.delete_booksale')):
+            raise BookSaleDeleteView.AccessDenied
+        return obj
     
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if self.object.seller == request.user:
-            self.object.delete()
-            messages.add_message(request, messages.SUCCESS, u"Deleted listing for {0}".format(self.object.title))
-            return HttpResponseRedirect(self.get_success_url())
-        else:
-            return self.get(request, *args, **kwargs)
+        self.object.delete()
+        messages.add_message(request, messages.SUCCESS, u"Deleted listing for {0}".format(self.object.title))
+        return HttpResponseRedirect(self.get_success_url())
+
 
 class ListBookSalesView(ListView):
     model = BookSale
