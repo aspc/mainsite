@@ -53,15 +53,25 @@
           <li><a href="">Restaurants<span class="note">until 2 am</span></a></li> -->
         </ul>
       </li>
-      <li id="services" class="group"><h1>Services</h1>
+      
+      {% root_navigation_list services as navigation %}
+      {% for n in navigation %}
+      <li id="{{ n.0.slug }}" class="group{% if n.0.slug == active_section %}{% if not active_section_root %} active{% endif %}{% endif %}"><h1>{{ n.0.display_title }}</h1>
+        {% if n.1 %}
         <ul>
           <li><a href="http://labs.fairlyawesome.com/ourpomona/courses/schedule/">Course Search</a></li>
           <li><a href="http://aspc.pomona.edu/course-reviews/">Course Reviews</a></li>
           <!-- <li><a href="http://aspc.pomona.edu/housing/">Housing Search</a></li> -->
           <li><a href="{% url "sagelist" %}">SageBooks</a></li>
           <!-- <li><a href="">Events Calendar</a></li> -->
+          {% for sub in n.1 %}
+          <li><a href="{{ sub.get_absolute_url }}">{{ sub.display_title }}</a></li>
+          {% endfor %}
         </ul>
+        {% endif %}
       </li>
+      {% endfor %}
+      
       {% root_navigation_list information as navigation %}
       {% include "navigation_fragment.html" %}
       
