@@ -133,7 +133,7 @@ AUTH_LDAP = {
         'port': '389',
         'bind_as': '{0}@CAMPUS',
         'filter': '(cn={0})',
-        'base_dn': "OU=Student Accounts,OU=Users and Computers,OU=ZHOME,DC=campus,DC=pomona,DC=edu",
+        'base_dn': "OU=Users and Computers,OU=ZHOME,DC=campus,DC=pomona,DC=edu",
     },
     # 'CMC': {
     #     'name': "CMC",
