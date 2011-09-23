@@ -57,7 +57,6 @@
       {% root_navigation_list services as navigation %}
       {% for n in navigation %}
       <li id="{{ n.0.slug }}" class="group{% if n.0.slug == active_section %}{% if not active_section_root %} active{% endif %}{% endif %}"><h1>{{ n.0.display_title }}</h1>
-        {% if n.1 %}
         <ul>
           <li><a href="http://labs.fairlyawesome.com/ourpomona/courses/schedule/">Course Search</a></li>
           <li><a href="http://aspc.pomona.edu/course-reviews/">Course Reviews</a></li>
@@ -68,7 +67,6 @@
           <li><a href="{{ sub.get_absolute_url }}">{{ sub.display_title }}</a></li>
           {% endfor %}
         </ul>
-        {% endif %}
       </li>
       {% endfor %}
       
@@ -78,18 +76,16 @@
       {% root_navigation_list senate as navigation %}
       {% for n in navigation %}
       <li id="{{ n.0.slug }}" class="group{% if n.0.slug == active_section %}{% if not active_section_root %} active{% endif %}{% endif %}"><h1>{{ n.0.display_title }}</h1>
-        {% if n.1 %}
         <ul>
           {% for sub in n.1 %}
           <li><a href="{{ sub.get_absolute_url }}">{{ sub.display_title }}</a></li>
           {% endfor %}
           <li><a href="http://aspc.pomona.edu/vote/">Elections &amp; Voting</a></li>
         </ul>
-        {% endif %}
       </li>
       {% endfor %}
       
-      {% root_navigation_list as navigation excluding senate,information %}
+      {% root_navigation_list as navigation excluding senate,information,services %}
       {% include "navigation_fragment.html" %}
       
       <li id="partners" class="group"><h1>Partners</h1>
