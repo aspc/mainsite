@@ -4,6 +4,51 @@
 	display: none;
 }
 
+.housing form label.low, .housing form label.high {
+	width: 10em;
+	display: inline-block;
+	margin: 0 1em;
+}
+
+.housing form label.low {
+	text-align: right;
+	width: 7em;
+}
+
+.housing form#write_review {
+	padding: 1.5em;
+	background-color: wheat;
+	margin: 2em;
+	box-shadow: 0 0.5em 1em black;
+	border: 0.1em solid #605033;
+	background-image: url(images/beige_paper.png);
+}
+
+.housing form#write_review, .housing form#write_review h3, .housing form#write_review h1, .housing form#write_review textarea {
+	font-family: Palatino, Georgia, "Times New Roman", Times, serif;
+}
+
+.housing form#write_review h3 {
+	margin-top: 2.5em;
+}
+
+.housing form#write_review h1 {
+	text-align: center;
+	margin: 0;
+	font-size: 2.5em;
+	padding: 0.5em;
+	border-bottom: 3px double black;
+	font-family: "Palatino";
+	font-weight: normal;
+}
+
+.housing form#write_review textarea {
+	width: 100%;
+	font-size: 1.2em;
+	background: inherit;
+	border: 0.2em solid #605033;
+}
+
 @media handheld, only screen and (max-width: 767px) 
 {
 
@@ -14,6 +59,12 @@
 .housing form label.mobile_high {
 	float: right;
 	display: inline;
+	text-align: right;
+}
+
+.housing form label.low, .housing form label.mobile_high {
+	display: inline-block;
+	width: 48%;
 }
 
 .housing form label.high {
@@ -23,12 +74,12 @@
 .housing form .rating_control {
 	display: block;
 	margin: 0 auto;
+	padding-top: 1em;
 	clear: both;
 	text-align: center;
 }
 
 .housing form p.rating {
-	background-color: #ededed;
 	padding: 1em;
 }
 
@@ -37,4 +88,17 @@
 	content: "";
 	clear: both;
 }
+
+.housing form#write_review {
+	padding: 0.5em;
+	background-color: wheat;
+	margin: 0em;
+	box-shadow: none;
+}
+
+.housing form textarea {
+	max-width: 24.5em;
+	margin: 0 auto;
+}
+
 }

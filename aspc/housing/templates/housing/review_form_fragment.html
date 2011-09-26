@@ -1,4 +1,9 @@
-<h3>how was your room?</h3>
+<form action="." method="POST" id="write_review">
+	{% csrf_token %}
+<h1>Room Report Card</h1>
+{% block "choose_room" %}
+{% endblock %}
+<h3>How was your room?</h3>
 <p class="rating">
 	{{ form.quiet }}
 	{{ form.quiet.errors }}
@@ -19,12 +24,14 @@
 	{{ form.cellphone }}
 	{{ form.cellphone.errors }}
 </p>
-<h3>what is the best thing about this room?</h3>
+<h3>What is the best thing about this room?</h3>
 {{ form.best.errors }}
 <p>{{ form.best }}</p>
-<h3>what is the worst thing about this room?</h3>
+<h3>What is the worst thing about this room?</h3>
 {{ form.worst.errors }}
 <p>{{ form.worst }}</p>
-<h3>any other comments?</h3>
+<h3>Any other comments? (optional)</h3>
 {{ form.comments.errors }}
 <p>{{ form.comments }}</p>
+<p><input type="submit" value="submit review">
+</form>

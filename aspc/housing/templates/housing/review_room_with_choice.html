@@ -7,12 +7,5 @@
 {% endblock %}
 
 {% block "content" %}
-	<form action="." method="POST">
-		{% csrf_token %}
-		<h3>which room did you live in?</h3>
-		<p>{{ form.room }} {{ form.room.errors }}</p>
-		<p><em>If your room number is not recognized, try <a href="{% url "housing_browse" %}">browsing</a> for it</em></p>
-		{% include "housing/review_form_fragment.html" %}
-		<p><input type="submit" value="submit review">
-	</form>
+		{% include "housing/review_form_choose_fragment.html" %}
 {% endblock "content" %}
