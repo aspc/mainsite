@@ -157,6 +157,8 @@ DATA_PATHS = {
         'buildings': os.path.join(DATA_ROOT, 'housing', 'buildings.txt'),
         'rooms': os.path.join(DATA_ROOT, 'housing', 'rooms.txt'),
         'suites': os.path.join(DATA_ROOT, 'housing', 'suites.txt'),
+        'maps': os.path.join(DATA_ROOT, 'housing', 'maps.txt'),
+        'maps_dir': os.path.join(DATA_ROOT, 'housing', 'maps'),
     },
 }
 

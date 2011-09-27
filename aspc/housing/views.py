@@ -5,32 +5,152 @@ from django.views.generic.dates import ArchiveIndexView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView
+from django.core.serializers.json import DjangoJSONEncoder
+from django.utils.safestring import mark_safe
 from django.http import Http404
-from django.shortcuts import render
-from aspc.college.models import Building, Floor
+from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
+from django.utils import simplejson
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger, InvalidPage
+from django.utils import simplejson as json
+from django.conf import settings
+import time
+from itertools import groupby
+from aspc.college.models import Building, Floor, Map
 from aspc.housing.models import Review, Room
-from aspc.housing.forms import ReviewRoomForm, NewReviewForm, SearchForm, RefineForm
+from aspc.housing.forms import ReviewRoomForm, NewReviewForm, SearchForm, RefineForm, SEARCH_ORDERING
 
 class Home(ArchiveIndexView):
     date_field = "create_ts"
     allow_empty = True
     queryset = Review.objects.all()
 
+def format_data(rooms):
+    sorted_rooms = sorted(rooms, key=lambda r: r.floor.id)
+    grouped_rooms = groupby(sorted_rooms, lambda room: room.floor)
+    floors = []
+    for floor, f_rooms in grouped_rooms:
+        try:
+            room_data = [r.get_data() for r in f_rooms]
+        except AttributeError:
+            room_data = [r.room.get_data() for r in f_rooms]
+        floor_data = {
+            'floor': floor.get_data(),
+            'rooms': room_data,
+        }
+        floors.append(floor_data)
+    return floors
+
+def most_rooms(room_set):
+    floors = {}
+    for r in room_set:
+        number = r.floor.get_number_display()
+        if number in floors.keys():
+            floors[number] += 1
+        else:
+            floors[number] = 1
+    sortable = [(a[1], a[0]) for a in floors.items()]
+    sortable.sort()
+    sortable.reverse()
+    return sortable[0][1]
+
+
+def calculate_map(matching_rooms):
+    lats = [a.latitude for a in matching_rooms] #matching_rooms.values_list('latitude', flat=True)
+    longs = [a.longitude for a in matching_rooms] #matching_rooms.values_list('longitude', flat=True)
+    if matching_rooms.count() == 0: # empty results
+        center_latitude = 34.096987 # geocoded location for Pomona College
+        center_longitude = -117.711575
+        zoom_level = 14 # use largest map
+        initial_json = mark_safe(json.dumps({}))
+    else:
+        center_latitude = sum(lats) / len(lats)
+        center_longitude = sum(longs) / len(longs)
+        spread_latitude = max(lats) - min(lats)
+        spread_longitude = max(longs) - min(longs)
+
+        # determine zoom
+        spread_factor = ((spread_latitude + spread_longitude) / 2.0) * 10000.0
+        
+        if spread_factor > 30.0:
+            zoom_level = 14
+        elif spread_factor > 20.0:
+            zoom_level = 16
+        elif spread_factor > 10.0:
+            zoom_level = 18
+        else:
+            zoom_level = 19
+        
+        initial_json = mark_safe(json.dumps(most_rooms(matching_rooms)))
+    
+    # serialize map data
+
+    results_data = format_data(matching_rooms)
+    results_data_json = mark_safe(json.dumps(results_data))
+    
+    return {
+        'results_data': results_data_json,
+        'initial': initial_json,
+        'center_latitude': center_latitude,
+        'center_longitude': center_longitude,
+        'zoom_level': zoom_level,
+    }
+
 def search(request):
     context = {'search_active': True,}
     if len(request.GET.keys()) > 0:
         form = RefineForm(request.GET)
         if form.is_valid():
+            
             matching_rooms = Room.objects.all()
+            matching_rooms = matching_rooms.select_related('floor', 'floor__building', 'roomlocation')
+            
+            # build ordering clause
+            on_fields = SEARCH_ORDERING[form.cleaned_data['prefer']][0]
+            print on_fields
+            ordering = []
+            select_nulls = {}
+            
+            for f in on_fields:
+                ordering.extend(['{0}_null'.format(f), '-{0}'.format(f)])
+                select_nulls['{0}_null'.format(f)] = '{0} is NULL'.format(f)
+            print ordering
+            print select_nulls
+            matching_rooms = matching_rooms.extra(select=select_nulls, order_by=ordering)
+            
             if form.cleaned_data['buildings']:
                 matching_rooms = matching_rooms.filter(floor__building__in=form.cleaned_data['buildings'])
             if form.cleaned_data['occupancy']:
                 matching_rooms = matching_rooms.filter(occupancy__in=form.cleaned_data['occupancy'])
             if form.cleaned_data['size']:
                 matching_rooms = matching_rooms.filter(size__gt=form.cleaned_data['size'])
-            if form.cleaned_data['suite']:
-                matching_rooms = matching_rooms.filter(suite__isnull=False, suite__occupancy__in=form.cleaned_data['suite'])
-            context.update({'result_view': True, 'rooms': matching_rooms[:25],})
+            # if form.cleaned_data['suite']:
+            #     matching_rooms = matching_rooms.filter(suite__isnull=False, suite__occupancy__in=form.cleaned_data['suite'])
+            
+            print str(matching_rooms.query)
+            
+            paginator = Paginator(matching_rooms, per_page=50, orphans=10)
+            GET_data = request.GET.copy()
+            
+            try:
+                page = int(request.GET.get('page', '1'))
+                if GET_data.get('page', False):
+                    del GET_data['page']
+            except ValueError:
+                page = 1
+            
+            try:
+                results = paginator.page(page)
+            except (EmptyPage, InvalidPage):
+                results = paginator.page(paginator.num_pages)
+            
+            context.update(calculate_map(results.object_list))
+            context.update({
+                'result_view': True,
+                'results': results,
+                'rooms': results.object_list,
+                'path': ''.join([request.path, '?', GET_data.urlencode()]),
+            })
         else:
             context.update({'result_view': False,})
     else:
@@ -75,6 +195,9 @@ class BrowseBuildingFloor(ListView):
     
     def get_context_data(self, **kwargs):
         context = super(BrowseBuildingFloor, self).get_context_data(**kwargs)
+        
+        context.update(calculate_map(self.get_queryset().select_related('room', 'floor')))
+        
         context.update({
             'floor': self.floor,
             'all_floors': self.building.floor_set.all(),
@@ -99,8 +222,12 @@ class RoomDetail(DetailView):
         return obj
     
     def get_context_data(self, **kwargs):
+        map_data = self.object.floor.map.get_data()
+        room_data = self.object.get_data()
+        room_data.update({'map': map_data})
+        room_data_json = mark_safe(simplejson.dumps(room_data))
         context = super(RoomDetail, self).get_context_data(**kwargs)
-        context.update({'browse_active': True,})
+        context.update({'browse_active': True, 'id': self.object.id, 'room_json': room_data_json})
         return context
 
 class ReviewRoomWithChoice(CreateView):

@@ -30,15 +30,19 @@ class ReviewRoomForm(forms.ModelForm):
         exclude = ('create_ts', 'room')
         widgets = rating_widgets
 
+SEARCH_ORDERING = (
+    (('average_rating',), "highest rated"),
+    (('size', 'average_rating_spacious'), "largest"),
+    (('average_rating_quiet',), "quietest"),
+    (('average_rating_temperate',), "most temperate"),
+    (('average_rating_maintained',), "best condition"),
+    (('average_rating_cellphone',), "best cell reception"),
+)
+
+ORDERING_CHOICES = tuple(enumerate((a[1] for a in SEARCH_ORDERING)))
+
 class SearchForm(forms.Form):
-    prefer = forms.ChoiceField(choices=(
-            (0, "highest rated"),
-            (1, "largest"),
-            (2, "quietest"),
-            (3, "most temperate"),
-            (4, "best condition"),
-            (5, "best cell reception"),
-        ), help_text="rooms first")
+    prefer = forms.TypedChoiceField(choices=ORDERING_CHOICES, coerce=int, empty_value=(), help_text="rooms first")
     buildings = forms.ModelMultipleChoiceField(
         queryset=Building.objects.filter(type=Building.TYPES_LOOKUP['Dormitory']),
         required=False,
@@ -52,23 +56,16 @@ class SearchForm(forms.Form):
         coerce=int,
         empty_value=(),
     )
-    suite = forms.TypedMultipleChoiceField(
-        choices=Suite.OCCUPANCY_TYPES,
-        required=False,
-        widget=ColumnCheckboxSelectMultiple(columns=2, css_class="col"),
-        coerce=int,
-        empty_value=(),
-    )
+    # suite = forms.TypedMultipleChoiceField(
+    #     choices=Suite.OCCUPANCY_TYPES,
+    #     required=False,
+    #     widget=ColumnCheckboxSelectMultiple(columns=2, css_class="col"),
+    #     coerce=int,
+    #     empty_value=(),
+    # )
 
 class RefineForm(forms.Form):
-    prefer = forms.ChoiceField(choices=(
-            (0, "highest rated"),
-            (1, "largest"),
-            (2, "quietest"),
-            (3, "most temperate"),
-            (4, "best condition"),
-            (5, "best cell reception"),
-        ), help_text="rooms first")
+    prefer = forms.TypedChoiceField(choices=ORDERING_CHOICES, coerce=int, empty_value=(), help_text="rooms first")
     buildings = forms.ModelMultipleChoiceField(
         queryset=Building.objects.filter(type=Building.TYPES_LOOKUP['Dormitory']),
         required=False,
@@ -82,10 +79,10 @@ class RefineForm(forms.Form):
         coerce=int,
         empty_value=(),
     )
-    suite = forms.TypedMultipleChoiceField(
-        choices=Suite.OCCUPANCY_TYPES,
-        required=False,
-        widget=ColumnCheckboxSelectMultiple(columns=2, css_class="col"),
-        coerce=int,
-        empty_value=(),
-    )
+    # suite = forms.TypedMultipleChoiceField(
+    #     choices=Suite.OCCUPANCY_TYPES,
+    #     required=False,
+    #     widget=ColumnCheckboxSelectMultiple(columns=2, css_class="col"),
+    #     coerce=int,
+    #     empty_value=(),
+    # )
