@@ -18,6 +18,33 @@
 	float: left;
 }
 
+.paginator {
+	list-style-type: none;
+	padding: 0.5em;
+	margin: 0;
+	text-align: center;
+	background-color: #004d70;
+	color: white;
+	font-size: 1.3em;
+}
+
+.paginator a {
+	color: #6bd0ff;
+}
+
+.paginator li {
+	display: inline-block;
+}
+
+.paginator li.previous, .paginator li.next {
+	float: left;
+	width: 10%;
+}
+
+.paginator li.next {
+	float: right;
+}
+
 #results table {
 	width: 100%;
 }
