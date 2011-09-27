@@ -122,6 +122,14 @@ class Room(RoomLocation):
     def get_absolute_url(self):
         return ('housing_browse_room', [], {'building': self.floor.building.shortname, 'floor': self.floor.number, 'room': self.number})
     
+    def get_data(self):
+        return {
+            'occupancy': self.get_occupancy_display(),
+            'latitude': self.latitude,
+            'longitude': self.longitude,
+            'number': self.number,
+        }
+    
     class Meta:
         ordering = ('number',)
 
@@ -206,3 +214,4 @@ class Review(models.Model):
     def get_absolute_url(self):
         print 'foo?'
         return ('housing_browse_room', [], {'building': self.room.floor.building.shortname, 'floor': self.room.floor.number, 'room': self.room.number})
+
