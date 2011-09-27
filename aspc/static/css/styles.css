@@ -24,7 +24,7 @@ nav ul, section > ul {
 
 .row {
 width: 100%;
-max-width: 1000px;
+max-width: 70em;
 min-width: 765px;
 margin: 0 auto;
 overflow: hidden;
@@ -338,15 +338,18 @@ dl.detail dd {
 	width: 100%;
 }
 
-.primary > h1, .breadcrumbs {
+.primary > h1, .breadcrumbs, .primary > h2 {
 	padding: 0.5em 1%;
 	margin: 0;
 }
 
-.primary > h1 {
-	font-size: 1.5em;
+.primary > h1, .primary > h2 {
 	background-color: #0071a6;
 	color: white;
+}
+
+.primary > h1 {
+	font-size: 1.5em;
 }
 
 .primary > h1 > a {
@@ -1462,18 +1465,25 @@ body {
 	-webkit-box-shadow: 0px 0px 4px #222;
 }
 
-.group > h1 {
-	font-size: 0.9em;
+.group > h1, .group h2 {
 	color: white;
 	padding: 0.33em 0.5em 0.33em 0.5em;
 	padding-left: 0.5em;
-	border-radius: 0.5em 0.5em 0 0;
 	margin-bottom: 0;
 	margin-top: 0;
 	background-color: #456284;
 	border: 0.1em solid #5477a0;
 	font-weight: normal;
 	letter-spacing: 1px;
+}
+
+.group > h1 {
+	border-radius: 0.5em 0.5em 0 0;
+	font-size: 0.9em;
+}
+
+.group > h2 {
+	font-size: 0.85em;
 }
 
 nav .group > ul, nav .group > ol, nav .group > ul > li:last-child, nav .group > ol > li:last-child {

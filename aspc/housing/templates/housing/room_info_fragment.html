@@ -1,27 +1,28 @@
 {% load room_tools %}
-<dl class="detail">
-	<dt>floor</dt><dd>{{ room.floor.get_number_display }}</dd>
-	{% if room.size %}
-	<dt>size</dt><dd>{{ room.size }} ft<sup>2</sup></dd>
-	{% endif %}
-	<dt>occupancy</dt><dd>{{ room.get_occupancy_display }}</dd>
-	{% if room.bathroom %}
-	<dt>bathroom</dt><dd>{{ room.get_bathroom_display }}</dd>
-	{% endif %}
-	{% if room.reserved %}
-	<dt>reserved for</dt><dd>{{ room.get_reserved_display }}</dd>
-	{% endif %}
-	{% if room.suite %}
-	<dt>suite</dt><dd>{{ room.suite.get_occupancy_display }} with {% suite room %}</dd>	
-	{% endif %}
-	{% if room.average_rating %}
-	<dt>average rating</dt><dd>{% show_stars room.average_rating %}</dd>
-	{% endif %}
-	{% if room.average_rating_quiet %}
-	<dt>quiet</dt><dd>{% show_stars room.average_rating_quiet %}</dd>
-	<dt>spacious</dt><dd>{% show_stars room.average_rating_spacious %}</dd>
-	<dt>temperate</dt><dd>{% show_stars room.average_rating_temperate %}</dd>
-	<dt>maintained</dt><dd>{% show_stars room.average_rating_maintained %}</dd>
-	<dt>cellphone</dt><dd>{% show_stars room.average_rating_cellphone %}</dd>
-	{% endif %}
-</dl>
+<ul class="attributes">
+  <li class="floor level_{{ room.floor.number }}">{{ room.floor.get_number_display }}</li>
+  <li class="size">
+    {% if room.size %}<span class="big">{{ room.size|floatformat }}</span> {{ room.size|floatformat }}
+    ft<sup>2</sup>{% else %}<span class="big">?</span>size unknown
+    {% endif %}
+  </li>
+  <li class="occupancy type_{{ room.occupancy }}">{{ room.get_occupancy_display }}</li>
+  <li class="suite">{% if room.suite %}<span class="big">{{ room.suite.occupancy }}</span> person suite<br/>{% suite room %}{% else %}<span class="big">0</span>not part of a suite{% endif %}</li>
+
+</ul>
+{% if room.average_rating %}
+<div id="rating_bar">
+<div id="overall">
+  <p>
+    <span>{% show_stars room.average_rating %}</span>
+    overall rating
+  </p>
+</div>
+<ul class="ratings">
+  <li class="quiet"><span>Quiet</span>{% show_stars room.average_rating_quiet %}</li>
+  <li><span>Spacious</span>{% show_stars room.average_rating_spacious %}</li>
+	<li><span>Temperate</span>{% show_stars room.average_rating_temperate %}</li>
+	<li><span>Well Maintained</span>{% show_stars room.average_rating_maintained %}</li>
+	<li><span>Cell Service</span>{% show_stars room.average_rating_cellphone %}</li>
+</div>
+{% endif %}
