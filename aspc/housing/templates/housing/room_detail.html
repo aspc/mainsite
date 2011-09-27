@@ -1,6 +1,41 @@
 {% extends 'housing/base.html' %}
 {% load room_tools %}
+{% block "head" %}
+{{ block.super }}
+<script src="http://maps.google.com/maps/api/js?sensor=false&amp;key=ABQIAAAAwQ_qPcZhqTJddZgjpyxJvhQ0p4u4hpSgWDdDIUZlIXFZAEGtLhTwYUTMhfjdSY86TyGx1mlMYfDaow" type="text/javascript"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+	var room_info = {{ room_json }};
+    var room_location = new google.maps.LatLng(room_info.latitude, room_info.longitude);
+    var imageBounds = new google.maps.LatLngBounds(
+    	new google.maps.LatLng(room_info.map.s, room_info.map.w),
+    	new google.maps.LatLng(room_info.map.n, room_info.map.e)
+    );
 
+    var myOptions = {
+        zoom: 20,
+        center: room_location,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+		streetViewControl: false,
+		mapTypeControl: false,
+    }
+
+    Gmap = new google.maps.Map(document.getElementById("map"), myOptions);
+
+    hall_overlay = new google.maps.GroundOverlay(room_info.map.url, imageBounds);
+	hall_overlay.setMap(Gmap);
+	var pos = new google.maps.LatLng(room_info.latitude, room_info.longitude);
+	console.log(pos);
+	var icon = new google.maps.MarkerImage(
+		"http://fairlyawesome.com/stuff/map_tool/marker.png",
+		new google.maps.Size(25, 25), 
+		new google.maps.Point(0, 0),
+		new google.maps.Point(12, 12));
+	var room_marker = new google.maps.Marker({map: Gmap, position: pos, draggable: false, visible: true, icon: icon});
+});
+</script>
+{% endblock %}
 {% block "page_title" %}{{ room.get_name }}{% endblock "page_title" %}
 
 {% block "housing_breadcrumbs" %}

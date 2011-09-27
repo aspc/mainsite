@@ -1,0 +1,20 @@
+{% if results.paginator.count != 0 %}{% if results.paginator.num_pages > 1 %}
+	<ul class="paginator">
+		{% if results.has_previous %}
+		<li class="previous"><a href="{{ path }}&amp;page=1">&#x21E4;</a></li>
+		<li class="previous"><a href="{{ path }}&amp;page={{ results.previous_page_number }}">&#x2190;</a></li>
+		{% else %}
+		<li class="previous">&#x21E4;</li>
+		<li class="previous">&#x2190;</li>
+		{% endif %}
+		<li class="center">{{ results.start_index }}&ndash;{{ results.end_index }} of {{ results.paginator.count }}</li>
+		{% if results.has_next %}
+		<li class="next"><a href="{{ path }}&amp;page={{ results.paginator.num_pages }}">&#x21E5;</a></li>
+		<li class="next"><a href="{{ path }}&amp;page={{ results.next_page_number }}">&#x2192;</a></li>
+
+		{% else %}
+				<li class="next">&#x21E5;</li>
+		<li class="next">&#x2192;</li>
+		{% endif %}
+	</ul>
+{% endif %}{% endif %}
