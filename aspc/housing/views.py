@@ -56,9 +56,13 @@ def most_rooms(room_set):
 
 
 def calculate_map(matching_rooms):
-    lats = [a.latitude for a in matching_rooms] #matching_rooms.values_list('latitude', flat=True)
-    longs = [a.longitude for a in matching_rooms] #matching_rooms.values_list('longitude', flat=True)
-    if matching_rooms.count() == 0: # empty results
+    lats = []
+    longs = []
+    for a in matching_rooms:
+        if a.latitude and a.longitude:
+            lats.append(a.latitude)
+            longs.append(a.longitude)
+    if len(lats) == 0: # empty results, or no map locations
         center_latitude = 34.096987 # geocoded location for Pomona College
         center_longitude = -117.711575
         zoom_level = 14 # use largest map

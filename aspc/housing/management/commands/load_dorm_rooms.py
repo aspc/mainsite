@@ -4,11 +4,13 @@ from aspc.college.models import Building, Floor
 from aspc.housing.models import Room
 import csv
 
+EMPTY = ['', None, 'None']
+
 class Command(BaseCommand):
     args = '[filename]'
     help = 'loads/updates room records, optionally from a csv file\n' \
-           'of the format shortname,name,floors,lat,long'
-    
+           'of the format shortname,floor,number,size,occupancy,lat,long'
+
     def import_room(self, room):
         try:
             bldg = Building.objects.get(shortname=room[0])
@@ -29,10 +31,14 @@ class Command(BaseCommand):
             room_instance.save()
         
         if len(room) >= 4:
-            room_instance.size = float(room[3]) if room[3] not in ['', None, 'None'] else None
+            room_instance.size = float(room[3]) if room[3] not in EMPTY else None
         
         if len(room) >= 5:
             room_instance.occupancy = Room.OCCUPANCY_LOOKUP[room[4]]
+        
+        if len(room) >= 7:
+            if room[5] not in EMPTY and room[6] not in EMPTY:
+                room_instance.latitude, room_instance.longitude = float(room[5]), float(room[6])
         
         room_instance.save()
             
