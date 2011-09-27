@@ -52,6 +52,10 @@ h2 {
 	font-size: 1.3em;
 }
 
+a {
+	color: #235ee0;
+}
+
 blockquote {
 	background-color: #ededed;
 	padding: 0.5em;
@@ -1267,6 +1271,11 @@ header#aspc_main hgroup {
 	font-style: italic;
 }
 
+
+ul.actions li {
+	display: block;
+}
+
 /* @group breadcrumbs */
 
 .breadcrumbs {
@@ -1504,7 +1513,7 @@ nav .group > ul, nav .group > ol {
 	background-color: white;
 }
 
-nav .group > ul > li, nav .group > ol > li {
+nav .group > ul > li, nav .group > ol > li, .listview > li {
 	margin: 0;
 	clear: both;
 	border-bottom: 0.1em solid black;
@@ -1512,11 +1521,11 @@ nav .group > ul > li, nav .group > ol > li {
 	color: black;
 }
 
-nav .group ul li:last-child, nav .group ol li:last-child {
+nav .group ul li:last-child, nav .group ol li:last-child, .listview > li:last-child {
 	border-bottom: none;
 }
 
-nav .group > ul > li > a, nav .group > ol > li > a  {
+nav .group > ul > li > a, nav .group > ol > li > a, .listview > li > a {
 	padding: 0.25em;
 	padding-right: 1.5em;
 	display: block;

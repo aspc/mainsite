@@ -4,8 +4,9 @@
 {% block "page_title" %}{{ room.get_name }}{% endblock "page_title" %}
 
 {% block "housing_breadcrumbs" %}
-<li>{{ room.floor.building }}</li>
-<li>{{ room.floor }}</li>
+<li><a href="{% url "housing_browse" %}">Residence Halls</a></li>
+<li><a href="{% url "housing_browse_building_floor_first" room.floor.building.shortname %}">{{ room.floor.building.name }}</a></li>
+<li><a href="{% url "housing_browse_building_floor" room.floor.building.shortname room.floor.number %}">{{ room.floor.get_number_display }}</a></li>
 <li>{{ room }}</li>
 {% endblock %}
 
@@ -19,10 +20,9 @@
 	<ol id="reviews" class="content">
 	{% for review in room.review_set.all %}
 		<li id="review_{{ review.get_timestamp }}">
-		  <h3 class="posted">&ldquo;{% show_stars review.overall %}&rdquo;</h3>
-		  <h4> posted on {{ review.get_timestamp }}</h4>
+		  <div class="posted">Posted on {{ review.create_ts|date:"N j, Y" }} at {{ review.create_ts|date:"P"}}</div>
 			<dl class="ratings">
-        <!-- <dt class="overall">overall</dt><dd class="overall">{% show_stars review.overall %}</dd> -->
+			  <dt class="overall">overall</dt><dd class="overall">{% show_stars review.overall %}</dd>
 				<dt>quiet</dt><dd>{% show_stars review.quiet %}</dd>
 				<dt>spacious</dt><dd>{% show_stars review.spacious %}</dd>
 				<dt>temperate</dt><dd>{% show_stars review.temperate %}</dd>
@@ -44,6 +44,6 @@
 	</ol>
 	{% else %}
 	<p class="content info" id="be_first">
-	  Do you live here? (Did you live here?)<br> <a href="{% url "housing_review_room" room.floor.building.shortname room.floor.number room.number %}">Be the first to review this room</a></p>
+	  Do you live here? Did you live here?<br> <a href="{% url "housing_review_room" room.floor.building.shortname room.floor.number room.number %}">Be the first to review this room</a></p>
 	{% endif %}
 {% endblock "outer_content" %}

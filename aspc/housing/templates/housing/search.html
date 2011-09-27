@@ -2,10 +2,15 @@
 {% load room_tools %}
 {% block head %}
 {% endblock head %}
-{% block "page_title" %}search{% endblock "page_title" %}
+{% block "page_title" %}search{% if result_view %} results{% endif %}{% endblock "page_title" %}
 
-{% block "content" %}
-<div id="search_control" class="{% if result_view %}result_view{% else %}begin_view{% endif %}">
+{% block "housing_breadcrumbs" %}
+  <li><a href="{% url "housing_search" %}">Search</a></li>
+{% endblock %}
+
+{% block "outer_content" %}
+<div id="search_control" class="{% if result_view %}result_view{% else %}begin_view{% endif %} content">
+  {% if result_view %}<h1>Refine Search</h1>{% endif %}
 	<form action="." method="GET">
 		{% for field in form %}
 			<div class="section"><h3>{{ field.label }}</h3>
@@ -18,28 +23,28 @@
 </div>
 
 {% if result_view %}
-<div id="search_results">
+<div id="results">
 	<div id="map_container"></div>
 	<table class="results">
 		<tr>
-			<th>room number</th>
+			<th class="minimal">room number</th>
 			<th>floor</th>
 			<th>ft<sup>2</sup></th>
 			<th>occupancy</th>
-			<th>average rating</th>
+			<th class="minimal">average rating</th>
 		</tr>
 		{% for room in rooms %}
 			<tr>
-				<td><a href="{% url "housing_browse_room" room.floor.building.shortname room.floor.number room.number %}">{{ room.floor.building.name }} {{ room.number }}</a></td>
+				<td class="minimal"><a href="{% url "housing_browse_room" room.floor.building.shortname room.floor.number room.number %}">{{ room.floor.building.name }} {{ room.number }}</a></td>
 				<td>{{ room.floor.get_number_display }}</td>
 				<td>{{ room.size|floatformat }}</td>
 				<td>{{ room.get_occupancy_display }}</td>
-				<td>{% if room.average_rating %}{% show_stars room.average_rating %}{% else %}no ratings yet{% endif %}</td>
+				<td class="minimal">{% if room.average_rating %}{% show_stars room.average_rating %}{% else %}no ratings yet{% endif %}</td>
 			</tr>
 		{% empty %}
-		<tr><td colspan="4" class="empty">No matching rooms.</td></tr>
+		<tr><td colspan="5" class="empty minimal">No matching rooms.</td></tr>
 		{% endfor %}
 	</table>
-	</div>
+</div>
 {% endif %}
-{% endblock "content" %}
+{% endblock "outer_content" %}

@@ -1,6 +1,9 @@
 {% extends 'housing/base.html' %}
 {% block "page_title" %}latest reviews{% endblock "page_title" %}
 
+{% block "breadcrumbs" %}
+{% endblock %}
+
 {% block "outer_content" %}
 {% with latest as results %}
 	{% include "housing/review_list_fragment.html" %}

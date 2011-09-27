@@ -4,12 +4,12 @@
 {% block "housing_breadcrumbs" %}
 {{ block.super }}
 <li><a href="{% url "housing_browse_building_floor_first" floor.building.shortname %}">{{ floor.building.name }}</a></li>
-<li><a href="{% url "housing_browse" %}">{{ floor.get_number_display }}</a></li>
+<li><a href="{% url "housing_browse_building_floor" floor.building.shortname floor.number %}">{{ floor.get_number_display }}</a></li>
 {% endblock %}
 
-{% block "content" %}
+{% block "outer_content" %}
 {% if all_floors|length != 1 %}
-<ul id="floors">
+<ul id="floors" class="actions">
 {% for c_floor in all_floors %}
 	<li {% if c_floor == floor %}class="active"{% endif %}><a href="{% url "housing_browse_building_floor" floor.building.shortname c_floor.number %}">{{ c_floor.get_number_display }}</a></li>
 {% endfor %}
@@ -17,4 +17,4 @@
 {% endif %}
 
 {% include "housing/room_list_fragment.html" %}
-{% endblock "content" %}
+{% endblock "outer_content" %}
