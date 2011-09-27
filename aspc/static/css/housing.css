@@ -449,6 +449,10 @@ form p {
 
 /* @group Form */
 
+.housing form#write_review h1 {
+	font-size: 1.7em;
+}
+
 .housing form label.low, .housing form label.high {
 	width: 10em;
 	display: inline-block;
