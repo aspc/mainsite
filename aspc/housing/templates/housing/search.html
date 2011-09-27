@@ -130,7 +130,8 @@ $(document).ready(function () {
 {% endblock %}
 
 {% block "outer_content" %}
-<div id="search_control" class="{% if result_view %}result_view{% else %}begin_view{% endif %} content">
+<div id="search_wrapper" class="{% if result_view %}result_view{% else %}begin_view{% endif %}">
+<div id="search_control" class="content">
   {% if result_view %}<h1>Refine Search</h1>{% endif %}
 	<form action="." method="GET">
 		{% for field in form %}
@@ -168,6 +169,7 @@ $(document).ready(function () {
 		{% endfor %}
 	</table>
 		{% include "housing/paginator_fragment.html" %}
+</div>
 </div>
 {% endif %}
 {% endblock "outer_content" %}

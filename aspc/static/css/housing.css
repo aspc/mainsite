@@ -1,10 +1,22 @@
 /* @override http://localhost:8000/static/css/housing.css */
 
-#search_control.result_view {
+#search_wrapper.result_view {
+	background-color: #004d70;
+	color: white;
+}
+
+#search_wrapper:after {
+	display: block;
+	clear: both;
+	content: "";
+}
+
+.result_view #search_control {
 	font-size: 0.8em;
 	width: 28%;
 	float: right;
 	padding: 1%;
+	color: #b1e6ff;
 }
 
 .result_view .col {
@@ -23,9 +35,8 @@
 	padding: 0.5em;
 	margin: 0;
 	text-align: center;
-	background-color: #004d70;
-	color: white;
-	font-size: 1.3em;
+	color: #7cbcda;
+	font-size: 1.1em;
 }
 
 .paginator a {
@@ -47,6 +58,7 @@
 
 #results table {
 	width: 100%;
+	color: #252525;
 }
 
 /* @group Buildings */
@@ -382,7 +394,7 @@ form p {
 	width: 100%;
 }
 
-#search_control.result_view {
+.result_view #search_control {
 	width: 98%;
 	padding: 1%;
 	margin: 0;
