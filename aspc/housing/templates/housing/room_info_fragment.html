@@ -7,7 +7,7 @@
     {% endif %}
   </li>
   <li class="occupancy type_{{ room.occupancy }}">{{ room.get_occupancy_display }}</li>
-  <li class="suite">{% if room.suite %}<span class="big">{{ room.suite.occupancy }}</span> person suite<br/>{% suite room %}{% else %}<span class="big">0</span>not part of a suite{% endif %}</li>
+  <!-- <li class="suite">{% if room.suite %}<span class="big">{{ room.suite.occupancy }}</span> person suite<br/>{% suite room %}{% else %}<span class="big">0</span>not part of a suite{% endif %}</li> -->
 
 </ul>
 {% if room.average_rating %}
