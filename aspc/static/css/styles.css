@@ -93,6 +93,17 @@ form ul {
 
 /* @group SageList */
 
+.sagelist ul.stats {
+	background-color: white;
+	text-align: center;
+	padding: 0.5em;
+}
+
+.sagelist ul.stats li {
+	display: inline;
+	margin: 0 1em;
+}
+
 .sagelist table {
 	width: 100%;
 }
@@ -1074,6 +1085,11 @@ footer p {
 @media handheld, only screen and (max-width: 767px) {
 
 /* @group SageList */
+
+.sagelist ul.stats {
+	display: none;
+}
+
 
 .sagelist .authors, .sagelist .edition, .sagelist .isbn, .sagelist .condition {
 	display: none;	
