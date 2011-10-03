@@ -407,11 +407,11 @@ form p {
 }
 
 /* @end */
-	
-	#buildings ul.col {
+ul.col {
 		width: auto;
 		display: block;
 		float: none;
+		margin: 0;
 	}
 
 .housing .attributes > li:nth-child(even) {
