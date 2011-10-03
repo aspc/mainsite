@@ -55,7 +55,6 @@ def do_navigation_list(parser, token):
     if not m:
         raise template.TemplateSyntaxError("%r tag had invalid arguments" % tag_name)
     root_names, var_name, exclude_pages = m.groups()
-    print m.groups()
     
     if exclude_pages:
         exclude_pages = exclude_pages.split(',')
