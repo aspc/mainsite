@@ -140,4 +140,7 @@ class ListBookSalesView(ListView):
               groups['#'].append(b)
         context['listings_grouped'] = groups.items()
         context['listings_grouped'].sort()
+        context['total_for_sale'] = self.get_queryset().count()
+        context['total_sold'] = self.model.objects.filter(buyer__isnull=False).count()
+        context['total'] = self.model.objects.count()
         return context

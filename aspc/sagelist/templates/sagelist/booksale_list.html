@@ -5,6 +5,12 @@
 <ul class="actions">
   <li><a href="{% url "sagelist_create" %}">List a book for sale</a></li>
 </ul>
+
+<ul class="stats">
+  {% if total_for_sale %}<li>{{ total_for_sale }} book{% if total_for_sale != 1 %}s{% endif %} for sale</li>{% endif %}
+  {% if total_sold %}<li>{{ total_sold }} book{% if total_sold != 1 %}s{% endif %} sold</li>{% endif %}
+</ul>
+
 {% if listings %}
 {% if listings.count > 20 %}
 <ol id="alphanav">
@@ -36,6 +42,7 @@
   <li><a href="#Z">Z</a></li>
 </ol>
 {% endif %}
+
 <table>
   <tr><th class="title">Title</th><th class="authors">Author(s)</th><th class="edition">Edition</th><th class="isbn">ISBN</th><th class="condition">Condition</th><th class="price">Price</th></tr>
 {% for group in listings_grouped %}
@@ -53,6 +60,6 @@
 {% endfor %}
 </table>
 {% else %}
-<p class="list_empty">No books are currently listed for sale. <a href="{% url "sagelist_create" %}">Post a new one?</a></p>
+<p class="list_empty content">No books are currently listed for sale. <a href="{% url "sagelist_create" %}">Post a new one?</a></p>
 {% endif %}
 {% endblock %}

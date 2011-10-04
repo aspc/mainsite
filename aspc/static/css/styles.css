@@ -91,11 +91,40 @@ form ul {
 	padding: 1em;
 }
 
+form ul li {
+	margin-bottom: 1em;
+}
+
+form ul li label {
+	display: inline-block;
+	width: 8em;
+	font-weight: bold;
+}
+
+form ul li label:after {
+	content: ":";
+}
+
 /* @end */
 
 /* @group Desktop */
 
 /* @group SageList */
+
+.sagelist ul.stats {
+	background-color: white;
+	text-align: center;
+	padding: 0.5em;
+}
+
+.sagelist ul.stats li {
+	display: inline;
+	margin: 0 1em;
+}
+
+.sagelist table {
+	width: 100%;
+}
 
 .sagelist table tr.nav_letter td {
 	background-color: #eee;
@@ -1097,6 +1126,11 @@ footer p {
 @media handheld, only screen and (max-width: 767px) {
 
 /* @group SageList */
+
+.sagelist ul.stats {
+	display: none;
+}
+
 
 .sagelist .authors, .sagelist .edition, .sagelist .isbn, .sagelist .condition {
 	display: none;	
