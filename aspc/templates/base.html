@@ -76,6 +76,7 @@
       <li id="information" class="group{% if active_section == "information" %}{% if not active_section_root %} active{% endif %}{% endif %}">
         <h1>Information</h1>
         <ul>
+          <li><a href="http://eventpomona.com/">Event Pomona</a></li>
           {% for sub in pages %}
           <li><a href="{{ sub.get_absolute_url }}">{{ sub.display_title }}</a></li>
           {% endfor %}
