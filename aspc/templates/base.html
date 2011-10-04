@@ -55,35 +55,47 @@
       </li>
       
       {% root_navigation_list services as navigation %}
-      {% for n in navigation %}
-      <li id="{{ n.0.slug }}" class="group{% if n.0.slug == active_section %}{% if not active_section_root %} active{% endif %}{% endif %}"><h1>{{ n.0.display_title }}</h1>
+      {% with navigation.0.1 as pages %}
+      <li id="services" class="group{% if active_section == "services" %}{% if not active_section_root %} active{% endif %}{% endif %}">
+        <h1>Services</h1>
         <ul>
           <li><a href="http://labs.fairlyawesome.com/ourpomona/courses/schedule/">Course Search</a></li>
           <li><a href="http://aspc.pomona.edu/course-reviews/">Course Reviews</a></li>
           <!-- <li><a href="http://aspc.pomona.edu/housing/">Housing Search</a></li> -->
           <li><a href="{% url "sagelist" %}">SageBooks</a></li>
           <!-- <li><a href="">Events Calendar</a></li> -->
-          {% for sub in n.1 %}
+          {% for sub in pages %}
           <li><a href="{{ sub.get_absolute_url }}">{{ sub.display_title }}</a></li>
           {% endfor %}
         </ul>
       </li>
-      {% endfor %}
+      {% endwith %}
       
       {% root_navigation_list information as navigation %}
-      {% include "navigation_fragment.html" %}
+      {% with navigation.0.1 as pages %}
+      <li id="information" class="group{% if active_section == "information" %}{% if not active_section_root %} active{% endif %}{% endif %}">
+        <h1>Information</h1>
+        <ul>
+          {% for sub in pages %}
+          <li><a href="{{ sub.get_absolute_url }}">{{ sub.display_title }}</a></li>
+          {% endfor %}
+        </ul>
+      </li>
+      {% endwith %}
       
       {% root_navigation_list senate as navigation %}
-      {% for n in navigation %}
-      <li id="{{ n.0.slug }}" class="group{% if n.0.slug == active_section %}{% if not active_section_root %} active{% endif %}{% endif %}"><h1>{{ n.0.display_title }}</h1>
+      
+      {% with navigation.0.1 as pages %}
+      <li id="senate" class="group{% if active_section == "services" %}{% if not active_section_root %} active{% endif %}{% endif %}">
+        <h1>Senate</h1>
         <ul>
-          {% for sub in n.1 %}
+          {% for sub in pages %}
           <li><a href="{{ sub.get_absolute_url }}">{{ sub.display_title }}</a></li>
           {% endfor %}
           <li><a href="http://aspc.pomona.edu/vote/">Elections &amp; Voting</a></li>
         </ul>
       </li>
-      {% endfor %}
+      {% endwith %}
       
       {% root_navigation_list as navigation excluding senate,information,services %}
       {% include "navigation_fragment.html" %}
