@@ -86,22 +86,22 @@ th {
 	display: none;
 }
 
-form ul {
+form > ul {
 	list-style-type: none;
 	padding: 1em;
 }
 
-form ul li {
+form > ul > li {
 	margin-bottom: 1em;
 }
 
-form ul li label {
+form > ul > li > label {
 	display: inline-block;
 	width: 8em;
 	font-weight: bold;
 }
 
-form ul li label:after {
+form > ul > li > label:after {
 	content: ":";
 }
 
