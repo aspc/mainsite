@@ -50,7 +50,7 @@ $(document).ready(function () {
 	<h2>Reviews</h2>
 		{% if room.review_set.count %}
 	<p class="content info">
-	  <a href="">+ add a review for this room</a>
+	  <a href="{% url "housing_review_room" room.floor.building.shortname room.floor.number room.number %}">+ add a review for this room</a>
 	</p>
 	<ol id="reviews" class="content">
 	{% for review in room.review_set.all %}
