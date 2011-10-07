@@ -5,17 +5,17 @@
 
 /* @group Housing Actions */
 
-.housing .actions {
+.housing .actions#home {
 	background: white;
 	margin: 0;
 	padding: 0;
 }
 
-.housing .actions a {
+.housing .actions a#home {
 	color: #0071a6;
 }
 
-.housing .actions li a {
+.housing .actions#home li a {
 	width: 32%;
 	display: inline-block;
 	margin: 0;
@@ -403,7 +403,7 @@ form p {
 
 /* @group Home Actions */
 
-.housing .actions li a {
+.housing .actions#home li a {
 	padding-top: 2em;
 	padding-bottom: 2em;
 	width: 16em;
