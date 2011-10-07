@@ -48,6 +48,7 @@ $(document).ready(function () {
 {% block "outer_content" %}
 	{% include "housing/room_info_fragment.html" %}
 	<h2>Reviews</h2>
+	{% if user.is_authenticated %}
 		{% if room.review_set.count %}
 	<p class="content info">
 	  <a href="{% url "housing_review_room" room.floor.building.shortname room.floor.number room.number %}">+ add a review for this room</a>
@@ -80,5 +81,19 @@ $(document).ready(function () {
 	{% else %}
 	<p class="content info" id="be_first">
 	  Do you live here? Did you live here?<br> <a href="{% url "housing_review_room" room.floor.building.shortname room.floor.number room.number %}">Be the first to review this room</a></p>
+	{% endif %}
+	{% else %}
+	<p class="content info">
+	  {% if room.review_set.count >= 1 %}
+	    {% if room.review_set.count == 1 %}
+	      See a review
+	    {% else %}
+	      See {{ room.review_set.count }} reviews
+	    {% endif %}
+	    for this room by <a href="{% url "login" %}?next={{ room.get_absolute_url }}">logging in</a>.
+	  {% else %}
+	    Do you live here? Did you live here? Log in and <a href="{% url "housing_review_room" room.floor.building.shortname room.floor.number room.number %}">write a review</a> for this room
+	  {% endif %}
+	</p>
 	{% endif %}
 {% endblock "outer_content" %}
