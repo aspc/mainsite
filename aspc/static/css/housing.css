@@ -1,4 +1,7 @@
-/* @override http://localhost:8000/static/css/housing.css */
+/* @override 
+	http://localhost:8000/static/css/housing.css
+	http://staging.aspc.pomona.edu/static/css/housing.css
+*/
 
 /* @group Housing Actions */
 
@@ -403,7 +406,7 @@ form p {
 .housing .actions li a {
 	padding-top: 2em;
 	padding-bottom: 2em;
-	width: 100%;
+	width: 16em;
 	text-align: left;
 	padding-left: 5.5em;
 	height: 1em;
