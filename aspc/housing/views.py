@@ -21,9 +21,11 @@ from aspc.housing.models import Review, Room
 from aspc.housing.forms import ReviewRoomForm, NewReviewForm, SearchForm, RefineForm, SEARCH_ORDERING
 
 class Home(ArchiveIndexView):
+    template_name = "housing/home.html"
     date_field = "create_ts"
     allow_empty = True
     queryset = Review.objects.all()
+    paginate_by = 15
 
 def format_data(rooms):
     sorted_rooms = sorted(rooms, key=lambda r: r.floor.id)
