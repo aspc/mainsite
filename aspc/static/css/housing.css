@@ -13,7 +13,7 @@
 }
 
 .housing .actions li a {
-	width: 33%;
+	width: 32%;
 	display: inline-block;
 	margin: 0;
 	padding: 0;
@@ -398,6 +398,21 @@ form p {
 @media handheld, only screen and (max-width: 767px) 
 {
 
+/* @group Home Actions */
+
+.housing .actions li a {
+	padding-top: 2em;
+	padding-bottom: 2em;
+	width: 100%;
+	text-align: left;
+	padding-left: 5.5em;
+	height: 1em;
+	background-position: 0.5em 0.5em;
+	background-size: 4em;
+}
+
+/* @end */
+
 /* @group reviews */
 
 
@@ -453,6 +468,8 @@ ul.col {
 		margin: 0;
 	}
 
+/* @group Attributes */
+
 .housing .attributes > li:nth-child(even) {
 	background-color: #dbdbdb;
 }
@@ -485,6 +502,8 @@ ul.col {
 	line-height: 1em;
 	width: 2em;
 }
+
+/* @end */
 
 .housing #rating_bar {
 	background-color: white;
