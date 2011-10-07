@@ -1,5 +1,44 @@
 /* @override http://localhost:8000/static/css/housing.css */
 
+/* @group Housing Actions */
+
+.housing .actions {
+	background: white;
+	margin: 0;
+	padding: 0;
+}
+
+.housing .actions a {
+	color: #0071a6;
+}
+
+.housing .actions li a {
+	width: 33%;
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	padding-top: 8em;
+	padding-bottom: 1em;
+	background-position: center 1em;
+	background-size: 6em;
+	background-repeat: no-repeat;
+}
+
+.housing #browse {
+	background-image: url(images/housing/browse_housing.png);
+}
+
+.housing #search {
+	background-image: url(images/housing/search_housing.png);
+}
+
+.housing #review {
+	background-image: url(images/housing/write_review.png);
+}
+
+/* @end */
+
 #search_wrapper.result_view {
 	background-color: #004d70;
 	color: white;

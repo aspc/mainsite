@@ -1,10 +1,11 @@
 {% extends 'housing/base.html' %}
-{% block "page_title" %}latest reviews{% endblock "page_title" %}
+{% block "page_title" %}Housing Search{% endblock "page_title" %}
 
 {% block "breadcrumbs" %}
 {% endblock %}
 
 {% block "outer_content" %}
+<h2>Latest Reviews</h2>
 {% with latest as results %}
 	{% include "housing/review_list_fragment.html" %}
 {% endwith %}
@@ -12,8 +13,8 @@
 
 {% block "actions" %}
 <ul class="actions">
-	<li{% if browse_active %} class="active"{% endif %}><a href="{% url "housing_browse" %}">browse housing</a></li>
-	<li{% if search_active %} class="active"{% endif %}><a href="{% url "housing_search" %}">search for rooms</a></li>
-	<li{% if review_active %} class="active"{% endif %}><a href="{% url "housing_review" %}">review your room</a></li>
+	<li><a href="{% url "housing_browse" %}" id="browse">browse housing</a></li>
+	<li><a href="{% url "housing_search" %}" id="search">search rooms</a></li>
+	<li><a href="{% url "housing_review" %}" id="review">review your room</a></li>
 </ul>
 {% endblock %}
