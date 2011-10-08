@@ -1,0 +1,93 @@
+{% extends 'housing/building_list.html' %}
+{% block "page_title" %}{{ floor.building.name }}{% endblock "page_title" %}
+{% block head %}
+{{ block.super }}
+<script src="http://maps.google.com/maps/api/js?sensor=false&amp;key=ABQIAAAAwQ_qPcZhqTJddZgjpyxJvhQ0p4u4hpSgWDdDIUZlIXFZAEGtLhTwYUTMhfjdSY86TyGx1mlMYfDaow" type="text/javascript"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+var results_data = {{ results_data }};
+var initial = {{ initial }};
+var zoom_level = {{ zoom_level }};
+
+function Floor(data, map) {
+	var imageBounds = new google.maps.LatLngBounds(
+    	new google.maps.LatLng(data.floor.map.s, data.floor.map.w),
+    	new google.maps.LatLng(data.floor.map.n, data.floor.map.e)
+    );
+	this.number = data.number_display;
+	this.hall_overlay = new google.maps.GroundOverlay(data.floor.map.url, imageBounds);
+	this.visible = false;
+	this.map = map;
+	this.room_markers = [];
+	
+	this.setVisible = function (state) {
+		if(state == this.visible) {
+			return;
+		}
+		if(state){
+			this.hall_overlay.setMap(this.map);
+			for (var i = 0; i < this.room_markers.length; i++) {
+				this.room_markers[i].setMap(this.map);
+			}
+		} else {
+			this.hall_overlay.setMap(null);
+			for (var i = 0; i < this.room_markers.length; i++) {
+				this.room_markers[i].setMap(null);
+			}
+		}
+		this.visible = state;
+	}
+	for (var i in data.rooms) {
+		var pos = new google.maps.LatLng(data.rooms[i].latitude, data.rooms[i].longitude);
+		var icon = new google.maps.MarkerImage(
+			"{{ STATIC_URL }}images/marker.png",
+			new google.maps.Size(25, 25), 
+			new google.maps.Point(0, 0),
+			new google.maps.Point(12, 12));
+		var room_marker = new google.maps.Marker({position: pos, draggable: false, visible: true, icon: icon});
+		this.room_markers.push(room_marker);
+	}
+
+	
+	//hall_overlay.setMap(Gmap);
+}
+
+$(document).ready(function () {
+
+    var myOptions = {
+        zoom: {{ zoom_level }},
+        center: new google.maps.LatLng({{ center_latitude }}, {{ center_longitude }}),
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+		streetViewControl: false,
+		mapTypeControl: false,
+    }
+	
+	floors = [];
+
+    Gmap = new google.maps.Map(document.getElementById("map"), myOptions);
+	for (var i in results_data) {
+		var new_floor = new Floor(results_data[i], Gmap);
+		floors.push(new_floor);
+		new_floor.setVisible(true);
+	}
+
+});
+</script>
+{% endblock head %}
+{% block "housing_breadcrumbs" %}
+{{ block.super }}
+<li><a href="{% url "housing_browse_building_floor_first" floor.building.shortname %}">{{ floor.building.name }}</a></li>
+<li><a href="{% url "housing_browse_building_floor" floor.building.shortname floor.number %}">{{ floor.get_number_display }}</a></li>
+{% endblock %}
+
+{% block "outer_content" %}
+{% if all_floors|length != 1 %}
+<ul id="floors" class="actions">
+{% for c_floor in all_floors %}
+	<li {% if c_floor == floor %}class="active"{% endif %}><a href="{% url "housing_browse_building_floor" floor.building.shortname c_floor.number %}">{{ c_floor.get_number_display }}</a></li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% include "housing/room_list_fragment.html" %}
+{% endblock "outer_content" %}

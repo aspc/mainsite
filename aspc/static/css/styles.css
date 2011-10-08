@@ -13,7 +13,7 @@
 body > .container {
 padding-left: 20px;
 padding-right: 20px;
-min-width: 805px;
+min-width: 728px;
 }
 
 nav ul, section > ul {
@@ -24,7 +24,7 @@ nav ul, section > ul {
 
 .row {
 width: 100%;
-max-width: 1000px;
+max-width: 70em;
 min-width: 765px;
 margin: 0 auto;
 overflow: hidden;
@@ -52,6 +52,10 @@ h2 {
 	font-size: 1.3em;
 }
 
+a {
+	color: #235ee0;
+}
+
 blockquote {
 	background-color: #ededed;
 	padding: 0.5em;
@@ -59,7 +63,7 @@ blockquote {
 }
 
 table {
-	background-color: #ededed;
+	background-color: white;
 	border-collapse: collapse;
 	font-size: 0.9em;
 }
@@ -82,22 +86,22 @@ th {
 	display: none;
 }
 
-form ul {
+form > ul {
 	list-style-type: none;
 	padding: 1em;
 }
 
-form ul li {
+form > ul > li {
 	margin-bottom: 1em;
 }
 
-form ul li label {
+form > ul > li > label {
 	display: inline-block;
 	width: 8em;
 	font-weight: bold;
 }
 
-form ul li label:after {
+form > ul > li > label:after {
 	content: ":";
 }
 
@@ -141,7 +145,7 @@ form ul li label:after {
 
 .sagelist tr.nav_letter td {
 	font-size: 1.5em;
-	padding: 0.25em 1%;
+	padding: 0.25em 2%;
 	font-weight: bold;
 }
 
@@ -171,28 +175,6 @@ form ul li label:after {
 
 .sagelist form #id_title, .sagelist form #id_authors {
 	width: 20em;
-}
-
-.sagelist dl:after {
-	content: "";
-	display: block;
-	clear: both;
-}
- 
-.sagelist dl dt {
-    background: #c1d8ef;
-    float:left;
-    font-weight:bold;
-    margin-right:1em;
-    padding: 0.5em;
-    width:10em;
-	color: #003852;
-	margin-bottom: 0.33em;
-}
- 
-.sagelist dl dd {
-    padding:0.5em 0;
-	margin-bottom: 0.33em;
 }
 
 .sagelist ol#alphanav {
@@ -267,7 +249,7 @@ form ul li label:after {
 h2.byline {
 	background-color: #ddd;
 	margin: 0;
-	padding: 0.5em 1%;
+	padding: 0.5em 2%;
 	font-size: 1em;
 }
 
@@ -359,15 +341,48 @@ nav.archive .next_month {
 
 /* @group content */
 
-.primary > h1, .breadcrumbs {
-	padding: 0.5em 1%;
+
+
+dl.detail:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+ 
+dl.detail dt {
+    background: #c1d8ef;
+    float:left;
+    font-weight:bold;
+    margin-right:1em;
+    padding: 0.5em;
+    width:10em;
+	color: #003852;
+	margin-bottom: 0.33em;
+	height: 1.2em;
+}
+ 
+dl.detail dd {
+    padding:0.5em 0;
+	margin-bottom: 0.33em;
+	height: 1.2em;
+}
+
+.primary > table {
+	width: 100%;
+}
+
+.primary > h1, .breadcrumbs, .primary > h2 {
+	padding: 0.5em 2%;
 	margin: 0;
+}
+
+.primary > h1, .primary > h2 {
+	background-color: #0071a6;
+	color: white;
 }
 
 .primary > h1 {
 	font-size: 1.5em;
-	background-color: #0071a6;
-	color: white;
 }
 
 .primary > h1 > a {
@@ -378,7 +393,13 @@ nav.archive .next_month {
 }
 
 .primary .content {
-	padding: 0 1%;
+	padding: 0 2%;
+}
+
+.primary .content:after {
+	content: "";
+	display: block;
+	clear: both;
 }
 
 .primary .content h1, .primary .content h2, .primary .content h3, .primary .content h4, .primary .content h5 {
@@ -388,11 +409,17 @@ nav.archive .next_month {
 
 ul.actions {
 	background-color: #004d70;
-	padding: 0.5em;
+	padding-left: 1em;
 }
 
 ul.actions a {
-	color: white;
+	color: #baeaff;
+	display: inline-block;
+	padding: 0.5em;
+}
+
+ul.actions li {
+	display: inline;
 }
 
 /* @end */
@@ -415,7 +442,7 @@ ul.actions a {
 .page ol.children li {
 	display: inline-block;
 	padding: 0.5em;
-	margin: 1%;
+	margin: 2%;
 	width: 45%;
 	height: 10em;
 	float: left;
@@ -553,8 +580,8 @@ ul.actions a {
 
 .stream .activity {
 	margin-left: 9%;
-	padding-left: 1%;
-	padding-right: 1%;
+	padding-left: 2%;
+	padding-right: 2%;
 	padding-top: 1em;
 	padding-bottom: 1em;
 	background-color: white;
@@ -970,7 +997,7 @@ header#aspc_main form input {
 .events h1, .events li .info, .events li.more {
 	margin: 0;
 	margin-left: 9%;
-	padding-left: 1%;
+	padding-left: 2%;
 	background: white;
 }
 
@@ -1040,7 +1067,7 @@ header#aspc_main form input {
 
 .events ol time {
 	font-size: 0.95em;
-	padding: 0 1%;
+	padding: 0 2%;
 	padding-top: 0.8em;
 	line-height: 1em;
 	float: left;
@@ -1278,6 +1305,11 @@ header#aspc_main hgroup {
 	font-style: italic;
 }
 
+
+ul.actions li {
+	display: block;
+}
+
 /* @group breadcrumbs */
 
 .breadcrumbs {
@@ -1482,18 +1514,25 @@ body {
 	-webkit-box-shadow: 0px 0px 4px #222;
 }
 
-.group > h1 {
-	font-size: 0.9em;
+.group > h1, .group h2 {
 	color: white;
 	padding: 0.33em 0.5em 0.33em 0.5em;
 	padding-left: 0.5em;
-	border-radius: 0.5em 0.5em 0 0;
 	margin-bottom: 0;
 	margin-top: 0;
 	background-color: #456284;
 	border: 0.1em solid #5477a0;
 	font-weight: normal;
 	letter-spacing: 1px;
+}
+
+.group > h1 {
+	border-radius: 0.5em 0.5em 0 0;
+	font-size: 0.9em;
+}
+
+.group > h2 {
+	font-size: 0.85em;
 }
 
 nav .group > ul, nav .group > ol, nav .group > ul > li:last-child, nav .group > ol > li:last-child {
@@ -1508,7 +1547,7 @@ nav .group > ul, nav .group > ol {
 	background-color: white;
 }
 
-nav .group > ul > li, nav .group > ol > li {
+nav .group > ul > li, nav .group > ol > li, .listview > li {
 	margin: 0;
 	clear: both;
 	border-bottom: 0.1em solid black;
@@ -1516,11 +1555,11 @@ nav .group > ul > li, nav .group > ol > li {
 	color: black;
 }
 
-nav .group ul li:last-child, nav .group ol li:last-child {
+nav .group ul li:last-child, nav .group ol li:last-child, .listview > li:last-child {
 	border-bottom: none;
 }
 
-nav .group > ul > li > a, nav .group > ol > li > a  {
+nav .group > ul > li > a, nav .group > ol > li > a, .listview > li > a {
 	padding: 0.25em;
 	padding-right: 1.5em;
 	display: block;

@@ -1,0 +1,3 @@
+building,occupancy,rooms
+clarkv,3,431 432
+nortonclark,6,13 14 15 16 17 18

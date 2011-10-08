@@ -92,6 +92,8 @@ INSTALLED_APPS = (
     'blog',
     'auth',
     'sagelist',
+    'college',
+    'housing',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -148,6 +150,17 @@ AUTH_LDAP = {
 AUTH_LDAP_DEFAULT_COLLEGE = "PO"
 
 AUTH_LDAP_COLLEGES = ((i[0], i[1]['name']) for i in AUTH_LDAP.items())
+
+DATA_ROOT = os.path.join(PROJECT_ROOT, '..', 'data')
+DATA_PATHS = {
+    'housing': {
+        'buildings': os.path.join(DATA_ROOT, 'housing', 'buildings.txt'),
+        'rooms': os.path.join(DATA_ROOT, 'housing', 'rooms.txt'),
+        'suites': os.path.join(DATA_ROOT, 'housing', 'suites.txt'),
+        'maps': os.path.join(DATA_ROOT, 'housing', 'maps.txt'),
+        'maps_dir': os.path.join(DATA_ROOT, 'housing', 'maps'),
+    },
+}
 
 # Support new {% url %} syntax without {% load %}
 

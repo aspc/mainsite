@@ -1,0 +1,15 @@
+{% extends 'housing/base.html' %}
+
+{% block "page_title" %}{{ room.get_name }}{% endblock "page_title" %}
+
+{% block "housing_breadcrumbs" %}
+<li>Write Review</li>
+{% endblock %}
+
+
+{% block "outer_content" %}
+	{% include "housing/room_info_fragment.html" %}
+	<div class="content">
+		{% include "housing/review_form_fragment.html" %}
+	</div>
+{% endblock %}

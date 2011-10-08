@@ -13,6 +13,8 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ STATIC_URL }}css/images/apple_icons/touch-icon-ipad.png" />
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ STATIC_URL }}css/images/apple_icons/touch-icon-iphone4.png" />
     {% include "analytics_code.html" %}
+    {% block "head" %}
+    {% endblock %}
   </head>
   <body>
   <nav id="topnav" class="container">
@@ -62,7 +64,7 @@
         <ul>
           <li><a href="http://labs.fairlyawesome.com/ourpomona/courses/schedule/">Course Search</a></li>
           <li><a href="http://aspc.pomona.edu/course-reviews/">Course Reviews</a></li>
-          <!-- <li><a href="http://aspc.pomona.edu/housing/">Housing Search</a></li> -->
+          <li><a href="{% url "housing_home" %}">Housing Search</a></li>
           <li><a href="{% url "sagelist" %}">SageBooks</a></li>
           <!-- <li><a href="">Events Calendar</a></li> -->
           {% for sub in pages %}

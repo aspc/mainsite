@@ -1,0 +1,28 @@
+{% load room_tools %}
+<ul class="attributes">
+  <li class="floor level_{{ room.floor.number }}">{{ room.floor.get_number_display }}</li>
+  <li class="size">
+    {% if room.size %}<span class="big">{{ room.size|floatformat }}</span> {{ room.size|floatformat }}
+    ft<sup>2</sup>{% else %}<span class="big">?</span>size unknown
+    {% endif %}
+  </li>
+  <li class="occupancy type_{{ room.occupancy }}">{{ room.get_occupancy_display }}</li>
+  <!-- <li class="suite">{% if room.suite %}<span class="big">{{ room.suite.occupancy }}</span> person suite<br/>{% suite room %}{% else %}<span class="big">0</span>not part of a suite{% endif %}</li> -->
+
+</ul>
+{% if room.average_rating %}
+<div id="rating_bar">
+<div id="overall">
+  <p>
+    {% show_stars room.average_rating %}
+    overall rating
+  </p>
+</div>
+<ul class="ratings">
+  <li class="quiet"><span>Quiet</span>{% show_stars room.average_rating_quiet %}</li>
+  <li><span>Spacious</span>{% show_stars room.average_rating_spacious %}</li>
+	<li><span>Temperate</span>{% show_stars room.average_rating_temperate %}</li>
+	<li><span>Well Maintained</span>{% show_stars room.average_rating_maintained %}</li>
+	<li><span>Cell Service</span>{% show_stars room.average_rating_cellphone %}</li>
+</div>
+{% endif %}

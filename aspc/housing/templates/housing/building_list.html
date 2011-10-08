@@ -1,0 +1,19 @@
+{% extends 'housing/base.html' %}
+{% load columns %}
+{% block "page_title" %}Browse Residence Halls{% endblock "page_title" %}
+
+{% block "housing_breadcrumbs" %}
+<li><a href="{% url "housing_browse" %}">Residence Halls</a></li>
+{% endblock %}
+
+{% block "content" %}
+<div id="buildings">
+{% for col in buildings|rows:3 %}
+<ul class="col buildings">
+{% for building in col %}
+	<li><a href="{% url "housing_browse_building_floor_first" building.shortname %}">{{ building.name }}</a></li>	
+{% endfor %}
+</ul>
+{% endfor %}
+</div>
+{% endblock "content" %}

@@ -1,0 +1,9 @@
+<ul class="suite_rooms">
+{% for suite_room in suite_rooms %}
+{% if suite_room == room %}
+<li class="active">{{ suite_room.number }}</li>
+{% else %}
+<li><a href="{% url "housing_browse_room" building=suite_room.floor.building.shortname floor=suite_room.floor.number room=suite_room.number %}">{{ suite_room.number }}</a></li>
+{% endif %}
+{% endfor %}
+</ul>

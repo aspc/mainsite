@@ -1,0 +1,11 @@
+{% extends 'housing/base.html' %}
+
+{% block "page_title" %}Review Your Room{% endblock "page_title" %}
+
+{% block "housing_breadcrumbs" %}
+<li>Write Review</li>
+{% endblock %}
+
+{% block "content" %}
+		{% include "housing/review_form_choose_fragment.html" %}
+{% endblock "content" %}

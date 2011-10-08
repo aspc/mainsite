@@ -1,0 +1,612 @@
+/* @override 
+	http://localhost:8000/static/css/housing.css
+	http://staging.aspc.pomona.edu/static/css/housing.css
+*/
+
+/* @group Housing Actions */
+
+.housing .actions#home {
+	background: white;
+	margin: 0;
+	padding: 0;
+}
+
+.housing .actions#home a {
+	color: #0071a6;
+}
+
+.housing .actions#home li a {
+	width: 32%;
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	padding-top: 8em;
+	padding-bottom: 1em;
+	background-position: center 1em;
+	background-size: 6em;
+	background-repeat: no-repeat;
+}
+
+.housing #browse {
+	background-image: url(images/housing/browse_housing.png);
+}
+
+.housing #search {
+	background-image: url(images/housing/search_housing.png);
+}
+
+.housing #review {
+	background-image: url(images/housing/write_review.png);
+}
+
+/* @end */
+
+#search_wrapper.result_view {
+	background-color: #004d70;
+	color: white;
+}
+
+#search_wrapper:after {
+	display: block;
+	clear: both;
+	content: "";
+}
+
+.result_view #search_control {
+	font-size: 0.8em;
+	width: 28%;
+	float: right;
+	padding: 1%;
+	color: #b1e6ff;
+}
+
+.result_view .col {
+	width: 48%;
+	padding: 1%;
+	font-size: 0.95em;
+}
+
+#results {
+	width: 70%;
+	float: left;
+}
+
+.paginator {
+	list-style-type: none;
+	padding: 0.5em;
+	margin: 0;
+	text-align: center;
+	color: #7cbcda;
+	font-size: 1.1em;
+}
+
+.paginator a {
+	color: #6bd0ff;
+}
+
+.paginator li {
+	display: inline-block;
+}
+
+.paginator li.previous, .paginator li.next {
+	float: left;
+	width: 10%;
+}
+
+.paginator li.next {
+	float: right;
+}
+
+#results table {
+	width: 100%;
+	color: #252525;
+}
+
+/* @group Buildings */
+
+ul.col {
+	width: 33%;
+	display: inline-block;
+	padding: 0;
+	float: left;
+	list-style-type: none;
+	font-size: 1.2em;
+}
+
+h3 {
+	clear: both;
+}
+
+form p {
+	clear: both;
+}
+
+#buildings ul.col.buildings li {
+	margin-bottom: 1em;
+}
+
+/* @end */
+
+/* @group Room Detail */
+
+/* @group Attributes */
+
+.housing .attributes {
+	list-style-type: none;
+	padding: 0;
+	width: 100%;
+}
+
+.housing .attributes:after {
+	clear: both;
+	display: block;
+	content: "";
+}
+
+.housing .attributes .big {
+	position: absolute;
+	top: 1.125em;
+	font-size: 3em;
+	text-align: center;
+	width: 100%;
+}
+
+.housing .attributes > li {
+	width: 33.3%;
+	display: inline-block;
+	float: left;
+	text-align: center;
+	padding-top: 1em;
+	position: relative;
+	padding-bottom: 1em;
+	padding-top: 7.5em;
+	background-size: 5.5em;
+	line-height: 1.3em;
+	background-repeat: no-repeat;
+	background-position: center 1em;
+}
+
+.housing .attributes .floor {
+	background-image: url(http://placehold.it/80x80);
+}
+
+.housing .attributes .floor.level_0 {
+	background-image: url(images/housing/floor_0.png);
+}
+
+.housing .attributes .floor.level_1 {
+	background-image: url(images/housing/floor_1.png);
+}
+
+.housing .attributes .floor.level_2 {
+	background-image: url(images/housing/floor_2.png);
+}
+
+.housing .attributes .floor.level_3 {
+	background-image: url(images/housing/floor_3.png);
+}
+
+
+.housing .attributes .size sup {
+	line-height: 0;
+}
+
+.housing .attributes .size {
+}
+
+.housing .attributes .occupancy {
+	background-image: url(http://placehold.it/80x80);
+}
+
+
+.housing .attributes .occupancy.type_1 {
+	background-image: url(images/housing/room_single.png);
+}
+
+.housing .attributes .occupancy.type_2 {
+	background-image: url(images/housing/room_double.png);
+}
+
+.housing .attributes .occupancy.type_3 {
+	background-image: url(images/housing/room_2double.png);
+}
+
+.housing .attributes .occupancy.type_4 {
+	background-image: url(images/housing/room_2triple.png);
+}
+
+.housing .attributes .suite .suite_rooms {
+	display: inline-block;
+	padding: 0;
+}
+.housing .attributes .suite .suite_rooms li {
+	display: inline;
+}
+
+/* @end */
+
+
+
+.housing #overall {
+	min-height: 5em;
+	padding-top: 1%;
+	width: 48%;
+	padding-right: 2%;
+	text-align: center;
+	float: left;
+	font-size: 1.2em;
+}
+
+.housing #overall p {
+	width: 10em;
+	float: right;
+}
+
+.housing #overall span {
+	display: block;
+	font-size: 1.5em;
+}
+
+
+.housing .ratings {
+	list-style-type: none;
+	padding: 0;
+	width: 48%;
+	padding-left: 2%;
+	display: inline-block;
+}
+
+.housing .ratings li {
+	margin-bottom: 0.5em;
+}
+
+.housing .ratings span {
+	width: 10em;
+	display: inline-block;
+}
+
+/* @group Reviews */
+
+.housing #reviews {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+.housing p.info.content {
+	font-size: 1.2em;
+	text-align: center;
+	padding: 0.5em;
+	margin: 0;
+	background-color: #004a6b;
+	line-height: 1.8em;
+	color: white;
+	border-radius: 0;
+}
+
+.housing li .posted {
+	padding: 1em 2%;
+	border-bottom: 0.1em solid #ccc;
+}
+
+.housing p.info a {
+	color: white;
+}
+
+.housing #reviews dl.ratings {
+	width: 31%;
+	float: left;
+	padding: 2%;
+}
+
+
+.housing #reviews .ratings dt, .housing #reviews .ratings dd {
+	width: 50%;
+	display: inline-block;
+}
+
+.housing #reviews .ratings dd {
+	margin: 0;
+}
+
+.housing #reviews .ratings dt.overall {
+	display: none;
+}
+
+.housing #reviews .ratings .overall {
+	display: block;
+	width: auto;
+	font-size: 1.2em;
+	margin-bottom: 1em;
+	padding: 0.5em;
+	text-align: center;
+}
+
+
+.housing #reviews li {
+	clear: both;
+}
+
+.housing #reviews li:nth-child(even) {
+	background-color: gainsboro;
+}
+
+.housing #reviews li:after {
+	display: block;
+	content: "";
+	clear: both;
+}
+
+.housing #reviews .comments {
+	width: 65%;
+	float: right;
+}
+
+/* @end */
+
+/* @end */
+
+/* @group Form */
+
+.housing form label.mobile_high {
+	display: none;
+}
+
+.housing form label.low, .housing form label.high {
+	width: 12em;
+	display: inline-block;
+	margin: 0 1em;
+}
+
+.housing form label.low {
+	text-align: right;
+	width: 7em;
+}
+
+.housing form#write_review {
+	padding: 1.5em;
+	background-color: #ddd;
+	margin: 2em;
+
+	border: 0.1em solid #605033;
+}
+
+.housing form#write_review, .housing form#write_review h3, .housing form#write_review h1, .housing form#write_review textarea {
+	/*font-family: Palatino, Georgia, "Times New Roman", Times, serif;*/
+}
+
+.housing form#write_review h3 {
+	margin-top: 2.5em;
+}
+
+.housing form#write_review h1 {
+	text-align: center;
+	margin: 0;
+	font-size: 2.5em;
+	padding: 0.5em;
+	border-bottom: 3px double black;
+	font-weight: normal;
+}
+
+.housing form#write_review textarea {
+	width: 100%;
+	font-size: 1.2em;
+	background: #eee;
+	border: 0.1em solid #999;
+}
+
+/* @end */
+
+@media handheld, only screen and (max-width: 767px) 
+{
+
+/* @group Home Actions */
+
+.housing .actions#home li a {
+	padding-top: 2em;
+	padding-bottom: 2em;
+	width: 16em;
+	text-align: left;
+	padding-left: 5.5em;
+	height: 1em;
+	background-position: 0.5em 0.5em;
+	background-size: 4em;
+}
+
+/* @end */
+
+/* @group reviews */
+
+
+.housing #reviews dl.ratings, .housing #reviews .comments {
+	width: 96%;
+	padding: 2%;
+	float: none;
+	padding: 2%;
+}
+
+
+.housing dl.ratings .overall {
+	text-align: center;
+}
+
+/* @end */
+
+/* @group Search Results / list tables */
+
+.housing table .minimal {
+	display: table-cell;
+}
+
+.housing table th, .housing table td {
+	display: none;
+}
+
+#results {
+	width: 100%;
+}
+
+#results table {
+	width: 100%;
+}
+
+.result_view #search_control {
+	width: 98%;
+	padding: 1%;
+	margin: 0;
+	border-radius: 0;
+	display: none;
+}
+
+.result_view form {
+	display: none;
+}
+
+/* @end */
+ul.col {
+		width: auto;
+		display: block;
+		float: none;
+		margin: 0;
+	}
+
+/* @group Attributes */
+
+.housing .attributes > li:nth-child(even) {
+	background-color: #dbdbdb;
+}
+
+.housing .attributes {
+	background-color: white;
+}
+
+.housing .attributes > li {
+	display: block;
+	float: none;
+	text-align: left;
+	padding: 0;
+	position: relative;
+	background-size: 5.5em;
+	background-position: left 0.25em;
+	min-height: 3em;
+	background-size: 4em;
+	padding-left: 5em;
+	padding-top: 1.5em;
+	line-height: 1.3em;
+	width: auto;
+}
+
+.housing .attributes .big {
+	left: 0.125em;
+	top: 0.58em;
+	text-align: center;
+	font-size: 1.9em;
+	line-height: 1em;
+	width: 2em;
+}
+
+/* @end */
+
+.housing #rating_bar {
+	background-color: white;
+}
+
+.housing #overall {
+	width: 100%;
+	padding: 0;
+	text-align: center;
+}
+
+.housing #overall p {
+	text-align: center;
+	width: 100%;
+}
+
+.housing .ratings {
+	width: 94%;
+	padding: 3%;
+	margin: 0;
+}
+
+.housing .ratings span {
+	text-align: right;
+	width: 48%;
+	padding-right: 2%;
+}
+
+.housing .ratings span.stars {
+	width: 48%;
+	text-align: left;
+	padding-left: 2%;
+	padding-right: 0;
+}
+
+.housing .ratings .overall span.stars {
+	width: auto;
+	text-align: center;
+}
+
+/* @group Form */
+
+.housing form#write_review h1 {
+	font-size: 1.7em;
+}
+
+.housing form label.low, .housing form label.high {
+	width: 10em;
+	display: inline-block;
+	margin: 0;
+}
+
+.housing form label.low {
+	float: left;
+	text-align: left;
+}
+
+.housing form label.mobile_high {
+	float: right;
+	display: inline;
+	text-align: right;
+}
+
+.housing form label.low, .housing form label.mobile_high {
+	display: inline-block;
+	width: 48%;
+}
+
+.housing form label.high {
+	display: none;
+}
+
+.housing form .rating_control {
+	display: block;
+	margin: 0 auto;
+	padding-top: 1em;
+	clear: both;
+	text-align: center;
+}
+
+.housing form p.rating {
+	padding: 1em;
+}
+
+.housing form p.rating:after {
+	display: block;
+	content: "";
+	clear: both;
+}
+
+.housing form#write_review {
+	padding: 0.5em;
+	margin: 0em;
+	box-shadow: none;
+}
+
+.housing form textarea {
+	max-width: 16.15em;
+}
+
+/* @end */
+
+}

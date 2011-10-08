@@ -1,0 +1,6 @@
+{% extends "housing/review_form_fragment.html" %}
+{% block "choose_room" %}
+<h3>Which room did you live in?</h3>
+<p>{{ form.room }} {{ form.room.errors }}</p>
+<p><em>If your room number is not recognized, try <a href="{% url "housing_browse" %}">browsing</a> for it</em></p>
+{% endblock %}

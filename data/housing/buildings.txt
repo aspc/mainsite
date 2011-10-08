@@ -1,0 +1,18 @@
+shortname,name,floors,lat,long
+wig,Wig,0 1 2
+lyon,Lyon,1 2
+oldenborg,Oldenborg,1 2 3
+nortonclark,Norton-Clark,1 2 3
+clarki,Clark I,1 2
+walker,Walker,1 2
+clarkv,Clark V,1 2
+gibson,Gibson,1
+smiley,Smiley,1 2 3
+cottage241,Cottage 241,1
+cottage239,Cottage 239,1
+lawry,Lawry,1 2 3
+harwood,Harwood,0 1 2 3
+cottage245,Cottage 245,1
+muddblaisdell,Mudd-Blaisdell,0 1 2 3
+sontag,Sontag,1 2 3
+bhall,B Hall,1 2 3
