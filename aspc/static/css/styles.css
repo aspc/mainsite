@@ -1394,9 +1394,9 @@ nav#topnav .row {
 	text-align: center;
 }
 
-nav#topnav #user input, nav#topnav #user select {
+/*#user input, #user select {
 	font-size: 0.5em;
-}
+}*/
 
 nav#topnav #user input[type="text"], nav#topnav #user input[type="password"] {
 	border: 1px solid #506c8e;
