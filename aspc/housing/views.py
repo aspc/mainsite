@@ -223,8 +223,8 @@ class RoomDetail(DetailView):
         try:
             obj = room.get()
         except ObjectDoesNotExist:
-            raise Http404(_(u"No %(verbose_name)s found matching the query") %
-                {'verbose_name': queryset.model._meta.verbose_name})
+            raise Http404(u"No %(verbose_name)s found matching the query" %
+                {'verbose_name': housing_set.model._meta.verbose_name})
         return obj
     
     def get_context_data(self, **kwargs):
