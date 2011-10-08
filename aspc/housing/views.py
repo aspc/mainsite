@@ -195,7 +195,7 @@ class BrowseBuildingFloor(ListView):
             try:
                 self.floor = Floor.objects.get(building=self.building, number=int(floor_id))
             except ObjectDoesNotExist:
-                raise Http404(u"{0} has no floor #{1}".format(self.building))
+                raise Http404(u"{0} has no floor #{1}".format(self.building, floor_id))
         
         return self.model.objects.select_related().filter(floor=self.floor)
     
