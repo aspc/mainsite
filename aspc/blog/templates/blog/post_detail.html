@@ -11,10 +11,10 @@
 </ol>
 {% endblock %}
 {% block "secondary_content" %}
-<h2 class="byline">posted by {{ post.author.user.get_full_name }}, {{ post.author.position.title }} on {{ post.posted }}</h2>
-{% endblock %}
-{% block "content" %}
-<div class="post_body">
+<div class="post_info">
+  <span class="byline">posted by {{ post.author.user.get_full_name }}, {{ post.author.position.title }} on {{ post.posted }}</span>
+</div>
+<div class="post_body content">
   {{ post.body|markdown }}
 </div>
 {% endblock %}

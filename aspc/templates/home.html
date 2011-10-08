@@ -18,13 +18,11 @@
 </section> -->
 <section class="group primary news">
   <h1>Senate News</h1>
-  <div class="content">
-    {% if posts %}
-    {% include "blog/posts_fragment.html" %}
-    {% else %}
-    <p>No recent posts to display</p>
-    {% endif %}
-  </div>
+  {% if posts %}
+  {% include "blog/posts_fragment.html" %}
+  {% else %}
+  <p>No recent posts to display</p>
+  {% endif %}
 </section>
 <section class="group primary news">
   <h1>2010-2011 Year-End Report</h1>

@@ -221,13 +221,14 @@ form > ul > li > label:after {
 
 /* @group Post List */
 
-.news > .content > ol {
+.news ol.posts {
 	list-style-type: none;
 	padding: 0;
+	margin: 0;
 }
 
 .post_info {
-	padding: 0.5em;
+	padding: 0.5em 2%;
 	background-color: #dfedf4;
 	border-bottom: 0.1em solid #aaa;
 	border-top: 0.1em solid #aaa;
@@ -246,15 +247,13 @@ form > ul > li > label:after {
 	font-size: 0.85em;
 }
 
-h2.byline {
+.news > h2.byline {
+	font-family: Verdana;
+	color: black;
 	background-color: #ddd;
 	margin: 0;
 	padding: 0.5em 2%;
 	font-size: 1em;
-}
-
-.post_body {
-	padding: 0 0.75em;
 }
 
 /* @end */
@@ -1125,6 +1124,18 @@ footer p {
 
 @media handheld, only screen and (max-width: 767px) {
 
+/* @group Blog */
+
+.post_info > h1 {
+	font-size: 1.1em;
+}
+
+.post_info > .byline {
+	font-size: 0.7em;
+}
+
+/* @end */
+
 /* @group SageList */
 
 .sagelist ul.stats {
@@ -1366,6 +1377,13 @@ overflow: visible;
 /* @end */
 
 /* @group Navigation */
+
+
+/*Special case for Amazon link w/ tracking img*/
+
+#amazon_link img {
+	float: left;
+}
 
 nav#topnav {
 	padding-left: 0;

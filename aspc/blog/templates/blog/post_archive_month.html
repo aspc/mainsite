@@ -24,7 +24,7 @@
 News from {{ month|date:"F, Y"}}
 {% endblock %}
 
-{% block "content" %}
+{% block "outer_content" %}
 {% if posts %}
 {% include "blog/posts_fragment.html" %}
 {% else %}

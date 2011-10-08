@@ -3,6 +3,6 @@
   <h1><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h1>
   <span class="byline">posted by {{ post.author.user.get_full_name }}, {{ post.author.position.title }} on {{ post.posted }}</span>
 </div>
-<div class="post_body">
+<div class="post_body content">
   {{ post.body|markdown }}
 </div>
