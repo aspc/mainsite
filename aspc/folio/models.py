@@ -16,19 +16,26 @@ class Page(models.Model):
         'self',
         blank=True,
         null=True,
-        help_text="Optional parent page for this one. If none, it is listed "
-                  "as a top level page in its section.")
+        help_text="Optional parent page for this one. If none, it is treated"
+                  " as a category.")
     summary = models.TextField(
+        blank=True,
+        null=True,
         help_text="Page summary for display in parent page's"
                   " subpage list (plain text)")
-    body = models.TextField(help_text="Page body text written in Markdown")
+    body = models.TextField(
+        blank=True,
+        null=True,
+        help_text="Page body text written in Markdown")
     sort_order = models.PositiveSmallIntegerField(
         blank=True,
         help_text="Sort ordering")
-    section_root = models.BooleanField(
-        default=False,
-        help_text="Marks if this page should be displayed with"
-        " more emphasis on subpages")
+    stylesheet = models.CharField(
+        blank=True,
+        null=True,
+        max_length=255,
+        help_text="Path to an additional stylesheet for this page (relative"
+                  " to {{ STATIC_ROOT }}/css/)")
     
     class Meta:
         ordering = ['sort_order', 'title',]
