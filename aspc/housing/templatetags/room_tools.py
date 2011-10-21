@@ -5,7 +5,7 @@ register = template.Library()
 
 @register.inclusion_tag('housing/stars.html')
 def show_stars(num):
-    if num:
+    if num is not None:
         return {'stars': '&#9733;&nbsp;'*int(num+1), 'number': int(num+1),}
     else:
         return {}
