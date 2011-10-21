@@ -10,7 +10,7 @@
   <!-- <li class="suite">{% if room.suite %}<span class="big">{{ room.suite.occupancy }}</span> person suite<br/>{% suite room %}{% else %}<span class="big">0</span>not part of a suite{% endif %}</li> -->
 
 </ul>
-{% if room.average_rating %}
+{% if room.review_set.count >= 1 %}
 <div id="rating_bar">
 <div id="overall">
   <p>
