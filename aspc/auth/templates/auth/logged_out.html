@@ -1,4 +1,6 @@
 {% extends "base_page.html" %}
+{% load url from future %}
+
 {% block "content" %}
 <p>You have been successfully logged out.</p>
 <p><a href="{% url "login" %}">Log in again</a></p>
