@@ -164,8 +164,3 @@ DATA_PATHS = {
         'maps_dir': os.path.join(DATA_ROOT, 'housing', 'maps'),
     },
 }
-
-# Support new {% url %} syntax without {% load %}
-
-import django.template
-# django.template.add_to_builtins('django.templatetags.future')
