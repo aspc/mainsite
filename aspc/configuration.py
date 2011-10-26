@@ -96,6 +96,7 @@ INSTALLED_APPS = (
     'sagelist',
     'college',
     'housing',
+    'forms_builder.forms',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -167,4 +168,4 @@ DATA_PATHS = {
 # Support new {% url %} syntax without {% load %}
 
 import django.template
-django.template.add_to_builtins('django.templatetags.future')
+# django.template.add_to_builtins('django.templatetags.future')
