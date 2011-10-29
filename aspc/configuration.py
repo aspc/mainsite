@@ -64,6 +64,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
 )
@@ -96,6 +97,11 @@ INSTALLED_APPS = (
     'sagelist',
     'college',
     'housing',
+<<<<<<< HEAD
+=======
+    'forms_builder.forms',
+    'debug_toolbar',
+>>>>>>> 23cf6ec... Installing debug toolbar
 )
 
 # A sample logging configuration. The only tangible logging
@@ -168,3 +174,14 @@ DATA_PATHS = {
 
 import django.template
 django.template.add_to_builtins('django.templatetags.future')
+
+def show_toolbar(request):
+    if request.user.is_superuser:
+        return True
+    else:
+        return False
+
+DEBUG_TOOLBAR_CONFIG = {
+    'INTERCEPT_REDIRECTS': False,
+    'SHOW_TOOLBAR_CALLBACK': show_toolbar,
+}
