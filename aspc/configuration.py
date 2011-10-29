@@ -64,6 +64,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
 )
@@ -97,6 +98,7 @@ INSTALLED_APPS = (
     'college',
     'housing',
     'forms_builder.forms',
+    'debug_toolbar',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -163,4 +165,15 @@ DATA_PATHS = {
         'maps': os.path.join(DATA_ROOT, 'housing', 'maps.txt'),
         'maps_dir': os.path.join(DATA_ROOT, 'housing', 'maps'),
     },
+}
+
+def show_toolbar(request):
+    if request.user.is_superuser:
+        return True
+    else:
+        return False
+
+DEBUG_TOOLBAR_CONFIG = {
+    'INTERCEPT_REDIRECTS': False,
+    'SHOW_TOOLBAR_CALLBACK': show_toolbar,
 }

@@ -8,3 +8,4 @@ gunicorn==0.13.1
 python-ldap==2.4.3
 setproctitle==1.1.2
 django-forms-builder==0.4.9
+django-debug-toolbar
