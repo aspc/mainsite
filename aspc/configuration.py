@@ -97,11 +97,7 @@ INSTALLED_APPS = (
     'sagelist',
     'college',
     'housing',
-<<<<<<< HEAD
-=======
-    'forms_builder.forms',
     'debug_toolbar',
->>>>>>> 23cf6ec... Installing debug toolbar
 )
 
 # A sample logging configuration. The only tangible logging
