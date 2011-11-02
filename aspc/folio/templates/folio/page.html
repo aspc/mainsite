@@ -15,7 +15,7 @@
 {% breadcrumbs_list page as breadcrumbs %}
 <ol class="breadcrumbs">
   {% for b in breadcrumbs %}
-  <li>{% if b.parent %}<a href="{{ b.get_absolute_url }}">{% endif %}
+  <li><a href="{{ b.get_absolute_url }}">
     <span class="title">{{ b }}</span>
     <span class="short_title">{{ b.display_title }}</span>
   {% if b.parent %}</a>{% endif %}</li>
