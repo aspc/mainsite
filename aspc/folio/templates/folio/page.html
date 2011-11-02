@@ -1,14 +1,24 @@
 {% extends "base_page.html" %}
 {% load markup %}
 {% load pages %}
+
+{% block "head" %}
+{% if page.stylesheet %}<link rel="stylesheet" href="{{ STATIC_URL }}css/pages/{{ page.stylesheet }}" type="text/css" media="screen">{% endif %}
+{% endblock %}
+
 {% block "title" %}{{ title }}{% endblock %}
+
 {% block "page_class" %}page{% endblock %}
+
 {% block "breadcrumbs" %}
 {% if page.parent %}
 {% breadcrumbs_list page as breadcrumbs %}
 <ol class="breadcrumbs">
   {% for b in breadcrumbs %}
-  <li><a href="{{ b.get_absolute_url }}"><span class="title">{{ b }}</span><span class="short_title">{{ b.display_title }}</span></a></li>
+  <li><a href="{{ b.get_absolute_url }}">
+    <span class="title">{{ b }}</span>
+    <span class="short_title">{{ b.display_title }}</span>
+  {% if b.parent %}</a>{% endif %}</li>
   {% endfor %}
 </ol>
 {% endif %}
@@ -17,9 +27,13 @@
 {% block "page_title" %}{{ title }}{% if perms.page.can_change %}&nbsp;<a href="{% url "admin:folio_page_change" page.id %}">(edit)</a>{% endif %}{% endblock %}
 
 {% block "content" %}
+
+{% if body %}
 <div class="body">
 {{ body|markdown }}
 </div>
+{% endif %}
+
 {% if page.page_set.count %}
 <ol class="children">
 {% for child in page.page_set.all %}
@@ -27,5 +41,6 @@
 {% endfor %}
 </ol>
 {% endif %}
+
 {% endblock %}
 
