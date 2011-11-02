@@ -1,7 +1,7 @@
 /* @override http://localhost:8000/static/css/pages/PEC.css */
 
 /* PEC STYLES */
-@media screen {
+@media screen and (min-width: 767px) {
 	section.page > h1 {
 		font-family: Podkova, Rockwell, serif;
 		color: black;
