@@ -466,7 +466,7 @@ ul.actions li {
 .breadcrumbs {
 	list-style-type: none;
 	background-color: #004d70;
-	padding: 0.5em;
+	padding: 0.5em 2%;
 	font-size: 1em;
 }
 
