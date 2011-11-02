@@ -19,21 +19,24 @@
 	}
 	
 	section.page .content h1 {
-		font-size: 1.7em;
+		font-size: 1.9em;
 	}
 	
+	section.page #sidebar p {
+	font-size: 0.9em;
+}
+	
 	section.page #sidebar {
-		width: 40%;
+		width: 30%;
 		float: right;
 		padding: 1em;
 		margin: 1em;
-		margin-top: 0;
 		background-color: #bd373a;
 		color: #f9ecec;
 	}
 	
 	section.page #sidebar h1 {
-		font-size: 1.5em;
+		font-size: 1.8em;
 		margin-top: 0;
 	}
 	
