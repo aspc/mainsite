@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.exceptions import FieldError
+from django.conf import settings
 
 class Page(models.Model):
     """A glorified static page with Markdown content"""
@@ -35,7 +36,7 @@ class Page(models.Model):
         null=True,
         max_length=255,
         help_text="Path to an additional stylesheet for this page (relative"
-                  " to {{ STATIC_ROOT }}/css/)")
+                  " to {0}css/pages/)".format(settings.STATIC_URL))
     
     class Meta:
         ordering = ['sort_order', 'title',]

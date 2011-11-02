@@ -3,7 +3,7 @@
 {% load pages %}
 
 {% block "head" %}
-{% if page.stylesheet %}<link rel="stylesheet" href="{{ STATIC_URL }}css/{{ page.stylesheet }}" type="text/css" media="screen">{% endif %}
+{% if page.stylesheet %}<link rel="stylesheet" href="{{ STATIC_URL }}css/pages/{{ page.stylesheet }}" type="text/css" media="screen">{% endif %}
 {% endblock %}
 
 {% block "title" %}{{ title }}{% endblock %}
