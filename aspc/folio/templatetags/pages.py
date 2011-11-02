@@ -1,8 +1,9 @@
 from django import template
 from aspc.folio.models import Page
-import re
+import re, logging
 
 register = template.Library()
+log = logging.getLogger(__name__)
 
 class BreadcrumbsListNode(template.Node):
     def __init__(self, leaf_page, var_name):
@@ -33,7 +34,7 @@ class NavigationListNode(template.Node):
         self.exclude_pages = exclude_pages
         self.var_name = var_name
     def render(self, context):
-        nav_pages = Page.objects.filter(parent__isnull=True).exclude(
+        nav_pages = Page.objects.filter(parent__isnull=True).select_related(depth=2).exclude(
             slug__in=self.exclude_pages)
         if self.root_names:
             nav_pages = nav_pages.filter(slug__in=self.root_names)

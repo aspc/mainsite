@@ -1,5 +1,5 @@
 from django.views.generic.detail import DetailView
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import Http404
 from aspc.folio.models import Page
 
@@ -20,6 +20,5 @@ def page_view(request, slug_path):
         "body": new_page.body, 
         "page": new_page,
         "active_section": new_page.path()[0].slug,
-        "active_section_root": new_page.section_root,
     })
 

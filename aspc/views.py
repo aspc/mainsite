@@ -1,6 +1,9 @@
 from django.views.generic.dates import ArchiveIndexView
 from aspc.blog.views import PostArchive
 from aspc.blog.models import Post
+import logging, datetime
+
+log = logging.getLogger(__name__)
 
 class HomeView(PostArchive):
     template_name = "home.html"

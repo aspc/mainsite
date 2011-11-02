@@ -388,7 +388,7 @@ dl.detail dd {
 	text-decoration: none;
 	color: #ddd;
 	font-size: 0.8em;
-	float: right;
+	margin-left: 0.5em;
 }
 
 .primary .content {
@@ -466,7 +466,7 @@ ul.actions li {
 .breadcrumbs {
 	list-style-type: none;
 	background-color: #004d70;
-	padding: 0.5em;
+	padding: 0.5em 2%;
 	font-size: 1em;
 }
 
@@ -1532,7 +1532,7 @@ body {
 	-webkit-box-shadow: 0px 0px 4px #222;
 }
 
-.group > h1, .group h2 {
+.group > h1, .group > h2 {
 	color: white;
 	padding: 0.33em 0.5em 0.33em 0.5em;
 	padding-left: 0.5em;

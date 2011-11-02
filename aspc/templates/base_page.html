@@ -1,20 +1,27 @@
 {% extends "base.html" %}
+
+{% block "title" %}{{ title }}{% endblock %}
+
 {% block "content_prenav" %}
 <section class="group primary {% block "page_class" %}{% endblock %}">
   {% block "full_content" %}
-  {% block "breadcrumbs" %}
-  {% endblock %}
-  <h1>{% block "page_title" %}{{ title }}{% endblock %}</h1>
-  {% block "actions" %}
-  {% endblock %}
-  {% block "secondary_content" %}
-  {% endblock %}
-  {% block "outer_content" %}
-  <div class="content">
-    {% block "content" %}
+    {% block "breadcrumbs" %}
     {% endblock %}
-  </div>
-  {% endblock %}
+  
+    <h1>{% block "page_title" %}{{ title }}{% endblock %}</h1>
+  
+    {% block "actions" %}
+    {% endblock %}
+  
+    {% block "secondary_content" %}
+    {% endblock %}
+  
+    {% block "outer_content" %}
+    <div class="content">
+      {% block "content" %}
+      {% endblock %}
+    </div>
+    {% endblock %}
   {% endblock %}
 </section>
 {% endblock %}

@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.exceptions import FieldError
+from django.conf import settings
 
 class Page(models.Model):
     """A glorified static page with Markdown content"""
@@ -16,19 +17,26 @@ class Page(models.Model):
         'self',
         blank=True,
         null=True,
-        help_text="Optional parent page for this one. If none, it is listed "
-                  "as a top level page in its section.")
+        help_text="Optional parent page for this one. If none, it is treated"
+                  " as a category.")
     summary = models.TextField(
+        blank=True,
+        null=True,
         help_text="Page summary for display in parent page's"
                   " subpage list (plain text)")
-    body = models.TextField(help_text="Page body text written in Markdown")
+    body = models.TextField(
+        blank=True,
+        null=True,
+        help_text="Page body text written in Markdown")
     sort_order = models.PositiveSmallIntegerField(
         blank=True,
         help_text="Sort ordering")
-    section_root = models.BooleanField(
-        default=False,
-        help_text="Marks if this page should be displayed with"
-        " more emphasis on subpages")
+    stylesheet = models.CharField(
+        blank=True,
+        null=True,
+        max_length=255,
+        help_text="Path to an additional stylesheet for this page (relative"
+                  " to {0}css/pages/)".format(settings.STATIC_URL))
     
     class Meta:
         ordering = ['sort_order', 'title',]
