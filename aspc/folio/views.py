@@ -15,9 +15,6 @@ def page_view(request, slug_path):
         else:
             pages = new_page.page_set.all()
     
-    if new_page.parent is None:
-        return redirect("home")
-    
     return render(request, "folio/page.html", {
         "title": new_page.title,
         "body": new_page.body, 
