@@ -97,7 +97,6 @@ INSTALLED_APPS = (
     'sagelist',
     'college',
     'housing',
-    'forms_builder.forms',
     'debug_toolbar',
 )
 

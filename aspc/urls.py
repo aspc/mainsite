@@ -17,7 +17,6 @@ urlpatterns = patterns('',
     url(r'^sagebooks/', include('aspc.sagelist.urls')),
     url(r'^accounts/', include('aspc.auth.urls')),
     url(r'^housing/', include('aspc.housing.urls')),
-    url(r'^forms/', include('aspc.forms.urls')),
     url(r'(?P<slug_path>(?:[\w\-\d]+/)+)$', 'aspc.folio.views.page_view', name="folio_page"),
     # Examples:
     # url(r'^$', 'aspc.views.home', name='home'),
