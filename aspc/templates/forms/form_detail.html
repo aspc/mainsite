@@ -1,6 +1,14 @@
-{% extends "base_page.html" %}
+{% extends "forms/form_base.html" %}
+{% load url from future %}
 {% block "title" %}{{ form.title }}{% endblock %}
 {% block "page_title" %}{{ form.title }}{% endblock %}
+
+{% block "breadcrumbs" %}
+<ol class="breadcrumbs">
+  <li><a href="{% url "form_list" %}">Forms</a></li>
+  <li>{{ form.title }}</li>
+</ol>
+{% endblock %}
 
 {% block "content" %}
 	{% if form.intro %}
