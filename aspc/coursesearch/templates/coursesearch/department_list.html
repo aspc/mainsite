@@ -1,0 +1,14 @@
+{% extends "coursesearch/base.html" %}
+
+{% block "page_title" %}
+Departments
+{% endblock %}
+
+{% block "main" %}
+<ol id="dept_list">
+	<li class="dept_list_headers"><span class="dept_count">count</span> &mdash; <span class="dept_code">code</span> &mdash; <span class="dept_name">name</span></li>
+{% for dept in object_list %}
+	<li><span class="dept_count">{{ dept.course_set.count }}</span> &mdash; <a href="{{ dept.get_absolute_url }}"><span class="dept_code">{{ dept.code }}</span></a> &mdash; <span class="dept_name">{{ dept.name }}</span></li>
+{% endfor %}
+</ol>
+{% endblock %}

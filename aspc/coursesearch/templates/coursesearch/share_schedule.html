@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}schedule :: save{% endblock %}
+{% block "top_container" %}
+<h2><a href="{% url aspc.coursesearch.views.schedule %}">Schedule</a> &#x2192; share</h2>
+{% endblock %}
+
+{% block "main" %}
+<div class="content_main">
+<h2>{% if not saved %}share this schedule{% else %}schedule saved{% endif %}</h2>
+{% if schedule_courses %}
+<ul>
+{% for course in schedule_courses %}
+	<li>{{ course.code }} &mdash; {{ course.name }}</li>
+{% endfor %}
+</ul>
+	{% if not saved %}
+	<form action="" method="POST">
+		{% csrf_token %}
+		<p>once you click submit, you will get a link to a schedule with these courses that you can share on facebook or in an email.</p>
+		<p>you can also use it to get your courses back and add to them later.</p>
+		<input type="submit" value="save schedule">
+	</form>
+	{% else %}
+	<h3>to send this schedule to someone, use the link below</h3>
+	<p><a href="{{ schedule.outside_url }}">{{ schedule.outside_url }}</a></p>
+	<p>to come back and add to this schedule later, use the "load" link on that page.</p>
+	{% endif %}
+{% else %}
+<h3>there don't seem to be any courses in your schedule</h3>
+{% endif %}
+</div>
+{% endblock %}

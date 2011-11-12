@@ -1,0 +1,436 @@
+/* @override 
+	http://localhost:8000/static/css/coursesearch.css
+	http://127.0.0.1:8000/static/css/coursesearch.css
+*/
+
+/* @group landing */
+
+ul#landing {
+	list-style-type: none;
+	padding: 0;
+	text-align: center;
+	font-size: 2em;
+	width: 20em;
+	margin: 0 auto;
+	margin-bottom: 5em;
+}
+
+ul#landing li {
+	float: left;
+	margin-right: 1em;
+}
+
+ul#landing li a {
+	text-decoration: none;
+}
+
+ul#landing li a:hover {
+	text-decoration: underline;
+}
+
+
+/* @end */
+
+/* @group base */
+
+#main_container h1, #main_container h2, #main_container h3 {
+	color: black;
+}
+
+#main_container {
+	background: white;
+}
+
+
+/* @end */
+
+/* @group search */
+
+div#top_container {
+	padding: 1em;
+	margin: 0;
+	color: white;
+}
+
+.error {
+	color: #ffc6c6;
+}
+
+div#search_form {
+	clear: both;
+	line-height: 2.3em;
+}
+
+div#search_form:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+div#search_form .helptext {
+	color: #ccc;
+}
+
+#submit {
+	float: left;
+}
+
+#reset {
+	float: right;
+	color: white;
+}
+
+div#top_container a {
+	color: white;
+}
+
+
+
+/* @end */
+
+/* @group search results */
+
+ol.course_list {
+	list-style-type: none;
+	padding-left: 0;
+	color: black;
+}
+
+ol.course_list h3 a {
+	color: #1860cc;
+	text-decoration: none;
+}
+
+ol.course_list h3 a:hover { text-decoration: underline; }
+
+ol.course_list li {
+	padding: 0.5em 1em;
+}
+
+ol.course_list li ul {
+	padding-left: 0;
+}
+
+ol.course_list li li.meeting {
+	list-style-type: none;
+	padding-left: 0;
+	margin-bottom: 0.25em;
+	line-height: 28px;
+}
+
+.stats {
+	text-align: center;
+	color: darkgray;
+	background-color: #e7e7e7;
+}
+
+.paginator {
+	text-align: center;
+	background-color: #e7e7e7;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.paginator a {
+	color: #4a88e5;
+	text-decoration: none;
+
+}
+
+#pagination {
+	color: #777;
+}
+
+.even {
+	background-color: #f7f7f7;
+}
+
+.odd {
+	background-color: white;
+}
+
+.campus_icon {
+	padding: 4px;
+	letter-spacing: 0.2em;
+	text-align: center;
+	color: white;
+}
+
+
+
+/* @end */
+
+/* @group footer */
+
+div#footer {
+	text-align: center;
+	padding: 0.5em;
+	color: white;
+	clear: both;
+}
+
+div#footer a {
+	text-decoration: none;
+	color: white;
+}
+
+/* @end */
+
+/* @group school colors */
+
+.campus_CGU { background-color: #da3d38;}
+.campus_CM { background-color: #71101b;}
+.campus_CU { background-color: #391858;}
+.campus_HM { background-color: #ca9a0a;}
+.campus_PO { background-color: #1860cc;}
+.campus_PZ { background-color: #f49700;}
+.campus_SC { background-color: #889e5a;}
+
+.wc-cal-event.campus_CGU { background-color: #da3d38;}
+.wc-cal-event.campus_CGU .wc-time { background-color: #564241;}
+.wc-cal-event.campus_CM { background-color: #71101b;}
+
+.wc-cal-event.campus_CM .wc-time { background-color: #564144;}
+.wc-cal-event.campus_CU { background-color: #391858;}
+
+.wc-cal-event.campus_CU .wc-time { background-color: #4c4156;}
+.wc-cal-event.campus_HM { background-color: #ca9a0a;}
+
+.wc-cal-event.campus_HM .wc-time { background-color: #565141;}
+.wc-cal-event.campus_PO { background-color: #1860cc;}
+
+.wc-cal-event.campus_PO .wc-time { background-color: #414a56;}
+.wc-cal-event.campus_PZ { background-color: #f49700;}
+
+.wc-cal-event.campus_PZ .wc-time { background-color: #564e41;}
+.wc-cal-event.campus_SC { background-color: #889e5a;}
+
+.wc-cal-event.campus_SC .wc-time { background-color: #4f5641;}
+
+
+
+/* @end */
+
+/* @group browse */
+
+/* @group courses */
+
+div.content_main {
+	padding: 1.5em 2.5em;
+	width:60%;
+	margin: 0 auto;
+}
+
+#course_details h3 {
+	text-align: center;
+}
+
+#course_details p.info_line {
+	padding-left: 3em;
+	text-indent: -3em;
+}
+
+#course_details li.meeting {
+	margin-bottom: 1em;
+}
+
+/* @end */
+
+/* @group departments */
+
+ol#dept_list li.dept_list_headers span {
+	font-weight: bold;
+	margin-bottom: 1em;
+}
+
+ol#dept_list li span {
+	display: inline-block;
+}
+
+ol#dept_list li a {
+	text-decoration: none;
+	color: #1860cc;
+}
+
+ol#dept_list li span.dept_code {
+	width: 4em;
+	padding-left: 1em;
+}
+
+ol#dept_list li span.dept_count {
+	width: 2em;
+	text-align: right;
+	padding-right: 1em;
+}
+
+ol#dept_list li span.dept_name {
+	padding-left: 1em;
+}
+
+/* @end */
+
+ol#dept_list {
+	margin: 0 auto;
+	padding: 2em 0;
+	list-style-type: none;
+	font-size: 16px;
+	width: 25em;
+}
+
+
+
+/* @end */
+
+/* @group schedule */
+
+h2#schedule_course_label {
+	color: white;
+	background-color: #004361;
+	margin: 0;
+	font-size: 1.2em;
+	padding: 0.41em 2%;
+}
+
+#schedule_panel {
+	width: 60%;
+	margin: 0;
+	padding: 0;
+	float: left;
+}
+
+#calendar {
+	clear: both;
+}
+
+#schedule_panel.full_width {
+	width: 100%;
+}
+
+#side_panel {
+	width: 40%;
+	float: right;
+	margin: 0;
+	padding: 0;
+	font-size: 0.9em;
+}
+
+#side_panel.hidden {
+	display: none;
+}
+
+/* @end */
+
+/* @group your courses */
+
+/* @group share, clear, message */
+
+h4#share_clear {
+	clear: both;
+	text-align: center;
+	margin: 0;
+	background-color: #004361;
+}
+
+#share_clear:after {
+	content: "";
+	clear: both;
+	display: block;
+}
+
+
+h2#message {
+	padding: 0.3em;
+	color: #ffec52;
+	text-align: center;	
+}
+
+h2#message a {
+	color: #ffec52;
+}
+
+h2#message a:hover {
+	color: white;
+}
+
+a#share_schedule, a#clear_schedule {
+	color: white;
+	text-decoration: none;
+	display: block;
+	padding: 0.5em 2%;
+}
+
+a#share_schedule {
+	float: right;
+}
+
+a#clear_schedule {
+	float: left;
+}
+
+a#share_schedule:hover, a#clear_schedule:hover {
+	background-color: #8cbaff;
+}
+
+/* @end */
+ol#schedule_courses {
+	padding: 0 2%;
+	margin: 0;
+	list-style-type: none;
+	background-color: #004361;
+}
+
+ol#schedule_courses:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+ol#schedule_courses li {
+	padding: 0.33em;
+	float: left;
+	font-size: 95%;
+	margin-right: 0.75em;
+	margin-bottom: 0.5em;
+	display: inline;
+}
+
+ol#schedule_courses li a {
+	font-weight: bold;
+	text-decoration: none;
+	color: white;
+}
+ol#schedule_courses li a.course_delete {
+	padding: 0.1em 0.25em;
+	color: #ccc;
+	float: right;
+}
+ol#schedule_courses li a.course_delete:hover {
+	background: #555;
+	color: white;
+}
+
+ol.course_list a.add_course {
+    display: block;
+    padding: 4px;
+    border-radius: 4px;
+    background: #efefef;
+    font-weight: normal;
+    font-size: 12px;
+    color: #58cb58;
+    margin: 0 auto;
+    width: 12em;
+    text-align: center;
+    text-decoration: none;
+}
+
+ol.course_list a.add_course.added {
+	background: #cdcdcd;
+}
+
+ol.course_list a.add_course:hover {
+    background: #8c8;
+    color: white;
+    text-decoration: none;
+}
+
+/* @end */

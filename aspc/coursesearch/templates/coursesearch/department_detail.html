@@ -1,0 +1,15 @@
+{% extends "coursesearch/base.html" %}
+
+{% block "top_container" %}
+<h2><a href="{% url department_list %}">Departments</a> &#x2192; {{ object.name }}</h2>
+{% endblock %}
+
+{% block "main" %}
+<ol class="course_list">
+	{% for c in object.course_set.all %}
+	<li class="{% cycle 'odd' 'even' %}">
+	{% include "coursesearch/course_list_item.html" %}
+	</li>
+	{% endfor %}
+</ol>
+{% endblock %}
