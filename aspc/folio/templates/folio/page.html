@@ -3,6 +3,10 @@
 {% load markup %}
 {% load pages %}
 
+{% block "ogtitle" %}{{ title }}{% endblock %}
+{% block "ogdesc" %}{{ page.summary }}{% endblock %}
+{% block "metadesc" %}{{ page.summary }}{% endblock %}
+
 {% block "head" %}
 {% if page.stylesheet %}<link rel="stylesheet" href="{{ STATIC_URL }}css/pages/{{ page.stylesheet }}" type="text/css" media="screen">{% endif %}
 {% endblock %}
