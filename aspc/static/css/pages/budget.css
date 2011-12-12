@@ -11,6 +11,7 @@
 
 #pie_chart {
 	background: url(budget_pie_2011-12.png);
+	background-repeat: no-repeat;
 	width: 45%;
 	height: 20em;
 	background-size: 100%;
