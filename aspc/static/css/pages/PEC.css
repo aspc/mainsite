@@ -1,6 +1,8 @@
 /* @override http://localhost:8000/static/css/pages/PEC.css */
 
 /* PEC STYLES */
+@import url(http://fonts.googleapis.com/css?family=Podkova);
+
 @media screen and (min-width: 767px) {
 	section.page > h1 {
 		font-family: Podkova, Rockwell, serif;
