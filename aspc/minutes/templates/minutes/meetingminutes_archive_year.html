@@ -1,0 +1,24 @@
+{% extends "blog/base.html" %}
+{% load url from future %}
+{% load markup %}
+
+{% block "ogtitle" %}Senate Minutes from {{ year }}{% endblock %}
+{% block "title" %}Senate Minutes from {{ year }}{% endblock %}
+{% block "page_title" %}Senate Minutes from {{ year }}{% endblock %}
+
+{% block "breadcrumbs" %}
+<ol class="breadcrumbs">
+  <li><a href="/senate/">Senate</a></li>
+  <li><a href="{% url "minutes_index" %}">Minutes</a></li>
+  <li><a href="{% url "minutes_year" year=year %}">{{ year }}</a></li>
+</ol>
+{% endblock %}
+
+{% block "content" %}
+  <ol class="years">
+  {% for d in date_list %}
+    <li><a href="{% url "minutes_month" year=year month=d|date:"b" %}">{{ d|date:"F" }}  &rarr;</a></li>
+  {% endfor %}
+  </ol>
+{% endblock %}
+

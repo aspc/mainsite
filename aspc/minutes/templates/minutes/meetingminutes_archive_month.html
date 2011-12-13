@@ -1,0 +1,35 @@
+{% extends "minutes/base.html" %}
+{% load url from future %}
+{% load markup %}
+
+{% block "breadcrumbs" %}
+<ol class="breadcrumbs">
+  <li><a href="/senate/">Senate</a></li>
+  <li><a href="{% url "minutes_index" %}">Minutes</a></li>
+  <li><a href="{% url "minutes_year" year=month|date:"Y" %}">{{ month|date:"Y" }}</a></li>
+  <li><a href="{% url "minutes_month" year=month|date:"Y" month=month|date:"b" %}">{{ month|date:"F" }}</a></li>
+</ol>
+{% endblock %}
+
+{% block "secondary_content" %}
+<nav class="archive">
+  {% block "archive_nav" %}
+  <ol class="month_next_prev">
+    {% if next_month %}<li class="next_month"><a href="{% url "minutes_month" year=next_month|date:"Y" month=next_month|date:"b" %}">{{ next_month|date:"F" }} &rarr;</a></li>{% endif %}
+    <li class="previous_month"><a href="{% url "minutes_month" year=previous_month|date:"Y" month=previous_month|date:"b" %}">&larr; {{ previous_month|date:"F" }}</a></li>
+  </ol>
+  {% endblock %}
+</nav>
+{% endblock %}
+
+{% block "ogtitle" %}Senate Minutes from {{ month|date:"F, Y"}}{% endblock %}
+{% block "title" %}Senate Minutes from {{ month|date:"F, Y"}}{% endblock %}
+{% block "page_title" %}Senate Minutes from {{ month|date:"F, Y"}}{% endblock %}
+
+{% block "outer_content" %}
+{% if minutes %}
+{% include "minutes/meetingminutes_fragment.html" %}
+{% else %}
+<p>No minutes available for this month</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "minutes/meetingminutes_archive_month.html" %}
+{% load url from future %}
+{% load markup %}
+
+{% block "breadcrumbs" %}
+<ol class="breadcrumbs">
+  <li><a href="/senate/">Senate</a></li>
+  <li><a href="{% url "minutes_index" %}">Minutes</a></li>
+</ol>
+{% endblock %}
+
+{% block "ogtitle" %}Senate Minutes{% endblock %}
+{% block "title" %}Senate Minutes{% endblock %}
+{% block "page_title" %}Senate Minutes{% endblock %}
+{% block "archive_nav" %}
+{% if years %}
+  <h2>Years:</h2>
+  <ol class="years">
+  {% for y in years %}
+    <li><a href="{% url "minutes_year" year=y %}">{{ y }}</a></li>
+  {% endfor %}
+  </ol>
+{% endif %}
+{% endblock %}

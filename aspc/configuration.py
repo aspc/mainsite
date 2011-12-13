@@ -99,6 +99,7 @@ INSTALLED_APPS = (
     'college',
     'housing',
     'debug_toolbar',
+    'minutes',
 )
 
 # A sample logging configuration. The only tangible logging

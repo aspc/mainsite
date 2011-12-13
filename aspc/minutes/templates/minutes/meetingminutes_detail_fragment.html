@@ -1,0 +1,7 @@
+{% load markup %}
+<div class="minutes_info">
+  <h1><a href="{{ meeting.get_absolute_url }}">{{ meeting.title }}</a></h1>
+</div>
+<div class="minutes_body content">
+  {{ meeting.body|markdown }}
+</div>
