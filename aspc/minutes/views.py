@@ -6,7 +6,7 @@ from aspc.folio.views import AttachedPageMixin
 import datetime
 
 class MinutesPageMixin(AttachedPageMixin):
-    page_slug = "meetings-minutes"
+    page_slug = "meetings-and-minutes"
 
 class MinutesYearArchiveView(MinutesPageMixin, YearArchiveView):
     pass
