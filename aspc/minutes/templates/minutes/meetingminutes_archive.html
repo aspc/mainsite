@@ -13,7 +13,7 @@
 {% block "title" %}Senate Minutes{% endblock %}
 {% block "page_title" %}
 Senate Minutes
-{% if perms.page.can_change %}&nbsp;<a href="{% url "admin:folio_page_change" page.id %}">(edit)</a>{% endif %}
+{% if page %}{% if perms.page.can_change %}&nbsp;<a href="{% url "admin:folio_page_change" page.id %}">(edit)</a>{% endif %}{% endif %}
 {% if perms.meetingminutes.can_change %}&nbsp;<a href="{% url "admin:minutes_meetingminutes_add" %}">(post minutes)</a>{% endif %}
 {% endblock %}
 
@@ -32,7 +32,9 @@ Senate Minutes
 
 {% block "outer_content" %}
 <div class="content">
+  {% if page %}
   {{ page.body|markdown }}
+  {% endif %}
   {% if minutes %}
   <h2>Minutes for recent meetings:</h2>
   {% include "minutes/meetingminutes_fragment.html" %}
