@@ -5,7 +5,7 @@
 {% block "breadcrumbs" %}
 <ol class="breadcrumbs">
   <li><a href="/senate/">Senate</a></li>
-  <li><a href="{% url "minutes_index" %}">Minutes</a></li>
+  <li><a href="{% url "minutes_index" %}">Meetings and Minutes</a></li>
   <li><a href="{% url "minutes_year" year=month|date:"Y" %}">{{ month|date:"Y" }}</a></li>
   <li><a href="{% url "minutes_month" year=month|date:"Y" month=month|date:"b" %}">{{ month|date:"F" }}</a></li>
 </ol>

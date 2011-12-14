@@ -3,9 +3,18 @@ from django.db import models
 class MeetingMinutes(models.Model):
     """The minutes for a meeting of the ASPC Senate"""
     
-    date = models.DateField(help_text="Date of the meeting")
-    summary = models.TextField(blank=True)
-    body = models.TextField(blank=True)
+    date = models.DateField(
+        help_text="Date of the meeting"
+    )
+    summary = models.TextField(
+        blank=True,
+        help_text="Summarize this meeting in a sentence or two of "
+                  "unformatted text. (Used for search results and overview.)",
+    )
+    body = models.TextField(
+        blank=True,
+        help_text="The minutes of this meeting in <a href=\"http://daringfireball.net/projects/markdown/dingus\">Markdown</a>",
+    )
     
     class Meta:
         ordering = ['date']

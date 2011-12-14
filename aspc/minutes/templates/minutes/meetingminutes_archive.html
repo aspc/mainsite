@@ -1,24 +1,44 @@
-{% extends "minutes/meetingminutes_archive_month.html" %}
+{% extends "folio/page.html" %}
 {% load url from future %}
 {% load markup %}
 
 {% block "breadcrumbs" %}
 <ol class="breadcrumbs">
   <li><a href="/senate/">Senate</a></li>
-  <li><a href="{% url "minutes_index" %}">Minutes</a></li>
+  <li><a href="{% url "minutes_index" %}">Meetings and Minutes</a></li>
 </ol>
 {% endblock %}
 
 {% block "ogtitle" %}Senate Minutes{% endblock %}
 {% block "title" %}Senate Minutes{% endblock %}
-{% block "page_title" %}Senate Minutes{% endblock %}
-{% block "archive_nav" %}
-{% if years %}
-  <h2>Years:</h2>
-  <ol class="years">
-  {% for y in years %}
-    <li><a href="{% url "minutes_year" year=y %}">{{ y }}</a></li>
-  {% endfor %}
-  </ol>
-{% endif %}
+{% block "page_title" %}
+Senate Minutes
+{% if perms.page.can_change %}&nbsp;<a href="{% url "admin:folio_page_change" page.id %}">(edit)</a>{% endif %}
+{% if perms.meetingminutes.can_change %}&nbsp;<a href="{% url "admin:minutes_meetingminutes_add" %}">(post minutes)</a>{% endif %}
+{% endblock %}
+
+{% block "secondary_content" %}
+<nav class="archive">
+  {% if years %}
+    <h2>Archived Minutes by Year:</h2>
+    <ol class="years">
+    {% for y in years %}
+      <li><a href="{% url "minutes_year" year=y %}">{{ y }}</a></li>
+    {% endfor %}
+    </ol>
+  {% endif %}
+</nav>
+{% endblock %}
+
+{% block "outer_content" %}
+<div class="content">
+  {{ page.body|markdown }}
+  {% if minutes %}
+  <h2>Minutes for recent meetings:</h2>
+  {% include "minutes/meetingminutes_fragment.html" %}
+  {% else %}
+  <p>No Senate meeting minutes have been posted yet.</p>
+  {% endif %}
+</div>
+
 {% endblock %}
