@@ -26,7 +26,7 @@
 {% block "title" %}Senate Minutes from {{ month|date:"F, Y"}}{% endblock %}
 {% block "page_title" %}Senate Minutes from {{ month|date:"F, Y"}}{% endblock %}
 
-{% block "outer_content" %}
+{% block "content" %}
 {% if minutes %}
 {% include "minutes/meetingminutes_fragment.html" %}
 {% else %}

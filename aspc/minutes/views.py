@@ -1,9 +1,20 @@
-from django.views.generic.dates import DateDetailView, ArchiveIndexView
+from django.views.generic.dates import (ArchiveIndexView, YearArchiveView,
+    MonthArchiveView, DateDetailView)
 from django.http import Http404
 from aspc.folio.models import Page
+from aspc.folio.views import AttachedPageMixin
 import datetime
 
-class MinutesDetail(DateDetailView):
+class MinutesPageMixin(AttachedPageMixin):
+    page_slug = "meetings-minutes"
+
+class MinutesYearArchiveView(MinutesPageMixin, YearArchiveView):
+    pass
+
+class MinutesMonthArchiveView(MinutesPageMixin, MonthArchiveView):
+    pass
+
+class MinutesDetail(MinutesPageMixin, DateDetailView):
     def get_object(self):
         # Parse date into datetime (or raise 404)
         try:
@@ -21,13 +32,7 @@ class MinutesDetail(DateDetailView):
         except self.model.DoesNotExist:
             raise Http404
 
-class MinutesArchive(ArchiveIndexView):
-    def get_page(self):
-        try:
-            return Page.objects.get(slug="meetings-minutes")
-        except Page.DoesNotExist:
-            return None
-    
+class MinutesArchive(MinutesPageMixin, ArchiveIndexView):
     def get_context_data(self, **kwargs):
         context = super(MinutesArchive, self).get_context_data(**kwargs)
         qs = self.model.objects.all()
@@ -38,5 +43,4 @@ class MinutesArchive(ArchiveIndexView):
         for date in qs:
             years.add(date.year)
         context['years'] = years
-        context['page'] = self.get_page()
         return context

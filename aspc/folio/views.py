@@ -3,6 +3,19 @@ from django.shortcuts import render, redirect
 from django.http import Http404
 from aspc.folio.models import Page
 
+class AttachedPageMixin(object):
+    def get_page(self):
+        print self.page_slug
+        try:
+            return Page.objects.get(slug=self.page_slug)
+        except Page.DoesNotExist:
+            return None
+    
+    def get_context_data(self, **kwargs):
+        context = super(AttachedPageMixin, self).get_context_data(**kwargs)
+        context['page'] = self.get_page()
+        return context
+
 def page_view(request, slug_path):
     '''slug_path: ^(?P<slug_path>(?:[\w\-\d]+/)+)$ '''
     slug_parts = slug_path.rstrip('/').split('/')

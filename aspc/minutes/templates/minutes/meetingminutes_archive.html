@@ -1,4 +1,4 @@
-{% extends "folio/page.html" %}
+{% extends "minutes/base.html" %}
 {% load url from future %}
 {% load markup %}
 
@@ -13,11 +13,16 @@
 {% block "title" %}Senate Minutes{% endblock %}
 {% block "page_title" %}
 Senate Minutes
-{% if page %}{% if perms.page.can_change %}&nbsp;<a href="{% url "admin:folio_page_change" page.id %}">(edit)</a>{% endif %}{% endif %}
+{% if page %}
+  {% if perms.page.can_change %}&nbsp;<a href="{% url "admin:folio_page_change" page.id %}">(edit)</a>{% endif %}
+{% endif %}
 {% if perms.meetingminutes.can_change %}&nbsp;<a href="{% url "admin:minutes_meetingminutes_add" %}">(post minutes)</a>{% endif %}
 {% endblock %}
 
 {% block "secondary_content" %}
+{% if not page %}
+<p><strong>Warning:</strong> Missing Folio page for this section. Create a page with the slug "meetings-minutes" and stylesheet "minutes.css" to enable content editing.</p>
+{% endif %}
 <nav class="archive">
   {% if years %}
     <h2>Archived Minutes by Year:</h2>
