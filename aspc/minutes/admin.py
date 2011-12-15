@@ -4,5 +4,6 @@ from aspc.minutes.models import MeetingMinutes
 
 class MeetingMinutesAdmin(admin.ModelAdmin):
     date_hierarchy = 'date'
+    list_display = ['date', 'summary']
 
 admin.site.register(MeetingMinutes, MeetingMinutesAdmin)
