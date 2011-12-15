@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.localflavor.us.models import PhoneNumberField
+import datetime
 
 class BusinessManager(models.Manager):
     def off_campus(self):
@@ -39,10 +40,25 @@ class Business(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return ('business_detail', [self.id])
-
+    
+    @property
+    def is_open(self):
+        weekday = datetime.date.today().strftime("%A").lower()
+        query = {
+            weekday: True,
+            'open__lt': datetime.datetime.now().time(),
+            'close__gt': datetime.datetime.now().time(),
+        }
+        if self.hours.filter(**query).count():
+            return True
+        else:
+            return False
+    
+    def has_discount(self):
+        return bool(self.discount)
 
 class Hours(models.Model):
-    business = models.ForeignKey(Business)
+    business = models.ForeignKey(Business, related_name="hours")
     monday = models.BooleanField()
     tuesday = models.BooleanField()
     wednesday = models.BooleanField()
@@ -61,4 +77,9 @@ class Hours(models.Model):
         return s
 
     def __unicode__(self):
-        return u'[%s] Open %s, %s-%s' % (self.business.name, ''.join(self.gen_days()), self.begin.strftime('%I:%M %p'), self.end.strftime('%I:%M %p'))
+        return u'[%s] Open %s, %s-%s' % (
+            self.business.name,
+            ''.join(self.gen_days()),
+            self.begin.strftime('%I:%M %p'),
+            self.end.strftime('%I:%M %p')
+        )
