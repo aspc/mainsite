@@ -7,3 +7,6 @@ def site(request):
     else:
         site_info['domain'] = RequestSite(request).domain
     return site_info
+
+def absolute_uri(request):
+    return {'absolute_uri': request.build_absolute_uri(),}

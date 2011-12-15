@@ -1,0 +1,22 @@
+{% extends "blog/base.html" %}
+{% load url from future %}
+{% load markup %}
+
+{% block "title" %}{{ minutes.title }}{% endblock %}
+{% block "ogtitle" %}{{ minutes.title }}{% endblock %}
+{% block "page_title" %}{{ minutes.title }}{% if perms.meetingminutes.can_change %}&nbsp;<a href="{% url "admin:minutes_meetingminutes_change" minutes.id %}">(edit)</a>{% endif %}{% endblock %}
+
+{% block "breadcrumbs" %}
+<ol class="breadcrumbs">
+  <li><a href="/senate/">Senate</a></li>
+  <li><a href="{% url "minutes_index" %}">Meetings and Minutes</a></li>
+  <li><a href="{% url "minutes_year" year=minutes.date|date:"Y" %}">{{ minutes.date|date:"Y" }}</a></li>
+  <li><a href="{% url "minutes_month" year=minutes.date|date:"Y" month=minutes.date|date:"b" %}">{{ minutes.date|date:"F" }}</a></li>
+  <li><a href="{{ minutes.get_absolute_url }}">{{ minutes.title }}</a></li>
+</ol>
+{% endblock %}
+{% block "secondary_content" %}
+<div class="minutes_body content">
+  {{ minutes.body|markdown }}
+</div>
+{% endblock %}

@@ -57,6 +57,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.contrib.messages.context_processors.messages",
     "aspc.context_processors.site",
+    "aspc.context_processors.absolute_uri",
 )
 
 MIDDLEWARE_CLASSES = (
@@ -99,6 +100,7 @@ INSTALLED_APPS = (
     'housing',
     'debug_toolbar',
     'coursesearch',
+    'minutes',
 )
 
 # A sample logging configuration. The only tangible logging

@@ -1,0 +1,7 @@
+<ol class="minutes">
+{% for meeting in minutes %}
+  <li>
+    {% include "minutes/meetingminutes_detail_fragment.html" %}
+  </li>
+{% endfor %}
+</ol>

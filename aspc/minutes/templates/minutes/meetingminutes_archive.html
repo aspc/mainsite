@@ -1,0 +1,51 @@
+{% extends "minutes/base.html" %}
+{% load url from future %}
+{% load markup %}
+
+{% block "breadcrumbs" %}
+<ol class="breadcrumbs">
+  <li><a href="/senate/">Senate</a></li>
+  <li><a href="{% url "minutes_index" %}">Meetings and Minutes</a></li>
+</ol>
+{% endblock %}
+
+{% block "ogtitle" %}Senate Minutes{% endblock %}
+{% block "title" %}Senate Minutes{% endblock %}
+{% block "page_title" %}
+Senate Minutes
+{% if page %}
+  {% if perms.page.can_change %}&nbsp;<a href="{% url "admin:folio_page_change" page.id %}">(edit)</a>{% endif %}
+{% endif %}
+{% if perms.meetingminutes.can_change %}&nbsp;<a href="{% url "admin:minutes_meetingminutes_add" %}">(post minutes)</a>{% endif %}
+{% endblock %}
+
+{% block "secondary_content" %}
+{% if not page %}
+<p><strong>Warning:</strong> Missing Folio page for this section. Create a page with the slug "meetings-and-minutes" and stylesheet "minutes.css" to enable content editing.</p>
+{% endif %}
+<nav class="archive">
+  {% if years %}
+    <h2>Archived Minutes by Year:</h2>
+    <ol class="years">
+    {% for y in years %}
+      <li><a href="{% url "minutes_year" year=y %}">{{ y }}</a></li>
+    {% endfor %}
+    </ol>
+  {% endif %}
+</nav>
+{% endblock %}
+
+{% block "outer_content" %}
+<div class="content">
+  {% if page %}
+  {{ page.body|markdown }}
+  {% endif %}
+  {% if minutes %}
+  <h2>Minutes for recent meetings:</h2>
+  {% include "minutes/meetingminutes_fragment.html" %}
+  {% else %}
+  <p>No Senate meeting minutes have been posted yet.</p>
+  {% endif %}
+</div>
+
+{% endblock %}

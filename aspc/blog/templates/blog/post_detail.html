@@ -2,7 +2,10 @@
 {% load url from future %}
 {% load markup %}
 {% block "title" %}{{ post.title }}{% endblock %}
-{% block "page_title" %}{{ post.title }}{% endblock %}
+{% block "page_title" %}
+{{ post.title }}
+{% if perms.post.can_change %}&nbsp;<a href="{% url "admin:blog_post_change" post.id %}">(edit)</a>{% endif %}
+{% endblock %}
 {% block "breadcrumbs" %}
 <ol class="breadcrumbs">
   <li><a href="{% url "post_index" %}">News</a></li>
