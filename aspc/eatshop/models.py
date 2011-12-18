@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.localflavor.us.models import PhoneNumberField
 import datetime
+from aspc.eatshop.config import COOP_FOUNTAIN_ID
 
 class BusinessManager(models.Manager):
     def off_campus(self):
@@ -60,7 +61,14 @@ class Business(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('business_detail', [self.id])
+        if self.id == COOP_FOUNTAIN_ID:
+            return ('coop_fountain', [])
+        elif self.type == Business.TYPES_LOOKUP['On-Campus Restaurant']:
+            return ('on_campus_detail')
+        elif self.type == Business.TYPES_LOOKUP['Restaurant']:
+            return ('restaurant_detail', [self.id])
+        else:
+            return ('business_detail', [self.id])
     
     @property
     def is_open(self):

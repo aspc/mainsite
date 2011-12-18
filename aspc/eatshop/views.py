@@ -2,9 +2,7 @@ from django.http import Http404
 from django.shortcuts import render
 from aspc.folio.models import Page
 from aspc.eatshop.models import Business
-
-COOP_FOUNTAIN_ID = 1
-COOP_FOUNTAIN_SLUG = "coop-fountain"
+from aspc.eatshop.config import COOP_FOUNTAIN_ID, COOP_FOUNTAIN_SLUG
 
 def coop_fountain(request):
     coop = Business.objects.on_campus().get(pk=COOP_FOUNTAIN_ID)

@@ -1,0 +1,2 @@
+COOP_FOUNTAIN_ID = 1
+COOP_FOUNTAIN_SLUG = "coop-fountain"
