@@ -1,0 +1,14 @@
+<div id="contact">
+  <dl>
+    {% if business.www %}<dt>WWW</dt><dd><a href="{{ business.www }}">{{ business.www }}</a></dd>{% endif %}
+    <dt>Address</dt><dd>{{ business.address|linebreaksbr }}</dd>
+    {% if business.phone %}<dt>Phone</dt><dd>{{ business.phone }}</dd>{% endif %}
+  </dl>
+</div>
+<div id="description">
+  <p>{{ business.description }}</p>
+  {% if business.has_discount %}<p id="discount">{{ business.discount }}</p>{% endif %}
+</div>
+<div id="hours">
+  {% include "eatshop/hours_fragment.html" %}
+</div>

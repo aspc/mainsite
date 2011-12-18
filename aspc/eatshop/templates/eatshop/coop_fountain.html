@@ -1,0 +1,38 @@
+{% extends "eatshop/base.html" %}
+{% load url from future %}
+{% load markup %}
+
+{% block "ogtitle" %}Coop Fountain{% endblock %}
+{% block "title" %}Coop Fountain{% endblock %}
+{% block "page_title" %}Coop Fountain{% endblock %}
+
+{% block "ogdesc" %}{{ page.summary }}{% endblock %}
+{% block "metadesc" %}{{ page.summary }}{% endblock %}
+
+{% block "head" %}
+{% if page.stylesheet %}<link rel="stylesheet" href="{{ STATIC_URL }}css/pages/{{ page.stylesheet }}" type="text/css" media="screen">{% endif %}
+{% endblock %}
+
+{% block "eatshop_breadcrumbs" %}
+  <li><a href="{% url "coop_fountain" %}">Coop Fountain</a></li>
+{% endblock %}
+
+{% block "content" %}
+
+{% include "eatshop/business_info_fragment.html" %}
+
+{% if body %}
+<div class="body">
+{{ body|markdown }}
+</div>
+{% endif %}
+
+{% if page.page_set.count %}
+<ol class="children">
+{% for child in page.page_set.all %}
+  <li><a href="{{ child.get_absolute_url }}">{{ child }}</a><p class="summary">{{ child.summary }}</p></li>
+{% endfor %}
+</ol>
+{% endif %}
+
+{% endblock %}

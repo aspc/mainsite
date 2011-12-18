@@ -100,6 +100,7 @@ INSTALLED_APPS = (
     'housing',
     'debug_toolbar',
     'minutes',
+    'eatshop',
 )
 
 # A sample logging configuration. The only tangible logging

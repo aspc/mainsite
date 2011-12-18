@@ -5,9 +5,9 @@ class HoursInline(admin.TabularInline):
     model = Hours
 
 class BusinessAdmin(admin.ModelAdmin):
-    list_display = ("name", "phone", "www", "has_discount")
+    list_display = ("name", "type", "phone", "www", "has_discount")
     inlines = [
-        BusinessAdmin,
+        HoursInline,
     ]
 
 admin.site.register(Business, BusinessAdmin)

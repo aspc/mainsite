@@ -14,12 +14,10 @@ urlpatterns = patterns('',
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^news/', include('aspc.blog.urls')),
+    url(r'^eatshop/', include('aspc.eatshop.urls')),
     url(r'^senate/meetings-and-minutes/', include('aspc.minutes.urls')),
     url(r'^sagebooks/', include('aspc.sagelist.urls')),
     url(r'^accounts/', include('aspc.auth.urls')),
     url(r'^housing/', include('aspc.housing.urls')),
     url(r'(?P<slug_path>(?:[\w\-\d]+/)+)$', 'aspc.folio.views.page_view', name="folio_page"),
-    # Examples:
-    # url(r'^$', 'aspc.views.home', name='home'),
-    # url(r'^aspc/', include('aspc.foo.urls')),
 )
