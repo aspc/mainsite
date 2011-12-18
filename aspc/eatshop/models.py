@@ -13,7 +13,7 @@ class BusinessManager(models.Manager):
             type=Business.TYPES_LOOKUP['Restaurant']
         )
     
-    def businesses(self):
+    def non_food(self):
         return self.get_query_set().exclude(
             type__in=[
                 Business.TYPES_LOOKUP['Restaurant'],

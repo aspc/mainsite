@@ -12,11 +12,27 @@ home = {
 
 on_campus = {
     'queryset': Business.objects.on_campus(),
+    'template_name_suffix': '_list_on_campus',
 }
 
+on_campus_detail = dict(on_campus)
+on_campus_detail['template_name_suffix'] = '_detail_on_campus'
+
 restaurants = {
-    'queryset': Business.objects.off_campus()
+    'queryset': Business.objects.restaurants(),
+    'template_name_suffix': '_list_restaurants',
 }
+
+restaurants_detail = dict(restaurants)
+restaurants_detail['template_name_suffix'] = '_detail_restaurants'
+
+non_food = {
+    'queryset': Business.objects.non_food(),
+    'template_name_suffix': '_list_non_food',
+}
+
+non_food_detail = dict(restaurants)
+non_food_detail['template_name_suffix'] = '_detail_non_food'
 
 urlpatterns = patterns('',
     url(r'^$', ListView.as_view(**home), name="eatshop"),

@@ -1,0 +1,13 @@
+{% extends "eatshop/base.html" %}
+{% load url from future %}
+
+{% block "ogdesc" %}Information on local and on-campus businesses for Claremont Colleges students.{% endblock %}
+{% block "metadesc" %}Information on local and on-campus businesses for Claremont Colleges students.{% endblock %}
+
+{% block "content" %}
+<ul>
+  {% for business in business_list %}
+  {% include "eatshop/business_list_fragment.html" %}
+  {% endfor %}
+</ul>
+{% endblock %}
