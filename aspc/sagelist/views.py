@@ -28,6 +28,8 @@ class CreateBookSaleView(CreateView):
     
     def form_valid(self, form):
         sale = form.save(commit=False)
+        sale.title = sale.title.strip()
+        sale.authors = sale.authors.strip()
         sale.seller = self.request.user
         sale.save()
         sale.seller.email_user(
