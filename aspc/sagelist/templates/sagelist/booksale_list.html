@@ -12,9 +12,9 @@
     {% if total_for_sale %}<li>{{ total_for_sale }} book{% if total_for_sale != 1 %}s{% endif %} for sale</li>{% endif %}
     {% if total_sold %}<li>{{ total_sold }} book{% if total_sold != 1 %}s{% endif %} sold</li>{% endif %}
   </ul>
-  <form action="" method="GET" id="search_form">
+  <form action="." method="GET" id="search_form">
     {% if search %}
-      <a href="">clear</a>
+      <a href=".">clear</a>
     {% endif %}{{ form.search }}
     <input type="submit" value="search">
   </form>
