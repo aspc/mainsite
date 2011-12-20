@@ -1,5 +1,6 @@
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseForbidden, HttpResponseRedirect
+from django.db.models import Q
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView
@@ -132,10 +133,12 @@ class ListBookSalesView(ListView):
         qs = qs.filter(buyer__isnull=True)
         
         if form.is_valid():
-            qs = qs.filter(title__icontains=form.cleaned_data['search'])
-            qs |= qs.filter(authors__icontains=form.cleaned_data['search'])
-            qs |= qs.filter(edition__icontains=form.cleaned_data['search'])
-            qs |= qs.filter(isbn__icontains=form.cleaned_data['search'])
+            query = Q(title__icontains=form.cleaned_data['search'])
+            query |= Q(authors__icontains=form.cleaned_data['search'])
+            query |= Q(edition__icontains=form.cleaned_data['search'])
+            query |= Q(isbn__icontains=form.cleaned_data['search'])
+            qs = qs.filter(query)
+        
         return qs
     
     def get_context_data(self, *args, **kwargs):
