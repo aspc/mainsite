@@ -1,8 +1,12 @@
-<dl>
-{% for day, hours_list in business.formatted_hours %}
+{% if hours_available %}
+<dl class="hours">
+{% for day, hours_list in hours %}
   <dt>{{ day|capfirst }}</dt>
   {% for begin, end in hours_list %}
   <dd>{{ begin }}&nbsp;&ndash;&nbsp;{{ end }}</dd>
+  {% empty %}
+  <dd>closed</dd>
   {% endfor %}
 {% endfor %}
 </dl>
+{% endif %}

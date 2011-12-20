@@ -1,0 +1,138 @@
+/* @override http://localhost:8000/static/css/eatshop.css */
+
+form.filter ul {
+	font-size: 0.9em;
+	margin: 0;
+	background-color: #ddd;
+	color: #666;
+	padding-bottom: 0.25em;
+}
+
+form.filter ul li {
+	display: inline-block;
+	margin-bottom: 0.75em;
+}
+
+form.filter ul li label {
+	font-weight: normal;
+	display: inline;
+}
+
+form.filter ul li label:after {
+	content: "";
+}
+
+ul.results {
+	list-style-type: none;
+	padding: 0;
+}
+
+ul.results > li {
+	border-bottom: 1px solid #ddd;
+	padding-bottom: 1em;
+}
+
+ul.results > li:last-child {
+	border-bottom: none;
+	padding-bottom: 0;
+}
+
+ul.results > li:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.content h2 {
+	margin-bottom: 0.25em;
+}
+
+.content h3.accepts {
+	font-weight: normal;
+	font-size: 1em;
+	margin-top: 0;
+	color: #555;
+}
+
+.content .main_info {
+	float: left;
+	width: 60%;
+	font-size: 0.9em;
+}
+
+.content .body {
+	clear: both;
+}
+
+.main_info .contact, .main_info .address {
+	color: #555;
+	margin: 0;
+}
+
+.main_info .address {
+	margin-bottom: 0.33em;
+}
+
+.content .hours_discounts {
+	font-size: 0.9em;
+	width: 37%;
+	float: right;
+	background-color: #eef6ff;
+	margin: 0;
+}
+
+.hours_discounts dl {
+	margin: 0;
+	width: 90%;
+	clear: both;
+	padding: 5%;
+}
+
+.hours_discounts dl dt {
+	width: 40%;
+	float: left;
+	clear: left;
+	padding: 0; margin: 0;
+	margin-bottom: 0.5em;
+	font-weight: bold;
+}
+
+.hours_discounts dl dt:after {
+	content: ":";
+}
+
+.hours_discounts dl dd {
+	width: 60%;
+	float: left;
+	padding: 0; margin: 0;
+}
+
+.hours_discounts dl:after {
+	content: "";
+	clear: both;
+	display: block;
+}
+
+.hours_discounts p.accepts:last-child {
+	border-bottom: none;
+}
+
+.hours_discounts p.accepts {
+	padding-bottom: 0.5em;
+	border-bottom: 1px dashed #6a9ed8;
+	margin: 0;
+	padding: 1em;
+	background-color: #dfeeff;
+}
+
+#coop_fountain {
+	padding-top: 1em;
+	padding-bottom: 1em;
+	border-bottom: 1px dashed #6a9ed8;
+}
+
+#coop_fountain:after {
+	content: "";
+	display: block;
+	clear: both;
+}

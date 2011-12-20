@@ -5,6 +5,10 @@
 {% block "title" %}Food and Shopping{% endblock %}
 {% block "page_title" %}Food and Shopping{% endblock %}
 
+{% block "head" %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/eatshop.css" type="text/css">
+{% endblock %}
+
 {% block "breadcrumbs" %}
 <ol class="breadcrumbs">
   <li><a href="{% url "eatshop" %}">Food and Shopping</a></li>

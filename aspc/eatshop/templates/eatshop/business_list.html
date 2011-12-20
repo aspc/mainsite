@@ -4,10 +4,26 @@
 {% block "ogdesc" %}Information on local and on-campus businesses for Claremont Colleges students.{% endblock %}
 {% block "metadesc" %}Information on local and on-campus businesses for Claremont Colleges students.{% endblock %}
 
-{% block "content" %}
-<ul>
-  {% for business in business_list %}
-  {% include "eatshop/business_list_fragment.html" %}
-  {% endfor %}
-</ul>
+{% block "outer_content" %}
+{% block "eatshop_content" %}{% endblock %}
+<form action="" method="GET" class="filter">
+  <ul>
+    {{ filter.form.as_ul }}
+    <li><input type="submit"></li>
+    <li><a href=".">clear</a></li>
+  </ul>
+</form>
+
+<div class="content">
+  <ul class="results">
+    {% for business in filter %}
+    <li>
+      <h2>{{ business.name }}</h2>
+      {% include "eatshop/business_info_fragment.html" %}
+    </li>
+    {% empty %}
+    <li class="no_results">Nothing matched your search</li>
+    {% endfor %}
+  </ul>
+</div>
 {% endblock %}

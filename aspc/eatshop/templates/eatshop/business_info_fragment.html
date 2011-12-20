@@ -1,14 +1,24 @@
-<div id="contact">
-  <dl>
-    {% if business.www %}<dt>WWW</dt><dd><a href="{{ business.www }}">{{ business.www }}</a></dd>{% endif %}
-    <dt>Address</dt><dd>{{ business.address|linebreaksbr }}</dd>
-    {% if business.phone %}<dt>Phone</dt><dd>{{ business.phone }}</dd>{% endif %}
-  </dl>
-</div>
-<div id="description">
-  <p>{{ business.description }}</p>
-  {% if business.has_discount %}<p id="discount">{{ business.discount }}</p>{% endif %}
-</div>
-<div id="hours">
-  {% include "eatshop/hours_fragment.html" %}
-</div>
+{% load markup %}
+{% load eatshop %}
+  <div class="main_info">
+    <p class="address">{{ business.address|linebreaksbr }}</p>
+    {% if business.phone or business.www %}
+    <p class="contact">
+      {% if business.phone %}phone: {{ business.phone }} {% if business.www %}&bull;{% endif %}{% endif %}
+      {% if business.www %}<a href="{{ business.www }}">visit homepage</a>{% endif %}
+    </p>
+    {% endif %}
+    {{ business.description|markdown }}
+    {% if business.has_discount %}
+    <div class="discount">
+      <h4>Offers and Discounts:</h4>
+      {{ business.discount|markdown }}
+    </div>
+    {% endif %}
+  </div>
+  <div class="hours_discounts">
+    {% if business.flex or business.claremont_cash %}
+    <p class="accepts">Accepts {% if business.flex %}Flex {% if business.claremont_cash %}and {% endif %}{% endif %}{% if business.claremont_cash %}ClaremontCash{% endif %}</p>
+    {% endif %}
+    {% format_hours business %}
+  </div>

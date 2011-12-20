@@ -4,13 +4,18 @@
 
 {% block "ogtitle" %}Coop Fountain{% endblock %}
 {% block "title" %}Coop Fountain{% endblock %}
-{% block "page_title" %}Coop Fountain{% endblock %}
+{% block "page_title" %}
+Coop Fountain
+{% if perms.page.can_change %}&nbsp;<a href="{% url "admin:folio_page_change" page.id %}">(edit page)</a>{% endif %}
+{% if perms.business.can_change %}&nbsp;<a href="{% url "admin:eatshop_business_change" business.id %}">(edit business)</a>{% endif %}
+{% endblock %}
 
 {% block "ogdesc" %}{{ page.summary }}{% endblock %}
 {% block "metadesc" %}{{ page.summary }}{% endblock %}
 
 {% block "head" %}
 {% if page.stylesheet %}<link rel="stylesheet" href="{{ STATIC_URL }}css/pages/{{ page.stylesheet }}" type="text/css" media="screen">{% endif %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/eatshop.css" type="text/css">
 {% endblock %}
 
 {% block "eatshop_breadcrumbs" %}
@@ -18,12 +23,12 @@
 {% endblock %}
 
 {% block "content" %}
-
+<div id="coop_fountain">
 {% include "eatshop/business_info_fragment.html" %}
-
-{% if body %}
+</div>
+{% if page.body %}
 <div class="body">
-{{ body|markdown }}
+{{ page.body|markdown }}
 </div>
 {% endif %}
 

@@ -1,0 +1,14 @@
+{% extends "eatshop/business_list.html" %}
+{% load url from future %}
+
+{% block "ogtitle" %}On-Campus Eateries{% endblock %}
+{% block "title" %}On-Campus Eateries{% endblock %}
+{% block "page_title" %}On-Campus Eateries{% endblock %}
+
+{% block "ogdesc" %}Information on all of the on-campus eateries available for Claremont Colleges students.{% endblock %}
+{% block "metadesc" %}Information on all of the on-campus eateries available for Claremont Colleges students.{% endblock %}
+
+
+{% block "eatshop_breadcrumbs" %}
+<li><a href="{% url "on_campus" %}">On-Campus Eateries</a></li>
+{% endblock %}

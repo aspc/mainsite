@@ -1,0 +1,14 @@
+{% extends "eatshop/business_list.html" %}
+{% load url from future %}
+
+{% block "ogtitle" %}Restaurants{% endblock %}
+{% block "title" %}Restaurants{% endblock %}
+{% block "page_title" %}Restaurants{% endblock %}
+
+{% block "ogdesc" %}Information on restaurants in Claremont, including hours and student discounts.{% endblock %}
+{% block "metadesc" %}Information on restaurants in Claremont, including hours and student discounts.{% endblock %}
+
+
+{% block "eatshop_breadcrumbs" %}
+<li><a href="{% url "on_campus" %}">Restaurants</a></li>
+{% endblock %}
