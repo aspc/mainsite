@@ -1,0 +1,14 @@
+{% extends 'eatshop/base_business_list.html' %}
+{% load url from future %}
+
+{% block "ogtitle" %}Local Businesses{% endblock %}
+{% block "title" %}Local Businesses{% endblock %}
+{% block "page_title" %}Local Businesses{% endblock %}
+
+{% block "ogdesc" %}List of local businesses in Claremont with student discount information{% endblock %}
+{% block "metadesc" %}List of local businesses in Claremont with student discount information{% endblock %}
+
+
+{% block "eatshop_breadcrumbs" %}
+<li><a href="{% url "businesses" %}">Local Businesses</a></li>
+{% endblock %}

@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import patterns, include, url
 from aspc.eatshop.models import Business
-from aspc.eatshop.views import coop_fountain, on_campus, restaurants, home #, OnCampusList, RestaurantsList,
-#     BusinessesList, BigList)
+from aspc.eatshop.views import (coop_fountain, on_campus, 
+    restaurants, home, businesses)
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
@@ -41,5 +41,5 @@ urlpatterns = patterns('',
     # url(r'^on-campus/$', OnCampusList.as_view(), name="on_campus"),
     # url(r'^on-campus/(?P<pk>\d+)/$', DetailView.as_view(**on_campus_detail), name="on_campus_detail"),
     url(r'^restaurants/$', restaurants, name="restaurants"),
-    # url(r'^businesses/$', BusinessesList.as_view(), name="businesses"),
+    url(r'^businesses/$', businesses, name="businesses"),
 )
