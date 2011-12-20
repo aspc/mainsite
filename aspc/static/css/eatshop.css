@@ -136,3 +136,9 @@ ul.results > li:after {
 	display: block;
 	clear: both;
 }
+
+@media handheld, only screen and (max-width: 767px) {
+	.content .main_info, .content .hours_discounts {
+		width: 100%;
+}
+}
