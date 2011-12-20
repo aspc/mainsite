@@ -1,9 +1,10 @@
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseForbidden, HttpResponseRedirect
+from django.db.models import Q
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView
-from django.forms import ModelForm
+from django import forms
 from django.template.loader import render_to_string
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
@@ -13,10 +14,13 @@ from aspc.sagelist.models import BookSale
 from functools import wraps
 import string
 
-class BookSaleForm(ModelForm):
+class BookSaleForm(forms.ModelForm):
     class Meta:
         model = BookSale
         exclude = ('buyer', 'seller', 'posted')
+
+class BookSearchForm(forms.Form):
+    search = forms.CharField(initial="search")
 
 class CreateBookSaleView(CreateView):
     form_class = BookSaleForm
@@ -24,6 +28,8 @@ class CreateBookSaleView(CreateView):
     
     def form_valid(self, form):
         sale = form.save(commit=False)
+        sale.title = sale.title.strip()
+        sale.authors = sale.authors.strip()
         sale.seller = self.request.user
         sale.save()
         sale.seller.email_user(
@@ -123,13 +129,33 @@ class ListBookSalesView(ListView):
     context_object_name = "listings"
     
     def get_queryset(self):
+        form = BookSearchForm(self.request.GET)
+        
         qs = super(ListBookSalesView, self).get_queryset()
         qs = qs.filter(buyer__isnull=True)
+        
+        if form.is_valid():
+            query = Q(title__icontains=form.cleaned_data['search'])
+            query |= Q(authors__icontains=form.cleaned_data['search'])
+            query |= Q(edition__icontains=form.cleaned_data['search'])
+            query |= Q(isbn__icontains=form.cleaned_data['search'])
+            qs = qs.filter(query)
+        
         return qs
     
     def get_context_data(self, *args, **kwargs):
         context = super(ListBookSalesView, self).get_context_data(*args, **kwargs)
+        
+        form = BookSearchForm(self.request.GET)
+        if form.is_valid:
+            context['form'] = form
+            context['search'] = True
+        else:
+            context['form'] = BookSearchForm()
+            context['search'] = False
+        
         groups = {}
+        
         for l in string.uppercase + '#':
             groups[l] = []
         
@@ -138,9 +164,10 @@ class ListBookSalesView(ListView):
               groups[b.title[0].upper()].append(b)
             else:
               groups['#'].append(b)
+        
         context['listings_grouped'] = groups.items()
         context['listings_grouped'].sort()
-        context['total_for_sale'] = self.get_queryset().count()
+        context['total_for_sale'] = self.model.objects.filter(buyer__isnull=True).count()
         context['total_sold'] = self.model.objects.filter(buyer__isnull=False).count()
         context['total'] = self.model.objects.count()
         return context
