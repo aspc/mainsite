@@ -117,6 +117,10 @@ form > ul > li > label {
 	padding: 0.5em;
 }
 
+.sagelist .stat_search a{
+	color: #baeaff;
+}
+
 .sagelist .stat_search:after {
 	content: "";
 	display: block;
