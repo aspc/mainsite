@@ -101,9 +101,9 @@ form > ul > li > label {
 	font-weight: bold;
 }
 
-form > ul > li > label:after {
+/*form > ul > li > label:after {
 	content: ":";
-}
+}*/
 
 /* @end */
 
