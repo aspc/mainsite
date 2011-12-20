@@ -52,7 +52,7 @@ class RestaurantsFilterSet(django_filters.FilterSet):
     
     class Meta:
         model = Business
-        fields = ['discount', 'claremont_cash', 'flex']
+        fields = ['discount', 'claremont_cash',]
 
 class AllBusinessesFilterSet(django_filters.FilterSet):
     open_now = OpenNowFilter()
