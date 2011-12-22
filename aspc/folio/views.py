@@ -19,7 +19,7 @@ class AttachedPageMixin(object):
 def page_view(request, slug_path):
     '''slug_path: ^(?P<slug_path>(?:[\w\-\d]+/)+)$ '''
     slug_parts = slug_path.rstrip('/').split('/')
-    pages = Page.objects.all()
+    pages = Page.objects.exclude(managed=True)
     for part in slug_parts:
         try:
             new_page = pages.get(slug=part)
