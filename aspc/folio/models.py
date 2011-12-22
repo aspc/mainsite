@@ -37,6 +37,17 @@ class Page(models.Model):
         max_length=255,
         help_text="Path to an additional stylesheet for this page (relative"
                   " to {0}css/pages/)".format(settings.STATIC_URL))
+    visible = models.BooleanField(
+        default=True,
+        help_text="Determines whether a top or second level page will be "
+                  "shown in the sidebar navigation"
+    )
+    managed = models.BooleanField(
+        default=False,
+        editable=False,
+        help_text="Indicates whether this is a special page that cannot be "
+                  "deleted."
+    )
     
     class Meta:
         ordering = ['sort_order', 'title',]
