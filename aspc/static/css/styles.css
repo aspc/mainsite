@@ -101,9 +101,9 @@ form > ul > li > label {
 	font-weight: bold;
 }
 
-form > ul > li > label:after {
+/*form > ul > li > label:after {
 	content: ":";
-}
+}*/
 
 /* @end */
 
@@ -111,10 +111,36 @@ form > ul > li > label:after {
 
 /* @group SageList */
 
-.sagelist ul.stats {
-	background-color: white;
-	text-align: center;
+.sagelist .stat_search {
+	background-color: #004d70;
+	color: white;
 	padding: 0.5em;
+}
+
+.sagelist .stat_search a{
+	color: #baeaff;
+}
+
+.sagelist .stat_search:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.sagelist #search_form {
+	float: right;
+}
+
+.sagelist #search_form input {
+	width: auto;
+	display: inline;
+	color: black;
+}
+
+.sagelist ul.stats {
+	float: left;
+	padding: 0;
+	margin: 0;
 }
 
 .sagelist ul.stats li {
