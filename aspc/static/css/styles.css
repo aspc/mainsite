@@ -897,7 +897,6 @@ nav#topnav span#username:after {
 
 nav#topnav #user {
 	text-align: right;
-	float: right;
 	margin-bottom: 0.5em;
 }
 
@@ -1508,7 +1507,6 @@ nav#topnav #username {
 nav#topnav div#user {
 	text-align: center;
 	width: 100%;
-	float: none;
 }
 
 /* @end */

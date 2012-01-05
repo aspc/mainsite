@@ -127,6 +127,11 @@ ol.course_list li li.meeting {
 	line-height: 28px;
 }
 
+.course_list li h4, .course_list li h3 {
+	font-family: Verdana;
+	margin: 0.5em;
+}
+
 .stats {
 	text-align: center;
 	color: darkgray;
@@ -325,6 +330,9 @@ ol#dept_list {
 	padding: 0;
 	float: right;
 	margin: 0;
+	max-height: 53em;
+	overflow-y: scroll;
+
 }
 
 #side_panel form, #side_panel .course_list, h4#share_clear {
@@ -334,10 +342,7 @@ ol#dept_list {
 	font-size: 0.85em;
 }
 
-#side_panel {
-	max-height: 40em;
-	overflow-y: scroll;
-}
+
 
 #campus_icons {
 	
@@ -415,7 +420,7 @@ ol#schedule_courses:after {
 ol#schedule_courses li {
 	padding: 0.33em;
 	float: left;
-	font-size: 95%;
+	font-size: 0.8em;
 	margin-right: 0.75em;
 	margin-bottom: 0.5em;
 	display: inline;

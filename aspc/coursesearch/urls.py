@@ -17,5 +17,5 @@ urlpatterns = patterns('',
     url(r'^browse/$', list_detail.object_list, {'queryset': Department.objects.annotate(num_courses=Count('primary_course_set')).filter(num_courses__gt=0).distinct().order_by('code'),}, name="department_list"),
     url(r'^browse/(?P<slug>[A-Z]+)/$', list_detail.object_detail, {'queryset': Department.objects.all(), 'slug_field': 'code',}, name="department_detail"),
     url(r'^browse/(?P<dept>[A-Z]+)/(?P<course_code>[\w\d-]+)/$', 'aspc.coursesearch.views.course_detail', name="course_detail"),
-    url(r'^$', 'django.views.generic.simple.direct_to_template', {'template': 'coursesearch/landing.html',}, name="home"),
+    url(r'^$', 'django.views.generic.simple.direct_to_template', {'template': 'coursesearch/landing.html',}, name="coursesearch_home"),
 )
