@@ -1,13 +1,10 @@
 {% extends "coursesearch/base.html" %}
 
-{% block "top_container" %}
+{% block "content" %}
 <h4>fill in at least one field to see matching courses</h4>
 <div id="search_form">
 	{% include "coursesearch/search_form.html" %}
 </div>
-{% endblock %}
-
-{% block "main" %}
 {% if results %}
 	{% include "coursesearch/search_results.html" %}
 {% endif %}

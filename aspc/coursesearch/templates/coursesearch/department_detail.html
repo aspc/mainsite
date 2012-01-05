@@ -1,10 +1,17 @@
 {% extends "coursesearch/base.html" %}
 
-{% block "top_container" %}
-<h2><a href="{% url department_list %}">Departments</a> &#x2192; {{ object.name }}</h2>
+{% block "title" %}{{ object.name }}{% endblock %}
+{% block "ogtitle" %}{{ object.name }}{% endblock %}
+{% block "page_title" %}{{ object.name }}{% endblock %}
+
+{% block "ogdesc" %}List of courses for the {{ object.name }} department.{% endblock %}
+{% block "metadesc" %}List of courses for the {{ object.name }} department.{% endblock %}
+
+{% block "coursesearch_breadcrumbs" %}
+<li><a href="{{ object.get_absolute_url }}">{{ object.name }}</a></li>
 {% endblock %}
 
-{% block "main" %}
+{% block "outer_content" %}
 <ol class="course_list">
 	{% for c in object.course_set.all %}
 	<li class="{% cycle 'odd' 'even' %}">

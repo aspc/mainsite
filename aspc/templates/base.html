@@ -25,7 +25,7 @@
     {% block "head" %}
     {% endblock %}
   </head>
-  <body>
+  <body class="{% block "content_class" %}{% endblock %}">
   <nav id="topnav" class="container">
     <div class="row">
       <div id="user">
@@ -46,7 +46,7 @@
   </header>
   
   <div class="container">
-  <div id="content_main" class="row {% block "content_class" %}{% endblock %}"> 
+  <div id="content_main" class="row"> 
     {% if messages %}
     <ul class="messages group">
         {% for message in messages %}

@@ -32,6 +32,13 @@
     {% endblock %}
     </script>
 {% endblock %}
+
+{% block "content_class" %}{{ block.super }} wide{% endblock %}
+
+{% block "coursesearch_breadcrumbs" %}
+  <li><a href="{% url aspc.coursesearch.views.schedule %}">Schedule</a></li>
+{% endblock %}
+
 {% block "outer_content" %}
 <div id="schedule_panel" class="panel {% block schedule_panel_class %}{% endblock %}">
   <h2 id="schedule_course_label">your courses:</h2>

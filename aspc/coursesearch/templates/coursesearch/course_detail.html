@@ -1,12 +1,18 @@
-{% extends "base.html" %}
+{% extends "coursesearch/base.html" %}
 
-{% block "top_container" %}
-<h2><a href="{% url department_list %}">Departments</a> &#x2192; <a href="{{ object.primary_department.get_absolute_url }}">{{ object.primary_department.name }}</a> &#x2192; {{ object.name }}</h2>
+{% block "title" %}{{ object.code }} &mdash; {{ object.name }}{% endblock %}
+{% block "ogtitle" %}{{ object.code }} &mdash; {{ object.name }}{% endblock %}
+{% block "page_title" %}{{ object.code }} &mdash; {{ object.name }}{% endblock %}
+
+{% block "ogdesc" %}{% if object.description %}{{ object.description }}{% else %}{{ object.name }} taught by {{ object.instructor }}{% endif %}{% endblock %}
+{% block "metadesc" %}{% if object.description %}{{ object.description }}{% else %}{{ object.code }} &mdash; {{ object.name }} taught by {{ object.instructor }}{% endif %}{% endblock %}
+
+{% block "coursesearch_breadcrumbs" %}
+<li><a href="{{ object.primary_department.get_absolute_url }}">{{ object.primary_department.name }}</a></li>
+<li>{{ object.code }}</li>
 {% endblock %}
 
-{% block "main" %}
-<div class="content_main" id="course_details">
-<h3>{{ object.code }} &mdash; {{ object.name }}</h3>
+{% block "content" %}
 <p class="info_line">{{ object.instructor }} &mdash; <strong>credit:</strong> {{ object.credit }} &mdash; {{ object.spots }} spots</p>
 <p class="info_line"><strong>department{% if object.departments.count > 1 %}s{% endif %}:</strong> {% for d in object.departments.all %} {{ d.non_breaking_name|safe }}{% if forloop.revcounter0 != 0 %}, {% endif %}{% endfor %}</p>
 <p>{{ object.grading_style }}</p>
@@ -18,5 +24,4 @@
 	&mdash; {{ mtg.begin }}&ndash;{{ mtg.end }} &mdash; {{ mtg.location }}
 </li>
 {% endfor %}
-</div>
 {% endblock %}

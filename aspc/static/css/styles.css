@@ -708,6 +708,10 @@ ul.actions li {
 	-webkit-box-shadow: 0px 0px 4px #222;
 }
 
+body.wide .row {
+	max-width: 100%;
+}
+
 .wide .primary {
 	width: 85%;
 }

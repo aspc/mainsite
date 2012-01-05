@@ -42,9 +42,7 @@ ul#landing li a:hover {
 	
 }
 
-.row {
-	max-width: 100%;
-}
+
 
 .wide.schedule .primary {
 	background-color: #0c5b7f;
@@ -254,6 +252,10 @@ ol#dept_list li.dept_list_headers span {
 	margin-bottom: 1em;
 }
 
+ol#dept_list li {
+	margin-bottom: 0.5em;
+}
+
 ol#dept_list li span {
 	display: inline-block;
 }
@@ -269,9 +271,9 @@ ol#dept_list li span.dept_code {
 }
 
 ol#dept_list li span.dept_count {
-	width: 2em;
-	text-align: right;
-	padding-right: 1em;
+	font-style: italic;
+	color: #999;
+	margin-left: 1em;
 }
 
 ol#dept_list li span.dept_name {
@@ -285,7 +287,7 @@ ol#dept_list {
 	padding: 2em 0;
 	list-style-type: none;
 	font-size: 16px;
-	width: 25em;
+
 }
 
 
@@ -294,7 +296,7 @@ ol#dept_list {
 
 /* @group schedule */
 
-.primary h2 {
+.wide.schedule .primary h2 {
 	color: white;
 
 	margin: 0;
@@ -332,7 +334,7 @@ ol#dept_list {
 	font-size: 0.85em;
 }
 
-#side_panel .course_list {
+#side_panel {
 	max-height: 40em;
 	overflow-y: scroll;
 }

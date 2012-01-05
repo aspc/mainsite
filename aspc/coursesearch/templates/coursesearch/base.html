@@ -6,17 +6,12 @@
 <link rel='stylesheet' type='text/css' href='{{ STATIC_URL }}css/coursesearch.css' />
 {% endblock %}
 
-{% block "content_class" %}wide schedule{% endblock %}
+{% block "content_class" %}schedule{% endblock %}
 
-{% block "content" %}
-{% block "body" %}
-<div id="top_container">
-{% block "top_container" %}
-{% endblock %}
-</div>
-<div id="main_container">
-{% block "main" %}
-{% endblock %}
-</div>
-{% endblock %}
+{% block "breadcrumbs" %}
+<ol class="breadcrumbs">
+  <li>Services</li>
+  <li>Course Information</li>
+  {% block "coursesearch_breadcrumbs" %}{% endblock %}
+</ol>
 {% endblock %}
