@@ -708,6 +708,14 @@ ul.actions li {
 	-webkit-box-shadow: 0px 0px 4px #222;
 }
 
+.wide .primary {
+	width: 85%;
+}
+
+.wide .secondary {
+	width: 15%;
+}
+
 .primary {
 	width: 80%;
 	float: left;

@@ -33,23 +33,20 @@
     </script>
 {% endblock %}
 {% block "outer_content" %}
-<h2 id="schedule_course_label">your courses:</h2>
-<ol id="schedule_courses">
-</ol>
-{% block share_clear %}<h4 id="share_clear"><a id="share_schedule" href="{% url aspc.coursesearch.views.share_schedule %}">&#x2191; share</a><a id="clear_schedule">&#x2326; clear</a></h4>{% endblock %}
 <div id="schedule_panel" class="panel {% block schedule_panel_class %}{% endblock %}">
-  
+  <h2 id="schedule_course_label">your courses:</h2>
+  <ol id="schedule_courses">
+  </ol>
+  {% block share_clear %}<h4 id="share_clear"><a id="share_schedule" href="{% url aspc.coursesearch.views.share_schedule %}">&#x2191; share</a><a id="clear_schedule">&#x2326; clear</a></h4>{% endblock %}
   <div id="calendar"><h2 id="message">You should upgrade to IE8 (or install <a href="http://www.mozilla.com/en-US/firefox/firefox.html">Firefox</a> or <a href="http://www.google.com/chrome">Chrome</a>) to use this</h2></div>
 </div>
 {% block side_panel %}
   <div id="side_panel" class="panel">
-    <h3>search:</h3>
+    <h2>search:</h2>
     {% with "schedule" as context %}
     {% include "coursesearch/search_form.html" %}
     {% if results %}
       {% include "coursesearch/search_results.html" %}
-    {% else %}
-    <p><em>search for courses above, then use the buttons in the search results to add them to your schedule</em></p>
     {% endif %}
     {% endwith %}
   </div>

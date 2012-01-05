@@ -39,7 +39,18 @@ ul#landing li a:hover {
 
 #main_container {
 	background: white;
+	
 }
+
+.row {
+	max-width: 100%;
+}
+
+.wide.schedule .primary {
+	background-color: #0c5b7f;
+	color: white;
+}
+
 
 
 /* @end */
@@ -50,6 +61,7 @@ div#top_container {
 	padding: 1em;
 	margin: 0;
 	color: white;
+
 }
 
 .error {
@@ -58,7 +70,6 @@ div#top_container {
 
 div#search_form {
 	clear: both;
-	line-height: 2.3em;
 }
 
 div#search_form:after {
@@ -127,7 +138,7 @@ ol.course_list li li.meeting {
 .paginator {
 	text-align: center;
 	background-color: #e7e7e7;
-	font-size: 20px;
+	font-size: 1.2em;
 	font-weight: bold;
 }
 
@@ -283,16 +294,16 @@ ol#dept_list {
 
 /* @group schedule */
 
-h2#schedule_course_label {
+.primary h2 {
 	color: white;
-	background-color: #004361;
+
 	margin: 0;
 	font-size: 1.2em;
 	padding: 0.41em 2%;
 }
 
 #schedule_panel {
-	width: 60%;
+	width: 58%;
 	margin: 0;
 	padding: 0;
 	float: left;
@@ -300,6 +311,7 @@ h2#schedule_course_label {
 
 #calendar {
 	clear: both;
+	padding: 0 2%;
 }
 
 #schedule_panel.full_width {
@@ -307,11 +319,26 @@ h2#schedule_course_label {
 }
 
 #side_panel {
-	width: 40%;
+	width: 42%;
+	padding: 0;
 	float: right;
 	margin: 0;
-	padding: 0;
-	font-size: 0.9em;
+}
+
+#side_panel form, #side_panel .course_list, h4#share_clear {
+	padding: 0 2%;
+}
+#side_panel form, #side_panel .course_list {
+	font-size: 0.85em;
+}
+
+#side_panel .course_list {
+	max-height: 40em;
+	overflow-y: scroll;
+}
+
+#campus_icons {
+	
 }
 
 #side_panel.hidden {
@@ -328,7 +355,6 @@ h4#share_clear {
 	clear: both;
 	text-align: center;
 	margin: 0;
-	background-color: #004361;
 }
 
 #share_clear:after {
@@ -356,7 +382,7 @@ a#share_schedule, a#clear_schedule {
 	color: white;
 	text-decoration: none;
 	display: block;
-	padding: 0.5em 2%;
+	padding: 0.25em ;
 }
 
 a#share_schedule {
@@ -368,7 +394,7 @@ a#clear_schedule {
 }
 
 a#share_schedule:hover, a#clear_schedule:hover {
-	background-color: #8cbaff;
+	background-color: #0071a6;
 }
 
 /* @end */
@@ -376,7 +402,6 @@ ol#schedule_courses {
 	padding: 0 2%;
 	margin: 0;
 	list-style-type: none;
-	background-color: #004361;
 }
 
 ol#schedule_courses:after {

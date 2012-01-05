@@ -6,7 +6,7 @@
 		Mon, {{ form.t }} Tues, {{ form.w }} Wed, {{ form.r }} Thurs, {{ form.f }} Fri</p>
 	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;after {{ form.start_range }}{% if form.start_range.errors %}<span class="error">X</span>{% endif %} 
 		and before {{ form.end_range }}{% if form.end_range.errors %}<span class="error">X</span>{% endif %} <span class="helptext">(ex: 1:00pm)</span></p>
-	<p>at {{ form.c_cgu }} <span class="campus_icon campus_CGU">CGU</span> 
+	<p id="campus_icons">at {{ form.c_cgu }} <span class="campus_icon campus_CGU">CGU</span> 
 		{{ form.c_cm }} <span class="campus_icon campus_CM">CM</span> 
 		{{ form.c_cu }} <span class="campus_icon campus_CU">CU</span> 
 		{{ form.c_hm }} <span class="campus_icon campus_HM">HM</span> 

@@ -46,7 +46,7 @@
   </header>
   
   <div class="container">
-  <div id="content_main" class="row"> 
+  <div id="content_main" class="row {% block "content_class" %}{% endblock %}"> 
     {% if messages %}
     <ul class="messages group">
         {% for message in messages %}
@@ -56,6 +56,7 @@
     {% endif %}
     {% block "content_prenav" %}
     {% endblock %}
+  {% block "nav" %}
   <nav id="sitewide" class="secondary{% if all_nav %} all{% endif %}">
     <ul>
       <li id="food" class="group"><h1>Food &amp; Drink</h1>
@@ -122,6 +123,7 @@
       </li>
     </ul>
   </nav>
+  {% endblock %}
   {% block "content_postnav" %}
   {% endblock %}
   </div> <!-- end content main -->
