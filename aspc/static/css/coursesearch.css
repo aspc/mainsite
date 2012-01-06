@@ -45,8 +45,8 @@ ul#landing li a:hover {
 
 
 .wide.schedule .primary {
-	background-color: #0c5b7f;
-	color: white;
+	/*background-color: #0c5b7f;*/
+	/*color: white;*/
 }
 
 
@@ -58,7 +58,6 @@ ul#landing li a:hover {
 div#top_container {
 	padding: 1em;
 	margin: 0;
-	color: white;
 
 }
 
@@ -302,11 +301,9 @@ ol#dept_list {
 /* @group schedule */
 
 .wide.schedule .primary h2 {
-	color: white;
-
 	margin: 0;
 	font-size: 1.2em;
-	padding: 0.41em 2%;
+	padding: 0.75em 2%;
 }
 
 #schedule_panel {
@@ -319,6 +316,10 @@ ol#dept_list {
 #calendar {
 	clear: both;
 	padding: 0 2%;
+}
+
+#calendar .wc-container {
+	border: 1px solid #aaa;
 }
 
 #schedule_panel.full_width {
@@ -386,7 +387,7 @@ h2#message a:hover {
 }
 
 a#share_schedule, a#clear_schedule {
-	color: white;
+
 	text-decoration: none;
 	display: block;
 	padding: 0.25em ;
