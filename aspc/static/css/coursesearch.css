@@ -253,8 +253,9 @@ div.content_main {
 	text-indent: -3em;
 }
 
-#course_details li.meeting {
+li.meeting {
 	margin-bottom: 1em;
+	line-height: 2em;
 }
 
 /* @end */
@@ -300,7 +301,6 @@ ol#dept_list {
 	margin: 0 auto;
 	padding: 1em 0;
 	list-style-type: none;
-	font-size: 16px;
 
 }
 
@@ -372,7 +372,7 @@ ol#dept_list {
 h4#share_clear {
 	clear: both;
 	text-align: center;
-	margin: 0;
+	margin: 0.25em 0;
 }
 
 #share_clear:after {
@@ -397,22 +397,23 @@ h2#message a:hover {
 }
 
 a#share_schedule, a#clear_schedule {
-
+	color: #0071a6;
 	text-decoration: none;
 	display: block;
 	padding: 0.25em ;
 }
 
 a#share_schedule {
-	float: right;
+	float: left;
 }
 
 a#clear_schedule {
-	float: left;
+	float: right;
 }
 
 a#share_schedule:hover, a#clear_schedule:hover {
 	background-color: #0071a6;
+	color: white;
 }
 
 /* @end */
@@ -477,3 +478,32 @@ ol.course_list a.add_course:hover {
 }
 
 /* @end */
+
+@media handheld, only screen and (max-width: 767px) {
+	#schedule_panel, #side_panel {
+	background-color: white;
+	float: none;
+	width: 100%;
+}
+	.wc-day-column-header {
+	overflow: hidden;
+}
+	#calendar {
+	max-height: 25em;
+	overflow-y: scroll;
+}
+	#side_panel {
+		max-height: 100%;
+}
+
+ol#dept_list li span.dept_count {
+	display: none;
+}
+
+.wide.schedule .primary h2 {
+	margin: 0.5em 0;
+	font-size: 0.85em;
+	padding: 0.33em 0.5em 0.33em 0.5em;
+	background-color: #4f7098;
+}
+}

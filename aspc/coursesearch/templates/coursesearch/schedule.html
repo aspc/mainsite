@@ -41,7 +41,7 @@
 
 {% block "outer_content" %}
 <div id="schedule_panel" class="panel {% block schedule_panel_class %}{% endblock %}">
-  <h2 id="schedule_course_label">your courses:</h2>
+  <h2 id="schedule_course_label" class="header">your courses:</h2>
   <ol id="schedule_courses">
   </ol>
   {% block share_clear %}<h4 id="share_clear"><a id="share_schedule" href="{% url aspc.coursesearch.views.share_schedule %}">&#x2191; share</a><a id="clear_schedule">&#x2326; clear</a></h4>{% endblock %}
@@ -49,7 +49,7 @@
 </div>
 {% block side_panel %}
   <div id="side_panel" class="panel">
-    <h2>search:</h2>
+    <h2 class="header">search:</h2>
     {% with "schedule" as context %}
     {% include "coursesearch/search_form.html" %}
     {% if results %}
