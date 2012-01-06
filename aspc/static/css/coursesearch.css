@@ -39,7 +39,6 @@ ul#landing li a:hover {
 
 #main_container {
 	background: white;
-	
 }
 
 
@@ -78,6 +77,16 @@ div#search_form:after {
 
 div#search_form .helptext {
 	color: #ccc;
+}
+
+div#search_form p {
+	line-height: 2.2em;
+	margin: 0;
+	margin-bottom: 0.25em;
+}
+
+#search_form #id_instructor {
+	width: 15em;
 }
 
 #submit {
@@ -308,7 +317,7 @@ ol#dept_list {
 }
 
 #schedule_panel {
-	width: 58%;
+	width: 55%;
 	margin: 0;
 	padding: 0;
 	float: left;
@@ -328,7 +337,7 @@ ol#dept_list {
 }
 
 #side_panel {
-	width: 42%;
+	width: 45%;
 	padding: 0;
 	float: right;
 	margin: 0;
