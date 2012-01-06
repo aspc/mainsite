@@ -39,7 +39,7 @@ overflow: hidden;
 body {
 	margin: 0;
 	padding: 0;
-	font: 14px Verdana, "Lucida Grande", Lucida, sans-serif;
+	font: 14px "Lucida Grande", Lucida, Verdana, sans-serif;
 	background-image: url(images/linen_background.png);
 }
 
@@ -844,7 +844,6 @@ nav#sitewide .group#partners {
 
 nav#topnav {
 	border-bottom: 1px solid #162554;
-	font-size: 0.9em;
 	color: #dedff1;
 	background: #243546;
 	padding-top: 0.8em;
@@ -887,6 +886,9 @@ nav#topnav li a:hover {
 
 /* @group login form */
 
+#topnav #user {
+	font-size: 0.9em;
+}
 
 nav#topnav #user input, nav#topnav #user select {
 	background-color: #33465e;
