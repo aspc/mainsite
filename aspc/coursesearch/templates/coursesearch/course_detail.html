@@ -8,6 +8,7 @@
 {% block "metadesc" %}{% if object.description %}{{ object.description }}{% else %}{{ object.code }} &mdash; {{ object.name }} taught by {{ object.instructor }}{% endif %}{% endblock %}
 
 {% block "coursesearch_breadcrumbs" %}
+<li><a href="{% url department_list %}">Departments</a></li>
 <li><a href="{{ object.primary_department.get_absolute_url }}">{{ object.primary_department.name }}</a></li>
 <li>{{ object.code }}</li>
 {% endblock %}

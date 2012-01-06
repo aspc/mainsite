@@ -94,9 +94,6 @@ def share_schedule(request):
             s.courses.add(course)
         s.save()
         
-        if settings.SCHEDULE_IMAGE_GENERATION_COMMAND:
-            p = subprocess.Popen(shlex.split(settings.SCHEDULE_IMAGE_GENERATION_COMMAND % (s.id, s.id)))
-        
         return render(request, 'coursesearch/share_schedule.html', {'saved': True, 'schedule': s, 'schedule_courses': s.courses.all(),})
     else:
         return render(request, 'coursesearch/share_schedule.html', {'schedule_courses': schedule_courses,})

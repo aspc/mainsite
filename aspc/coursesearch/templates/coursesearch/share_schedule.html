@@ -28,7 +28,7 @@
 	</form>
 	{% else %}
 	<h3>To send this schedule to someone, use the link below:</h3>
-	<p><a href="{{ schedule.outside_url }}">{{ schedule.outside_url }}</a></p>
+	<p><a href="{{ protocol }}://{{ domain }}{{ schedule.get_absolute_url }}">{{ protocol }}://{{ domain }}{{ schedule.get_absolute_url }}</a></p>
 	<p>To come back and add to this schedule later, use the "load" link on that page.</p>
 	{% endif %}
 {% else %}

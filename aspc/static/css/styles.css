@@ -62,18 +62,18 @@ blockquote {
 	margin: 1em 2em;
 }
 
-table {
+.content > table {
 	background-color: white;
 	border-collapse: collapse;
 	font-size: 0.9em;
 }
 
-td, th {
+.content > td, .content > th {
 	padding: 0.75em;
 	border: 1px solid #386d8e;
 }
 
-th {
+.content > th {
 	background-color: #c1d8ef;
 	font-weight: bold;
 }

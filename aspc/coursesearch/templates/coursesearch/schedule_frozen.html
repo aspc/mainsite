@@ -22,7 +22,7 @@
 
 
 {% block side_panel %}
-<div id="side_panel"><div class="inner">
+<div id="side_panel"><div class="content">
 <h3>your schedule:</h3>
 <p>created on {{ schedule.create_ts|date:"M n, Y"}} at {{ schedule.create_ts|date:"P" }}</p>
 <h3>edit:</h3>
@@ -32,6 +32,7 @@ if you make changes, you will have to share them again and get a new link.</p>
 	{% csrf_token %}
 	<p><input type="submit" value="load"></p>
 </form>
+</div>
 <ol class="course_list">
 {% for c in schedule.courses.all %}
 	<li class="{% cycle 'odd' 'even' %}">
