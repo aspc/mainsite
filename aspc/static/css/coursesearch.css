@@ -10,13 +10,11 @@ ul#landing {
 	padding: 0;
 	text-align: center;
 	font-size: 2em;
-	width: 20em;
-	margin: 0 auto;
-	margin-bottom: 5em;
+	margin: 1em auto;
 }
 
 ul#landing li {
-	float: left;
+	display: inline-block;
 	margin-right: 1em;
 }
 
@@ -258,6 +256,11 @@ li.meeting {
 	line-height: 2em;
 }
 
+p.note {
+	font-size: 0.9em;
+	color: #444;
+}
+
 /* @end */
 
 /* @group departments */
@@ -326,6 +329,7 @@ ol#dept_list {
 #calendar {
 	clear: both;
 	padding: 0 2%;
+	margin-bottom: 1em;
 }
 
 #calendar .wc-container {
@@ -341,7 +345,7 @@ ol#dept_list {
 	padding: 0;
 	float: right;
 	margin: 0;
-	max-height: 53em;
+	max-height: 55em;
 	overflow-y: scroll;
 
 }
@@ -505,5 +509,27 @@ ol#dept_list li span.dept_count {
 	font-size: 0.85em;
 	padding: 0.33em 0.5em 0.33em 0.5em;
 	background-color: #4f7098;
+}
+
+ul#landing {
+	list-style-type: none;
+	padding: 0;
+	text-align: center;
+	font-size: 1em;
+	margin: 0;
+}
+
+
+ul#landing li {
+	display: block;
+	margin: 0;
+}
+
+ul#landing li a {
+	text-decoration: none;
+}
+
+ul#landing li a:hover {
+	text-decoration: none;
 }
 }
