@@ -39,7 +39,7 @@ overflow: hidden;
 body {
 	margin: 0;
 	padding: 0;
-	font: 14px Verdana, "Lucida Grande", Lucida, sans-serif;
+	font: 14px "Lucida Grande", Lucida, Verdana, sans-serif;
 	background-image: url(images/linen_background.png);
 }
 
@@ -62,18 +62,19 @@ blockquote {
 	margin: 1em 2em;
 }
 
-table {
+.content > table, .primary > table {
 	background-color: white;
 	border-collapse: collapse;
 	font-size: 0.9em;
+	width: 100%;
 }
 
-td, th {
+.content > table td, .content > table th, .primary > table td, .primary > table th {
 	padding: 0.75em;
 	border: 1px solid #386d8e;
 }
 
-th {
+.content > table th, .primary > table th {
 	background-color: #c1d8ef;
 	font-weight: bold;
 }
@@ -718,6 +719,18 @@ ul.actions li {
 	-webkit-box-shadow: 0px 0px 4px #222;
 }
 
+body.wide .row {
+	max-width: 100%;
+}
+
+.wide .primary {
+	width: 85%;
+}
+
+.wide .secondary {
+	width: 15%;
+}
+
 .primary {
 	width: 80%;
 	float: left;
@@ -758,8 +771,15 @@ p.list_empty {
 /* @group Sidebar */
 
 nav#sitewide.secondary .group {
-	padding: 0.5em;
+	padding: 0.5em 1em;
 	color: #efefef;
+	background: url(images/translucent_shadow_left.png) repeat-y;
+	border-bottom-width: 1px;
+	border-bottom-color: #555;
+	border-bottom-style: solid;
+	border-top-width: 1px;
+	border-top-color: #777;
+	border-top-style: solid;
 }
 
 nav#sitewide h1 {
@@ -797,22 +817,32 @@ nav#sitewide .note {
 
 nav#sitewide .group#food {
 	background-color: #2e735e;
+	border-top: 1px solid #36886f;
+	border-bottom: 1px solid #276351;
 }
 
 nav#sitewide .group#services {
 	background-color: #627d48;
+	border-top: 1px solid #7fa25d;
+	border-bottom: 1px solid #4f653a;
 }
 
 nav#sitewide .group#information {
 	background-color: #99851f;
+	border-top: 1px solid #b59d24;
+	border-bottom: 1px solid #796918;
 }
 
 nav#sitewide .group#senate {
 	background-color: #ab7537;
+	border-top: 1px solid #c88940;
+	border-bottom: 1px solid #92632e;
 }
 
 nav#sitewide .group#partners {
 	background-color: #8a4547;
+	border-top: 1px solid #b75b5e;
+	border-bottom: 1px solid #6e3738;
 }
 
 
@@ -825,7 +855,6 @@ nav#sitewide .group#partners {
 
 nav#topnav {
 	border-bottom: 1px solid #162554;
-	font-size: 0.9em;
 	color: #dedff1;
 	background: #243546;
 	padding-top: 0.8em;
@@ -868,6 +897,9 @@ nav#topnav li a:hover {
 
 /* @group login form */
 
+#topnav #user {
+	font-size: 0.9em;
+}
 
 nav#topnav #user input, nav#topnav #user select {
 	background-color: #33465e;
@@ -895,7 +927,6 @@ nav#topnav span#username:after {
 
 nav#topnav #user {
 	text-align: right;
-	float: right;
 	margin-bottom: 0.5em;
 }
 
@@ -1167,7 +1198,7 @@ footer p {
 }
 
 .post_info > .byline {
-	font-size: 0.7em;
+	font-size: 0.8em;
 }
 
 /* @end */
@@ -1318,6 +1349,7 @@ header#aspc_main hgroup {
 	background-color: white;
 	padding: 0.33em;
 	border-radius: 0 0 0.5em 0.5em;
+	font-size: 0.9em;
 }
 
 .group.primary {
@@ -1506,7 +1538,6 @@ nav#topnav #username {
 nav#topnav div#user {
 	text-align: center;
 	width: 100%;
-	float: none;
 }
 
 /* @end */
@@ -1568,7 +1599,7 @@ body {
 	-webkit-box-shadow: 0px 0px 4px #222;
 }
 
-.group > h1, .group > h2 {
+.group > h1, .group > h2, .header {
 	color: white;
 	padding: 0.33em 0.5em 0.33em 0.5em;
 	padding-left: 0.5em;
@@ -1585,7 +1616,7 @@ body {
 	font-size: 0.9em;
 }
 
-.group > h2 {
+.group > h2, .header {
 	font-size: 0.85em;
 }
 

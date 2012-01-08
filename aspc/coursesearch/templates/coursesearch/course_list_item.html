@@ -1,0 +1,10 @@
+<h3 {% if context == "schedule" %}id="course_{{ c.code_slug }}" data-code="{{ c.code_slug }}" data-added="{{ c.added }}"{% endif %}><a href="{{ c.get_absolute_url }}">{{ c.code }} &mdash; {{ c.name }}</a></h3>
+<h4>{{ c.instructor }} &mdash; credit: {{ c.credit }} &mdash; {{ c.spots }} spots</h4>
+{% if c.description %}<p>{{ c.description }}</p>{% endif %}
+<ul>
+	{% for mtg in c.meeting_set.all %}
+	<li class="meeting"><span class="campus_icon campus_{{ mtg.get_campus }}">{{ mtg.get_campus }}</span> &mdash; {% for day in mtg.gen_days %}<span class="day_{{day}}">{{ day }}</span>{% endfor %} 
+		&mdash; {{ mtg.begin }}&ndash;{{ mtg.end }} &mdash; {{ mtg.location }}
+	</li>
+	{% endfor %}
+</ul>

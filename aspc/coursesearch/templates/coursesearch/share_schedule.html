@@ -1,0 +1,37 @@
+{% extends "coursesearch/base.html" %}
+
+{% block "title" %}{% if not saved %}Share This Schedule{% else %}Schedule Saved{% endif %}{% endblock %}
+{% block "ogtitle" %}{% if not saved %}Share This Schedule{% else %}Schedule Saved{% endif %}{% endblock %}
+{% block "page_title" %}{% if not saved %}Share This Schedule{% else %}Schedule Saved{% endif %}{% endblock %}
+
+{% block "ogdesc" %}Save a schedule made with the ASPC schedule builder to share it on Facebook or by email.{% endblock %}
+{% block "metadesc" %}Save a schedule made with the ASPC schedule builder to share it on Facebook or by email.{% endblock %}
+
+{% block "coursesearch_breadcrumbs" %}
+  <li><a href="{% url aspc.coursesearch.views.schedule %}">Schedule</a></li>
+  <li>Share</li>
+{% endblock %}
+
+{% block "content" %}
+{% if schedule_courses %}
+<ul>
+{% for course in schedule_courses %}
+	<li>{{ course.code }} &mdash; {{ course.name }}</li>
+{% endfor %}
+</ul>
+	{% if not saved %}
+	<form action="" method="POST">
+		{% csrf_token %}
+		<p>Once you click submit, you will get a link to a schedule with these courses that you can share on facebook or in an email.</p>
+		<p>You can also use it to get your courses back and add to them later.</p>
+		<input type="submit" value="Save Schedule">
+	</form>
+	{% else %}
+	<h3>To send this schedule to someone, use the link below:</h3>
+	<p><a href="{{ protocol }}://{{ domain }}{{ schedule.get_absolute_url }}">{{ protocol }}://{{ domain }}{{ schedule.get_absolute_url }}</a></p>
+	<p>To come back and add to this schedule later, use the "load" link on that page.</p>
+	{% endif %}
+{% else %}
+<h3>There don't seem to be any courses in your schedule.</h3>
+{% endif %}
+{% endblock %}

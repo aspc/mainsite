@@ -1,0 +1,61 @@
+{% extends "coursesearch/base.html" %}
+{% block "title" %}Schedule{% endblock %}
+{% block "page_title" %}Schedule{% endblock %}
+{% block og_url %}http://aspc.pomona.edu/courses/schedule/{% endblock %}
+{% block "head" %}
+    {{ block.super }}
+    <link rel='stylesheet' type='text/css' href='{{ STATIC_URL }}css/smoothness/jquery-ui-1.8.6.custom.css' />
+    <link rel='stylesheet' type='text/css' href='{{ STATIC_URL }}css/jquery.weekcalendar.css' />
+    <link rel='stylesheet' type='text/css' href='{{ STATIC_URL }}css/calendar.css' />
+
+    <script type='text/javascript' src='{{ STATIC_URL }}js/jquery-1.4.4.min.js'></script>
+    <script type='text/javascript' src='{{ STATIC_URL }}js/jquery-ui-1.8.9.custom.min.js'></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/date.js"></script>
+    <script type='text/javascript' src='{{ STATIC_URL }}js/jquery.weekcalendar.js'></script>
+    <script type='text/javascript' src='{{ STATIC_URL }}js/course_calendar.js'></script>
+    <script type="text/javascript" charset="utf-8">
+    {% block startup_script %}
+    var die = false;
+    if (jQuery.browser.msie) {
+      var IEv = parseInt(jQuery.browser.version);
+      if (IEv <= 7) {
+        var die = true;
+      }
+    }
+    if (die == false){
+      jQuery(document).ready(function() {
+        $('#message').remove();
+        init();
+        loadCalendar();
+      });
+    }
+    {% endblock %}
+    </script>
+{% endblock %}
+
+{% block "content_class" %}{{ block.super }} wide{% endblock %}
+
+{% block "coursesearch_breadcrumbs" %}
+  <li><a href="{% url aspc.coursesearch.views.schedule %}">Schedule</a></li>
+{% endblock %}
+
+{% block "outer_content" %}
+<div id="schedule_panel" class="panel {% block schedule_panel_class %}{% endblock %}">
+  <h2 id="schedule_course_label" class="header">your courses:</h2>
+  <ol id="schedule_courses">
+  </ol>
+  {% block share_clear %}<h4 id="share_clear"><a id="share_schedule" href="{% url aspc.coursesearch.views.share_schedule %}">&#x2191; share</a><a id="clear_schedule">&#x2326; clear</a></h4>{% endblock %}
+  <div id="calendar"><h2 id="message">You should upgrade to IE8 (or install <a href="http://www.mozilla.com/en-US/firefox/firefox.html">Firefox</a> or <a href="http://www.google.com/chrome">Chrome</a>) to use this</h2></div>
+</div>
+{% block side_panel %}
+  <div id="side_panel" class="panel">
+    <h2 class="header">search:</h2>
+    {% with "schedule" as context %}
+    {% include "coursesearch/search_form.html" %}
+    {% if results %}
+      {% include "coursesearch/search_results.html" %}
+    {% endif %}
+    {% endwith %}
+  </div>
+{% endblock %}
+{% endblock %}

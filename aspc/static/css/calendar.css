@@ -1,0 +1,16 @@
+/* @override http://localhost:8000/static/css/calendar.css */
+
+.wc-toolbar { display: none; height: 0px; }
+
+.wc-time-header-cell {
+    font-size: 80%;
+}
+
+.wc-cal-event .wc-time {
+	background-color: #8e8e8e;
+	border: 1px solid #dcdcdc;
+	color: #fff;
+	padding: 0;
+	font-weight: normal;
+	font-size: 90%;
+}

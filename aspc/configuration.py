@@ -99,6 +99,7 @@ INSTALLED_APPS = (
     'college',
     'housing',
     'debug_toolbar',
+    'coursesearch',
     'minutes',
     'eatshop',
 )

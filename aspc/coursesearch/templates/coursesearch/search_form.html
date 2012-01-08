@@ -1,0 +1,22 @@
+<div id="search_form">
+<form action="" method="GET">
+	{{ form.non_field_errors }}
+	<p>in the {{ form.department }} department</p>
+	<p>meets {{ form.only_at_least }} on {{ form.m }} 
+		Mon, {{ form.t }} Tues, {{ form.w }} Wed, {{ form.r }} Thurs, {{ form.f }} Fri</p>
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;after {{ form.start_range }}{% if form.start_range.errors %}<span class="error">X</span>{% endif %} 
+		and before {{ form.end_range }}{% if form.end_range.errors %}<span class="error">X</span>{% endif %} <span class="helptext">(ex: 1:00pm)</span></p>
+	<p id="campus_icons">at {{ form.c_cgu }} <span class="campus_icon campus_CGU">CGU</span> 
+		{{ form.c_cm }} <span class="campus_icon campus_CM">CM</span> 
+		{{ form.c_cu }} <span class="campus_icon campus_CU">CU</span> 
+		{{ form.c_hm }} <span class="campus_icon campus_HM">HM</span> 
+		{{ form.c_po }} <span class="campus_icon campus_PO">PO</span> 
+		{{ form.c_pz }} <span class="campus_icon campus_PZ">PZ</span> 
+		{{ form.c_sc }} <span class="campus_icon campus_SC">SC</span></p>
+	<p>taught by {{ form.instructor }} for {{ form.credit }} credit</p>
+	<p>with at least {{ form.min_class_size }}{% if form.min_class_size.errors %}<span class="error">X</span>{% endif %} total spots</p>
+	<p>with the keywords {{ form.keywords }}</p>
+	<p><em>your college portal is the only authoritative source for course information.</em></p>
+	<input id="submit" type="submit" value="go">{% if context == "schedule" %}<a href="{% url aspc.coursesearch.views.schedule %}" id="reset">clear search</a>{% else %}<a href="{% url aspc.coursesearch.views.search %}" id="reset">start over</a>{% endif %}
+</form>
+</div>

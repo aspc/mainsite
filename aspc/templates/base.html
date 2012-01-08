@@ -1,5 +1,4 @@
 {% load url from future %}
-{% load pages %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,6 +13,7 @@
     <link rel="apple-touch-icon-precomposed" href="{{ STATIC_URL }}css/images/apple_icons/touch-icon-iphone.png" />
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ STATIC_URL }}css/images/apple_icons/touch-icon-ipad.png" />
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ STATIC_URL }}css/images/apple_icons/touch-icon-iphone4.png" />
+    <link rel="shortcut icon" href="{{ STATIC_URL }}css/images/favicon.ico" />
 <meta name="description" content="{% block "metadesc" %}ASPC exists to provide for reasonable and effective student participation in the governance of the College and provide a governance structure for the students of Pomona College. ASPC also provides various services, including club funding, Course Reviews, Housing Reviews, and the Coop Fountain and Store.{% endblock %}">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://aspc.pomona.edu/static/css/images/apple_icons/touch-icon-iphone4.png">
@@ -25,7 +25,7 @@
     {% block "head" %}
     {% endblock %}
   </head>
-  <body>
+  <body class="{% block "content_class" %}{% endblock %}">
   <nav id="topnav" class="container">
     <div class="row">
       <div id="user">
@@ -56,73 +56,9 @@
     {% endif %}
     {% block "content_prenav" %}
     {% endblock %}
-  <nav id="sitewide" class="secondary{% if all_nav %} all{% endif %}">
-    <ul>
-      <li id="food" class="group"><h1>Dining &amp; Shopping</h1>
-        <ul>
-          <li><a href="http://www.mikemaltese.com/5cmenu/">Dining Halls<span class="note">until 2 am</span></a></li>
-          <li><a href="{% url "on_campus" %}">On-campus Eateries{# <span class="note">until 2 am</span> #}</a></li>
-          <li><a href="{% url "restaurants" %}">Restaurants{# <span class="note">until 2 am</span> #}</a></li>
-          <li><a href="{% url "businesses" %}">Local Businesses{# <span class="note">until 2 am</span> #}</a></li>
-        </ul>
-      </li>
-      
-      {% root_navigation_list services as navigation %}
-      {% with navigation.0.1 as pages %}
-      <li id="services" class="group{% if active_section == "services" %} active{% endif %}">
-        <h1>Services</h1>
-        <ul>
-          <li><a href="http://aspc.pomona.edu/courses/schedule/">Course Search</a></li>
-          <li><a href="http://aspc.pomona.edu/course-reviews/">Course Reviews</a></li>
-          <li><a href="{% url "housing_home" %}">Housing Search</a></li>
-          <li><a href="{% url "sagelist" %}">SageBooks</a></li>
-          <!-- <li><a href="">Events Calendar</a></li> -->
-          {% for sub in pages %}
-          <li><a href="{{ sub.get_absolute_url }}">{{ sub.display_title }}</a></li>
-          {% endfor %}
-        </ul>
-      </li>
-      {% endwith %}
-      
-      {% root_navigation_list information as navigation %}
-      {% with navigation.0.1 as pages %}
-      <li id="information" class="group{% if active_section == "information" %} active{% endif %}">
-        <h1>Information</h1>
-        <ul>
-          <li><a href="http://eventpomona.com/">Event Pomona</a></li>
-          {% for sub in pages %}
-          <li><a href="{{ sub.get_absolute_url }}">{{ sub.display_title }}</a></li>
-          {% endfor %}
-        </ul>
-      </li>
-      {% endwith %}
-      
-      {% root_navigation_list senate as navigation %}
-      
-      {% with navigation.0.1 as pages %}
-      <li id="senate" class="group{% if active_section == "senate" %} active{% endif %}">
-        <h1>Senate</h1>
-        <ul>
-          {% for sub in pages %}
-          <li><a href="{{ sub.get_absolute_url }}">{{ sub.display_title }}</a></li>
-          {% endfor %}
-          <li><a href="http://aspc.pomona.edu/vote/">Elections &amp; Voting</a></li>
-        </ul>
-      </li>
-      {% endwith %}
-      
-      {% root_navigation_list as navigation excluding senate,information,services %}
-      {% include "navigation_fragment.html" %}
-      
-      <li id="partners" class="group"><h1>Partners</h1>
-        <ul>
-          <li><a href="http://www.kspc.org/">KSPC 88.7</a></li>
-          <li><a href="http://tsl.pomona.edu/">The Student Life</a></li>
-          <li id="amazon_link"><a href="http://www.amazon.com/?_encoding=UTF8&amp;tag=assostudofpom-20&amp;linkCode=ur2&amp;camp=1789&amp;creative=390957">Shop Amazon Associates</a><img src="https://www.assoc-amazon.com/e/ir?t=assostudofpom-20&amp;l=ur2&amp;o=1" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></li>
-        </ul>
-      </li>
-    </ul>
-  </nav>
+  {% block "nav" %}
+  {% include "navigation.html" %}
+  {% endblock %}
   {% block "content_postnav" %}
   {% endblock %}
   </div> <!-- end content main -->
