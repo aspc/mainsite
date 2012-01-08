@@ -16,9 +16,11 @@
     </div>
     {% endif %}
   </div>
-  <div class="hours_discounts">
+  {% if business.flex or business.claremont_cash or business.hours_set.count %}
+  <div class="hours_payment">
     {% if business.flex or business.claremont_cash %}
-    <p class="accepts">Accepts {% if business.flex %}Flex {% if business.claremont_cash %}and {% endif %}{% endif %}{% if business.claremont_cash %}ClaremontCash{% endif %}</p>
+    <p class="accepts">Accepts {% if business.flex %}<strong>Flex</strong> {% if business.claremont_cash %}and {% endif %}{% endif %}{% if business.claremont_cash %}<strong>ClaremontCash</strong>{% endif %}</p>
     {% endif %}
     {% format_hours business %}
   </div>
+  {% endif %}

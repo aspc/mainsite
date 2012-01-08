@@ -4,7 +4,7 @@ form.filter ul {
 	font-size: 0.9em;
 	margin: 0;
 	background-color: #ddd;
-	color: #666;
+	color: #333;
 	padding-bottom: 0.25em;
 }
 
@@ -73,22 +73,23 @@ ul.results > li:after {
 	margin-bottom: 0.33em;
 }
 
-.content .hours_discounts {
+.content .hours_payment {
 	font-size: 0.9em;
 	width: 37%;
 	float: right;
 	background-color: #eef6ff;
 	margin: 0;
+	border: 1px solid #8eb4f1;
 }
 
-.hours_discounts dl {
+.hours_payment dl {
 	margin: 0;
 	width: 90%;
 	clear: both;
 	padding: 5%;
 }
 
-.hours_discounts dl dt {
+.hours_payment dl dt {
 	width: 40%;
 	float: left;
 	clear: left;
@@ -97,32 +98,46 @@ ul.results > li:after {
 	font-weight: bold;
 }
 
-.hours_discounts dl dt:after {
+.hours_payment dl dt:after {
 	content: ":";
 }
 
-.hours_discounts dl dd {
+.hours_payment dl dd {
 	width: 60%;
 	float: left;
 	padding: 0; margin: 0;
 }
 
-.hours_discounts dl:after {
+.hours_payment dl:after {
 	content: "";
 	clear: both;
 	display: block;
 }
 
-.hours_discounts p.accepts:last-child {
+.hours_payment p.accepts:last-child {
 	border-bottom: none;
 }
 
-.hours_discounts p.accepts {
+.hours_payment p.accepts {
 	padding-bottom: 0.5em;
 	border-bottom: 1px dashed #6a9ed8;
 	margin: 0;
 	padding: 1em;
 	background-color: #dfeeff;
+}
+
+.discount {
+	border: 1px solid #ffec8a;
+	padding: 1em;
+	background-color: #fcf7e3;
+}
+
+.discount h4 {
+	margin-top: 0;
+}
+
+.discount p {
+	margin-bottom: 0;
 }
 
 #coop_fountain {
@@ -138,7 +153,10 @@ ul.results > li:after {
 }
 
 @media handheld, only screen and (max-width: 767px) {
-	.content .main_info, .content .hours_discounts {
+	.content .main_info, .content .hours_payment {
 		width: 100%;
+}
+	.content .hours_payment {
+		margin-top: 1em;
 }
 }
