@@ -1,6 +1,7 @@
 from django.http import Http404
 from django.shortcuts import render
 from django.views.generic.list import ListView
+from django.core.exceptions import ObjectDoesNotExist
 from aspc.folio.models import Page
 from aspc.eatshop.models import Business
 from aspc.eatshop.filters import (OnCampusFilterSet, RestaurantsFilterSet,
@@ -8,8 +9,15 @@ from aspc.eatshop.filters import (OnCampusFilterSet, RestaurantsFilterSet,
 from aspc.eatshop.config import COOP_FOUNTAIN_ID, COOP_FOUNTAIN_SLUG
 
 def coop_fountain(request):
-    coop = Business.objects.on_campus().get(pk=COOP_FOUNTAIN_ID)
-    page = Page.objects.get(slug=COOP_FOUNTAIN_SLUG)
+    try:
+        page = Page.objects.get(slug=COOP_FOUNTAIN_SLUG)
+    except Page.DoesNotExist:
+        page = None
+    
+    try:
+        coop = Business.objects.on_campus().get(pk=COOP_FOUNTAIN_ID)
+    except Business.DoesNotExist:
+        raise Http404
     
     return render(request, "eatshop/coop_fountain.html",
                   {'business': coop, 'page': page})

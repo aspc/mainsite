@@ -32,12 +32,4 @@ Coop Fountain
 </div>
 {% endif %}
 
-{% if page.page_set.count %}
-<ol class="children">
-{% for child in page.page_set.all %}
-  <li><a href="{{ child.get_absolute_url }}">{{ child }}</a><p class="summary">{{ child.summary }}</p></li>
-{% endfor %}
-</ol>
-{% endif %}
-
 {% endblock %}
