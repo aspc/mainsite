@@ -44,9 +44,9 @@ class Page(models.Model):
     )
     managed = models.BooleanField(
         default=False,
-        editable=False,
-        help_text="Indicates whether this is a special page that cannot be "
-                  "deleted."
+        help_text="Indicates whether this is a special page that should not be "
+                  "deleted through normal means. (Don't change this unless "
+                  "you know what you're doing!)"
     )
     
     class Meta:
