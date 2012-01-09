@@ -6,7 +6,7 @@
 {% block "title" %}Coop Fountain{% endblock %}
 {% block "page_title" %}
 Coop Fountain
-{% if perms.page.can_change %}&nbsp;<a href="{% url "admin:folio_page_change" page.id %}">(edit page)</a>{% endif %}
+{% if page and perms.page.can_change %}&nbsp;<a href="{% url "admin:folio_page_change" page.id %}">(edit page)</a>{% endif %}
 {% if perms.business.can_change %}&nbsp;<a href="{% url "admin:eatshop_business_change" business.id %}">(edit business)</a>{% endif %}
 {% endblock %}
 
