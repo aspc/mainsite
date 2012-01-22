@@ -139,7 +139,7 @@ class ListBookSalesView(ListView):
             query |= Q(authors__icontains=form.cleaned_data['search'])
             query |= Q(edition__icontains=form.cleaned_data['search'])
             query |= Q(isbn__icontains=form.cleaned_data['search'])
-            qs = qs.filter(query)
+            qs = qs.filter(query).order_by('title')
         
         return qs
     
