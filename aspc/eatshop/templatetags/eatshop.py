@@ -10,7 +10,7 @@ def format_hours(business):
     presented as people would expect (i.e. Mon 4pm-1am instead of
     Mon 4pm-11:59pm + Tues 12am-1am)
     """
-    print "invoked inclusion tag"
+    
     almost_midnight = datetime.time(23,59) # end of the day
     midnight = datetime.time(0,0) # beginning of the day
     
@@ -48,11 +48,9 @@ def format_hours(business):
         old_pd = combined[weekdays[day_idx - 1]][-1] # Last pd yesterday
         if old_pd[1] == midnight:
             new_pd = (old_pd[0], midnight_period.end)
-            print new_pd
             combined[weekdays[day_idx - 1]][-1] = new_pd # Swap in new pd
     
     as_list = [(a, combined.get(a, [])) for a in weekdays]
-    print [len(ranges) for day, ranges in as_list]
     total_times = sum([len(ranges) for day, ranges in as_list])
     
     return {"hours": as_list, 'hours_available': total_times > 0,}
