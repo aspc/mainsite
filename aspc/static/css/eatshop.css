@@ -206,9 +206,8 @@ ul.results > li:after {
 	text-align: center;
 	font-family: "Permanent Marker", cursive;
 	color: #ff773a;
+	font-weight: normal;
 }
-
-/* @end */
 
 .content .body h1 {
 	font-size: 2em;
@@ -220,7 +219,6 @@ ul.results > li:after {
 
 .body .menu-col h2 {
 	font-size: 1.5em;
-	font-weight: normal;
 	margin: 0;
 	margin-bottom: 0.5em;
 }
@@ -230,6 +228,8 @@ ul.results > li:after {
 	display: block;
 	clear: both;
 }
+
+/* @end */
 
 @media handheld, only screen and (max-width: 767px) {
 	
