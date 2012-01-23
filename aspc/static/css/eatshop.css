@@ -1,4 +1,6 @@
-/* @override http://localhost:8000/static/css/eatshop.css */
+@import url(http://fonts.googleapis.com/css?family=Permanent+Marker);
+
+/* @group Results List */
 
 form.filter ul {
 	font-size: 0.9em;
@@ -43,6 +45,8 @@ ul.results > li:after {
 	clear: both;
 }
 
+/* @end */
+
 .content h2 {
 	margin-bottom: 0.25em;
 }
@@ -72,6 +76,8 @@ ul.results > li:after {
 .main_info .address {
 	margin-bottom: 0.33em;
 }
+
+/* @group Hours and payment info */
 
 .content .hours_payment {
 	font-size: 0.9em;
@@ -126,6 +132,10 @@ ul.results > li:after {
 	background-color: #dfeeff;
 }
 
+/* @end */
+
+/* @group Discounts */
+
 .discount {
 	border: 1px solid #ffec8a;
 	padding: 1em;
@@ -140,10 +150,13 @@ ul.results > li:after {
 	margin-bottom: 0;
 }
 
+/* @end */
+
+/* @group Coop Page */
+
 #coop_fountain {
 	padding-top: 1em;
 	padding-bottom: 1em;
-	border-bottom: 1px dashed #6a9ed8;
 }
 
 #coop_fountain:after {
@@ -152,7 +165,78 @@ ul.results > li:after {
 	clear: both;
 }
 
+.menu-col {
+	width: 31%;
+	padding-right: 1.5%;
+	float: left;
+	font-size: 0.85em;
+	color: #fffac9;
+}
+
+.menu-col p {
+	margin: 0;
+}
+
+.menu-col li {
+	margin-bottom: 0.75em;
+}
+
+.menu-col ul {
+	list-style-type: none;
+	padding-left: 0.5em;
+}
+
+.menu-col ul ul {
+	margin: 0.5em 0;
+}
+.menu-col ol {
+	padding-left: 1.75em;
+}
+
+.body {
+	background: #222;
+	background-image: url(images/chalkboard_bg.png);
+	margin-bottom: 1em;
+	padding: 1em;
+	border: 0.5em solid #674227;
+	box-shadow: 0px 0px 4px #444;
+}
+
+.content .body h1, .body .menu-col h2 {
+	text-align: center;
+	font-family: "Permanent Marker", cursive;
+	color: #ff773a;
+}
+
+/* @end */
+
+.content .body h1 {
+	font-size: 2em;
+	margin: 0;
+	margin-bottom: 0.25em;
+	padding-bottom: 0.25em;
+	border-bottom: 3px double #cdc67d;
+}
+
+.body .menu-col h2 {
+	font-size: 1.5em;
+	font-weight: normal;
+	margin: 0;
+	margin-bottom: 0.5em;
+}
+
+.body:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
 @media handheld, only screen and (max-width: 767px) {
+	
+	.body .menu-col {
+		width: 100%;
+		float: none;
+}
 	.content .main_info, .content .hours_payment {
 		width: 100%;
 }
