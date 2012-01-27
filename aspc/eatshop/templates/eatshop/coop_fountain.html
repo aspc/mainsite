@@ -1,14 +1,10 @@
-{% extends "eatshop/base.html" %}
+{% extends "base.html" %}
 {% load url from future %}
 {% load markup %}
+{% load eatshop %}
 
 {% block "ogtitle" %}Coop Fountain{% endblock %}
 {% block "title" %}Coop Fountain{% endblock %}
-{% block "page_title" %}
-Coop Fountain
-{% if perms.page.can_change %}&nbsp;<a href="{% url "admin:folio_page_change" page.id %}">(edit page)</a>{% endif %}
-{% if perms.business.can_change %}&nbsp;<a href="{% url "admin:eatshop_business_change" business.id %}">(edit business)</a>{% endif %}
-{% endblock %}
 
 {% block "ogdesc" %}{{ page.summary }}{% endblock %}
 {% block "metadesc" %}{{ page.summary }}{% endblock %}
@@ -18,26 +14,46 @@ Coop Fountain
 <link rel="stylesheet" href="{{ STATIC_URL }}css/eatshop.css" type="text/css">
 {% endblock %}
 
-{% block "eatshop_breadcrumbs" %}
-  <li><a href="{% url "coop_fountain" %}">Coop Fountain</a></li>
-{% endblock %}
+{% block "content_prenav" %}
+<section class="group primary coop_fountain">
+  <ol class="breadcrumbs">
+    <li><a href="{% url "eatshop" %}">Dining and Shopping</a></li>
+    <li><a href="{% url "coop_fountain" %}">Coop Fountain</a></li>
+  </ol>
+  <div class="body">
+    <h1 id="title">Coop Fountain{% if perms.page.can_change or perms.business.can_change %}<span id="actions">
+    {% if perms.page.can_change %}&nbsp;<a href="{% url "admin:folio_page_change" page.id %}">(edit page)</a>{% endif %}
+    {% if perms.business.can_change %}&nbsp;<a href="{% url "admin:eatshop_business_change" business.id %}">(edit business)</a>{% endif %}
+    </span>{% endif %}</h1>
 
-{% block "content" %}
-<div id="coop_fountain">
-{% include "eatshop/business_info_fragment.html" %}
-</div>
-{% if page.body %}
-<div class="body">
-{{ page.body|markdown }}
-</div>
-{% endif %}
+    <div class="hours_payment">
+      {% format_hours business %}
+    </div>
+    <p class="address">{{ business.address|linebreaksbr }}</p>
+    {% if business.phone %}
+    <p class="contact">
+      {% if business.phone %}phone: {{ business.phone }}{% endif %}
+    </p>
+    {% endif %}
+    {{ business.description|markdown }}
+    {% if business.has_discount %}
+    <div class="discount">
+      <p class="accepts"><strong>We accept Flex/BoardPlus and ClaremontCash!</strong></p>
+      {{ business.discount|markdown }}
+    </div>
+    {% endif %}
+  {% if page.body %}
+  {{ page.body|markdown }}
+  {% endif %}
+  </div>
 
-{% if page.page_set.count %}
-<ol class="children">
-{% for child in page.page_set.all %}
-  <li><a href="{{ child.get_absolute_url }}">{{ child }}</a><p class="summary">{{ child.summary }}</p></li>
-{% endfor %}
-</ol>
-{% endif %}
+  {% if page.page_set.count %}
+  <ol class="children">
+  {% for child in page.page_set.all %}
+    <li><a href="{{ child.get_absolute_url }}">{{ child }}</a><p class="summary">{{ child.summary }}</p></li>
+  {% endfor %}
+  </ol>
+  {% endif %}
 
+</section>
 {% endblock %}

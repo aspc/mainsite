@@ -1,3 +1,5 @@
+/* @override http://127.0.0.1:8000/static/css/eatshop.css */
+
 @import url(http://fonts.googleapis.com/css?family=Permanent+Marker);
 
 /* @group Results List */
@@ -165,12 +167,22 @@ ul.results > li:after {
 	clear: both;
 }
 
+section.coop_fountain {
+	color: #fffac9;
+	background: #222;
+	background-image: url(images/chalkboard_bg.png);
+}
+
+.coop_fountain .body {
+	border: 0.5em solid #674227;
+	padding: 1em;
+}
+
 .menu-col {
 	width: 31%;
 	padding-right: 1.5%;
 	float: left;
 	font-size: 0.85em;
-	color: #fffac9;
 }
 
 .menu-col p {
@@ -193,29 +205,66 @@ ul.results > li:after {
 	padding-left: 1.75em;
 }
 
-.body {
-	background: #222;
-	background-image: url(images/chalkboard_bg.png);
-	margin-bottom: 1em;
-	padding: 1em;
-	border: 0.5em solid #674227;
-	box-shadow: 0px 0px 4px #444;
-}
-
-.content .body h1, .body .menu-col h2 {
+.coop_fountain .body h1, .coop_fountain .body .menu-col h2, #title, .coop_fountain .discount h4 {
 	text-align: center;
 	font-family: "Permanent Marker", cursive;
 	color: #ff773a;
+
 }
 
-/* @end */
+#title {
+	font-size: 3em;
+	margin: 0;
+	color: #ff8047;
+	text-shadow: #ffc8af 1px 1px 0;
+}
 
-.content .body h1 {
+#title #actions {
+	display: block;
+	font-size: 0.35em;
+	text-shadow: none;
+}
+
+#title #actions a {
+	color: #df8057;
+}
+
+.body h1 {
 	font-size: 2em;
 	margin: 0;
 	margin-bottom: 0.25em;
 	padding-bottom: 0.25em;
 	border-bottom: 3px double #cdc67d;
+}
+
+.coop_fountain .discount {
+	background: transparent;
+	padding: 0;
+	border: none;
+	border-top: 1px solid #c3bd77;
+	border-bottom: 1px solid #c3bd77;
+	font-size: 0.9em;
+	margin-bottom: 1em;
+	clear: both;
+}
+
+.coop_fountain .hours_payment {
+	width: 35%;
+	float: right;
+	font-size: 0.9em;
+	margin-top: 1em;
+	margin-left: 1em;
+	margin-bottom: 1em;
+	padding-left: 1em;
+	border-left: 1px solid #c3bd77;
+}
+
+.coop_fountain .hours_payment .accepts {
+	background: transparent;
+}
+
+.coop_fountain .discount p {
+	margin: 0.5em;
 }
 
 .body .menu-col h2 {
@@ -231,13 +280,22 @@ ul.results > li:after {
 	clear: both;
 }
 
+/* @end */
+
 @media handheld, only screen and (max-width: 767px) {
 	
-	.body .menu-col {
+	.coop_fountain .body .menu-col {
 		width: 100%;
 		float: none;
 }
-	.content .main_info, .content .hours_payment {
+	.coop_fountain .hours_payment {
+	border-left: none;
+}
+
+	.coop_fountain #title {
+		font-size: 2.2em;
+}
+	.coop_fountain .hours_payment, .content .main_info, .content .hours_payment {
 		width: 100%;
 }
 	.content .hours_payment {
