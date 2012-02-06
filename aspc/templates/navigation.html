@@ -3,14 +3,20 @@
 
 <nav id="sitewide" class="secondary{% if all_nav %} all{% endif %}">
   <ul>
-    <li id="food" class="group"><h1>Dining &amp; Shopping</h1>
+    {% root_navigation_list eatshop as navigation %}
+    {% with navigation.0.1 as pages %}
+    <li id="food" class="group{% if active_section == "eatshop" %} active{% endif %}"><h1>Dining &amp; Shopping</h1>
       <ul>
         <li><a href="http://www.mikemaltese.com/5cmenu/">Dining Halls</a></li>
         <li><a href="{% url "on_campus" %}">On-campus Eateries{# <span class="note">until 2 am</span> #}</a></li>
         <li><a href="{% url "restaurants" %}">Restaurants{# <span class="note">until 2 am</span> #}</a></li>
         <li><a href="{% url "businesses" %}">Local Businesses{# <span class="note">until 2 am</span> #}</a></li>
+        {% for sub in pages %}
+        <li><a href="{{ sub.get_absolute_url }}">{{ sub.display_title }}</a></li>
+        {% endfor %}
       </ul>
     </li>
+    {% endwith %}
     
     {% root_navigation_list services as navigation %}
     {% with navigation.0.1 as pages %}
@@ -56,7 +62,7 @@
     </li>
     {% endwith %}
     
-    {% root_navigation_list as navigation excluding senate,information,services %}
+    {% root_navigation_list as navigation excluding eatshop,senate,information,services %}
     {% include "navigation_fragment.html" %}
     
     <li id="partners" class="group"><h1>Partners</h1>
