@@ -44,16 +44,26 @@ def update_static():
     ):
         run("./manage.py collectstatic")
 
+def install_requirements():
+    with settings(
+        cd("/srv/www/{0}/env/aspcrepo".format(env.site)),
+        prefix("source /srv/www/{0}/env/bin/activate".format(env.site))
+    ):
+        run("pip install -r ./requirements.txt")
+
 def reload():
     run("/srv/www/{0}/bin/gunicorn.sh reload".format(env.site))
 
-def apply_changes():
+def git_push_pull():
     local("git push {0}".format(env.site))
     with cd("/srv/www/{0}/env/aspcrepo".format(env.site)):
         run("git pull")
         run("git merge origin/master")
         run("git status")
-    
-    migrate()
+
+def apply_changes():
+    git_push_pull()
+    install_requirements()
     update_static()
+    migrate()
     reload()

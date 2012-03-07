@@ -13,6 +13,7 @@ from django.utils.decorators import method_decorator
 from aspc.sagelist.models import BookSale
 from functools import wraps
 import string
+from pprint import pprint
 
 class BookSaleForm(forms.ModelForm):
     class Meta:
@@ -132,7 +133,7 @@ class ListBookSalesView(ListView):
         form = BookSearchForm(self.request.GET)
         
         qs = super(ListBookSalesView, self).get_queryset()
-        qs = qs.filter(buyer__isnull=True)
+        qs = qs.filter(buyer__isnull=True).order_by('title')
         
         if form.is_valid():
             query = Q(title__icontains=form.cleaned_data['search'])

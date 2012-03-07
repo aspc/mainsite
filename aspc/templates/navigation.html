@@ -3,16 +3,21 @@
 
 <nav id="sitewide" class="secondary{% if all_nav %} all{% endif %}">
   <ul>
-    <li id="food" class="group"><h1>Dining &amp; Shopping</h1>
+    {% root_navigation_list eatshop as navigation %}
+    {% with navigation.0.1 as pages %}
+    <li id="food" class="group{% if active_section == "eatshop" %} active{% endif %}"><h1>Dining &amp; Shopping</h1>
       <ul>
-        <li><a href="http://www.mikemaltese.com/5cmenu/">Dining Halls<span class="note">until 2 am</span></a></li>
-        <!-- <li><a href="{% url "on_campus" %}">On-campus Eateries{# <span class="note">until 2 am</span> #}</a></li>
+        <li><a href="http://www.mikemaltese.com/5cmenu/">Dining Halls</a></li>
+        <li><a href="{% url "on_campus" %}">On-campus Eateries{# <span class="note">until 2 am</span> #}</a></li>
         <li><a href="{% url "restaurants" %}">Restaurants{# <span class="note">until 2 am</span> #}</a></li>
-        <li><a href="{% url "businesses" %}">Local Businesses{# <span class="note">until 2 am</span> #}</a></li> -->
-        <!-- <li><a href="">On-campus Eateries<span class="note">until 2 am</span></a></li>
-        <li><a href="">Restaurants<span class="note">until 2 am</span></a></li> -->
+        <li><a href="{% url "businesses" %}">Local Businesses{# <span class="note">until 2 am</span> #}</a></li>
+        <li><a href="http://coopstore.pomona.edu/">Coop Store</a></li>
+        {% for sub in pages %}
+        <li><a href="{{ sub.get_absolute_url }}">{{ sub.display_title }}</a></li>
+        {% endfor %}
       </ul>
     </li>
+    {% endwith %}
     
     {% root_navigation_list services as navigation %}
     {% with navigation.0.1 as pages %}
@@ -58,11 +63,12 @@
     </li>
     {% endwith %}
     
-    {% root_navigation_list as navigation excluding senate,information,services %}
+    {% root_navigation_list as navigation excluding eatshop,senate,information,services %}
     {% include "navigation_fragment.html" %}
     
     <li id="partners" class="group"><h1>Partners</h1>
       <ul>
+        <li><a href="http://www.pomona.edu/administration/campus-center/index.aspx">Smith Campus Center</a></li>
         <li><a href="http://www.kspc.org/">KSPC 88.7</a></li>
         <li><a href="http://tsl.pomona.edu/">The Student Life</a></li>
         <li id="amazon_link"><a href="http://www.amazon.com/?_encoding=UTF8&amp;tag=assostudofpom-20&amp;linkCode=ur2&amp;camp=1789&amp;creative=390957">Shop Amazon Associates</a><img src="https://www.assoc-amazon.com/e/ir?t=assostudofpom-20&amp;l=ur2&amp;o=1" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></li>
