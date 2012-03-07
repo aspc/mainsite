@@ -53,7 +53,9 @@ class Appointment(models.Model):
     """Information on the start and end dates of a particular ASPC position"""
     
     position = models.ForeignKey(Position)
-    user = models.ForeignKey(User)
+    login_id = models.CharField(max_length=20, blank=True, null=True)
+    
+    user = models.ForeignKey(User, blank=True, null=True)
     
     start = models.DateField()
     end = models.DateField(null=True, blank=True)
