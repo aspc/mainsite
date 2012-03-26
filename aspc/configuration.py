@@ -206,13 +206,13 @@ from celery.schedules import crontab
 import djcelery
 
 CELERYBEAT_SCHEDULE = {
-    "update-course-database": {
-        "task": "coursesearch.update_all",
+    "update-catalog": {
+        "task": "coursesearch.update_catalog",
         # Full catalog refresh finishes by 5am typically
         "schedule": crontab(hour=5),
     },
-    "update-course-enrollments": {
-        "task": "coursesearch.update_registration",
+    "update-enrollments": {
+        "task": "coursesearch.update_enrollments",
         # Looks like the actual time the refresh finishes drifts
         # but it's usually done by 20 after the hour
         "schedule": crontab(hour="*", minute=20), 
