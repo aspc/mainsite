@@ -11,3 +11,4 @@ django-debug-toolbar
 django-filter
 werkzeug
 django-extensions
+django-celery
