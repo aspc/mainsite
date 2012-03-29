@@ -51,3 +51,12 @@ SECRET_KEY = ''
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = os.path.join(PROJECT_ROOT, "temp")
+
+# Override the COURSE_DATA_DB settings with real values
+
+COURSE_DATA_DB = {
+    'HOST': '',
+    'NAME': '',
+    'USER': '',
+    'PASSWORD': '',
+}

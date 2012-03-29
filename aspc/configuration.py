@@ -148,6 +148,8 @@ LOGGING = {
 
 LOGIN_REDIRECT_URL = '/'
 
+#### ASPC Specific Configuration
+
 # LDAP Authentication information
 
 AUTHENTICATION_BACKENDS = (
@@ -178,6 +180,8 @@ AUTH_LDAP_DEFAULT_COLLEGE = "PO"
 
 AUTH_LDAP_COLLEGES = ((i[0], i[1]['name']) for i in AUTH_LDAP.items())
 
+# Initial Data for Housing
+
 DATA_ROOT = os.path.join(PROJECT_ROOT, '..', 'data')
 DATA_PATHS = {
     'housing': {
@@ -188,6 +192,18 @@ DATA_PATHS = {
         'maps_dir': os.path.join(DATA_ROOT, 'housing', 'maps'),
     },
 }
+
+# Connection information for ITS Microsoft SQL Server
+# (deployment-specific, overridden in settings.py)
+
+COURSE_DATA_DB = {
+    'HOST': '',
+    'NAME': '',
+    'USER': '',
+    'PASSWORD': '',
+}
+
+#### Debug Toolbar Configuration
 
 def show_toolbar(request):
     if request.user.is_superuser:
@@ -200,10 +216,12 @@ DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': show_toolbar,
 }
 
-BROKER_URL = "django://"
+#### Celery Configuration
 
 from celery.schedules import crontab
 import djcelery
+
+BROKER_URL = "django://"
 
 CELERYBEAT_SCHEDULE = {
     "update-catalog": {
