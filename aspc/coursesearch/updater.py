@@ -131,6 +131,9 @@ def refresh_one_course(cursor, course):
         FROM pom.Courses 
         WHERE CourseCode = ?""", course.cx_code).fetchone()
     
+    logger.info("Populating information for [{0}] {1}".format(
+        course.cx_code, course_row.Name))
+    
     course.name = course_row.Name
     course.grading_style = course_row.GradingStyle
     course.description = course_row.Description
@@ -179,12 +182,12 @@ def refresh_one_course(cursor, course):
     
     for dept in dept_rows:
         if _is_requirement_area(dept.CallingDepartment):
-            course.departments.add(
-                Department.objects.get(code=dept.CallingDepartment)
-            )
-        else:
             course.requirement_areas.add(
                 RequirementArea.objects.get(code=dept.CallingDepartment)
+            )
+        else:
+            course.departments.add(
+                Department.objects.get(code=dept.CallingDepartment)
             )
 
 
