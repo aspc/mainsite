@@ -109,9 +109,9 @@ def refresh_meetings(cursor, course):
         campus = CAMPUSES_LOOKUP[campus_code]
         
         # Get location
-        room_number = ROOM_REGEX.findall(mtg.MeetTime)[0]
         
         if mtg.Room and mtg.Building:
+            room_number = ROOM_REGEX.findall(mtg.MeetTime)[0]
             location = "{0}, {1}".format(mtg.Building, room_number)
         else:
             location = ''
