@@ -165,6 +165,7 @@ def refresh_one_course(cursor, course):
         inames.append(instructor.Name)
     
     course.instructor = "; ".join(inames)
+    logger.debug("Instructor name(s): {0}".format(inames))
     
     # TODO: Normalize instructors into their own table
     
