@@ -68,7 +68,7 @@ def refresh_meetings(cursor, course):
     # meeting times likewise shouldn't be parsed.
     
     # Clear old meetings
-    course.meetings.all().delete()
+    course.meeting_set.all().delete()
     
     for mtg in meetings:
         # Parse weekdays
