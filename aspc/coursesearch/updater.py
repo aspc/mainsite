@@ -59,7 +59,8 @@ def refresh_meetings(cursor, course):
         ON (pc.CourseCode = pm.CourseCode)
         WHERE pm.CourseCode = ?
         AND Weekdays IS NOT NULL 
-        AND MeetTime NOT LIKE '%00:00-00:00AM. %';""", course.cx_code).fetchall()
+        AND MeetTime NOT LIKE '%00:00-00:00AM. %';""",
+        course.cx_code.encode('utf8'))).fetchall()
     
     # Query explanation: Null weekdays can't be displayed on the schedule, so
     # they don't make any sense to store (or try to parse). Non-existent 
@@ -135,7 +136,7 @@ def _sanitize(chardata):
 def refresh_one_course(cursor, course):
     course_row = cursor.execute("""SELECT * 
         FROM pom.Courses 
-        WHERE CourseCode = ?""", course.cx_code).fetchone()
+        WHERE CourseCode = ?""", course.cx_code.encode('utf8')).fetchone()
     
     logger.info("Populating information for [{0}] {1}".format(
         course.cx_code, course_row.Name))
@@ -156,7 +157,7 @@ def refresh_one_course(cursor, course):
         JOIN pom.Courses AS pc 
         ON (pc.CourseCode = pi.CourseCode) 
         WHERE pi.CourseCode = ?
-        ORDER BY pi.InstructorID;""", course.cx_code).fetchall()
+        ORDER BY pi.InstructorID;""", course.cx_code.encode('utf8')).fetchall()
     
     inames = []
     for instructor in instructors:
@@ -192,7 +193,7 @@ def refresh_one_course(cursor, course):
     
     dept_rows = cursor.execute("""SELECT CallingDepartment 
         FROM pom.Courses
-        WHERE CourseCode = ?;""", course.cx_code).fetchall()
+        WHERE CourseCode = ?;""", course.cx_code.encode('utf8')).fetchall()
     
     for dept in dept_rows:
         if _is_requirement_area(dept.CallingDepartment):
