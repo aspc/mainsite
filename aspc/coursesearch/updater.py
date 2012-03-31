@@ -37,6 +37,7 @@ def refresh_departments(cursor):
             
             ra.name = deptrow.Description
             ra.campus = CAMPUSES[int(deptrow.Code[1]) - 1] # CAMPUSES is 0-indexed
+            ra.save()
         else:
             try:
                 dept = Department.objects.get(code=deptrow.Code)
