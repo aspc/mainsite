@@ -177,6 +177,10 @@ def refresh_one_course(cursor, course):
     # if course_row.Requisites == "Y":
     #     course.prerequisites = True
     
+    # Populate meeting times and locations
+    
+    refresh_meetings(cursor, course)
+    
     # Populate departments and requirement areas
     
     try:
@@ -205,6 +209,8 @@ def refresh_one_course(cursor, course):
             course.departments.add(
                 Department.objects.get(code=dept.CallingDepartment)
             )
+    
+    course.save()
 
 
 def refresh_courses(cursor):
