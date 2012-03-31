@@ -176,7 +176,15 @@ def refresh_one_course(cursor, course):
     #     course.prerequisites = True
     
     # Populate departments and requirement areas
-    course.primary_department = Department.objects.get(code=course_row.Department)
+    
+    try:
+        course.primary_department = Department.objects.get(code=course_row.Department)
+    except Department.DoesNotExist:
+        logger.warning("Tried to create a course record for {0} in the {1}"
+            "department, but {1} did not exist. Skipping.".format(
+                course.cx_code, course_row.Department))
+        course.delete()
+        return
     
     # Clear secondary department/RA associations in case they've changed
     course.departments.clear()
