@@ -60,7 +60,7 @@ def refresh_meetings(cursor, course):
         WHERE pm.CourseCode = ?
         AND Weekdays IS NOT NULL 
         AND MeetTime NOT LIKE '%00:00-00:00AM. %';""",
-        course.cx_code.encode('utf8'))).fetchall()
+        course.cx_code.encode('utf8')).fetchall()
     
     # Query explanation: Null weekdays can't be displayed on the schedule, so
     # they don't make any sense to store (or try to parse). Non-existent 
