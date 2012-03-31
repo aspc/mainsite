@@ -189,7 +189,7 @@ def refresh_one_course(cursor, course):
 
 
 def refresh_courses(cursor):
-    existing = set(Course.objects.values('cx_code'))
+    existing = set(Course.objects.values_list('cx_code', flat=True))
     cx_existing = set()
     
     cx_course_codes = cursor.execute("SELECT CourseCode FROM pom.Courses;").fetchall()
