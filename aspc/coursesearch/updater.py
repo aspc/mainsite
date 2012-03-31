@@ -153,7 +153,7 @@ def refresh_one_course(cursor, course):
     course.save()
     
     # Get the instructors for the course
-    instructors = cursor.execute("""SELECT pi.Name, pc.CourseCode, pi.InstructorID
+    instructors = cursor.execute("""SELECT DISTINCT(pi.Name), pc.CourseCode, pi.InstructorID
         FROM pom.Instructors AS pi 
         JOIN pom.Courses AS pc 
         ON (pc.CourseCode = pi.CourseCode) 
