@@ -94,6 +94,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'debug_toolbar',
     'djcelery',
+    'kombu.transport.django',
     'folio',
     'senate',
     'blog',
@@ -219,18 +220,23 @@ DEBUG_TOOLBAR_CONFIG = {
 #### Celery Configuration
 
 from celery.schedules import crontab
+from datetime import timedelta
 import djcelery
 
 BROKER_URL = "django://"
 
+CELERY_IMPORTS = (
+    "coursesearch.tasks",
+)
+
 CELERYBEAT_SCHEDULE = {
     "update-catalog": {
-        "task": "coursesearch.update_catalog",
+        "task": "coursesearch.tasks.update_catalog",
         # Full catalog refresh finishes by 5am typically
-        "schedule": crontab(hour=5),
+        "schedule": timedelta(seconds=30), #crontab(hour=5),
     },
     "update-enrollments": {
-        "task": "coursesearch.update_enrollments",
+        "task": "coursesearch.tasks.update_enrollments",
         # Looks like the actual time the refresh finishes drifts
         # but it's usually done by 20 after the hour
         "schedule": crontab(hour="*", minute=20), 
