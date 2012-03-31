@@ -13,6 +13,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         logger.info("Starting full catalog update")
         logger.info("Connecting to {0}".format(settings.COURSE_DATA_DB['HOST']))
-        update_task.delay()
-        update_task.wait()
+        result = update_task.delay()
+        result.wait()
         logger.info("Full catalog update finished")
