@@ -220,6 +220,15 @@ def refresh_one_course(cursor, course):
     course.save()
 
 
+def refresh_enrollments(cursor):
+    for course in Course.objects.all():
+        crs = cursor.execute("""SELECT SeatsTotal, SeatsFilled FROM pom.Courses
+            WHERE CourseCode = ?;""", course.cx_code).fetchone()
+        course.spots = crs.SeatsTotal
+        course.filled = crs.SeatsFilled
+        logger.info("Updated [{0}]: {1} filled / {2} total".format(course.filled, course.spots))
+        course.save()
+
 def refresh_courses(cursor):
     started = datetime.now()
     existing = set(Course.objects.values_list('cx_code', flat=True))
@@ -235,43 +244,46 @@ def refresh_courses(cursor):
     # have changed... can't tell the difference)
     stale = existing - cx_existing
     
-    logger.info("Removing {0} courses whose corresponding codes are no longer"
-                " in the JICSWS database...".format(len(stale)))
-    Course.objects.filter(cx_code__in=stale).delete()
-    logger.info("Removed all of the following: {0}".format(pprint(stale)))
+    if stale:
+        logger.info("Removing {0} courses whose corresponding codes are no longer"
+                    " in the JICSWS database...".format(len(stale)))
+        Course.objects.filter(cx_code__in=stale).delete()
+        logger.info("Removed all of the following: {0}".format(pprint(stale)))
     
     # Things in CX that we don't have yet:
     new = cx_existing - existing
     
-    logger.info("Creating new course records for {0} "
-                "new courses".format(len(new)))
-    for cx_code in new:
-        # turning CHEM110ALPO;02 into CHEM110ALPO-02, etc:
-        code = '-'.join(cx_code.split(';')[2:4])
+    if new:
+        logger.info("Creating new course records for {0} "
+                    "new courses".format(len(new)))
+        for cx_code in new:
+            # turning CHEM110ALPO;02 into CHEM110ALPO-02, etc:
+            code = '-'.join(cx_code.split(';')[2:4])
         
-        new_course = Course(
-            cx_code=cx_code,
-            code=code,
-            code_slug=slugify(code).upper())
-        refresh_one_course(cursor, new_course)
-        logger.info("Created [{0}] {1}".format(
-            new_course.code, 
-            new_course.name
-        ))
+            new_course = Course(
+                cx_code=cx_code,
+                code=code,
+                code_slug=slugify(code).upper())
+            refresh_one_course(cursor, new_course)
+            logger.info("Created [{0}] {1}".format(
+                new_course.code, 
+                new_course.name
+            ))
     
     # Existing stuff to refresh:
     to_refresh = existing & cx_existing
     
-    logger.info("Refreshing the course information for {0} "
-                "existing course records".format(len(to_refresh)))
+    if to_refresh:
+        logger.info("Refreshing the course information for {0} "
+                    "existing course records".format(len(to_refresh)))
     
-    for cx_code in to_refresh:
-        course = Course.objects.get(cx_code=cx_code)
-        refresh_one_course(cursor, course)
-        logger.info("Refreshed [{0}] {1}".format(
-            course.code, 
-            course.name
-        ))
+        for cx_code in to_refresh:
+            course = Course.objects.get(cx_code=cx_code)
+            refresh_one_course(cursor, course)
+            logger.info("Refreshed [{0}] {1}".format(
+                course.code, 
+                course.name
+            ))
     
     finished = datetime.now()
     

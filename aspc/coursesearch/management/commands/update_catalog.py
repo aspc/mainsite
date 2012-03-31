@@ -1,9 +1,8 @@
 import logging
-from django.conf import settings
 import pyodbc
+from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
-import django.db.utils
-from aspc.coursesearch.models import RequirementArea, CAMPUSES
+from aspc.coursesearch.tasks import update_catalog
 
 logger = logging.getLogger(__name__)
 
@@ -14,11 +13,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         logger.info("Starting full catalog update")
         logger.info("Connecting to {0}".format(settings.COURSE_DATA_DB['HOST']))
-        cursor = pyodbc.connect(
-          driver="FreeTDS",
-          server=settings.COURSE_DATA_DB['HOST'],
-          database=settings.COURSE_DATA_DB['NAME'],
-          uid=settings.COURSE_DATA_DB['USER'],
-          pwd=settings.COURSE_DATA_DB['PASSWORD']
-        )
+        update_catalog.delay()
+        update_catalog.wait()
         logger.info("Full catalog update finished")
