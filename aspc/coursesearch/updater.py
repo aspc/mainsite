@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 def _is_requirement_area(deptcode):
     # By convention, dept codes of the form "letter, digit, letter" are
     # actually requirement areas (like Pomona Gen Eds)
-    if deptcode[1] in [str(a) for a in range(1, len(CAMPUSES) + 1)]:
+    if deptcode[0] in [str(a) for a in range(1, len(CAMPUSES) + 1)]:
         return True
     else:
         return False
