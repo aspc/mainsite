@@ -158,7 +158,7 @@ def refresh_one_course(cursor, course):
     # TODO: Normalize instructors into their own table
     
     # Check for fees or prerequisites
-    match = FEE_REGEX.findall(course.description)
+    match = FEE_REGEX.findall(unicode(course.description))
     if match:
         course.fee = True
     
