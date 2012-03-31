@@ -12,3 +12,4 @@ django-filter
 werkzeug
 django-extensions
 django-celery
+pyodbc
