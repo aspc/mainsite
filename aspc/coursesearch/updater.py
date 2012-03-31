@@ -2,7 +2,7 @@ import logging, re
 from pprint import pprint
 from datetime import time
 import pyodbc
-from django.template.defaultfilters import slugify, 
+from django.template.defaultfilters import slugify
 from aspc.coursesearch.models import (Course, Meeting, Department, 
     RequirementArea, CAMPUSES, CAMPUSES_LOOKUP)
 
