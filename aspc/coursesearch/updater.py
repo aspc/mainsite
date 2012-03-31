@@ -55,7 +55,7 @@ def refresh_departments(cursor):
 
 def refresh_meetings(cursor, course):
     # Create Meeting objects for the course's meetings
-    meetings = cursor.execute("""SELECT Weekdays, MeetTime, Campus, Building, Room
+    meetings = cursor.execute("""SELECT Weekdays, DISTINCT(MeetTime), Campus, Building, Room
         FROM pom.Courses AS pc
         JOIN pom.Meetings AS pm
         ON (pc.CourseCode = pm.CourseCode)
@@ -67,6 +67,9 @@ def refresh_meetings(cursor, course):
     # Query explanation: Null weekdays can't be displayed on the schedule, so
     # they don't make any sense to store (or try to parse). Non-existent 
     # meeting times likewise shouldn't be parsed.
+    #
+    # The DISTINCT() is to eliminate duplicate rows, at least until ITS
+    # fixes the bug in their updater.
     
     # Clear old meetings
     course.meeting_set.all().delete()
@@ -106,7 +109,10 @@ def refresh_meetings(cursor, course):
         # Get campus
         
         campus_code = mtg.Campus.split(' ')[0]
-        campus = CAMPUSES_LOOKUP[campus_code]
+        if not campus_code in CAMPUSES_LOOKUP.keys():
+            campus = CAMPUSES_LOOKUP['?']
+        else:
+            campus = CAMPUSES_LOOKUP[campus_code]
         
         # Get location
         
