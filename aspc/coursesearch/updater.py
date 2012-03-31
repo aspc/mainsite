@@ -135,7 +135,7 @@ def refresh_one_course(cursor, course):
     course.grading_style = course_row.GradingStyle
     course.description = course_row.Description
     course.note = course_row.Note
-    course.credit = float(course_row.Credit)
+    course.credit = float(course_row.Credits)
     course.spots = int(course_row.SeatsTotal)
     course.filled = int(course_row.SeatsFilled)
     
