@@ -1,6 +1,6 @@
 import logging, re
 from pprint import pprint
-from datetime import time
+from datetime import datetime, time
 import pyodbc
 from django.template.defaultfilters import slugify
 from aspc.coursesearch.models import (Course, Meeting, Department, 
@@ -172,7 +172,6 @@ def refresh_one_course(cursor, course):
         inames.append(instructor.Name)
     
     course.instructor = "; ".join(inames)
-    logger.debug("Instructor name(s): {0}".format(inames))
     
     # TODO: Normalize instructors into their own table
     
@@ -222,6 +221,7 @@ def refresh_one_course(cursor, course):
 
 
 def refresh_courses(cursor):
+    started = datetime.now()
     existing = set(Course.objects.values_list('cx_code', flat=True))
     cx_existing = set()
     
@@ -272,4 +272,8 @@ def refresh_courses(cursor):
             course.code, 
             course.name
         ))
+    
+    finished = datetime.now()
+    
+    logger.info("Catalog update complete. Started: {0}, Finished: {1}".format(started, finished))
     
