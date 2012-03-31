@@ -8,6 +8,7 @@ from aspc.coursesearch.models import (Course, Meeting, Department,
 
 FEE_REGEX = re.compile(r'[Ff]ee:\s+\$([\d\.]+)')
 ROOM_REGEX = re.compile(r'[A-Z]+\s([^(]+)\s+')
+TIME_REGEX = re.compile(r'(\d+:\d+)(AM|PM)?-(\d+:\d+)(AM|PM).')
 
 logger = logging.getLogger(__name__)
 
@@ -82,13 +83,13 @@ def refresh_meetings(cursor, course):
         
         # Parse times
         
-        start, end = mtg.MeetTime.split('. ')[0].split('-')
-        end, end_pm = end[:-2], True if end[-2:] == 'PM' else False
-
-        if start[-2:] in ('AM', 'PM'):
-            start, start_pm = start[:-2], True if start[-2:] == 'PM' else False
-        else:
-            start_pm = end_pm
+        start, start_pm, end, end_pm = TIME_REGEX.findall(mtg.MeetTime)[0]
+        
+        if start_pm == 'PM':
+            start_pm = True
+        
+        if end_pm == 'PM':
+            end_pm = True
 
         start_h, start_m = [int(a) for a in start.split(':')]
         end_h, end_m = [int(a) for a in end.split(':')]
