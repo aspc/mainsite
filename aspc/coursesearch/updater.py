@@ -66,7 +66,7 @@ def refresh_meetings(cursor, course):
     # meeting times likewise shouldn't be parsed.
     
     # Clear old meetings
-    course.meetings.delete()
+    course.meetings.all().delete()
     
     for mtg in meetings:
         # Parse weekdays
@@ -203,7 +203,7 @@ def refresh_courses(cursor):
     
     logger.info("Removing {0} courses whose corresponding codes are no longer"
                 " in the JICSWS database...".format(len(stale)))
-    Course.objects.delete(cx_code__in=stale)
+    Course.objects.all().delete(cx_code__in=stale)
     logger.info("Removed all of the following: {0}".format(pprint(stale)))
     
     # Things in CX that we don't have yet:
