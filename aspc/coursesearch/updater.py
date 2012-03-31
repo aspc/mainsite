@@ -21,11 +21,13 @@ def _is_requirement_area(deptcode):
 
 def refresh_departments(cursor):
     
-    cursor.execute("SELECT Code, Description FROM pom.Departments;")
+    depts = cursor.execute("""
+        SELECT Code, Description
+        FROM pom.Departments;""").fetchall()
     
     total = created = 0
     
-    for deptrow in cursor:
+    for deptrow in depts:
         if _is_requirement_area(deptrow.Code):
             try:
                 ra = RequirementArea.objects.get(code=deptrow.Code)
@@ -189,7 +191,10 @@ def refresh_one_course(cursor, course):
 def refresh_courses(cursor):
     existing = set(Course.objects.values('cx_code'))
     cx_existing = set()
-    for row in cursor.execute("SELECT CourseCode FROM pom.Courses;"):
+    
+    cx_course_codes = cursor.execute("SELECT CourseCode FROM pom.Courses;").fetchall()
+    
+    for row in cx_course_codes:
         cx_existing.add(row.CourseCode)
     
     # Remove courses that have been deleted from the catalog (or whose codes
