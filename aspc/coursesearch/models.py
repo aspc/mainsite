@@ -49,8 +49,8 @@ class Course(models.Model):
     code_slug = models.CharField(max_length=20, unique=True, db_index=True)
     cx_code = models.CharField(max_length=34, unique=True,
                                db_index=True, editable=False)
-    name = models.CharField(max_length=100)
-    instructor = models.CharField(max_length=100)
+    name = models.CharField(max_length=256)
+    instructor = models.CharField(max_length=256)
     grading_style = models.CharField(max_length=100, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     note = models.TextField(blank=True, null=True)
