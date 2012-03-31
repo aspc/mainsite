@@ -36,7 +36,7 @@ def refresh_departments(cursor):
                 created += 1
             
             ra.name = deptrow.Description
-            ra.campus = CAMPUSES[int(deptrow.Code[0]) - 1] # CAMPUSES is 0-indexed
+            ra.campus = CAMPUSES[int(deptrow.Code[0]) - 1][0] # CAMPUSES is 0-indexed
             ra.save()
         else:
             try:
