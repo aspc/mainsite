@@ -126,6 +126,12 @@ def refresh_meetings(cursor, course):
             location=location
         )
 
+def _sanitize(chardata):
+    if not chardata:
+        return u''
+    else:
+        return chardata.decode('utf8', 'replace')
+
 def refresh_one_course(cursor, course):
     course_row = cursor.execute("""SELECT * 
         FROM pom.Courses 
@@ -134,10 +140,10 @@ def refresh_one_course(cursor, course):
     logger.info("Populating information for [{0}] {1}".format(
         course.cx_code, course_row.Name))
     
-    course.name = course_row.Name.decode('utf8', 'replace')
-    course.grading_style = course_row.GradingStyle.decode('utf8', 'replace')
-    course.description = course_row.Description.decode('utf8', 'replace')
-    course.note = course_row.Note.decode('utf8', 'replace')
+    course.name = _sanitize(course_row.Name)
+    course.grading_style = _sanitize(course_row.GradingStyle)
+    course.description = _sanitize(course_row.Description)
+    course.note = _sanitize(course_row.Note)
     course.credit = float(course_row.Credits)
     course.spots = int(course_row.SeatsTotal)
     course.filled = int(course_row.SeatsFilled)
