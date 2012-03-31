@@ -215,7 +215,9 @@ def refresh_courses(cursor):
     logger.info("Creating new course records for {0} "
                 "new courses".format(len(new)))
     for cx_code in new:
-        code = cx_code.split(';')[2]
+        # turning CHEM110ALPO;02 into CHEM110ALPO-02, etc:
+        code = '-'.join(cx_code.split(';')[2:4])
+        
         new_course = Course(
             cx_code=cx_code,
             code=code,
