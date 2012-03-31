@@ -55,7 +55,7 @@ def refresh_departments(cursor):
 
 def refresh_meetings(cursor, course):
     # Create Meeting objects for the course's meetings
-    meetings = cursor.execute("""SELECT Weekdays, DISTINCT(MeetTime), Campus, Building, Room
+    meetings = cursor.execute("""SELECT DISTINCT(MeetTime), Weekdays, Campus, Building, Room
         FROM pom.Courses AS pc
         JOIN pom.Meetings AS pm
         ON (pc.CourseCode = pm.CourseCode)
