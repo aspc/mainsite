@@ -134,6 +134,8 @@ def refresh_meetings(cursor, course):
             campus=campus,
             location=location
         )
+        
+        meeting.save()
 
 def _sanitize(chardata):
     if not chardata:
