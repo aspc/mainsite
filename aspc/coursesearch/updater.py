@@ -90,6 +90,8 @@ def refresh_meetings(cursor, course):
         
         if end_pm == 'PM':
             end_pm = True
+        else:
+            end_pm = False
         
         if start_pm in ('AM', 'PM'):
             start_pm = True if start_pm == 'PM' else False
