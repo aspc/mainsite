@@ -88,11 +88,13 @@ def refresh_meetings(cursor, course):
         
         start, start_pm, end, end_pm = TIME_REGEX.findall(mtg.MeetTime)[0]
         
-        if start_pm == 'PM':
-            start_pm = True
-        
         if end_pm == 'PM':
             end_pm = True
+        
+        if start_pm in ('AM', 'PM'):
+            start_pm = True if start_pm == 'PM' else False
+        else:
+            start_pm = end_pm
 
         start_h, start_m = [int(a) for a in start.split(':')]
         end_h, end_m = [int(a) for a in end.split(':')]
