@@ -9,6 +9,7 @@ from aspc.coursesearch.models import (Course, Meeting, Department,
 FEE_REGEX = re.compile(r'[Ff]ee:\s+\$([\d\.]+)')
 ROOM_REGEX = re.compile(r'[A-Z]+\s([^(]+)\s+')
 TIME_REGEX = re.compile(r'(\d+:\d+)(AM|PM)?-(\d+:\d+)(AM|PM).')
+BR_TAGS = re.compile(r'<br\s?/?>')
 
 logger = logging.getLogger(__name__)
 
@@ -158,7 +159,7 @@ def refresh_one_course(cursor, course):
     course.name = _sanitize(course_row.Name)
     course.grading_style = _sanitize(course_row.GradingStyle)
     course.description = _sanitize(course_row.Description)
-    course.note = _sanitize(course_row.Note)
+    course.note = BR_TAGS.sub('\n', _sanitize(course_row.Note)).strip()
     course.credit = float(course_row.Credits)
     course.spots = int(course_row.SeatsTotal)
     course.filled = int(course_row.SeatsFilled)
