@@ -84,7 +84,7 @@ function init() {
 		},
 	});
 	
-	gotodate = $('#calendar').weekCalendar('gotoDate', new Date(2012, 0, 23, 0, 0, 0, 0));
+	gotodate = $('#calendar').weekCalendar('gotoDate', new Date(2012, 8, 3, 0, 0, 0, 0));
 	//$('#calendar').weekCalendar('updateEvent',{"start": new Date(2011, 0, 19, 12), "end": new Date(2011, 0, 19, 15, 55),"title":"ARBC 0011 JP-01", course_id: 8,} );
 	//$('#calendar').weekCalendar('updateEvent',{"start": new Date(2011, 0, 19, 12), "end": new Date(2011, 0, 19, 12, 55),"title":"AISS002BLJS-01"} );
 
