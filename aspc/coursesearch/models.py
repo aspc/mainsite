@@ -95,7 +95,8 @@ class Course(models.Model):
             for cd, mtg_id in combine_dates:
                 begin = datetime.combine(cd, mtg.begin)
                 end = datetime.combine(cd, mtg.end)
-                event_list.append({'id': '%s-%s-%s' % (self.code, mtg_id, cd.strftime('%w')), 'start': begin, 'end': end, 'title': self.code,})
+                if end > begin: # Sanity check for malformed meetings in CX
+                    event_list.append({'id': '%s-%s-%s' % (self.code, mtg_id, cd.strftime('%w')), 'start': begin, 'end': end, 'title': self.code,})
         
         return {'events': event_list, 'info': {'course_code': self.code, 'course_code_slug': self.code_slug, 'detail_url': self.get_absolute_url(), 'campus_code': self.get_campus(),}}
         
