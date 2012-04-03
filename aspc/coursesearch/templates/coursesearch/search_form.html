@@ -19,6 +19,7 @@
 		{{ form.c_cu }} <span class="campus_icon campus_CU">CU</span>
 		{{ form.c_cgu }} <span class="campus_icon campus_CGU">CGU</span>
 	</p>
+	<p>numbered &ge; {{ form.course_number_min }} and &le; {{ form.course_number_max }} </p>
 	<p>taught by {{ form.instructor }} for {{ form.credit }} credit</p>
 	<p>with the keywords {{ form.keywords }}</p>
   <p>including only courses with seats available {{ form.spots_left }}</p>

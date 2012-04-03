@@ -94,6 +94,8 @@ class SearchForm(forms.Form):
     
     instructor = forms.CharField(max_length=100, required=False, widget=forms.TextInput(attrs={'size':'40'}))
     spots_left = forms.BooleanField(required=False, initial=True)
+    course_number_min = forms.IntegerField(required=False, widget=forms.TextInput(attrs={'size':'4'}))
+    course_number_max = forms.IntegerField(required=False, widget=forms.TextInput(attrs={'size':'4'}))
     credit = forms.ChoiceField(choices=POSSIBLE_CREDIT)
     
     start_range = forms.TimeField(required=False, input_formats=TIME_INPUT_FORMATS, widget=forms.TextInput(attrs={'size':'10'})) #widget=SelectTimeWidget(twelve_hr=True, use_seconds=False))
@@ -188,6 +190,13 @@ class SearchForm(forms.Form):
         
         if campus_ids:
             qs = qs.filter(meeting__campus__in=campus_ids)
+        
+        if self.cleaned_data.get('course_number_min'):
+            qs = qs.filter(number__gte=self.cleaned_data.get('course_number_min'))
+        
+        if self.cleaned_data.get('course_number_max'):
+            qs = qs.filter(number__lte=self.cleaned_data.get('course_number_max'))
+        
         
         if self.cleaned_data.get('instructor'):
             qs = qs.filter(instructor__icontains=self.cleaned_data['instructor'])

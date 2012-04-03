@@ -50,15 +50,19 @@ class Course(models.Model):
     code_slug = models.CharField(max_length=20, unique=True, db_index=True)
     cx_code = models.CharField(max_length=34, unique=True,
                                db_index=True, editable=False)
+    number = models.IntegerField(default=0)
+    
     name = models.CharField(max_length=256)
     instructor = models.CharField(max_length=256)
     grading_style = models.CharField(max_length=100, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     note = models.TextField(blank=True, null=True)
     credit = models.FloatField()
+    
     fee = models.BooleanField()
     spots = models.IntegerField()
     filled = models.IntegerField(blank=True, null=True)
+    
     primary_department = models.ForeignKey(Department, related_name='primary_course_set', null=True)
     departments = models.ManyToManyField(Department, related_name='course_set')
     requirement_areas = models.ManyToManyField(RequirementArea, related_name='course_set')
