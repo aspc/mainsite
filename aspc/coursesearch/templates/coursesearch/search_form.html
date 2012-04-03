@@ -1,5 +1,7 @@
 <div id="search_form">
-<p style="line-height: 1.5em; font-style: italic; padding: 0.5em 2%; font-size: 0.9em; background-color: #0071A6; color: white;">This copy of the catalog is currently missing courses designated as MATH or HIST. We've notified ITS and should have this fixed soon.</p>
+<p style="line-height: 1.5em; font-style: italic; padding: 0.5em 2%; font-size: 0.9em; background-color: #0071A6; color: white;">
+  This copy of the catalog is currently missing the HIST, MATH, and PE departments. We've notified ITS and should have this fixed soon.
+</p>
 <form action="" method="GET">
 	{{ form.non_field_errors }}
 	<p>in the {{ form.department }} department</p>
@@ -8,13 +10,15 @@
 		Mon, {{ form.t }} Tues, {{ form.w }} Wed, {{ form.r }} Thurs, {{ form.f }} Fri</p>
 	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;after {{ form.start_range }}{% if form.start_range.errors %}<span class="error">X</span>{% endif %} 
 		and before {{ form.end_range }}{% if form.end_range.errors %}<span class="error">X</span>{% endif %} <span class="helptext">(ex: 1:00pm)</span></p>
-	<p id="campus_icons">at {{ form.c_cgu }} <span class="campus_icon campus_CGU">CGU</span> 
-		{{ form.c_cm }} <span class="campus_icon campus_CMC">CMC</span> 
-		{{ form.c_cu }} <span class="campus_icon campus_CU">CU</span> 
-		{{ form.c_hm }} <span class="campus_icon campus_HM">HM</span> 
-		{{ form.c_po }} <span class="campus_icon campus_PO">PO</span> 
-		{{ form.c_pz }} <span class="campus_icon campus_PZ">PZ</span> 
-		{{ form.c_sc }} <span class="campus_icon campus_SC">SC</span></p>
+	<p id="campus_icons">at 
+	  {{ form.c_po }} <span class="campus_icon campus_PO">PO</span>
+	  {{ form.c_sc }} <span class="campus_icon campus_SC">SC</span>
+		{{ form.c_cm }} <span class="campus_icon campus_CMC">CMC</span>
+		{{ form.c_hm }} <span class="campus_icon campus_HM">HM</span>
+		{{ form.c_pz }} <span class="campus_icon campus_PZ">PZ</span>
+		{{ form.c_cu }} <span class="campus_icon campus_CU">CU</span>
+		{{ form.c_cgu }} <span class="campus_icon campus_CGU">CGU</span>
+	</p>
 	<p>taught by {{ form.instructor }} for {{ form.credit }} credit</p>
 	<p>with the keywords {{ form.keywords }}</p>
   <p>including only courses with seats available {{ form.spots_left }}</p>
