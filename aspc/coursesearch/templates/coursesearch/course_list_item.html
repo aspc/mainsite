@@ -1,5 +1,5 @@
 <h3 {% if context == "schedule" %}id="course_{{ c.code_slug }}" data-code="{{ c.code_slug }}" data-added="{{ c.added }}"{% endif %}><a href="{{ c.get_absolute_url }}">{{ c.code }} &mdash; {{ c.name }}</a></h3>
-<h4>{{ c.instructor }} &mdash; credit: {{ c.credit }} &mdash; {{ c.spots }} spots</h4>
+<h4>{{ c.instructor }} &mdash; credit: {{ c.credit }} &mdash; {% if c.filled %}{{ c.filled }} filled of {% endif %}{{ c.spots }} seats</h4>
 {% if c.description %}<p>{{ c.description }}</p>{% endif %}
 <ul>
 	{% for mtg in c.meeting_set.all %}
