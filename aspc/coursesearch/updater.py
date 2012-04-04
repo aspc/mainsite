@@ -161,6 +161,7 @@ def refresh_one_course(cursor, course):
     course.description = _sanitize(course_row.Description)
     course.note = BR_TAGS.sub('\n', _sanitize(course_row.Note)).strip()
     course.credit = float(course_row.Credits)
+    course.number = int(course_row.Number)
     course.spots = int(course_row.SeatsTotal)
     course.filled = int(course_row.SeatsFilled)
     
