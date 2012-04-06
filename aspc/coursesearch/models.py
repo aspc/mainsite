@@ -7,6 +7,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 CAMPUSES = ((1, u'PO'), (2, u'SC'), (3, u'CMC'), (4, u'HM'), (5, u'PZ'), (6, u'CGU'), (7, u'CU'), (-1, u'?'))
 CAMPUSES_FULL_NAMES = {1: 'Pomona', 2: 'Scripps', 3: 'Claremont-McKenna', 4: 'Harvey Mudd', 5: 'Pitzer'}
 CAMPUSES_LOOKUP = dict([(a[1], a[0]) for a in CAMPUSES])
+CAMPUSES_LOOKUP['CM'] = CAMPUSES_LOOKUP['CMC']
 START_DATE = date(2012, 9, 3)
 
 
