@@ -228,9 +228,9 @@ class RoomDetail(DetailView):
         return obj
     
     def get_context_data(self, **kwargs):
-        map_data = self.object.floor.map.get_data()
+        #map_data = self.object.floor.map.get_data()
         room_data = self.object.get_data()
-        room_data.update({'map': map_data})
+        #room_data.update({'map': map_data})
         room_data_json = mark_safe(simplejson.dumps(room_data))
         context = super(RoomDetail, self).get_context_data(**kwargs)
         context.update({'browse_active': True, 'id': self.object.id, 'room_json': room_data_json})
