@@ -62,19 +62,19 @@ blockquote {
 	margin: 1em 2em;
 }
 
-.content > table, .primary > table {
+.content > table, .primary > table, table.results {
 	background-color: white;
 	border-collapse: collapse;
 	font-size: 0.9em;
 	width: 100%;
 }
 
-.content > table td, .content > table th, .primary > table td, .primary > table th {
+.content > table td, .content > table th, .primary > table td, .primary > table th, table.results th, table.results td {
 	padding: 0.75em;
 	border: 1px solid #386d8e;
 }
 
-.content > table th, .primary > table th {
+.content > table th, .primary > table th, table.results th {
 	background-color: #c1d8ef;
 	font-weight: bold;
 }
