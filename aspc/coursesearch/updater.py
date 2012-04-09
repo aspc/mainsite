@@ -41,7 +41,7 @@ def smart_refresh(cursor):
     
     logger.info("Latest full schedule data available: {0}".format(last_cx_full_row.Date.isoformat()))
     
-    if last_full and last_cx_full_row.Date > last_full.last_refresh_date:
+    if not last_full or (last_full and last_cx_full_row.Date > last_full.last_refresh_date):
         # Store this as a new full catalog update, and trigger refresh
         new_history = RefreshHistory(
             last_refresh_date=last_cx_full_row.Date,
@@ -77,7 +77,7 @@ def smart_refresh(cursor):
     
     logger.info("Latest enrollment numbers available: {0}".format(last_cx_reg_row.Date.isoformat()))
     
-    if last_reg and last_cx_reg_row.Date > last_reg.last_refresh_date:
+    if not last_reg or (last_reg and last_cx_reg_row.Date > last_reg.last_refresh_date):
         # Store this as a new registration update, and trigger refresh
         new_history = RefreshHistory(
             last_refresh_date=last_cx_reg_row.Date,
