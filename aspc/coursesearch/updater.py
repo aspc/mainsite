@@ -303,7 +303,7 @@ def refresh_one_course(cursor, course):
 def refresh_enrollments(cursor):
     for course in Course.objects.all():
         crs = cursor.execute("""SELECT SeatsTotal, SeatsFilled FROM pom.Courses
-            WHERE CourseCode = ?;""", course.cx_code).fetchone()
+            WHERE CourseCode = ?;""", course.cx_code.encode('utf8')).fetchone()
         course.spots = crs.SeatsTotal
         course.filled = crs.SeatsFilled
         logger.info("Updated [{0}]: {1} filled / {2} total".format(course.filled, course.spots))
