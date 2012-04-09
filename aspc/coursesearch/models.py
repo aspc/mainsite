@@ -8,6 +8,17 @@ CAMPUSES = ((1, u'PO'), (2, u'SC'), (3, u'CM'), (4, u'HM'), (5, u'PZ'), (6, u'CG
 CAMPUSES_LOOKUP = dict([(a[1], a[0]) for a in CAMPUSES])
 START_DATE = date(2012, 1, 23)
 
+class RefreshHistory(models.Model):
+    FULL = 0
+    REGISTRATION = 1
+    
+    run_date = models.DateTimeField(default=datetime.datetime.now)
+    last_refresh_date = models.DateTimeField()
+    term = models.CharField(max_length=7)
+    type = models.IntegerField(choices=(
+        (FULL, 'Full'),
+        (REGISTRATION, 'Registration'),
+    ))
 
 class Department(models.Model):
     code = models.CharField(max_length=20, unique=True, db_index=True)
