@@ -21,6 +21,12 @@ class RefreshHistory(models.Model):
         (FULL, 'Full'),
         (REGISTRATION, 'Registration'),
     ))
+    
+    def __unicode__(self):
+        return u"{0} refresh at {1}".format(self.get_type_display(), self.last_refresh_date.isoformat())
+    
+    class Meta:
+        verbose_name_plural = 'refresh histories'
 
 class Department(models.Model):
     code = models.CharField(max_length=20, unique=True, db_index=True)

@@ -23,9 +23,9 @@
   <div id="update_info">
     <dl>
       <dt>Last full update</dt>
-      <dd>{% if last_full %}{{ last_full }}{% else %}None yet{% endif %}</dd>
+      <dd>{% if last_full %}{{ last_full.last_refresh_date }}{% else %}None yet{% endif %}</dd>
       <dt>Last enrollment numbers update</dt>
-      <dd>{% if last_reg %}{{ last_reg }}{% else %}None yet{% endif %}</dd>
+      <dd>{% if last_reg %}{{ last_reg.last_refresh_date }}{% else %}None yet{% endif %}</dd>
     </dl>
     <p><em>Enrollment numbers are updated hourly, and the full schedule is updated every morning at 4 am by arrangement with ITS.</em></p>
   </div>
