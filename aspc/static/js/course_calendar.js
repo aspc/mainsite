@@ -26,11 +26,9 @@ function init() {
             var one_hour = 3600000;
             var displayTitleWithTime = calEvent.end.getTime() - calEvent.start.getTime() <= (2 * (one_hour / options.timeslotsPerHour));
             if (displayTitleWithTime) {
-                console.log("Display title with time");
                 return calEvent.title;
             }
             else {
-                console.log("Don't display title with time");
                 return calendar.weekCalendar('formatTime', calEvent.start, options.timeFormat) + options.timeSeparator + calendar.weekCalendar('formatTime', calEvent.end, options.timeFormat);
             }
         },
