@@ -38,15 +38,13 @@ def smart_refresh(cursor):
         WHERE Type = 'Full'
         ORDER BY Date DESC;""").fetchone()
     
-    last_cx_full_time = datetime.strptime(last_cx_full_row.Date, '%Y-%m-%d %H:%M:%S.%f')
-    
     logger.info("Latest imported full refresh: {0}".format(last_full.last_refresh_date.isoformat()))
     logger.info("Latest full schedule data available: {0}".format(last_full.last_refresh_date.isoformat()))
     
-    if last_full and last_cx_full_time > last_full.last_refresh_date:
+    if last_full and last_cx_full_row.Date > last_full.last_refresh_date:
         # Store this as a new full catalog update, and trigger refresh
         new_history = RefreshHistory(
-            last_refresh_date=last_cx_full_time,
+            last_refresh_date=last_cx_full_row.Date,
             term=last_cx_full_row.Term,
             type=RefreshHistory.FULL
         )
@@ -66,12 +64,10 @@ def smart_refresh(cursor):
         WHERE Type = 'Registration'
         ORDER BY Date DESC;""").fetchone()
     
-    last_cx_reg_time = datetime.strptime(last_cx_full_row.Date, '%Y-%m-%d %H:%M:%S.%f')
-    
-    if last_reg and last_cx_reg_time > last_reg.last_refresh_date:
+    if last_reg and last_cx_reg_row.Date > last_reg.last_refresh_date:
         # Store this as a new registration update, and trigger refresh
         new_history = RefreshHistory(
-            last_refresh_date=last_cx_reg_time,
+            last_refresh_date=last_cx_reg_row.Date,
             term=last_cx_reg_row.Term,
             type=RefreshHistory.REGISTRATION
         )
