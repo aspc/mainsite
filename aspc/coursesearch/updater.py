@@ -306,7 +306,11 @@ def refresh_enrollments(cursor):
             WHERE CourseCode = ?;""", course.cx_code.encode('utf8')).fetchone()
         course.spots = crs.SeatsTotal
         course.filled = crs.SeatsFilled
-        logger.info("Updated [{0}]: {1} filled / {2} total".format(course.filled, course.spots))
+        logger.info("Updated [{0}]: {1} filled / {2} total".format(
+            course.cx_code,
+            course.filled,
+            course.spots,
+        ))
         course.save()
 
 def refresh_courses(cursor):
