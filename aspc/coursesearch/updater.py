@@ -4,7 +4,7 @@ from datetime import datetime, time
 import pyodbc
 from django.template.defaultfilters import slugify
 from aspc.coursesearch.models import (Course, Meeting, Department, 
-    RequirementArea, CAMPUSES, CAMPUSES_LOOKUP)
+    RequirementArea, RefreshHistory, CAMPUSES, CAMPUSES_LOOKUP)
 
 FEE_REGEX = re.compile(r'[Ff]ee:\s+\$([\d\.]+)')
 ROOM_REGEX = re.compile(r'[A-Z]+\s([^(]+)\s+')
