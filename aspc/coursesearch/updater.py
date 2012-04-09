@@ -19,27 +19,47 @@ def _is_requirement_area(deptcode):
     else:
         return False
 
-def record_refresh_history(cursor):
+def smart_refresh(cursor):
+    refreshes = RefreshHistory.objects.all().order_by('-last_refresh_date')
+    try:
+        last_full = refreshes.filter(type=RefreshHistory.FULL)[0]
+    except IndexError:
+        last_full = None
     
-    RefreshHistory.objects.all().order_by('-')
+    try:
+        last_reg = refreshes.filter(type=RefreshHistory.REGISTRATION)[0]
+    except IndexError:
+        last_reg = None
     
-    # get refreshes greater than last stored full
-    cursor.execute("""SELECT *
-        FROM RefreshHistory 
-        WHERE Date > CONVERT(datetime, ?, 126) 
-        ORDER BY Date DESC;""", last_full_timestamp)
-    # pull refreshes one at a time until we have a last full and a last reg
-    for refreshrow in cursor:
-        if type == full:
-            # Store this as the new latest full refresh
-        if type == reg:
-            # Check if exists as stored reg refresh
-            # if not, store it
-            
-    # if last full == last stored full, ignore it
-    # else store last full
-    # if last reg == last stored reg, ignored it
-    # else store last reg
+    last_cx_full_row = cursor.execute("""SELECT Date, Term, Type
+        FROM RefreshHistory
+        WHERE Type = 'Full'
+        ORDER BY Date DESC;""").fetchone()
+    
+    last_cx_full_time = datetime.strptime(last_cx_full_row.Date, '%Y-%m-%d %H:%M:%S.%f')
+    
+    logger.info("Latest imported full refresh: {0}".format(last_full.last_refresh_date.isoformat()))
+    logger.info("Latest full schedule data available: {0}".format(last_full.last_refresh_date.isoformat()))
+    
+    if last_full and last_cx_full_time > last_full.last_refresh_date:
+        # Store this as a new full catalog update, and trigger refresh
+        logger.info("New full schedule refresh available! Triggering refresh.")
+        
+    
+
+    
+    # If there is no full catalog refresh to import, there may still be
+    # a registration refresh to import:
+    
+    last_cx_reg_row = cursor.execute("""SELECT Date, Term, Type
+        FROM RefreshHistory
+        WHERE Type = 'Registration'
+        ORDER BY Date DESC;""").fetchone()
+    
+    last_cx_reg_time = datetime.strptime(last_cx_full_row.Date, '%Y-%m-%d %H:%M:%S.%f')
+    
+    if last_reg and last_cx_reg_time > last_reg.last_refresh_date:
+        # Store this as a new registration update, and trigger refresh
 
 def refresh_departments(cursor):
     
