@@ -8,8 +8,8 @@ logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     args = ''
-    help = 'Performs a full schedule refresh with course data '
-           'from the JICSWS server provided by ITS'
+    help = """Performs a full schedule refresh with course data 
+           from the JICSWS server provided by ITS"""
 
     def handle(self, *args, **options):
         update_task()

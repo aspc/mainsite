@@ -8,9 +8,9 @@ logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     args = ''
-    help = 'Performs a conditional update of the course schedule '
-           'depending on the refresh history and whether new data are'
-           'available.'
+    help = """Performs a conditional update of the course schedule 
+           depending on the refresh history and whether new data are
+           available"""
 
     def handle(self, *args, **options):
         update_task()
