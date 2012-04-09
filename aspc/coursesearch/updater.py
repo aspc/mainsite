@@ -19,6 +19,13 @@ def _is_requirement_area(deptcode):
     else:
         return False
 
+        # get refreshes greater than last stored full
+        # pull refreshes one at a time until we have a last full and a last reg
+        # if last full == last stored full, ignore it
+        # else store last full
+        # if last reg == last stored reg, ignored it
+        # else store last reg
+
 def refresh_departments(cursor):
     
     cursor.execute("SELECT Code, Description FROM pom.Departments;")
