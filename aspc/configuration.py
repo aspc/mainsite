@@ -231,12 +231,12 @@ CELERY_IMPORTS = (
 
 CELERYBEAT_SCHEDULE = {
     "update-catalog": {
-        "task": "coursesearch.tasks.update_catalog",
+        "task": "coursesearch.tasks.smart_update",
         # Full catalog refresh finishes by 5am typically
-        "schedule": timedelta(seconds=30), #crontab(hour=5),
+        "schedule": crontab(hour=5),
     },
     "update-enrollments": {
-        "task": "coursesearch.tasks.update_enrollments",
+        "task": "coursesearch.tasks.smart_update",
         # Looks like the actual time the refresh finishes drifts
         # but it's usually done by 20 after the hour
         "schedule": crontab(hour="*", minute=20), 
