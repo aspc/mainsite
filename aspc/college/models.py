@@ -93,7 +93,7 @@ class Floor(models.Model):
         data = {
             'number': self.number,
             'number_display': self.get_number_display(),
-            'map': self.map.get_data(),
+#            'map': self.map.get_data(),
         }
         return data
 

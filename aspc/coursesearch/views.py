@@ -72,8 +72,15 @@ def schedule(request):
 
 def load_from_session(request):
     all_events = []
-    for course_id in request.session.get('schedule_courses', []):
-        all_events.append(Course.objects.get(pk=course_id).json())
+    valid_courses = set()
+    schedule_courses = request.session.get('schedule_courses', set())
+    for course in Course.objects.filter(id__in=schedule_courses):
+        all_events.append(course.json())
+        valid_courses.add(course.pk)
+    if schedule_courses - valid_courses:
+        for invalid in (schedule_courses - valid_courses):
+            request.session['schedule_courses'].remove(invalid)
+        request.session.modified = True
     return HttpResponse(content=json.dumps(all_events, cls=DjangoJSONEncoder), mimetype='application/json')
 
 def clear_schedule(request):

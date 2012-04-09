@@ -54,7 +54,7 @@ class Room(RoomLocation):
     size = models.FloatField(help_text="size in square feet", null=True, blank=True)
     occupancy = models.PositiveSmallIntegerField(choices=OCCUPANCY_TYPES, null=True, blank=True) # single, double, etc
     reserved = models.PositiveSmallIntegerField(choices=RESERVATION_GROUPS, null=True, blank=True)
-    suite = models.ForeignKey(Suite, null=True, on_delete=models.SET_NULL)
+    suite = models.ForeignKey(Suite, null=True, on_delete=models.SET_NULL, blank=True)
     #bathroom = models.PositiveSmallIntegerField(choices=BATHROOM_TYPES, default=BATHROOM_TYPES[0][0])
     #storage = models.PositiveSmallIntegerField(choices=CLOSET_TYPES, default=CLOSET_TYPES[1][0])
     #info = models.TextField(help_text="extra info from the housing office")

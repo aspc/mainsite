@@ -4,12 +4,12 @@
 {% block og_url %}http://aspc.pomona.edu/courses/schedule/{% endblock %}
 {% block "head" %}
     {{ block.super }}
-    <link rel='stylesheet' type='text/css' href='{{ STATIC_URL }}css/smoothness/jquery-ui-1.8.6.custom.css' />
+    <link rel='stylesheet' type='text/css' href='{{ STATIC_URL }}css/smoothness/jquery-ui.css' />
     <link rel='stylesheet' type='text/css' href='{{ STATIC_URL }}css/jquery.weekcalendar.css' />
     <link rel='stylesheet' type='text/css' href='{{ STATIC_URL }}css/calendar.css' />
 
-    <script type='text/javascript' src='{{ STATIC_URL }}js/jquery-1.4.4.min.js'></script>
-    <script type='text/javascript' src='{{ STATIC_URL }}js/jquery-ui-1.8.9.custom.min.js'></script>
+    <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'></script>
+    <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js'></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/date.js"></script>
     <script type='text/javascript' src='{{ STATIC_URL }}js/jquery.weekcalendar.js'></script>
     <script type='text/javascript' src='{{ STATIC_URL }}js/course_calendar.js'></script>
