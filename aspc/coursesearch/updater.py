@@ -28,18 +28,18 @@ def smart_refresh(cursor):
     except IndexError:
         last_full = None
     
-    try:
-        last_reg = refreshes.filter(type=RefreshHistory.REGISTRATION)[0]
-    except IndexError:
-        last_reg = None
-    
     last_cx_full_row = cursor.execute("""SELECT Date, Term, Type
         FROM RefreshHistory
         WHERE Type = 'Full'
         ORDER BY Date DESC;""").fetchone()
     
-    logger.info("Latest imported full refresh: {0}".format(last_full.last_refresh_date.isoformat()))
-    logger.info("Latest full schedule data available: {0}".format(last_full.last_refresh_date.isoformat()))
+    
+    if last_full:
+        logger.info("Latest imported full refresh: {0}".format(last_full.last_refresh_date.isoformat()))
+    else:
+        logger.info("No full schedule refresh yet recorded!")
+    
+    logger.info("Latest full schedule data available: {0}".format(last_cx_full_row.Date.isoformat()))
     
     if last_full and last_cx_full_row.Date > last_full.last_refresh_date:
         # Store this as a new full catalog update, and trigger refresh
@@ -59,10 +59,23 @@ def smart_refresh(cursor):
     # If there is no full catalog refresh to import, there may still be
     # a registration refresh to import:
     
+    try:
+        last_reg = refreshes.filter(type=RefreshHistory.REGISTRATION)[0]
+    except IndexError:
+        last_reg = None
+    
     last_cx_reg_row = cursor.execute("""SELECT Date, Term, Type
         FROM RefreshHistory
         WHERE Type = 'Registration'
         ORDER BY Date DESC;""").fetchone()
+    
+    
+    if last_reg:
+        logger.info("Latest imported full refresh: {0}".format(last_reg.last_refresh_date.isoformat()))
+    else:
+        logger.info("No full schedule refresh yet recorded!")
+    
+    logger.info("Latest enrollment numbers available: {0}".format(last_cx_reg_row.Date.isoformat()))
     
     if last_reg and last_cx_reg_row.Date > last_reg.last_refresh_date:
         # Store this as a new registration update, and trigger refresh
@@ -76,7 +89,7 @@ def smart_refresh(cursor):
         logger.info("Enrollment numbers updated! Triggering refresh")
         refresh_enrollments(cursor)
         
-        return # Don't want to log that nothing updated if we actually did
+        return # Don't want to log that nothing updated if it actually did
     
     logger.info("No new data available to import!")
 
