@@ -87,6 +87,43 @@ div#search_form p {
 	width: 15em;
 }
 
+#search_form #update_info {
+	background-color: #eee;
+	padding: 1em;
+	font-size: 0.9em;
+	margin-bottom: 1em;
+}
+
+#search_form #update_info dl {
+	margin-top: 0;
+	margin-bottom: 0.5em;
+}
+
+#search_form #update_info dl:after {
+	display: block;
+	content: "";
+	clear: both;
+}
+
+#search_form #update_info dd {
+	float: left;
+	margin-left: 1em;
+}
+
+#search_form #update_info dt {
+	float: left;
+	clear: both;
+	font-weight: bold;
+}
+#search_form #update_info dt:after {
+	content: ":";
+}
+
+#search_form #update_info p {
+	line-height: 1.33em;
+	clear: both;
+}
+
 #submit {
 	float: left;
 }

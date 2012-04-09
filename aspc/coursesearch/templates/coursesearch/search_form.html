@@ -20,7 +20,15 @@
 	<p>taught by {{ form.instructor }} for {{ form.credit }} credit</p>
 	<p>with the keywords {{ form.keywords }}</p>
   <p>including only courses with seats available {{ form.spots_left }}</p>
-	<p><em>your college portal is the only authoritative source for course information.</em></p>
+  <div id="update_info">
+    <dl>
+      <dt>Last full update</dt>
+      <dd>{% if last_full %}{{ last_full }}{% else %}None yet{% endif %}</dd>
+      <dt>Last enrollment numbers update</dt>
+      <dd>{% if last_reg %}{{ last_reg }}{% else %}None yet{% endif %}</dd>
+    </dl>
+    <p><em>Enrollment numbers are updated hourly, and the full schedule is updated every morning at 4 am by arrangement with ITS.</em></p>
+  </div>
 	<input id="submit" type="submit" value="go">{% if context == "schedule" %}<a href="{% url aspc.coursesearch.views.schedule %}" id="reset">clear search</a>{% else %}<a href="{% url aspc.coursesearch.views.search %}" id="reset">start over</a>{% endif %}
 </form>
 </div>
