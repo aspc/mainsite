@@ -14,7 +14,7 @@ class RefreshHistory(models.Model):
     FULL = 0
     REGISTRATION = 1
     
-    run_date = models.DateTimeField(default=datetime.datetime.now)
+    run_date = models.DateTimeField(default=datetime.now)
     last_refresh_date = models.DateTimeField()
     term = models.CharField(max_length=7)
     type = models.IntegerField(choices=(
