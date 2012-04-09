@@ -19,12 +19,27 @@ def _is_requirement_area(deptcode):
     else:
         return False
 
-        # get refreshes greater than last stored full
-        # pull refreshes one at a time until we have a last full and a last reg
-        # if last full == last stored full, ignore it
-        # else store last full
-        # if last reg == last stored reg, ignored it
-        # else store last reg
+def record_refresh_history(cursor):
+    
+    RefreshHistory.objects.all().order_by('-')
+    
+    # get refreshes greater than last stored full
+    cursor.execute("""SELECT *
+        FROM RefreshHistory 
+        WHERE Date > CONVERT(datetime, ?, 126) 
+        ORDER BY Date DESC;""", last_full_timestamp)
+    # pull refreshes one at a time until we have a last full and a last reg
+    for refreshrow in cursor:
+        if type == full:
+            # Store this as the new latest full refresh
+        if type == reg:
+            # Check if exists as stored reg refresh
+            # if not, store it
+            
+    # if last full == last stored full, ignore it
+    # else store last full
+    # if last reg == last stored reg, ignored it
+    # else store last reg
 
 def refresh_departments(cursor):
     
