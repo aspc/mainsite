@@ -30,3 +30,10 @@ def update_enrollments():
     updater.refresh_enrollments(cursor)
     logger.info("Course enrollments update finished")
 
+@task
+def smart_update():
+    logger = smart_update.get_logger()
+    logger.info("Starting smart update of whatever's changed")
+    cursor = _get_cursor()
+    updater.smart_refresh(cursor)
+    logger.info("Smart refresh finished")

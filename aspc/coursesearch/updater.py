@@ -45,10 +45,18 @@ def smart_refresh(cursor):
     
     if last_full and last_cx_full_time > last_full.last_refresh_date:
         # Store this as a new full catalog update, and trigger refresh
-        logger.info("New full schedule refresh available! Triggering refresh.")
+        new_history = RefreshHistory(
+            last_refresh_date=last_cx_full_time,
+            term=last_cx_full_row.Term,
+            type=RefreshHistory.FULL
+        )
+        new_history.save()
         
-    
-
+        logger.info("New full schedule refresh available! Triggering refresh.")
+        refresh_departments(cursor)
+        refresh_courses(cursor)
+        
+        return # Any changes to enrollment numbers are included in this, so skip the next part
     
     # If there is no full catalog refresh to import, there may still be
     # a registration refresh to import:
@@ -62,6 +70,19 @@ def smart_refresh(cursor):
     
     if last_reg and last_cx_reg_time > last_reg.last_refresh_date:
         # Store this as a new registration update, and trigger refresh
+        new_history = RefreshHistory(
+            last_refresh_date=last_cx_reg_time,
+            term=last_cx_reg_row.Term,
+            type=RefreshHistory.REGISTRATION
+        )
+        new_history.save()
+        
+        logger.info("Enrollment numbers updated! Triggering refresh")
+        refresh_enrollments(cursor)
+        
+        return # Don't want to log that nothing updated if we actually did
+    
+    logger.info("No new data available to import!")
 
 def refresh_departments(cursor):
     
