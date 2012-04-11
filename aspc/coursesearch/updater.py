@@ -318,8 +318,10 @@ def refresh_courses(cursor):
     existing = set(Course.objects.values_list('cx_code', flat=True))
     cx_existing = set()
     
-    cx_course_codes = cursor.execute("""SELECT CourseCode FROM pom.Courses
-        WHERE CourseCode NOT LIKE '%;GRAD;';""").fetchall()
+    cx_course_codes = cursor.execute("""SELECT CourseCode
+        FROM pom.Courses
+        WHERE CourseCode NOT LIKE '%;GRAD;' 
+        AND Department IS NOT NULL;""").fetchall()
     
     for row in cx_course_codes:
         cx_existing.add(row.CourseCode)
