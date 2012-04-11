@@ -27,8 +27,7 @@
       <dt>Last enrollment numbers update</dt>
       <dd>{% if last_reg %}{{ last_reg.last_refresh_date }}{% else %}None yet{% endif %}</dd>
     </dl>
-    <p><em>Enrollment numbers are updated hourly, and the full schedule is updated daily.</em></p>
-    <p>Note that courses may have open seats but be open only to some students based on their major, college affiliation, or other categories! Check the portal before your registration time to confirm.</p>
+    <p><em>Enrollment numbers are updated hourly, and the full schedule is updated daily. Note that courses may have open seats but be open only to some students based on their major, college affiliation, or other categories! <strong>Check the portal before your registration time to confirm.</strong></em></p>
   </div>
 	<input id="submit" type="submit" value="go">{% if context == "schedule" %}<a href="{% url aspc.coursesearch.views.schedule %}" id="reset">clear search</a>{% else %}<a href="{% url aspc.coursesearch.views.search %}" id="reset">start over</a>{% endif %}
 </form>
