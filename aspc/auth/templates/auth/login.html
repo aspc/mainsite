@@ -5,6 +5,7 @@
 <p>Use your Pomona Campus username and password to log in.</p>
 {% if form.errors %}
 <p>Your username and password didn't match. Please try again.</p>
+<p><em>Note: only currently enrolled Pomona students can log in. Admitted students, we admire your enthusiasm, but please wait until you have an official Pomona student email address before trying to log in!</em></p>
 {% endif %}
 
 <form method="post" action="{% url "login" %}">
