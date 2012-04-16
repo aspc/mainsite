@@ -52,7 +52,11 @@ class SimpleLDAPBackend(object):
                 username=user_data['cn'][0],
                 first_name=user_data['givenName'][0],
                 last_name=user_data['sn'][0],
-                email=user_data['mail'][0],
+                email=user_data.get(
+                    'mail', # The next line is a hack to handle users with no
+                    # email yet provisioned... TODO: handle it properly!
+                    ("{0}@mymail.pomona.edu".format(user_data['cn'][0]),)
+                )[0],
             )
             user.set_unusable_password()
             user.save()
