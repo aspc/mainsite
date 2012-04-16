@@ -1,15 +1,15 @@
-Django==1.3
-Fabric==1.2.2
-Markdown==2.0.3
+Django==1.4
+Fabric==1.4.1
+Markdown==2.1.1
 PIL==1.1.7
-South==0.7.3
-django-reversion==1.4
-gunicorn==0.13.1
+South==0.7.4
+django-reversion==1.6.0
+gunicorn==0.14.2
 python-ldap==2.4.3
 setproctitle==1.1.2
-django-debug-toolbar
-django-filter
-werkzeug
-django-extensions
-django-celery
-pyodbc
+django-debug-toolbar==0.9.4
+-e git://github.com/aspc/django-filter.git@26ba61101b064678e0dcc028e4d93cca30083619#egg=django_filter-dev
+Werkzeug==0.8.3
+django-extensions==0.8
+django-celery==2.5.3
+pyodbc==3.0.3
