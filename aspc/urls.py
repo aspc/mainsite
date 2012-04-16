@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, include, url
+from django.conf.urls import patterns, include, url
 from aspc.folio.models import Page
 from aspc.views import HomeView
 from aspc.blog.urls import post_kwargs

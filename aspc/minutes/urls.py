@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, include, url
+from django.conf.urls import patterns, include, url
 from aspc.minutes.models import MeetingMinutes
 from aspc.minutes.views import (MinutesDetail, MinutesArchive,
     MinutesYearArchiveView, MinutesMonthArchiveView)
