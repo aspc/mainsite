@@ -158,8 +158,10 @@ def refresh_meetings(cursor, course):
         friday = True if weekdays.find('F') != -1 else False
         
         # Parse times
-        
-        start, start_pm, end, end_pm = TIME_REGEX.findall(mtg.MeetTime)[0]
+        try:
+            start, start_pm, end, end_pm = TIME_REGEX.findall(mtg.MeetTime)[0]
+        except IndexError:
+            continue
         
         if end_pm == 'PM':
             end_pm = True
