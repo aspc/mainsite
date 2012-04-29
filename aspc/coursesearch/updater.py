@@ -1,5 +1,5 @@
 import logging, re
-from pprint import pprint
+from pprint import pformat
 from datetime import datetime, time
 import pyodbc
 from django.template.defaultfilters import slugify
@@ -336,7 +336,7 @@ def refresh_courses(cursor):
         logger.info("Removing {0} courses whose corresponding codes are no longer"
                     " in the JICSWS database...".format(len(stale)))
         Course.objects.filter(cx_code__in=stale).delete()
-        logger.info("Removed all of the following: {0}".format(pprint(stale)))
+        logger.info("Removed all of the following: {0}".format(pformat(stale)))
     
     # Things in CX that we don't have yet:
     new = cx_existing - existing

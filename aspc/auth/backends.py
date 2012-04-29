@@ -23,10 +23,8 @@ class SimpleLDAPBackend(object):
             raise ImproperlyConfigured("Missing AUTH_LDAP setting in settings.py")
         try:
             l = ldap.initialize("ldap://{0}:{1}/".format(ldap_info['server'], ldap_info['port']))
-            print 'init connection'
             l.protocol_version = ldap.VERSION3
             l.simple_bind_s(ldap_info['bind_as'].format(username), password)
-            print 'bind'
         except ldap.LDAPError, e:
             # most likely (but not definitely) because credentials were incorrect
             # return None because this is all we know.
@@ -38,7 +36,6 @@ class SimpleLDAPBackend(object):
         result = None
         while not result:
             result_type, result_data = l.result(ldap_result_id, 0)
-            print result_data
             if (result_data == []):
                 break
             else:
