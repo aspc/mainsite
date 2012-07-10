@@ -22,26 +22,28 @@ function init() {
             return $('table.wc-time-slots').height() + $('#calendar').find(".wc-toolbar").outerHeight() + $('#calendar').find(".wc-header").outerHeight();
         },
         eventHeader: function(calEvent, calendar) {
-            var options = calendar.weekCalendar('option');
-            var one_hour = 3600000;
-            var displayTitleWithTime = calEvent.end.getTime() - calEvent.start.getTime() <= (2 * (one_hour / options.timeslotsPerHour));
-            if (displayTitleWithTime) {
-                return calEvent.title;
-            }
-            else {
-                return calendar.weekCalendar('formatTime', calEvent.start, options.timeFormat) + options.timeSeparator + calendar.weekCalendar('formatTime', calEvent.end, options.timeFormat);
-            }
+            // var options = calendar.weekCalendar('option');
+            //             var one_hour = 3600000;
+            //             var displayTitleWithTime = calEvent.end.getTime() - calEvent.start.getTime() <= (2 * (one_hour / options.timeslotsPerHour));
+            //             if (displayTitleWithTime) {
+            //                 return calEvent.title;
+            //             }
+            //             else {
+            //                 return calendar.weekCalendar('formatTime', calEvent.start, options.timeFormat) + options.timeSeparator + calendar.weekCalendar('formatTime', calEvent.end, options.timeFormat);
+            //             }
+            return calEvent.title;
         },
         eventBody: function(calEvent, calendar) {
-            var options = calendar.weekCalendar('option');
-            var one_hour = 3600000;
-            var displayTitleWithTime = calEvent.end.getTime() - calEvent.start.getTime() <= (2 * (one_hour / options.timeslotsPerHour));
-            if (displayTitleWithTime) {
-                return '';
-            }
-            else {
-                return calEvent.title;
-            }
+            // var options = calendar.weekCalendar('option');
+            //             var one_hour = 3600000;
+            //             var displayTitleWithTime = calEvent.end.getTime() - calEvent.start.getTime() <= (2 * (one_hour / options.timeslotsPerHour));
+            //             if (displayTitleWithTime) {
+            //                 return '';
+            //             }
+            //             else {
+            //                 return calEvent.title;
+            //             }
+            return '';
         },
         eventRender: function(calEvent, $event) {
             if (calEvent.end.getTime() < new Date().getTime()) {
