@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, include, url
+from django.conf.urls import patterns, include, url
 from aspc.eatshop.models import Business
 from aspc.eatshop.views import (coop_fountain, on_campus, 
     restaurants, home, businesses)

@@ -101,6 +101,7 @@
 #results table {
 	width: 100%;
 	color: #252525;
+	background: white;
 }
 
 /* @group Buildings */
@@ -147,6 +148,7 @@ form p {
 .housing .attributes .big {
 	position: absolute;
 	top: 1.125em;
+	left: 0;
 	font-size: 3em;
 	text-align: center;
 	width: 100%;

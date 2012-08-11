@@ -8,11 +8,11 @@
       {% if business.www %}<a href="{{ business.www }}">visit homepage</a>{% endif %}
     </p>
     {% endif %}
-    {{ business.description|markdown }}
+    {{ business.description|markdown:"extra"}}
     {% if business.has_discount %}
     <div class="discount">
       <h4>Offers and Discounts:</h4>
-      {{ business.discount|markdown }}
+      {{ business.discount|markdown:"extra"}}
     </div>
     {% endif %}
   </div>

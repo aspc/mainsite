@@ -1,11 +1,61 @@
 from django import forms
-from aspc.coursesearch.models import Department, Course, Meeting, CAMPUSES, CAMPUSES_LOOKUP
-from django.db.models import Count
-
+from aspc.coursesearch.models import (Department, Course, Meeting,
+    RequirementArea, CAMPUSES, CAMPUSES_FULL_NAMES, CAMPUSES_LOOKUP)
+from django.db.models import Count, F
 
 import re
+from itertools import groupby
 from django.forms.widgets import Widget, Select
+from django.forms.models import ModelChoiceIterator
 from django.utils.safestring import mark_safe
+
+def requirement_area_label(campus_value):
+    return CAMPUSES_FULL_NAMES[campus_value]
+
+class GroupedModelChoiceField(forms.ModelChoiceField):
+    def __init__(self, group_by_field, group_label=None, *args, **kwargs):
+        """
+        group_by_field is the name of a field on the model
+        group_label is a function to return a label for each choice group
+        """
+        super(GroupedModelChoiceField, self).__init__(*args, **kwargs)
+        self.group_by_field = group_by_field
+        if group_label is None:
+            self.group_label = lambda group: group
+        else:
+            self.group_label = group_label
+    
+    def _get_choices(self):
+        """
+        Exactly as per ModelChoiceField except returns new iterator class
+        """
+        if hasattr(self, '_choices'):
+            return self._choices
+        return GroupedModelChoiceIterator(self)
+    choices = property(_get_choices, forms.ModelChoiceField._set_choices)
+    
+    def label_from_instance(self, obj):
+        campus_code = CAMPUSES[obj.campus - 1][1]
+        reqarea_name = re.sub(campus_code + r'\s+?', '', obj.name)
+        return reqarea_name
+
+class GroupedModelChoiceIterator(ModelChoiceIterator):
+    def __iter__(self):
+        if self.field.empty_label is not None:
+            yield (u"", self.field.empty_label)
+        if self.field.cache_choices:
+            if self.field.choice_cache is None:
+                self.field.choice_cache = [
+                    (self.field.group_label(group), [self.choice(ch) for ch in choices])
+                        for group,choices in groupby(self.queryset.all(),
+                            key=lambda row: getattr(row, self.field.group_by_field))
+                ]
+            for choice in self.field.choice_cache:
+                yield choice
+        else:
+            for group, choices in groupby(self.queryset.all(),
+                    key=lambda row: getattr(row, self.field.group_by_field)):
+                yield (self.field.group_label(group), [self.choice(ch) for ch in choices])
 
 class DeptModelChoice(forms.ModelChoiceField):
     def label_from_instance(self, obj):
@@ -23,8 +73,18 @@ POSSIBLE_CREDIT = (('A', 'any'), ('F', 'full'), ('P', 'partial'), (0.0, '0.0'), 
 keyword_regex = re.compile(r'(\w+)')
 
 class SearchForm(forms.Form):
-    department = DeptModelChoice(queryset=Department.objects.annotate(num_courses=Count('course_set')).filter(num_courses__gt=0).distinct().order_by('code'), \
-        required=False, empty_label="(any)")
+    department = DeptModelChoice(queryset=Department.objects.annotate(
+        num_courses=Count('course_set')).\
+            filter(num_courses__gt=0).distinct().order_by('code'),
+        required=False, empty_label="(any)"
+    )
+    requirement_area = GroupedModelChoiceField(
+        'campus',
+        group_label=requirement_area_label,
+        queryset=RequirementArea.objects.annotate(num_courses=Count('course_set')).\
+            filter(num_courses__gt=0).distinct().order_by('code'),
+        required=False, empty_label="(no particular)"
+    )
     only_at_least = forms.ChoiceField(choices=(('A', 'at least'), ('O', 'only'),))
     m = forms.BooleanField(required=False)
     t = forms.BooleanField(required=False)
@@ -33,7 +93,9 @@ class SearchForm(forms.Form):
     f = forms.BooleanField(required=False)
     
     instructor = forms.CharField(max_length=100, required=False, widget=forms.TextInput(attrs={'size':'40'}))
-    min_class_size = forms.IntegerField(required=False, widget=forms.TextInput(attrs={'size':'3'}))
+    spots_left = forms.BooleanField(required=False, initial=True)
+    course_number_min = forms.IntegerField(required=False, widget=forms.TextInput(attrs={'size':'4'}))
+    course_number_max = forms.IntegerField(required=False, widget=forms.TextInput(attrs={'size':'4'}))
     credit = forms.ChoiceField(choices=POSSIBLE_CREDIT)
     
     start_range = forms.TimeField(required=False, input_formats=TIME_INPUT_FORMATS, widget=forms.TextInput(attrs={'size':'10'})) #widget=SelectTimeWidget(twelve_hr=True, use_seconds=False))
@@ -53,9 +115,9 @@ class SearchForm(forms.Form):
         cleaned_data = self.cleaned_data
         if self._errors:
             return cleaned_data # user has to fix field errors first
-        if not any(map(cleaned_data.get, ('m', 't', 'w', 'r', 'f', 'instructor', 'min_class_size',\
-            'start_range', 'end_range', 'c_cgu', 'c_cm', 'c_cu', 'c_hm', 'c_po', 'c_pz', 'c_sc',\
-            'department', 'keywords'))):
+        if not any(map(cleaned_data.get, ('m', 't', 'w', 'r', 'f', 'instructor',
+            'start_range', 'end_range', 'c_cgu', 'c_cm', 'c_cu', 'c_hm', 'c_po', 'c_pz', 'c_sc',
+            'department', 'requirement_area', 'keywords'))):
             raise forms.ValidationError("You must specify at least one constraint.")
         return cleaned_data
     
@@ -63,6 +125,9 @@ class SearchForm(forms.Form):
         qs = Course.objects.all()
         if self.cleaned_data.get('department'):
             qs = qs.filter(departments=self.cleaned_data['department'])
+        
+        if self.cleaned_data.get('requirement_area'):
+            qs = qs.filter(requirement_areas=self.cleaned_data['requirement_area'])
         
         if self.cleaned_data.get('only_at_least') == 'O':
             
@@ -116,7 +181,7 @@ class SearchForm(forms.Form):
         
         campus_ids = []
         if self.cleaned_data.get('c_cgu'): campus_ids.append(CAMPUSES_LOOKUP['CGU'])
-        if self.cleaned_data.get('c_cm'): campus_ids.append(CAMPUSES_LOOKUP['CM'])
+        if self.cleaned_data.get('c_cm'): campus_ids.append(CAMPUSES_LOOKUP['CMC'])
         if self.cleaned_data.get('c_cu'): campus_ids.append(CAMPUSES_LOOKUP['CU'])
         if self.cleaned_data.get('c_hm'): campus_ids.append(CAMPUSES_LOOKUP['HM'])
         if self.cleaned_data.get('c_po'): campus_ids.append(CAMPUSES_LOOKUP['PO'])
@@ -125,6 +190,13 @@ class SearchForm(forms.Form):
         
         if campus_ids:
             qs = qs.filter(meeting__campus__in=campus_ids)
+        
+        if self.cleaned_data.get('course_number_min'):
+            qs = qs.filter(number__gte=self.cleaned_data.get('course_number_min'))
+        
+        if self.cleaned_data.get('course_number_max'):
+            qs = qs.filter(number__lte=self.cleaned_data.get('course_number_max'))
+        
         
         if self.cleaned_data.get('instructor'):
             qs = qs.filter(instructor__icontains=self.cleaned_data['instructor'])
@@ -137,8 +209,9 @@ class SearchForm(forms.Form):
                 qs = qs.filter(credit__lt=1.0, credit__gt=0.0)
             else:
                 qs = qs.filter(credit=self.cleaned_data['credit'])
-        if self.cleaned_data.get('min_class_size') > 0:
-            qs = qs.filter(spots__gte=self.cleaned_data['min_class_size'])
+        
+        if self.cleaned_data.get('spots_left'):
+            qs = qs.exclude(spots=F('filled'))
         
         if self.cleaned_data.get('keywords'):
             keywords = [a.lower() for a in keyword_regex.findall(self.cleaned_data['keywords'])]

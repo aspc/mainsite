@@ -4,10 +4,29 @@ from datetime import date, time, datetime, timedelta
 import json
 from django.core.serializers.json import DjangoJSONEncoder
 
-CAMPUSES = ((1, u'PO'), (2, u'SC'), (3, u'CM'), (4, u'HM'), (5, u'PZ'), (6, u'CGU'), (7, u'CU'))
+CAMPUSES = ((1, u'PO'), (2, u'SC'), (3, u'CMC'), (4, u'HM'), (5, u'PZ'), (6, u'CGU'), (7, u'CU'), (-1, u'?'))
+CAMPUSES_FULL_NAMES = {1: 'Pomona', 2: 'Scripps', 3: 'Claremont-McKenna', 4: 'Harvey Mudd', 5: 'Pitzer'}
 CAMPUSES_LOOKUP = dict([(a[1], a[0]) for a in CAMPUSES])
-START_DATE = date(2012, 1, 23)
+CAMPUSES_LOOKUP['CM'] = CAMPUSES_LOOKUP['CMC']
+START_DATE = date(2012, 9, 3)
 
+class RefreshHistory(models.Model):
+    FULL = 0
+    REGISTRATION = 1
+    
+    run_date = models.DateTimeField(default=datetime.now)
+    last_refresh_date = models.DateTimeField()
+    term = models.CharField(max_length=7)
+    type = models.IntegerField(choices=(
+        (FULL, 'Full'),
+        (REGISTRATION, 'Registration'),
+    ))
+    
+    def __unicode__(self):
+        return u"{0} refresh at {1}".format(self.get_type_display(), self.last_refresh_date.isoformat())
+    
+    class Meta:
+        verbose_name_plural = 'refresh histories'
 
 class Department(models.Model):
     code = models.CharField(max_length=20, unique=True, db_index=True)
@@ -47,15 +66,21 @@ class RequirementArea(models.Model):
 class Course(models.Model):
     code = models.CharField(max_length=20, unique=True, db_index=True)
     code_slug = models.CharField(max_length=20, unique=True, db_index=True)
-    name = models.CharField(max_length=100)
-    instructor = models.CharField(max_length=100)
+    cx_code = models.CharField(max_length=34, unique=True,
+                               db_index=True, editable=False)
+    number = models.IntegerField(default=0)
+    
+    name = models.CharField(max_length=256)
+    instructor = models.CharField(max_length=256)
     grading_style = models.CharField(max_length=100, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     note = models.TextField(blank=True, null=True)
     credit = models.FloatField()
+    
     fee = models.BooleanField()
     spots = models.IntegerField()
     filled = models.IntegerField(blank=True, null=True)
+    
     primary_department = models.ForeignKey(Department, related_name='primary_course_set', null=True)
     departments = models.ManyToManyField(Department, related_name='course_set')
     requirement_areas = models.ManyToManyField(RequirementArea, related_name='course_set')
@@ -93,7 +118,8 @@ class Course(models.Model):
             for cd, mtg_id in combine_dates:
                 begin = datetime.combine(cd, mtg.begin)
                 end = datetime.combine(cd, mtg.end)
-                event_list.append({'id': '%s-%s-%s' % (self.code, mtg_id, cd.strftime('%w')), 'start': begin, 'end': end, 'title': self.code,})
+                if end > begin: # Sanity check for malformed meetings in CX
+                    event_list.append({'id': '%s-%s-%s' % (self.code, mtg_id, cd.strftime('%w')), 'start': begin, 'end': end, 'title': self.code,})
         
         return {'events': event_list, 'info': {'course_code': self.code, 'course_code_slug': self.code_slug, 'detail_url': self.get_absolute_url(), 'campus_code': self.get_campus(),}}
         

@@ -5,3 +5,5 @@ settings.py
 Thumbs.db
 temp/
 fabfile/config.py
+aspc/celerybeat-schedule
+

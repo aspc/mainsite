@@ -1,6 +1,7 @@
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.serializers.json import DjangoJSONEncoder
-from aspc.coursesearch.models import Course, Department, Meeting, Schedule
+from aspc.coursesearch.models import (Course, Department, Meeting, Schedule,
+    RefreshHistory)
 from aspc.coursesearch.forms import SearchForm
 import re, json
 from django.http import HttpResponse, HttpResponseRedirect
@@ -10,7 +11,30 @@ from django.shortcuts import get_object_or_404, render
 from django.conf import settings
 import shlex, subprocess
 
+def _get_refresh_history():
+    try:
+        last_full = RefreshHistory.objects.order_by(
+            '-last_refresh_date'
+        ).filter(
+            type=RefreshHistory.FULL
+        )[0]
+    except IndexError:
+        last_full = None
+    
+    try:
+        last_reg = RefreshHistory.objects.order_by(
+            '-last_refresh_date'
+        ).filter(
+            type=RefreshHistory.REGISTRATION
+        )[0]
+    except IndexError:
+        last_reg = None
+    
+    return last_full, last_reg
+
 def search(request):
+    last_full, last_reg = _get_refresh_history()
+    
     if request.method == "GET":
         if len(request.GET) > 0:
             form = SearchForm(request.GET)
@@ -31,14 +55,30 @@ def search(request):
                 except (EmptyPage, InvalidPage):
                     results = paginator.page(paginator.num_pages)
                 
-                return render(request, 'coursesearch/search.html', {'form': form, 'results': results, 'path': ''.join([request.path, '?', GET_data.urlencode()]),})
+                return render(request, 'coursesearch/search.html', {
+                    'form': form,
+                    'results': results,
+                    'path': ''.join([request.path, '?', GET_data.urlencode()]),
+                    'last_full': last_full,
+                    'last_reg': last_reg,
+                })
             else:
-                return render(request, 'coursesearch/search.html', {'form': form,})
+                return render(request, 'coursesearch/search.html', {
+                    'form': form,
+                    'last_full': last_full,
+                    'last_reg': last_reg,
+                })
         else:
             form = SearchForm()
-            return render(request, 'coursesearch/search.html', {'form': form,})
+            return render(request, 'coursesearch/search.html', {
+                'form': form,
+                'last_full': last_full,
+                'last_reg': last_reg,
+            })
 
 def schedule(request):
+    last_full, last_reg = _get_refresh_history()
+    
     if request.method == "GET":
         if len(request.GET) > 0:
             form = SearchForm(request.GET)
@@ -63,17 +103,38 @@ def schedule(request):
                     if course.id in request.session.get('schedule_courses', []):
                         course.added = True
                 
-                return render(request, 'coursesearch/schedule.html', {'form': form, 'results': results, 'path': ''.join([request.path, '?', GET_data.urlencode()]),})
+                return render(request, 'coursesearch/schedule.html', {
+                    'form': form,
+                    'results': results,
+                    'path': ''.join([request.path, '?', GET_data.urlencode()]),
+                    'last_full': last_full,
+                    'last_reg': last_reg,
+                })
             else:
-                return render(request, 'coursesearch/schedule.html', {'form': form,})
+                return render(request, 'coursesearch/schedule.html', {
+                    'form': form,
+                    'last_full': last_full,
+                    'last_reg': last_reg,
+                })
         else:
             form = SearchForm()
-            return render(request, 'coursesearch/schedule.html', {'form': form,})
+            return render(request, 'coursesearch/schedule.html', {
+                'form': form,
+                'last_full': last_full,
+                'last_reg': last_reg,
+            })
 
 def load_from_session(request):
     all_events = []
-    for course_id in request.session.get('schedule_courses', []):
-        all_events.append(Course.objects.get(pk=course_id).json())
+    valid_courses = set()
+    schedule_courses = request.session.get('schedule_courses', set())
+    for course in Course.objects.filter(id__in=schedule_courses):
+        all_events.append(course.json())
+        valid_courses.add(course.pk)
+    if schedule_courses - valid_courses:
+        for invalid in (schedule_courses - valid_courses):
+            request.session['schedule_courses'].remove(invalid)
+        request.session.modified = True
     return HttpResponse(content=json.dumps(all_events, cls=DjangoJSONEncoder), mimetype='application/json')
 
 def clear_schedule(request):

@@ -93,16 +93,18 @@ INSTALLED_APPS = (
     'south',
     'django_extensions',
     'debug_toolbar',
-    'folio',
-    'senate',
-    'blog',
-    'auth',
-    'sagelist',
-    'college',
-    'housing',
-    'coursesearch',
-    'minutes',
-    'eatshop',
+    'djcelery',
+    'kombu.transport.django',
+    'aspc.folio',
+    'aspc.senate',
+    'aspc.blog',
+    'aspc.auth',
+    'aspc.sagelist',
+    'aspc.college',
+    'aspc.housing',
+    'aspc.coursesearch',
+    'aspc.minutes',
+    'aspc.eatshop',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -121,9 +123,15 @@ LOGGING = {
             'format': '%(levelname)s %(asctime)s %(module)s %(message)s'
         },
     },
+    'filters': {
+         'require_debug_false': {
+             '()': 'django.utils.log.RequireDebugFalse'
+         }
+     },
     'handlers': {
         'mail_admins': {
             'level': 'ERROR',
+            'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
         },
         'console':{
@@ -146,6 +154,8 @@ LOGGING = {
 }
 
 LOGIN_REDIRECT_URL = '/'
+
+#### ASPC Specific Configuration
 
 # LDAP Authentication information
 
@@ -177,6 +187,8 @@ AUTH_LDAP_DEFAULT_COLLEGE = "PO"
 
 AUTH_LDAP_COLLEGES = ((i[0], i[1]['name']) for i in AUTH_LDAP.items())
 
+# Initial Data for Housing
+
 DATA_ROOT = os.path.join(PROJECT_ROOT, '..', 'data')
 DATA_PATHS = {
     'housing': {
@@ -187,6 +199,18 @@ DATA_PATHS = {
         'maps_dir': os.path.join(DATA_ROOT, 'housing', 'maps'),
     },
 }
+
+# Connection information for ITS Microsoft SQL Server
+# (deployment-specific, overridden in settings.py)
+
+COURSE_DATA_DB = {
+    'HOST': '',
+    'NAME': '',
+    'USER': '',
+    'PASSWORD': '',
+}
+
+#### Debug Toolbar Configuration
 
 def show_toolbar(request):
     if request.user.is_superuser:
@@ -212,3 +236,31 @@ ACADEMIC_TERM_DEFAULTS = {
   'fall': ((8, 1), (12, 22)),
   'spring': ((1,10), (5, 25)),
 }
+
+#### Celery Configuration
+
+from celery.schedules import crontab
+from datetime import timedelta
+import djcelery
+
+BROKER_URL = "django://"
+
+CELERY_IMPORTS = (
+    "coursesearch.tasks",
+)
+
+CELERYBEAT_SCHEDULE = {
+    "update-catalog": {
+        "task": "coursesearch.tasks.smart_update",
+        # Full catalog refresh finishes by 5am typically
+        "schedule": crontab(hour=5),
+    },
+    "update-enrollments": {
+        "task": "coursesearch.tasks.smart_update",
+        # Looks like the actual time the refresh finishes drifts
+        # but it's usually done by 20 after the hour
+        "schedule": crontab(hour="*", minute=20), 
+    }
+}
+
+djcelery.setup_loader()

@@ -4,5 +4,5 @@
   <span class="byline">posted by {{ post.author.user.get_full_name }}, {{ post.author.position.title }} on {{ post.posted }}</span>
 </div>
 <div class="post_body content">
-  {{ post.body|markdown }}
+  {{ post.body|markdown:"extra"}}
 </div>

@@ -5,7 +5,6 @@ from aspc.folio.models import Page
 
 class AttachedPageMixin(object):
     def get_page(self):
-        print self.page_slug
         try:
             return Page.objects.get(slug=self.page_slug)
         except Page.DoesNotExist:

@@ -1,3 +1,4 @@
+import logging
 from django.conf import settings
 import ldap
 from django.contrib.auth.models import User, check_password
@@ -22,10 +23,8 @@ class SimpleLDAPBackend(object):
             raise ImproperlyConfigured("Missing AUTH_LDAP setting in settings.py")
         try:
             l = ldap.initialize("ldap://{0}:{1}/".format(ldap_info['server'], ldap_info['port']))
-            print 'init connection'
             l.protocol_version = ldap.VERSION3
             l.simple_bind_s(ldap_info['bind_as'].format(username), password)
-            print 'bind'
         except ldap.LDAPError, e:
             # most likely (but not definitely) because credentials were incorrect
             # return None because this is all we know.
@@ -37,7 +36,6 @@ class SimpleLDAPBackend(object):
         result = None
         while not result:
             result_type, result_data = l.result(ldap_result_id, 0)
-            print result_data
             if (result_data == []):
                 break
             else:
@@ -48,6 +46,20 @@ class SimpleLDAPBackend(object):
         try:
             user = User.objects.get(username=user_data['cn'][0])
         except User.DoesNotExist:
+            
+            # Some users are in ActiveDirectory without all their info. We don't
+            # want to get an error email for each login attempt, but we don't
+            # just want to log them in without info, so we just fail to
+            # authenticate.
+            
+            if not all(
+                user_data.get('cn', False),
+                user_data.get('givenName', False),
+                user_data.get('sn', False),
+                user_data.get('mail', False)
+            ):
+                return None
+            
             user = User(
                 username=user_data['cn'][0],
                 first_name=user_data['givenName'][0],
