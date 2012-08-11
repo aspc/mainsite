@@ -35,15 +35,15 @@
       {% if business.phone %}phone: {{ business.phone }}{% endif %}
     </p>
     {% endif %}
-    {{ business.description|markdown }}
+    {{ business.description|markdown:"extra"}}
     {% if business.has_discount %}
     <div class="discount">
       <p class="accepts"><strong>We accept Flex/BoardPlus and ClaremontCash!</strong></p>
-      {{ business.discount|markdown }}
+      {{ business.discount|markdown:"extra"}}
     </div>
     {% endif %}
   {% if page.body %}
-  {{ page.body|markdown }}
+  {{ page.body|markdown:"extra"}}
   {% endif %}
   </div>
 </section>

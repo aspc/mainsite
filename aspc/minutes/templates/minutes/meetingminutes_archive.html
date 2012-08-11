@@ -38,7 +38,7 @@ Senate Minutes
 {% block "outer_content" %}
 <div class="content">
   {% if page %}
-  {{ page.body|markdown }}
+  {{ page.body|markdown:"extra"}}
   {% endif %}
   {% if minutes %}
   <h2>Minutes for recent meetings:</h2>
