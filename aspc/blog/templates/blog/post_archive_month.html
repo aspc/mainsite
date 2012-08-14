@@ -15,7 +15,7 @@
   {% block "archive_nav" %}
   <ol class="month_next_prev">
     {% if next_month %}<li class="next_month"><a href="{% url "post_month" year=next_month|date:"Y" month=next_month|date:"b" %}">{{ next_month|date:"F" }} &rarr;</a></li>{% endif %}
-    <li class="previous_month"><a href="{% url "post_month" year=previous_month|date:"Y" month=previous_month|date:"b" %}">&larr; {{ previous_month|date:"F" }}</a></li>
+    {% if previous_posts_exist %}<li class="previous_month"><a href="{% url "post_month" year=previous_month|date:"Y" month=previous_month|date:"b" %}">&larr; {{ previous_month|date:"F" }}</a></li>{% endif %}
   </ol>
   {% endblock %}
 </nav>
