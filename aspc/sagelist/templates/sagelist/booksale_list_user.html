@@ -1,0 +1,29 @@
+{% extends "sagelist/base.html" %}
+{% load url from future %}
+{% block "full_content" %}
+<h1>SageBooks Textbook Sales</h1>
+<ul class="actions">
+  <li><a href="{% url "sagelist_create" %}">List a book for sale</a></li>
+  {% if user.is_authenticated %}
+  <li><a href="{% url "sagelist" %}">View all listings</a></li>
+  {% endif %}
+</ul>
+{% if listings %}
+<table>
+  <tr><th class="title">Title</th><th class="authors">Author(s)</th><th class="edition">Edition</th><th class="isbn">ISBN</th><th class="condition">Condition</th><th class="price">Price</th><th class="buyer">Buyer</th></tr>
+{% for book in listings %}
+  <tr>
+    <td class="title"><a href="{% url "sagelist_detail" pk=book.id %}">{{ book.title }}</a></td>
+    <td class="authors">{{ book.authors }}</td>
+    <td class="edition">{{ book.edition }}</td>
+    <td class="isbn">{{ book.isbn }}</td>
+    <td class="condition">{{ book.get_condition_display }}</td>
+    <td class="price">${{ book.price }}</td>
+    <td class="buyer">{{ book.buyer.get_full_name }}</td>
+  </tr>
+{% endfor %}
+</table>
+{% else %}
+<p class="list_empty content">You haven't listed any books for sale yet. <a href="{% url "sagelist_create" %}">Post a new one?</a></p>
+{% endif %}
+{% endblock %}
