@@ -1,15 +1,13 @@
 {% extends "sagelist/base.html" %}
 {% load url from future %}
-{% block "sagelist_breadcrumbs" %}
-  <li>Listings by {{ user.get_full_name }}</li>
-{% endblock %}
 {% block "full_content" %}
-<h1>SageBooks Textbook Sales</h1>
+<ol class="breadcrumbs">
+  <li><a href="{% url "sagelist" %}">SageBooks</a></li>
+  <li>Listings by {{ listings_by.get_full_name }}</li>
+</ol>
+<h1>Listings by {{ listings_by.get_full_name }}</h1>
 <ul class="actions">
   <li><a href="{% url "sagelist_create" %}">List a book for sale</a></li>
-  {% if user.is_authenticated %}
-  <li><a href="{% url "sagelist" %}">View all listings</a></li>
-  {% endif %}
 </ul>
 {% if listings %}
 <table>

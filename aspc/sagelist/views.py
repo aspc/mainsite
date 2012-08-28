@@ -131,11 +131,23 @@ class ListUserBookSalesView(ListView):
     model = BookSale
     context_object_name = "listings"
     template_name = "sagelist/booksale_list_user.html"
+    _user = None
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super(ListUserBookSalesView, self).get_context_data(*args, **kwargs)
+        context.update({
+            'listings_by': self._get_user(),
+        })
+        return context
+    
+    def _get_user(self):
+        if not self._user:
+            self._user = get_object_or_404(User, username=self.kwargs['username'])
+        return self._user
     
     def get_queryset(self):
-        user = get_object_or_404(User, username=self.kwargs['username'])
         qs = super(ListUserBookSalesView, self).get_queryset()
-        qs = qs.filter(seller=user)
+        qs = qs.filter(seller=self._get_user())
         return qs
 
 class ListBookSalesView(ListView):
