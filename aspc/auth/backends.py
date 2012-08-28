@@ -52,12 +52,12 @@ class SimpleLDAPBackend(object):
             # just want to log them in without info, so we just fail to
             # authenticate.
             
-            if not all(
+            if not all((
                 user_data.get('cn', False),
                 user_data.get('givenName', False),
                 user_data.get('sn', False),
                 user_data.get('mail', False)
-            ):
+            )):
                 return None
             
             user = User(
