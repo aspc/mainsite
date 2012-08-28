@@ -31,7 +31,7 @@ def deploy():
 
 def migrate():
     with settings(
-        cd("/srv/www/{0}/env/aspcrepo/aspc".format(env.site)),
+        cd("/srv/www/{0}/env/aspcrepo".format(env.site)),
         prefix("source /srv/www/{0}/env/bin/activate".format(env.site))
     ):
         run("./manage.py migrate")
@@ -39,7 +39,7 @@ def migrate():
 
 def update_static():
     with settings(
-        cd("/srv/www/{0}/env/aspcrepo/aspc".format(env.site)),
+        cd("/srv/www/{0}/env/aspcrepo".format(env.site)),
         prefix("source /srv/www/{0}/env/bin/activate".format(env.site))
     ):
         run("./manage.py collectstatic")
