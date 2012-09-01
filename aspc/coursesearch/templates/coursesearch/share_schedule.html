@@ -22,14 +22,17 @@
 	{% if not saved %}
 	<form action="" method="POST">
 		{% csrf_token %}
-		<p>Once you click submit, you will get a link to a schedule with these courses that you can share on facebook or in an email.</p>
-		<p>You can also use it to get your courses back and add to them later.</p>
+		<p>Once you click submit, you will get a link to this schedule that you can share on Facebook or in an email. You'll also get a link to download your schedule for use in Google Calendar or iCal.</p>
+		<p>The same link works to get your saved schedule back and add to it later.</p>
 		<input type="submit" value="Save Schedule">
 	</form>
 	{% else %}
 	<h3>To send this schedule to someone, use the link below:</h3>
 	<p><a href="{{ protocol }}://{{ domain }}{{ schedule.get_absolute_url }}">{{ protocol }}://{{ domain }}{{ schedule.get_absolute_url }}</a></p>
 	<p>To come back and add to this schedule later, use the "load" link on that page.</p>
+	<h3>To download this schedule, use the link below:</h3>
+	<p><a href="{{ protocol }}://{{ domain }}{% url aspc.coursesearch.views.ical_from_schedule schedule_id=schedule.id %}">{{ protocol }}://{{ domain }}{% url aspc.coursesearch.views.ical_from_schedule schedule_id=schedule.id %}</a></p>
+	<p>Drop the downloaded file on the iCal application icon to import, or read <a href="http://support.google.com/calendar/bin/answer.py?hl=en&answer=37118">how to import into Google Calendar</a></p>
 	{% endif %}
 {% else %}
 <h3>There don't seem to be any courses in your schedule.</h3>
