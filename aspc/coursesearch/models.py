@@ -9,6 +9,7 @@ CAMPUSES_FULL_NAMES = {1: 'Pomona', 2: 'Scripps', 3: 'Claremont-McKenna', 4: 'Ha
 CAMPUSES_LOOKUP = dict([(a[1], a[0]) for a in CAMPUSES])
 CAMPUSES_LOOKUP['CM'] = CAMPUSES_LOOKUP['CMC']
 START_DATE = date(2012, 9, 3)
+END_DATE = date(2012, 12, 12)
 
 class RefreshHistory(models.Model):
     FULL = 0
@@ -104,22 +105,13 @@ class Course(models.Model):
     def json(self):
         event_list = []
         for mtg in self.meeting_set.all():
-            combine_dates = []
-            if mtg.monday:
-                combine_dates.append((START_DATE, mtg.id))
-            if mtg.tuesday:
-                combine_dates.append((START_DATE + timedelta(days=1), mtg.id))
-            if mtg.wednesday:
-                combine_dates.append((START_DATE + timedelta(days=2), mtg.id))
-            if mtg.thursday:
-                combine_dates.append((START_DATE + timedelta(days=3), mtg.id))
-            if mtg.friday:
-                combine_dates.append((START_DATE + timedelta(days=4), mtg.id))
-            for cd, mtg_id in combine_dates:
-                begin = datetime.combine(cd, mtg.begin)
-                end = datetime.combine(cd, mtg.end)
-                if end > begin: # Sanity check for malformed meetings in CX
-                    event_list.append({'id': '%s-%s-%s' % (self.code, mtg_id, cd.strftime('%w')), 'start': begin, 'end': end, 'title': self.code,})
+            for begin, end in mtg.to_datetime_ranges():
+                event_list.append({
+                    'id': '%s-%s-%s' % (self.code, mtg.id, begin.strftime('%w')),
+                    'start': begin,
+                    'end': end,
+                    'title': self.code,
+                })
         
         return {'events': event_list, 'info': {'course_code': self.code, 'course_code_slug': self.code_slug, 'detail_url': self.get_absolute_url(), 'campus_code': self.get_campus(),}}
         
@@ -151,6 +143,29 @@ class Meeting(models.Model):
         if self.thursday: s.append('R')
         if self.friday: s.append('F')
         return s
+    
+    def to_datetime_ranges(self):
+        ranges = []
+        combine_dates = []
+        
+        if self.monday:
+            combine_dates.append(START_DATE)
+        if self.tuesday:
+            combine_dates.append(START_DATE + timedelta(days=1))
+        if self.wednesday:                                     
+            combine_dates.append(START_DATE + timedelta(days=2))
+        if self.thursday:                                      
+            combine_dates.append(START_DATE + timedelta(days=3))
+        if self.friday:                                        
+            combine_dates.append(START_DATE + timedelta(days=4))
+        
+        for basedate in combine_dates:
+            begin = datetime.combine(basedate, self.begin)
+            end = datetime.combine(basedate, self.end)
+            if end > begin: # Sanity check for malformed meetings in CX
+                ranges.append((begin, end))
+        
+        return ranges
     
     def get_campus(self):
         return CAMPUSES[self.campus - 1][1] # CAMPUSES is now 1-based
