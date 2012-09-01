@@ -14,3 +14,4 @@ django-extensions==0.8
 django-celery==2.5.3
 pyodbc==3.0.3
 python-dateutil==1.5
+vobject==0.8.1c
