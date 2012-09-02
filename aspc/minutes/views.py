@@ -1,8 +1,9 @@
 from django.views.generic.dates import (ArchiveIndexView, YearArchiveView,
-    MonthArchiveView, DateDetailView)
+    DateDetailView)
 from django.http import Http404
 from aspc.folio.models import Page
 from aspc.folio.views import AttachedPageMixin
+from aspc.generic import FilteredMonthArchiveView
 import datetime
 
 class MinutesPageMixin(AttachedPageMixin):
@@ -11,7 +12,7 @@ class MinutesPageMixin(AttachedPageMixin):
 class MinutesYearArchiveView(MinutesPageMixin, YearArchiveView):
     pass
 
-class MinutesMonthArchiveView(MinutesPageMixin, MonthArchiveView):
+class MinutesMonthArchiveView(MinutesPageMixin, FilteredMonthArchiveView):
     pass
 
 class MinutesDetail(MinutesPageMixin, DateDetailView):
