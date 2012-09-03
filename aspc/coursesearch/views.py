@@ -84,45 +84,44 @@ def search(request):
 def schedule(request):
     last_full, last_reg = _get_refresh_history()
     
-    if request.method == "GET":
-        if len(request.GET) > 0:
-            form = SearchForm(request.GET)
-            if form.is_valid():
-                results_set = form.build_queryset()
-                paginator = Paginator(results_set, per_page=10, orphans=5)
-                GET_data = request.GET.copy()
-                
-                try:
-                    page = int(request.GET.get('page', '1'))
-                    if GET_data.get('page', False):
-                        del GET_data['page']
-                except ValueError:
-                    page = 1
-                
-                try:
-                    results = paginator.page(page)
-                except (EmptyPage, InvalidPage):
-                    results = paginator.page(paginator.num_pages)
-                
-                for course in results.object_list:
-                    if course.id in request.session.get('schedule_courses', []):
-                        course.added = True
-                
-                return render(request, 'coursesearch/schedule.html', {
-                    'form': form,
-                    'results': results,
-                    'path': ''.join([request.path, '?', GET_data.urlencode()]),
-                    'last_full': last_full,
-                    'last_reg': last_reg,
-                })
-            else:
-                return render(request, 'coursesearch/schedule.html', {
-                    'form': form,
-                    'last_full': last_full,
-                    'last_reg': last_reg,
-                })
+    if not request.method == "GET" or len(request.GET) == 0:
+        form = SearchForm()
+        return render(request, 'coursesearch/schedule.html', {
+            'form': form,
+            'last_full': last_full,
+            'last_reg': last_reg,
+        })
+    else:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            results_set = form.build_queryset()
+            paginator = Paginator(results_set, per_page=10, orphans=5)
+            GET_data = request.GET.copy()
+            
+            try:
+                page = int(request.GET.get('page', '1'))
+                if GET_data.get('page', False):
+                    del GET_data['page']
+            except ValueError:
+                page = 1
+            
+            try:
+                results = paginator.page(page)
+            except (EmptyPage, InvalidPage):
+                results = paginator.page(paginator.num_pages)
+            
+            for course in results.object_list:
+                if course.id in request.session.get('schedule_courses', []):
+                    course.added = True
+            
+            return render(request, 'coursesearch/schedule.html', {
+                'form': form,
+                'results': results,
+                'path': ''.join([request.path, '?', GET_data.urlencode()]),
+                'last_full': last_full,
+                'last_reg': last_reg,
+            })
         else:
-            form = SearchForm()
             return render(request, 'coursesearch/schedule.html', {
                 'form': form,
                 'last_full': last_full,
