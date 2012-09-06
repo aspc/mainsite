@@ -245,22 +245,18 @@ import djcelery
 
 BROKER_URL = "django://"
 
-CELERY_IMPORTS = (
-    "coursesearch.tasks",
-)
-
 CELERYBEAT_SCHEDULE = {
     "update-catalog": {
-        "task": "coursesearch.tasks.smart_update",
+        "task": "aspc.coursesearch.tasks.smart_update",
         # Full catalog refresh finishes by 5am typically
         "schedule": crontab(hour=5),
     },
     "update-enrollments": {
-        "task": "coursesearch.tasks.smart_update",
+        "task": "aspc.coursesearch.tasks.smart_update",
         # Looks like the actual time the refresh finishes drifts
         # but it's usually done by 20 after the hour
         "schedule": crontab(hour="*", minute=20), 
-    }
+    },
 }
 
 djcelery.setup_loader()

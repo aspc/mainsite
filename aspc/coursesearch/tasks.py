@@ -5,11 +5,12 @@ from aspc.coursesearch import updater
 
 def _get_cursor():
     return pyodbc.connect(
-      driver="FreeTDS",
+      driver=settings.COURSE_DATA_DB.get('DRIVER', 'FreeTDS'),
       server=settings.COURSE_DATA_DB['HOST'],
       database=settings.COURSE_DATA_DB['NAME'],
       uid=settings.COURSE_DATA_DB['USER'],
-      pwd=settings.COURSE_DATA_DB['PASSWORD']
+      pwd=settings.COURSE_DATA_DB['PASSWORD'],
+      port=1433,
     )
 
 @task

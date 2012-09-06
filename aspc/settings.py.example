@@ -54,4 +54,5 @@ COURSE_DATA_DB = {
     'NAME': '',
     'USER': '',
     'PASSWORD': '',
+    'DRIVER': 'FreeTDS', # or path to library
 }

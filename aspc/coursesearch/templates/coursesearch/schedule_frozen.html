@@ -1,6 +1,6 @@
 {% extends "coursesearch/schedule.html" %}
 {% block title %}saved schedule{% endblock %}
-{% block og_title %}My schedule for next semester at Our Pomona{% endblock %}
+{% block og_title %}My schedule for next semester at ASPC Course Search{% endblock %}
 {% block og_url %}{{ schedule.outside_url }}{% endblock %}
 {% block startup_script %}
 	var die = false;
@@ -30,8 +30,10 @@
 if you make changes, you will have to share them again and get a new link.</p>
 <form action="" method="POST">
 	{% csrf_token %}
-	<p><input type="submit" value="load"></p>
+	<p><input type="submit" value="load for editing"></p>
 </form>
+<h3>export:</h3>
+<p><a href="{% url aspc.coursesearch.views.ical_from_schedule schedule_id=schedule.id %}">download this schedule</a> as a .ics file, then drop the downloaded file on the iCal dock icon or read <a href="http://support.google.com/calendar/bin/answer.py?hl=en&answer=37118">how to import into Google Calendar</a></p>
 </div>
 <ol class="course_list">
 {% for c in schedule.courses.all %}

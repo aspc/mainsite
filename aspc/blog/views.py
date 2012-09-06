@@ -1,9 +1,15 @@
-from django.views.generic.dates import DateDetailView, ArchiveIndexView
+from django.views.generic.dates import (DateDetailView, ArchiveIndexView, 
+    MonthArchiveView, _date_from_string)
+from django.http import Http404
+from aspc.generic import FilteredMonthArchiveView
 import datetime
 
 class PostDetail(DateDetailView):
     def get_object(self):
         return self.model.objects.get(slug=self.kwargs['slug'].lower())
+
+class PostMonthArchive(FilteredMonthArchiveView):
+    pass
 
 class PostArchive(ArchiveIndexView):
     def get_context_data(self, **kwargs):

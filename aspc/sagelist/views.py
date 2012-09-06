@@ -7,9 +7,11 @@ from django.views.generic.edit import CreateView, DeleteView
 from django import forms
 from django.template.loader import render_to_string
 from django.template import RequestContext
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.decorators import method_decorator
+from django.shortcuts import get_object_or_404
 from aspc.sagelist.models import BookSale
 from functools import wraps
 import string
@@ -124,6 +126,29 @@ class BookSaleDeleteView(DeleteView):
         messages.add_message(request, messages.SUCCESS, u"Deleted listing for {0}".format(self.object.title))
         return HttpResponseRedirect(self.get_success_url())
 
+
+class ListUserBookSalesView(ListView):
+    model = BookSale
+    context_object_name = "listings"
+    template_name = "sagelist/booksale_list_user.html"
+    _user = None
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super(ListUserBookSalesView, self).get_context_data(*args, **kwargs)
+        context.update({
+            'listings_by': self._get_user(),
+        })
+        return context
+    
+    def _get_user(self):
+        if not self._user:
+            self._user = get_object_or_404(User, username=self.kwargs['username'])
+        return self._user
+    
+    def get_queryset(self):
+        qs = super(ListUserBookSalesView, self).get_queryset()
+        qs = qs.filter(seller=self._get_user())
+        return qs
 
 class ListBookSalesView(ListView):
     model = BookSale
