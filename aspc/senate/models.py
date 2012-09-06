@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 import datetime
 
 class Position(models.Model):
@@ -19,6 +19,11 @@ class Position(models.Model):
         default=True,
         help_text="Whether or not a position is still active (for display "
                   "in the list of Senate positions)")
+    groups = models.ManyToManyField(
+        Group,
+        help_text="Groups that people holding this position should be added "
+                  "to for permissions reasons"
+    )
     sort_order = models.PositiveSmallIntegerField(
         blank=True,
         help_text="Sort ordering")
@@ -69,3 +74,39 @@ class Appointment(models.Model):
             self.user.get_full_name(),
             self.start,
             self.end)
+
+# Watch for user logins to make sure they have the permissions their position
+# requires
+
+from django.contrib.auth.signals import user_logged_in
+
+def sync_permissions(sender, user, request, **kwargs):
+    try:
+        # Does the user have an active appointment?
+        appt = Appointment.objects.get(
+            login_id=user.username,
+            start__lte=datetime.date.today(),
+            end__gte=datetime.date.today(),
+        )
+        appt.user = user
+        
+        # One side effect of this is that users will not be removed from a 
+        # group just because their position has been removed from a group
+        user.groups.add(list(appt.position.groups.all()))
+        
+        appt.save()
+    except Appointment.DoesNotExist:
+        # No current appointment for this user
+        pass
+    
+    try:
+        # Does the user have an expired appointment?
+        appt = Appointment.objects.get(
+            user=user,
+            end__lte=datetime.date.today(),
+        )
+    except Appointment.DoesNotExist:
+        
+    
+
+user_logged_in.connect(sync_permissions)
