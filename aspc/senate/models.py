@@ -71,7 +71,7 @@ class Appointment(models.Model):
     def __unicode__(self):
         return u"{0}: {1} from {2} to {3}".format(
             self.position.title,
-            self.user.get_full_name(),
+            (self.user.get_full_name() if self.user else self.login_id),
             self.start,
             self.end)
 
@@ -81,6 +81,22 @@ class Appointment(models.Model):
 from django.contrib.auth.signals import user_logged_in
 
 def sync_permissions(sender, user, request, **kwargs):
+    # First clear expired permissions, then (re)add active permissions
+    
+    try:
+        # Does the user have an expired appointment?
+        appt = Appointment.objects.get(
+            user=user,
+            end__lte=datetime.date.today(),
+        )
+        
+        user.groups.remove(*tuple(appt.position.groups.all()))
+        user.is_staff = False
+        user.save()
+    except Appointment.DoesNotExist:
+        # This isn't someone who's been appointed to a position in the past
+        pass
+    
     try:
         # Does the user have an active appointment?
         appt = Appointment.objects.get(
@@ -89,24 +105,16 @@ def sync_permissions(sender, user, request, **kwargs):
             end__gte=datetime.date.today(),
         )
         appt.user = user
+        user.is_staff = True
+        user.save()
         
         # One side effect of this is that users will not be removed from a 
         # group just because their position has been removed from a group
-        user.groups.add(list(appt.position.groups.all()))
+        user.groups.add(*tuple(appt.position.groups.all()))
         
         appt.save()
     except Appointment.DoesNotExist:
         # No current appointment for this user
         pass
-    
-    try:
-        # Does the user have an expired appointment?
-        appt = Appointment.objects.get(
-            user=user,
-            end__lte=datetime.date.today(),
-        )
-    except Appointment.DoesNotExist:
-        
-    
 
 user_logged_in.connect(sync_permissions)
