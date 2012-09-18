@@ -1,0 +1,38 @@
+{% extends "folio/page.html" %}
+{% load url from future %}
+{% block "page_class" %}docarchive{% endblock %}
+
+{% block "title" %}Senate Document Archive{% endblock %}
+{% block "page_title" %}Senate Document Archive{% endblock %}
+
+{% block "breadcrumbs" %}
+<ol class="breadcrumbs">
+  <li><a href="/senate/">Senate</a></li>
+  <li><a href="{% url "document_list" %}">Document Archive</a></li>
+</ol>
+{% endblock %}
+
+{% block "content" %}
+<p>Documents and reports produced by the student government and various Pomona College committees are archived here for posterity.</p>
+{% if documents %}
+<ol>
+{% for doc in documents %}
+  <li>
+    <h2><a href="{{ doc.file.url }}">{{ doc.title }}</a></h2>
+    <h3>Posted on {{ doc.uploaded_at }}</h3>
+    {% if doc.authors %}<h3>{{ doc.authors }}</h3>{% endif %}
+    {{ doc.description|linebreaks }}
+  </li>
+{% endfor %}
+</ol>
+{% else %}
+<p>There are not any documents in the archive yet.</p>
+{% endif %}
+<p class="paginator">
+{% if is_paginated %}
+  {% if page_obj.has_previous %}<a href="{% url "document_list_page" page=page_obj.previous_page_number %}">&larr; Newer documents</a>{% endif %}
+  <span>{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+  {% if page_obj.has_next %}<a href="{% url "document_list_page" page=page_obj.next_page_number %}">Older documents &rarr;</a>{% endif %}
+{% endif %}
+</p>
+{% endblock %}

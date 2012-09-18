@@ -110,6 +110,30 @@ form > ul > li > label {
 
 /* @group Desktop */
 
+/* @group Document Archive */
+
+.primary.docarchive .content ol {
+	list-style-type: none;
+	padding: 0;
+}
+
+.docarchive ol li h2 {
+	margin-bottom: 0;
+}
+
+.primary.docarchive .content ol li h3 {
+	font-size: 0.9em;
+	margin: 0.25em 0;
+	font-weight: normal;
+	color: #444;
+}
+
+.primary.docarchive p.paginator {
+	text-align: center;
+}
+
+/* @end */
+
 /* @group SageList */
 
 .sagelist .stat_search {
