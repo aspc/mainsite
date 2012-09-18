@@ -9,12 +9,12 @@ class DocumentAdmin(admin.ModelAdmin):
         return obj.file.url
     public_url.short_description = "Public URL"
     
-    raw_id_fields = ('uploaded_by',)
     list_display = ("title", "uploaded_by", "uploaded_at", "public_url",)
+    exclude = ("uploaded_by",)
     
-    related_lookup_fields = {
-        'fk': ['uploaded_by',],
-    }
+    def save_model(self, request, obj, form, change):
+        obj.uploaded_by = request.user
+        obj.save()
 
 admin.site.register(Position, PositionAdmin)
 admin.site.register(Appointment)
