@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from django.conf import settings
 from aspc.folio.models import Page
 from aspc.views import HomeView
 from aspc.blog.urls import post_kwargs
@@ -6,11 +7,14 @@ from aspc.blog.urls import post_kwargs
 from django.contrib import admin
 admin.autodiscover()
 
+from filebrowser.sites import site
+
 # home_kwargs = post_kwargs.copy()
 # home_kwargs.update({'template_name': 'home.html'})
 
 urlpatterns = patterns('',
     url(r'^$', HomeView.as_view(), name="home"),
+    url(r'^admin/filebrowser/', include(site.urls)),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^grappelli/', include('grappelli.urls')),
@@ -23,3 +27,10 @@ urlpatterns = patterns('',
     url(r'^courses/', include('aspc.coursesearch.urls')),
     url(r'(?P<slug_path>(?:[\w\-\d]+/)+)$', 'aspc.folio.views.page_view', name="folio_page"),
 )
+
+if settings.DEBUG:
+    urlpatterns += patterns('',
+        url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+            'document_root': settings.MEDIA_ROOT,
+        }),
+   )

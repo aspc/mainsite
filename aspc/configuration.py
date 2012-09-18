@@ -87,6 +87,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'grappelli', # Must be before django.contrib.admin
+    'filebrowser', # Must be before django.contrib.admin
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.markup',
