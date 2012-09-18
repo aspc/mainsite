@@ -86,6 +86,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'grappelli', # Must be before django.contrib.admin
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.markup',
