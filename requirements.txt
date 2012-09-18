@@ -16,3 +16,4 @@ pyodbc==3.0.3
 python-dateutil==1.5
 vobject==0.8.1c
 django-grappelli==2.4.1
+django-filebrowser==3.5.0
