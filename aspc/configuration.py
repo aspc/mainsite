@@ -254,3 +254,4 @@ djcelery.setup_loader()
 #### Grappelli Configuration
 
 GRAPPELLI_INDEX_DASHBOARD = 'aspc.dashboard.CustomIndexDashboard'
+GRAPPELLI_ADMIN_TITLE = 'Associated Students of Pomona College'
