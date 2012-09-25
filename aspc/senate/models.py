@@ -118,3 +118,26 @@ def sync_permissions(sender, user, request, **kwargs):
         pass
 
 user_logged_in.connect(sync_permissions)
+
+class Document(models.Model):
+    """A publication of the Senate, such as a report"""
+    
+    title = models.CharField(max_length=255)
+    uploaded_by = models.ForeignKey('auth.User')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    authors = models.TextField(blank=True)
+    description = models.TextField(blank=True)
+    file = models.FileField(upload_to='senate/documents/%Y/%m/%d/')
+    
+    class Meta:
+        ordering = ['uploaded_at', 'title']
+    
+    def get_absolute_url(self):
+        return self.file.url
+    
+    def __unicode__(self):
+        return '{filename} uploaded by {user} on {datetime}'.format(
+            filename=self.file.name,
+            user=self.uploaded_by.username,
+            datetime=self.uploaded_at,
+        )

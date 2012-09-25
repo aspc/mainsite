@@ -55,6 +55,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     "django.core.context_processors.static",
+    "django.core.context_processors.request",
     "django.contrib.messages.context_processors.messages",
     "aspc.context_processors.site",
     "aspc.context_processors.absolute_uri",
@@ -86,6 +87,9 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'grappelli.dashboard', # Must be before grappelli
+    'grappelli', # Must be before django.contrib.admin
+    'filebrowser', # Must be before django.contrib.admin
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.markup',
@@ -260,3 +264,8 @@ CELERYBEAT_SCHEDULE = {
 }
 
 djcelery.setup_loader()
+
+#### Grappelli Configuration
+
+GRAPPELLI_INDEX_DASHBOARD = 'aspc.dashboard.CustomIndexDashboard'
+GRAPPELLI_ADMIN_TITLE = 'Associated Students of Pomona College'
