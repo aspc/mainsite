@@ -227,6 +227,20 @@ DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': show_toolbar,
 }
 
+# College Terms
+
+ACADEMIC_TERM_DEFAULTS = {
+  # Not the real start and end dates. Since those change year to year
+  # this just provides defaults for prepopulating terms. Because of the way
+  # current_term is calculated from these, it's better to have wider ranges.
+  
+  # Syntax:
+  # term name: ((begin month, begin day), (end month, end day))
+  
+  'fall': ((8, 1), (12, 22)),
+  'spring': ((1,10), (5, 25)),
+}
+
 #### Celery Configuration
 
 from celery.schedules import crontab

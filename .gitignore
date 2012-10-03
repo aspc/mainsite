@@ -7,4 +7,3 @@ temp/
 fabfile/config.py
 aspc/celerybeat-schedule
 media/
-static/
