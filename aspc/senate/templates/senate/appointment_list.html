@@ -1,0 +1,28 @@
+{% extends "folio/page.html" %}
+{% load url from future %}
+{% block "page_class" %}positions{% endblock %}
+
+{% block "title" %}Positions{% endblock %}
+{% block "page_title" %}Positions{% endblock %}
+
+{% block "breadcrumbs" %}
+<ol class="breadcrumbs">
+  <li><a href="/senate/">Senate</a></li>
+  <li><a href="{% url "positions" %}">Positions</a></li>
+</ol>
+{% endblock %}
+
+{% block "content" %}
+{% if appointments %}
+<ol>
+{% for app in appointments %}
+  <li>
+    <h2>{{ app.position.title }}: {{ app.name }} {% if app.position.email %}<a href="mailto:{{ app.position.email }}">(contact)</a>{% endif %}</h2>
+    {{ app.position.description|linebreaks }}
+  </li>
+{% endfor %}
+</ol>
+{% else %}
+<p>There are no senators currently appointed.</p>
+{% endif %}
+{% endblock %}

@@ -22,7 +22,8 @@ class Position(models.Model):
     groups = models.ManyToManyField(
         Group,
         help_text="Groups that people holding this position should be added "
-                  "to for permissions reasons"
+                  "to assign the correct permissions.",
+        blank=True,
     )
     sort_order = models.PositiveSmallIntegerField(
         blank=True,
@@ -46,7 +47,7 @@ class Position(models.Model):
             return none
     
     def save(self, *args, **kwargs):
-        if not self.sort_order:
+        if self.sort_order is None:
             positions = Position.objects.order_by('-sort_order')
             if not positions.count():
                 self.sort_order = 1
@@ -58,6 +59,8 @@ class Appointment(models.Model):
     """Information on the start and end dates of a particular ASPC position"""
     
     position = models.ForeignKey(Position)
+    name = models.CharField(max_length=40, help_text="The name to display "
+        "on the Senate Positions page")
     login_id = models.CharField(max_length=20, blank=True, null=True)
     
     user = models.ForeignKey(User, blank=True, null=True)

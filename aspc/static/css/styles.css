@@ -134,6 +134,18 @@ form > ul > li > label {
 
 /* @end */
 
+/* @group Positions */
+
+.primary.positions .content ol {
+	list-style-type: none;
+	padding-left: 0;
+}
+
+
+/* @end */
+
+
+
 /* @group SageList */
 
 .sagelist .stat_search {
