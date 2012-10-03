@@ -8,6 +8,8 @@ class Position(models.Model):
     title = models.CharField(
         max_length=80,
         help_text="The official title of the position")
+    email = models.EmailField(blank=True, null=True)
+        
     description = models.TextField(
         blank=True,
         help_text="(optional) Description of the position")

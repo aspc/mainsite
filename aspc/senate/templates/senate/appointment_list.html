@@ -16,8 +16,11 @@
 {% if appointments %}
 <ol>
 {% for app in appointments %}
-  <li>
-    <h2>{{ app.position.title }}: {{ app.name }} {% if app.position.email %}<a href="mailto:{{ app.position.email }}">(contact)</a>{% endif %}</h2>
+  <li class="position">
+    <hgroup>
+      <h2>{{ app.name }}, {{ app.position.title }}</h2>
+      {% if app.position.email %}<h4 class="email"><a href="mailto:{{ app.position.email }}">{{ app.position.email }}</a></h4>{% endif %}
+    </hgroup>
     {{ app.position.description|linebreaks }}
   </li>
 {% endfor %}
