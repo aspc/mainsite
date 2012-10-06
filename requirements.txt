@@ -11,7 +11,7 @@ django-debug-toolbar==0.9.4
 -e git://github.com/aspc/django-filter.git@26ba61101b064678e0dcc028e4d93cca30083619#egg=django_filter-dev
 Werkzeug==0.8.3
 django-extensions==0.8
-django-celery==2.5.3
+django-celery==3.0.11
 pyodbc==3.0.3
 python-dateutil==1.5
 vobject==0.8.1c
