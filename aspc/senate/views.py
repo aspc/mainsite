@@ -12,9 +12,9 @@ class AppointmentList(ListView):
     context_object_name = 'appointments'
     
     def get_queryset(self, *args, **kwargs):
-        qs = super(AppointmentList, self).get_queryset(*args, **kwargs)
-        qs = qs.filter(end__isnull=True)
-        qs |= qs.filter(end__gte=datetime.datetime.now())
+        all_qs = super(AppointmentList, self).get_queryset(*args, **kwargs)
+        qs = all_qs.filter(end__isnull=True)
+        qs |= all_qs.filter(end__gte=datetime.datetime.now())
         qs = qs.order_by('position__sort_order')
         return qs
     
