@@ -19,15 +19,16 @@ class Migration(SchemaMigration):
         db.rename_column('housing_room', 'suite', 'suite_id')
         # Changing field 'Room.suite'
         db.alter_column('housing_room', 'suite_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['housing.Suite'], null=True))
-
-        # Adding index on 'Room', fields ['suite']
-        db.create_index('housing_room', ['suite_id'])
+        
+        if not db.backend_name == 'sqlite3':
+            # Adding index on 'Room', fields ['suite']
+            db.create_index('housing_room', ['suite_id'])
 
 
     def backwards(self, orm):
-        
-        # Removing index on 'Room', fields ['suite']
-        db.delete_index('housing_room', ['suite_id'])
+        if not db.backend_name == 'sqlite3':
+            # Removing index on 'Room', fields ['suite']
+            db.delete_index('housing_room', ['suite_id'])
 
         # Deleting model 'Suite'
         db.delete_table('housing_suite')
