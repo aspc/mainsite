@@ -7,6 +7,7 @@ except ImportError:
     env.hosts = ["peninsula.pomona.edu"]
 
 env.site = "staging" # By default, run all of these tasks on 'staging'
+env.origin = "git@github.com:aspc/mainsite.git"
 
 """
 Deployment script for ASPC's main site and staging site
@@ -17,9 +18,11 @@ and 'deploy' for 'on_main apply_changes'
 
 def on_staging():
     env.site = "staging"
+    env.branch = "staging"
 
 def on_main():
     env.site = "main"
+    env.branch = "production"
 
 def stage():
     on_staging()
@@ -31,35 +34,37 @@ def deploy():
 
 def migrate():
     with settings(
-        cd("/srv/www/{0}/env/aspcrepo".format(env.site)),
+        cd("/srv/www/{0}/mainsite".format(env.site)),
         prefix("source /srv/www/{0}/env/bin/activate".format(env.site))
     ):
-        run("./manage.py migrate")
-        run("./manage.py syncdb")
+        sudo("./manage.py migrate", user=env.site)
+        sudo("./manage.py syncdb", user=env.site)
 
 def update_static():
     with settings(
-        cd("/srv/www/{0}/env/aspcrepo".format(env.site)),
+        cd("/srv/www/{0}/mainsite".format(env.site)),
         prefix("source /srv/www/{0}/env/bin/activate".format(env.site))
     ):
-        run("./manage.py collectstatic")
+        sudo("./manage.py collectstatic", user=env.site)
 
 def install_requirements():
     with settings(
-        cd("/srv/www/{0}/env/aspcrepo".format(env.site)),
+        cd("/srv/www/{0}/mainsite".format(env.site)),
         prefix("source /srv/www/{0}/env/bin/activate".format(env.site))
     ):
-        run("pip install -r ./requirements.txt")
+        sudo("pip install -r ./requirements.txt", user=env.site)
 
 def reload():
     run("/srv/www/{0}/bin/gunicorn.sh reload".format(env.site))
 
 def git_push_pull():
-    local("git push {0}".format(env.site))
-    with cd("/srv/www/{0}/env/aspcrepo".format(env.site)):
-        run("git pull")
-        run("git merge origin/master")
-        run("git status")
+    local("git push {0} {1}".format(env.origin, env.branch))
+    with settings(
+        cd("/srv/www/{0}/mainsite".format(env.site)),
+    ):
+        sudo("git clean -f", user=env.site)
+        sudo("git pull origin", user=env.site)
+        sudo("git status", user=env.site)
 
 def apply_changes():
     git_push_pull()
