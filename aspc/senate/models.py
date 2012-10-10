@@ -109,6 +109,12 @@ def sync_permissions(sender, user, request, **kwargs):
         end__gte=datetime.date.today(),
     )
     
+    # note: some appointments have no end date (i.e. staff advisors)
+    appts |= Appointment.objects.filter(
+        start__lte=datetime.date.today(),
+        end__isnull=True
+    )
+    
     appts_active = appts.filter(login_id=user.username)
     appts_active |= appts.filter(user__username=user.username)
     
