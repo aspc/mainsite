@@ -12,6 +12,11 @@ class HomeView(PostArchive):
     context_object_name = 'posts'
     allow_empty = True
     
+    def get_queryset(self, *args, **kwargs):
+        qs = super(HomeView, self).get_queryset(*args, **kwargs)
+        qs = qs.select_related('author__user')
+        return qs
+    
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
         context['all_nav'] = True
