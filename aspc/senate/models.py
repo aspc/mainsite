@@ -76,9 +76,14 @@ class Appointment(models.Model):
     def __unicode__(self):
         return u"{0}: {1} from {2} to {3}".format(
             self.position.title,
-            (self.user.get_full_name() if self.user else self.login_id),
+            self.name,
             self.start,
             self.end)
+    
+    def save(self, *args, **kwargs):
+        if self.user:
+            self.login_id = self.user.username
+        return super(Appointment, self).save(*args, **kwargs)
 
 # Watch for user logins to make sure they have the permissions their position
 # requires
@@ -88,39 +93,38 @@ from django.contrib.auth.signals import user_logged_in
 def sync_permissions(sender, user, request, **kwargs):
     # First clear expired permissions, then (re)add active permissions
     
-    try:
-        # Does the user have an expired appointment?
-        appt = Appointment.objects.get(
-            user=user,
-            end__lte=datetime.date.today(),
-        )
-        
-        user.groups.remove(*tuple(appt.position.groups.all()))
-        user.is_staff = False
-        user.save()
-    except Appointment.DoesNotExist:
-        # This isn't someone who's been appointed to a position in the past
-        pass
+    # Does the user have one or more expired appointments?
+    expired_appts = Appointment.objects.filter(
+        user=user,
+        end__lte=datetime.date.today(),
+    )
     
-    try:
-        # Does the user have an active appointment?
-        appt = Appointment.objects.get(
-            login_id=user.username,
-            start__lte=datetime.date.today(),
-            end__gte=datetime.date.today(),
-        )
+    for appt in expired_appts:
+        user.groups.remove(*tuple(appt.position.groups.all()))
+    user.is_staff = False
+    
+    # Does the user have one or more current appointments?
+    appts = Appointment.objects.filter(
+        start__lte=datetime.date.today(),
+        end__gte=datetime.date.today(),
+    )
+    
+    appts_active = appts.filter(login_id=user.username)
+    appts_active |= appts.filter(user__username=user.username)
+    
+    for appt in appts_active:
+        print appt, 'is active'
         appt.user = user
-        user.is_staff = True
-        user.save()
+        appt.save()
         
         # One side effect of this is that users will not be removed from a 
         # group just because their position has been removed from a group
         user.groups.add(*tuple(appt.position.groups.all()))
-        
-        appt.save()
-    except Appointment.DoesNotExist:
-        # No current appointment for this user
-        pass
+    
+    if appts_active:
+        user.is_staff = True
+    
+    user.save()
 
 user_logged_in.connect(sync_permissions)
 
