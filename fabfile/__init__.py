@@ -6,7 +6,8 @@ try:
 except ImportError:
     env.hosts = ["peninsula.pomona.edu"]
 
-env.site = "staging" # By default, run all of these tasks on 'staging'
+env.site = env.branch = "staging" # By default, run all of these tasks on 'staging'
+
 env.origin = "git@github.com:aspc/mainsite.git"
 
 """
