@@ -71,7 +71,7 @@ class Appointment(models.Model):
     end = models.DateField(null=True, blank=True)
     
     class Meta:
-        ordering = ['start', 'position']
+        ordering = ['-end', 'position__sort_order', 'name']
 
     def __unicode__(self):
         return u"{0}: {1} from {2} to {3}".format(
