@@ -58,11 +58,17 @@ def reload():
     run("/srv/www/{0}/bin/gunicorn.sh reload".format(env.site))
 
 def git_push_pull():
+    local("git push {0} master".format(env.origin))
+    local("git checkout {0}".format(env.branch))
+    local("git merge master")
     local("git push {0} {1}".format(env.origin, env.branch))
+    local("git checkout master")
+    local("git status")
     with settings(
         cd("/srv/www/{0}/mainsite".format(env.site)),
     ):
         sudo("git clean -f", user=env.site)
+        sudo("git checkout -f .", user=env.site)
         sudo("git pull origin", user=env.site)
         sudo("git status", user=env.site)
 
