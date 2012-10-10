@@ -101,7 +101,9 @@ def sync_permissions(sender, user, request, **kwargs):
     
     for appt in expired_appts:
         user.groups.remove(*tuple(appt.position.groups.all()))
-    user.is_staff = False
+    
+    if expired_appts:
+        user.is_staff = False
     
     # Does the user have one or more current appointments?
     appts = Appointment.objects.filter(
