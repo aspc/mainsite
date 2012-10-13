@@ -63,7 +63,8 @@ class Appointment(models.Model):
     position = models.ForeignKey(Position)
     name = models.CharField(max_length=40, help_text="The name to display "
         "on the Senate Positions page")
-    login_id = models.CharField(max_length=20, blank=True, null=True)
+    login_id = models.CharField(max_length=20, blank=True,
+        null=True, verbose_name="Login ID")
     
     user = models.ForeignKey(User, blank=True, null=True)
     
@@ -81,7 +82,35 @@ class Appointment(models.Model):
             self.end)
     
     def save(self, *args, **kwargs):
-        if self.user:
+        # Changes to login_id should change user as well
+        if self.login_id and not self.user:
+            # Login ID is set and user has not yet been set
+            try:
+                self.user = User.objects.get(username=self.login_id)
+            except User.DoesNotExist:
+                pass
+        elif self.user and not (self.login_id == self.user.username):
+            # The Login ID for an existing Appointment changed, so we need
+            # to re-sync / remove permissions for the old account
+            old_user = self.user
+            
+            # Get the new user, if possible
+            try:
+                self.user = User.objects.get(username=self.login_id)
+            except User.DoesNotExist:
+                self.user = None
+            
+            # Save this instance so sync_permissions knows about the change
+            super(Appointment, self).save(*args, **kwargs)
+            
+            # Sync permissions for the old user
+            sync_permissions(self, old_user, None)
+            
+            if self.user:
+                # Sync permissions for the new user, if available
+                sync_permissions(self, self.user, None)
+        else:
+            # Ensure login_id and user.username are in sync
             self.login_id = self.user.username
         return super(Appointment, self).save(*args, **kwargs)
 

@@ -5,8 +5,9 @@ class PositionAdmin(admin.ModelAdmin):
     list_display = ("title",  "description", "sort_order",)
 
 class AppointmentAdmin(admin.ModelAdmin):
-    list_display = ("position",  "name", "login_id", "user", "start", "end")
+    list_display = ("position",  "name", "login_id")
     list_editable = list_display[1:]
+    exclude = ("user",)
 
 class DocumentAdmin(admin.ModelAdmin):
     def public_url(self, obj):
