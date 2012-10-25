@@ -2,6 +2,7 @@
 {% load eatshop %}
   <div class="main_info">
     <p class="address">{{ business.address|linebreaksbr }}</p>
+    <p> <a href="https://maps.google.com/maps?q={{ business.address|urlencode }}&amp;z=17">map this address</a></p>
     {% if business.phone or business.www %}
     <p class="contact">
       {% if business.phone %}phone: {{ business.phone }} {% if business.www %}&bull;{% endif %}{% endif %}
