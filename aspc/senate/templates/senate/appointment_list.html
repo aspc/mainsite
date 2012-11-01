@@ -21,7 +21,9 @@
       <h2>{{ app.name }}, {{ app.position.title }}</h2>
       {% if app.position.email %}<h4 class="email"><a href="mailto:{{ app.position.email }}">{{ app.position.email }}</a></h4>{% endif %}
     </hgroup>
-    {{ app.bio|linebreaks }}
+    {% if app.bio %}
+        {{ app.bio|linebreaks }}
+    {% endif %}
   </li>
 {% endfor %}
 </ol>
