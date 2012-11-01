@@ -70,6 +70,8 @@ class Appointment(models.Model):
     
     start = models.DateField()
     end = models.DateField(null=True, blank=True)
+
+    bio = models.TextField(null=True, blank=True)
     
     class Meta:
         ordering = ['-end', 'position__sort_order', 'name']
