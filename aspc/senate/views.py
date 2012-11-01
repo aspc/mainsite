@@ -1,5 +1,5 @@
 from django.views.generic import ListView
-from aspc.senate.models import Document, Appointment
+from aspc.senate.models import Document, Appointment, Position
 import datetime
 
 class DocumentList(ListView):
@@ -17,4 +17,12 @@ class AppointmentList(ListView):
         qs |= all_qs.filter(end__gte=datetime.datetime.now())
         qs = qs.order_by('position__sort_order')
         return qs
-    
+
+class PositionList(ListView):
+    model = Position
+    context_object_name = 'positions'
+
+    def get_queryset(self, *args, **kwargs):
+        all_qs = super(PositionList, self).get_queryset(*args, **kwargs)
+        qs = all_qs.filter(active=True)
+        return qs

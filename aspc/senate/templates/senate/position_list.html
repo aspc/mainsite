@@ -1,0 +1,30 @@
+{% extends "folio/page.html" %}
+{% load url from future %}
+{% block "page_class" %}positions{% endblock %}
+
+{% block "title" %}Positions{% endblock %}
+{% block "page_title" %}Positions{% endblock %}
+
+{% block "breadcrumbs" %}
+<ol class="breadcrumbs">
+  <li><a href="/senate/">Senate</a></li>
+  <li><a href="{% url "positions" %}">Positions</a></li>
+</ol>
+{% endblock %}
+
+{% block "content" %}
+{% if positions %}
+<ol>
+{% for p in positions %}
+  <li class="position">
+    <hgroup>
+      <h2>{{ p.title }}</h2>
+    </hgroup>
+    {{ p.description|linebreaks }}
+  </li>
+{% endfor %}
+</ol>
+{% else %}
+<p>There are no positions currently listed.</p>
+{% endif %}
+{% endblock %}
