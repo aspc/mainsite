@@ -55,7 +55,7 @@ function init() {
         },
     });
 
-    gotodate = $('#calendar').weekCalendar('gotoDate', new Date(2013, 0, 23, 0, 0, 0, 0)); // month is zero-indexed
+    gotodate = $('#calendar').weekCalendar('gotoDate', new Date(2012, 8, 3, 0, 0, 0, 0));
 }
 
 function addCourseData(course_data, frozen) {
