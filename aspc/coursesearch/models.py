@@ -67,7 +67,7 @@ class RequirementArea(models.Model):
 class Course(models.Model):
     code = models.CharField(max_length=20, unique=True, db_index=True)
     code_slug = models.CharField(max_length=20, unique=True, db_index=True)
-    cx_code = models.CharField(max_length=34, unique=True,
+    cx_code = models.CharField(max_length=50, unique=True,
                                db_index=True, editable=False)
     number = models.IntegerField(default=0)
     
