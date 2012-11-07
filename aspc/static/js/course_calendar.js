@@ -36,15 +36,6 @@ function init() {
             }
             
         },
-        eventRender: function(calEvent, $event) {
-            if (calEvent.end.getTime() < new Date().getTime()) {
-                $event.css("backgroundColor", "#aaa");
-                $event.find(".time").css({
-                    "backgroundColor": "#999",
-                    "border": "1px solid #888"
-                });
-            }
-        },
         eventAfterRender: function(calEvent, $event) {
             $event.addClass('campus_' + calEvent.campus);
         },
