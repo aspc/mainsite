@@ -160,15 +160,27 @@ class Meeting(models.Model):
         # we don't use the rest of its features, we froze it in the past.
         
         if self.monday:
-            combine_dates.append(frontend_calendar_start)
+            combine_dates.append(frontend_calendar_start + timedelta(
+                days=(7 + 0 - base_date.weekday()) % 7 # get correct weekday 
+                                                     # offset depending on
+                                                     # start date weekday
+            ))
         if self.tuesday:
-            combine_dates.append(frontend_calendar_start + timedelta(days=1))
+            combine_dates.append(frontend_calendar_start + timedelta(
+                days=(7 + 1 - base_date.weekday()) % 7
+            ))
         if self.wednesday:                                     
-            combine_dates.append(frontend_calendar_start + timedelta(days=2))
+            combine_dates.append(frontend_calendar_start + timedelta(
+                days=(7 + 2 - base_date.weekday()) % 7
+            ))
         if self.thursday:                                      
-            combine_dates.append(frontend_calendar_start + timedelta(days=3))
+            combine_dates.append(frontend_calendar_start + timedelta(
+                days=(7 + 3 - base_date.weekday()) % 7
+            ))
         if self.friday:                                        
-            combine_dates.append(frontend_calendar_start + timedelta(days=4))
+            combine_dates.append(frontend_calendar_start +  + timedelta(
+                days=(7 + 4 - base_date.weekday()) % 7
+            ))
         
         for basedate in combine_dates:
             begin = datetime.combine(basedate, self.begin)

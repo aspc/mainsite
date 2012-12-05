@@ -191,7 +191,12 @@ def ical_from_schedule(request, schedule_id):
             if meeting.thursday: weekdays.append(rrule.TH)
             if meeting.friday: weekdays.append(rrule.FR)
             
-            dtstart, dtend = meeting.to_datetime_ranges()[0]
+            timepairs = meeting.to_datetime_ranges(base_date=START_DATE)
+            
+            if not timepairs: # some meetings in CX don't have weekdays entered
+                continue
+            
+            timepairs.sort()
             
             # Note: to_datetime_ranges is for the frontend. This is hacky, but
             # we want the actual first meeting, so we need to use START_DATE
