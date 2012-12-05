@@ -169,19 +169,19 @@ class Meeting(models.Model):
             ))
         if self.tuesday:
             combine_dates.append(frontend_calendar_start + timedelta(
-                days=(7 + 1 - base_date.weekday) % 7
+                days=(7 + 1 - base_date.weekday()) % 7
             ))
         if self.wednesday:                                     
             combine_dates.append(frontend_calendar_start + timedelta(
-                days=(7 + 2 - base_date.weekday) % 7
+                days=(7 + 2 - base_date.weekday()) % 7
             ))
         if self.thursday:                                      
             combine_dates.append(frontend_calendar_start + timedelta(
-                days=(7 + 3 - base_date.weekday) % 7
+                days=(7 + 3 - base_date.weekday()) % 7
             ))
         if self.friday:                                        
             combine_dates.append(frontend_calendar_start +  + timedelta(
-                days=(7 + 4 - base_date.weekday) % 7
+                days=(7 + 4 - base_date.weekday()) % 7
             ))
         
         for basedate in combine_dates:
