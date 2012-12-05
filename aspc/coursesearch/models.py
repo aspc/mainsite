@@ -144,7 +144,7 @@ class Meeting(models.Model):
         if self.friday: s.append('F')
         return s
     
-    def to_datetime_ranges(self):
+    def to_datetime_ranges(self, base_date=None):
         ranges = []
         combine_dates = []
         
@@ -158,6 +158,9 @@ class Meeting(models.Model):
         # Note: the version of JQuery-WeekCalendar we have gets off by two on 
         # computing day-of-week starting in 2013. Rather than fix this, since
         # we don't use the rest of its features, we froze it in the past.
+        
+        if not base_date:
+            base_date = frontend_calendar_start
         
         if self.monday:
             combine_dates.append(frontend_calendar_start + timedelta(
