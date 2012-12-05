@@ -148,16 +148,27 @@ class Meeting(models.Model):
         ranges = []
         combine_dates = []
         
+        # Historical note: the frontend calendar supports navigating week
+        # by week, but we've turned it into a stripped down week calendar.
+        #
+        # Under the hood, it still wants a timestamp for events, though it 
+        # doesn't matter what as long as the day of the week works correctly.
+        frontend_calendar_start = date(2012, 9, 3)
+        
+        # Note: the version of JQuery-WeekCalendar we have gets off by two on 
+        # computing day-of-week starting in 2013. Rather than fix this, since
+        # we don't use the rest of its features, we froze it in the past.
+        
         if self.monday:
-            combine_dates.append(START_DATE)
+            combine_dates.append(frontend_calendar_start)
         if self.tuesday:
-            combine_dates.append(START_DATE + timedelta(days=1))
+            combine_dates.append(frontend_calendar_start + timedelta(days=1))
         if self.wednesday:                                     
-            combine_dates.append(START_DATE + timedelta(days=2))
+            combine_dates.append(frontend_calendar_start + timedelta(days=2))
         if self.thursday:                                      
-            combine_dates.append(START_DATE + timedelta(days=3))
+            combine_dates.append(frontend_calendar_start + timedelta(days=3))
         if self.friday:                                        
-            combine_dates.append(START_DATE + timedelta(days=4))
+            combine_dates.append(frontend_calendar_start + timedelta(days=4))
         
         for basedate in combine_dates:
             begin = datetime.combine(basedate, self.begin)
