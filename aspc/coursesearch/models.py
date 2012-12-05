@@ -144,7 +144,7 @@ class Meeting(models.Model):
         if self.friday: s.append('F')
         return s
     
-    def to_datetime_ranges(self, base_date=None):
+    def to_datetime_ranges(self):
         ranges = []
         combine_dates = []
         
@@ -158,31 +158,17 @@ class Meeting(models.Model):
         # Note: the version of JQuery-WeekCalendar we have gets off by two on 
         # computing day-of-week starting in 2013. Rather than fix this, since
         # we don't use the rest of its features, we froze it in the past.
-        if not base_date:
-            base_date = frontend_calendar_start
         
         if self.monday:
-            combine_dates.append(frontend_calendar_start + timedelta(
-                days=(7 + 0 - base_date.weekday) % 7 # get correct weekday 
-                                                     # offset depending on
-                                                     # start date weekday
-            ))
+            combine_dates.append(frontend_calendar_start)
         if self.tuesday:
-            combine_dates.append(frontend_calendar_start + timedelta(
-                days=(7 + 1 - base_date.weekday) % 7
-            ))
+            combine_dates.append(frontend_calendar_start + timedelta(days=1))
         if self.wednesday:                                     
-            combine_dates.append(frontend_calendar_start + timedelta(
-                days=(7 + 2 - base_date.weekday) % 7
-            ))
+            combine_dates.append(frontend_calendar_start + timedelta(days=2))
         if self.thursday:                                      
-            combine_dates.append(frontend_calendar_start + timedelta(
-                days=(7 + 3 - base_date.weekday) % 7
-            ))
+            combine_dates.append(frontend_calendar_start + timedelta(days=3))
         if self.friday:                                        
-            combine_dates.append(frontend_calendar_start +  + timedelta(
-                days=(7 + 4 - base_date.weekday) % 7
-            ))
+            combine_dates.append(frontend_calendar_start + timedelta(days=4))
         
         for basedate in combine_dates:
             begin = datetime.combine(basedate, self.begin)
