@@ -192,6 +192,10 @@ def ical_from_schedule(request, schedule_id):
             if meeting.friday: weekdays.append(rrule.FR)
             
             timepairs = meeting.to_datetime_ranges(base_date=START_DATE)
+            
+            if not timepairs: # some meetings in CX don't have weekdays entered
+                continue
+            
             timepairs.sort()
             
             dtstart, dtend = timepairs[0]

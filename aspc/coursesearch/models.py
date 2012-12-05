@@ -163,7 +163,7 @@ class Meeting(models.Model):
         
         if self.monday:
             combine_dates.append(frontend_calendar_start + timedelta(
-                days=(7 + 0 - base_date.weekday) % 7 # get correct weekday 
+                days=(7 + 0 - base_date.weekday()) % 7 # get correct weekday 
                                                      # offset depending on
                                                      # start date weekday
             ))
