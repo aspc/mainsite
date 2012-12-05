@@ -192,8 +192,15 @@ def ical_from_schedule(request, schedule_id):
             if meeting.friday: weekdays.append(rrule.FR)
             
             dtstart, dtend = meeting.to_datetime_ranges()[0]
-            v.add('dtstart').value = dtstart
-            v.add('dtend').value = dtend
+            
+            # Note: to_datetime_ranges is for the frontend. This is hacky, but
+            # we want the actual first meeting, so we need to use START_DATE
+            # as the base date for the timestamp.
+            
+            v.add('dtstart').value = dtstart.replace(START_DATE.year,
+                START_DATE.month, START_DATE.day)
+            v.add('dtend').value = dtend.replace(START_DATE.year,
+                START_DATE.month, START_DATE.day)
             v.add('dtstamp').value = datetime.datetime.now()
             v.add('location').value = ', '.join((meeting.location, meeting.get_campus_display()))
             
