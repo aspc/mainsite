@@ -7,3 +7,5 @@ temp/
 fabfile/config.py
 aspc/celerybeat-schedule
 media/
+.vagrant/
+vagrant/run/

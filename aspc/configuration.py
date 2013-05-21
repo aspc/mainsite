@@ -94,6 +94,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django.contrib.markup',
     'django.contrib.redirects',
+    'gunicorn',
     'south',
     'django_extensions',
     'debug_toolbar',
