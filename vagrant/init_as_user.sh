@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+echo "ulimit -n 2048" >> ~/.profile
 cd /home/vagrant
 mkdir -p run public logs config
 virtualenv /home/vagrant/env

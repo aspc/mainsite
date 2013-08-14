@@ -6,13 +6,16 @@ PIDFILE="$ROOT/run/nginx.pid"
 case "$1" in
     start)
         echo -n "Starting nginx... "
-        if [ $(ps x | grep nginx | grep `cat -- $PIDFILE` | wc -l) -ne 0 ]; then
-            echo "Already started!"
-        else
-            rm -f -- $PIDFILE
-            nginx -p $ROOT/ -c $ROOT/config/nginx.conf
-            echo "Started!"
+        if [ -f $PIDFILE ]; then
+            if [ $(ps x | grep nginx | grep `cat -- $PIDFILE` | wc -l) -ne 0 ]; then
+                echo "Already started!"
+                exit 0
+            fi
         fi
+        rm -f -- $PIDFILE
+        echo
+        nginx -p $ROOT/ -c $ROOT/config/nginx.conf 
+        echo "Started!"
         ;;
     stop)
         echo -n "Stopping nginx... "
