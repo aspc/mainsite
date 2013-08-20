@@ -1,12 +1,34 @@
 #!/usr/bin/env bash
-echo "ulimit -n 2048" >> /home/vagrant/.profile
 cd /home/vagrant
+
+# Up the ulimit (intended for watchmedo, may not be necessary)
+if grep -Fxq "ulimit -n 2048" /home/vagrant/.profile
+then
+    echo "Already have ulimit line in ~/.profile"
+else
+    echo "Upping ulimit to 2048 in ~/.profile"
+    echo "ulimit -n 2048" >> /home/vagrant/.profile
+    ulimit -n 2048
+fi
 
 # create dirs expected by nginx config
 mkdir -p run public logs config
 
-# set up python virtualenv
-virtualenv /home/vagrant/env
+# set up python virtualenv if it doesn't exist
+if [ ! -f /home/vagrant/env/bin/activate ];
+then
+    virtualenv /home/vagrant/env
+fi
+
+# Activate virtualenv on login
+if grep -Fxq "source /home/vagrant/env/bin/activate" /home/vagrant/.profile
+then
+    echo "Already have virtualenv activate line in ~/.profile"
+else
+    echo "Adding line to ~/.profile to activate virtualenv on login"
+    echo "source /home/vagrant/env/bin/activate" >> /home/vagrant/.profile
+fi
+
 source /home/vagrant/env/bin/activate
 pip install -r /vagrant/requirements.txt
 
@@ -25,8 +47,3 @@ fi
 
 # start gunicorn
 /vagrant/vagrant/gunicorn.sh start
-
-# start backend nginx
-mkdir -p /home/vagrant/temp/nginx/proxy /home/vagrant/temp/nginx/fastcgi /home/vagrant/temp/nginx/uwsgi /home/vagrant/temp/nginx/scgi
-cp /vagrant/vagrant/backend_nginx.conf /home/vagrant/config/nginx.conf
-/vagrant/vagrant/httpd.sh start
