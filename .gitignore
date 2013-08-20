@@ -9,3 +9,4 @@ aspc/celerybeat-schedule
 media/
 .vagrant/
 vagrant/run/
+static/

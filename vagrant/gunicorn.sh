@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 PIDFILE="/home/vagrant/run/gunicorn.pid"
+SOCKFILE="/home/vagrant/run/gunicorn.sock"
 
 case "$1" in
     start)
@@ -8,6 +9,7 @@ case "$1" in
         if [ -f $PIDFILE ]; then
             echo "Already started!"
         else
+            rm -f -- $SOCKFILE
             bash -c 'source /home/vagrant/env/bin/activate; /vagrant/manage.py run_gunicorn -c /vagrant/vagrant/gunicorn.cfg.py'
             echo "Started!"
         fi
@@ -17,6 +19,7 @@ case "$1" in
         if [ -f $PIDFILE ]; then
             kill `cat -- $PIDFILE`
             rm -f -- $PIDFILE
+            rm -f -- $SOCKFILE
             echo "Stopped!"
         else
             echo "No gunicorn running, or missing PID file!"
