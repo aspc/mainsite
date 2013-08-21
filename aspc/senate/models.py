@@ -111,7 +111,7 @@ class Appointment(models.Model):
             if self.user:
                 # Sync permissions for the new user, if available
                 sync_permissions(self, self.user, None)
-        else:
+        elif self.user is not None:
             # Ensure login_id and user.username are in sync
             self.login_id = self.user.username
         return super(Appointment, self).save(*args, **kwargs)
