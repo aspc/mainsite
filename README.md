@@ -29,28 +29,34 @@ you `vagrant up`, but you can also run `vagrant provision` yourself.)
 Under the main `aspc` folder in this directory are several subfolders, most of
 which are Django "apps":
 
-  - `auth` -- Django auth backend supporting Pomona College accounts
-  - `blog` -- The Senate Blog (shown on homepage)
-  - `courses` -- Currently used only for the Term model
-  - `coursesearch` -- Course search & schedule builder. 
+  - `auth` — Django auth backend supporting Pomona College accounts
+  - `blog` — The Senate Blog (shown on homepage)
+  - `coursesearch` — Course search & schedule builder. 
     Includes management commands to sync with ITS course database
-  - `eatshop` -- Local business & discount directory
-  - `events` -- Unused
-  - `fixtures` -- (not an app) fixture data for coop fountain page
-  - `folio` -- Simple CMS to add pages to ASPC site
-  - `housing` -- Housing directory & reviews
-  - `map` -- Unused
-  - `maps` -- (not an app) Residence hall maps for Housing app
-  - `minutes` -- History of ASPC minutes + summaries
-  - `sagelist` -- aka SageBooks, student-to-student textbook sales
-  - `senate` -- Positions, appointments, and documents. Includes functionality
+  - `eatshop` — Local business & discount directory
+  - `folio` — Simple CMS to add pages to ASPC site
+  - `housing` — Housing directory & reviews
+  - `minutes` — History of ASPC minutes + summaries
+  - `sagelist` — aka SageBooks, student-to-student textbook sales
+  - `senate` — Positions, appointments, and documents. Includes functionality
     to apply appropriate permissions to Senators when they log in during or 
     after their tenure as senators
-  - `static` -- (not an app) Static assets used in the site
-  - `stream` -- Unused
-  - `templates` -- (not an app) Certain site-wide templates that don't fit in a
+
+Folders without an `__init__.py` are not apps, but contain supporting files:
+
+  - `fixtures` — Fixture data for Coop Fountain page
+  - `maps` — Residence hall maps for Housing app
+  - `static` — Static assets (CSS/JavaScript) used in the site
+  - `templates` — Certain site-wide templates that don't fit in a
     particular app
-  - `vote` -- Unused
+
+And some apps are placeholders that have yet to be fleshed out or removed:
+
+  - `courses` — Currently used only for the Term model
+  - `events` — Unused (see Glean project)
+  - `map` — Unused
+  - `stream` — Unused (see notes on activity stream)
+  - `vote` — Unused
 
 [Vagrant]: http://vagrantup.com
 [http://localhost:8080/]: http://localhost:8000/
