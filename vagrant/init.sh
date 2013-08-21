@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 export DEBIAN_FRONTEND=noninteractive
+update-locale LANG=en_US.UTF-8
 apt-get -y update
 
 # Dependencies for ASPC Main Site
@@ -11,7 +12,9 @@ mv /tmp/pg_hba.conf /etc/postgresql/9.1/main/pg_hba.conf
 sudo -u postgres psql -f /vagrant/vagrant/setup_postgres.sql
 if [ $(sudo -u postgres psql -l | grep main_django | wc -l) -eq 0 ]; then
     echo -n "Creating a 'main_django' database..."
-    sudo -u postgres psql -c "CREATE DATABASE main_django WITH OWNER = main" && echo "Done!"
+    # Can't get Ubuntu 12.04 to install Postgres with a sensible default locale
+    # so we a) create the db from template0 and b) specify en_US.utf8
+    sudo -u postgres psql -c "CREATE DATABASE main_django WITH ENCODING = 'UTF-8' LC_CTYPE = 'en_US.UTF-8' LC_COLLATE = 'en_US.UTF-8' OWNER main TEMPLATE template0" && echo "Done!"
 else
     echo "Database 'main_django' already exists"
 fi
