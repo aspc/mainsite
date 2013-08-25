@@ -9,6 +9,7 @@ apt-get -y install build-essential git nginx postgresql libpq-dev python-dev pyt
 # Set up PostgreSQL
 cat /vagrant/vagrant/pg_hba_prepend.conf /etc/postgresql/9.1/main/pg_hba.conf > /tmp/pg_hba.conf
 mv /tmp/pg_hba.conf /etc/postgresql/9.1/main/pg_hba.conf
+service postgresql restart
 sudo -u postgres psql -f /vagrant/vagrant/setup_postgres.sql
 if [ $(sudo -u postgres psql -l | grep main_django | wc -l) -eq 0 ]; then
     echo -n "Creating a 'main_django' database..."
@@ -21,6 +22,10 @@ fi
 
 # Some steps should be performed as the regular vagrant user
 sudo -u vagrant bash /vagrant/vagrant/init_as_user.sh
+
+# Set up service to reload gunicorn on changes
+cp /vagrant/vagrant/watcher.conf /etc/init/
+start watcher
 
 # Set up public-facing nginx
 rm -f /etc/nginx/sites-enabled/default
