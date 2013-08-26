@@ -1,4 +1,14 @@
 #!/usr/bin/env bash
+set -e
+
+function info {
+    echo "$(tput bold)$(tput setaf 3)[*****] $1$(tput sgr0)"
+}
+
+function err {
+    echo "$(tput bold)$(tput setaf 1)[!!!!!] $1$(tput sgr0)"
+}
+
 export DEBIAN_FRONTEND=noninteractive
 update-locale LANG=en_US.UTF-8
 apt-get -y update
@@ -7,27 +17,47 @@ apt-get -y update
 apt-get -y install build-essential git nginx postgresql libpq-dev python-dev python-virtualenv python-pip libldap2-dev libsasl2-dev libssl-dev python-psycopg2 curl unixodbc unixodbc-dev tdsodbc freetds-bin
 
 # Set up PostgreSQL
+/etc/init.d/postgresql stop
 cat /vagrant/vagrant/pg_hba_prepend.conf /etc/postgresql/9.1/main/pg_hba.conf > /tmp/pg_hba.conf
 mv /tmp/pg_hba.conf /etc/postgresql/9.1/main/pg_hba.conf
-service postgresql restart
+/etc/init.d/postgresql start
+info "Waiting for PostgreSQL to finish starting"
+sleep 5
+
+info "Creating user 'main' in PostgreSQL (if it doesn't exist)"
 sudo -u postgres psql -f /vagrant/vagrant/setup_postgres.sql
+
 if [ $(sudo -u postgres psql -l | grep main_django | wc -l) -eq 0 ]; then
-    echo -n "Creating a 'main_django' database..."
+    info "Creating a 'main_django' database..."
     # Can't get Ubuntu 12.04 to install Postgres with a sensible default locale
     # so we a) create the db from template0 and b) specify en_US.utf8
-    sudo -u postgres psql -c "CREATE DATABASE main_django WITH ENCODING = 'UTF-8' LC_CTYPE = 'en_US.UTF-8' LC_COLLATE = 'en_US.UTF-8' OWNER main TEMPLATE template0" && echo "Done!"
+    sudo -u postgres psql -c "CREATE DATABASE main_django WITH ENCODING = 'UTF-8' LC_CTYPE = 'en_US.UTF-8' LC_COLLATE = 'en_US.UTF-8' OWNER main TEMPLATE template0" && info "Done!"
 else
-    echo "Database 'main_django' already exists"
+    info "Database 'main_django' already exists"
 fi
 
 # Some steps should be performed as the regular vagrant user
 sudo -u vagrant bash /vagrant/vagrant/init_as_user.sh
 
+# Set up GUnicorn in Upstart
+cp /vagrant/vagrant/gunicorn.conf /etc/init/
+service gunicorn restart && info "Started GUnicorn"
+
 # Set up service to reload gunicorn on changes
 cp /vagrant/vagrant/watcher.conf /etc/init/
-start watcher
+service watcher restart && info "Started watching for source changes"
+
+# If it's been set up, start a tunnel to Peninsula to reach the course data db
+if [ -f /vagrant/vagrant/ssh_config ];
+then
+    cp /vagrant/vagrant/peninsulatunnel.conf /etc/init/
+    service peninsulatunnel restart && info "Started tunnel to Peninsula"
+else
+    err "You need to configure SSH for the Peninsula tunnel for course data!"
+    err "Instructions are in vagrant/ssh_config.example."
+fi
 
 # Set up public-facing nginx
 rm -f /etc/nginx/sites-enabled/default
 cp /vagrant/vagrant/frontend_nginx.conf /etc/nginx/sites-enabled/
-service nginx restart
+service nginx restart && info "Started nginx"

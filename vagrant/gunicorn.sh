@@ -2,7 +2,7 @@
 set -e
 PIDFILE="/home/vagrant/run/gunicorn.pid"
 SOCKFILE="/home/vagrant/run/gunicorn.sock"
-RUN_GUNICORN_CMD="source /home/vagrant/env/bin/activate; /vagrant/manage.py run_gunicorn -c /vagrant/vagrant/gunicorn.cfg.py && echo Started!"
+RUN_GUNICORN_CMD="/home/vagrant/env/bin/python /vagrant/manage.py run_gunicorn -c /vagrant/vagrant/gunicorn.cfg.py"
 
 case "$1" in
     start)
