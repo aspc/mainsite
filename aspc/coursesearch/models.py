@@ -7,7 +7,11 @@ from django.core.serializers.json import DjangoJSONEncoder
 CAMPUSES = ((1, u'PO'), (2, u'SC'), (3, u'CMC'), (4, u'HM'), (5, u'PZ'), (6, u'CGU'), (7, u'CU'), (-1, u'?'))
 CAMPUSES_FULL_NAMES = {1: 'Pomona', 2: 'Scripps', 3: 'Claremont-McKenna', 4: 'Harvey Mudd', 5: 'Pitzer'}
 CAMPUSES_LOOKUP = dict([(a[1], a[0]) for a in CAMPUSES])
+
+# Some campuses are represented more than one way so we make aliases
 CAMPUSES_LOOKUP['CM'] = CAMPUSES_LOOKUP['CMC']
+CAMPUSES_LOOKUP['CUC'] = CAMPUSES_LOOKUP['CU']
+
 START_DATE = date(2013, 1, 22)
 END_DATE = date(2013, 5, 8)
 
@@ -49,7 +53,7 @@ class Department(models.Model):
 class RequirementArea(models.Model):
     code = models.CharField(max_length=20, unique=True, db_index=True)
     name = models.CharField(max_length=100)
-    campus = models.PositiveSmallIntegerField(choices=CAMPUSES)
+    campus = models.SmallIntegerField(choices=CAMPUSES)
 
     def course_count(self):
         return len(self.course_set.all())
@@ -132,7 +136,7 @@ class Meeting(models.Model):
     friday = models.BooleanField()
     begin = models.TimeField()
     end = models.TimeField()
-    campus = models.PositiveSmallIntegerField(choices=CAMPUSES)
+    campus = models.SmallIntegerField(choices=CAMPUSES)
     location = models.CharField(max_length=100)
     
     def gen_days(self):

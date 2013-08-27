@@ -1,4 +1,6 @@
-import logging, re
+import logging
+import re
+import code
 from pprint import pformat
 from datetime import datetime, time
 import pyodbc
@@ -186,12 +188,11 @@ def refresh_meetings(cursor, course):
         end = time(end_h, end_m)
         
         # Get campus
-        
-        campus_code = mtg.Campus.split(' ')[0]
-        if not campus_code in CAMPUSES_LOOKUP.keys():
-            campus = CAMPUSES_LOOKUP['?']
-        else:
+        try:
+            campus_code = mtg.Campus.split(' ')[0]
             campus = CAMPUSES_LOOKUP[campus_code]
+        except Exception:
+            campus = CAMPUSES_LOOKUP['?']
         
         # Get location
         
@@ -213,8 +214,10 @@ def refresh_meetings(cursor, course):
             campus=campus,
             location=location
         )
-        
-        meeting.save()
+        try:
+            meeting.save()
+        except Exception:
+            code.interact(local=locals())
 
 def _sanitize(chardata):
     if not chardata:
@@ -275,7 +278,7 @@ def refresh_one_course(cursor, course):
     try:
         course.primary_department = Department.objects.get(code=course_row.Department)
     except Department.DoesNotExist:
-        logger.warning("Tried to create a course record for {0} in the {1}"
+        logger.warning("Tried to create a course record for {0} in the {1} "
             "department, but {1} did not exist. Skipping.".format(
                 course.cx_code, course_row.Department))
         course.delete()
