@@ -23,6 +23,9 @@ then
     virtualenv /home/vagrant/env
 fi
 
+# Create folder for GUnicorn socket and pidfile
+mkdir -p /home/vagrant/run
+
 # Activate virtualenv on login
 if grep -Fxq "source /home/vagrant/env/bin/activate" /home/vagrant/.profile
 then
