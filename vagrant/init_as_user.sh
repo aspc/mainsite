@@ -11,8 +11,11 @@ else
     ulimit -n 2048
 fi
 
-# create dirs expected by nginx config
-mkdir -p run public logs config
+# pre-populate ssh known_hosts with the Peninsula pubkey
+mkdir -p /home/vagrant/.ssh
+if [ ! -f /home/vagrant/.ssh/known_hosts ]; then
+    cp /vagrant/vagrant/known_hosts /home/vagrant/.ssh/known_hosts
+fi
 
 # set up python virtualenv if it doesn't exist
 if [ ! -f /home/vagrant/env/bin/activate ];

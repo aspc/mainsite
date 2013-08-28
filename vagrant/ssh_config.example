@@ -4,7 +4,7 @@ Hostname peninsula.pomona.edu
  User yourname
 # !!! Copy or link your private key for Peninsula to "peninsula.key" in this
 # !!! and ensure it has permissions u=rw,g=,w= . (This is probably 
-# !!! ~/.ssh/id_rsa or ~/.ssh/id_dsa)
+# !!! ~/.ssh/id_rsa or ~/.ssh/id_dsa on your machine.)
  IdentityFile /vagrant/vagrant/peninsula.key
  ExitOnForwardFailure yes
  LocalForward 127.0.0.1:1433 jicsws.campus.pomona.edu:1433

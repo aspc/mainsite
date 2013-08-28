@@ -11,7 +11,23 @@ function err {
 
 export DEBIAN_FRONTEND=noninteractive
 update-locale LANG=en_US.UTF-8
-apt-get -y update
+if [ -f /root/apt.updated ]; then
+    filemtime=`stat -c %Y /root/apt.updated`
+    currtime=`date +%s`
+    diff=$(( (currtime - filemtime) / 86400 ))
+    if [ $diff -gt 7 ]; then
+        info "Last update more than a week ago, running apt-get update"
+        apt-get -y update
+        touch /root/apt.updated
+    else
+        info "Recently ran apt-get update ($diff days ago), skipping"
+    fi
+else
+    info "First boot, running apt-get update"
+    apt-get -y update
+    touch /root/apt.updated
+fi
+
 
 # Dependencies for ASPC Main Site
 apt-get -y install build-essential git nginx postgresql libpq-dev python-dev python-virtualenv python-pip libldap2-dev libsasl2-dev libssl-dev python-psycopg2 curl unixodbc unixodbc-dev tdsodbc freetds-bin
