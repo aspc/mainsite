@@ -16,13 +16,41 @@ To run management commands, you'll need to ssh in to the VM:
     vagrant$ cd /vagrant
     vagrant$ ./manage.py shell_plus
 
-#### The Briefest Intro to Vagrant ####
-
 When you're done working, free up system resources with a `vagrant halt`. If you
 want to start from scratch, `vagrant destroy` and then `vagrant up` anew.
 
 (Applying future changes to the Vagrant setup will be done automatically when 
 you `vagrant up`, but you can also run `vagrant provision` yourself.)
+
+## Enabling Auto-Reloading ##
+
+Install [python-watchdog](http://pythonhosted.org/watchdog/):
+
+    pip install watchdog
+
+Run the included Watcher script:
+
+    python /path/to/this/repo/vagrant/watcher.py
+
+This will watch for changes to `.py` or `.html` files in the `aspc` subfolder
+and tell the running application to reload and pick up your changes as you
+work.
+
+If you need to force a reload, use `vagrant ssh -c "service gunicorn reload"`.
+
+## Enabling the Peninsula tunnel ##
+
+Tunneling to Peninsula lets you access services with restrictive firewall rules.
+
+  1. Copy `vagrant/ssh_config.example` to `vagrant/ssh_config`
+  2. Edit `vagrant/ssh_config` to include your Peninsula username
+  3. Copy your private key to `vagrant/peninsula.key`
+  4. Set permissions with `chmod u=rw,g=,o= vagrant/peninsula.key`
+  5. Update `aspc/settings.py` with credentials for the Course Data DB
+
+Next time you `vagrant up`, a service will be started to tunnel traffic to the
+Course Data DB. (If you are off-campus, you will have to `vagrant halt`,
+connect to the Pomona VPN, and `vagrant up` again.)
 
 ## Project Layout ##
 

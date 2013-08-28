@@ -57,11 +57,8 @@ sudo -u vagrant bash /vagrant/vagrant/init_as_user.sh
 
 # Set up GUnicorn in Upstart
 cp /vagrant/vagrant/gunicorn.conf /etc/init/
+mkdir -p /home/vagrant/run/ # for the sock/pid files
 service gunicorn restart && info "Started GUnicorn"
-
-# Set up service to reload gunicorn on changes
-cp /vagrant/vagrant/watcher.conf /etc/init/
-service watcher restart && info "Started watching for source changes"
 
 # If it's been set up, start a tunnel to Peninsula to reach the course data db
 if [ -f /vagrant/vagrant/ssh_config ];
