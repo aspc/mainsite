@@ -22,19 +22,10 @@ want to start from scratch, `vagrant destroy` and then `vagrant up` anew.
 (Applying future changes to the Vagrant setup will be done automatically when 
 you `vagrant up`, but you can also run `vagrant provision` yourself.)
 
-## Enabling Auto-Reloading ##
+## Auto-Reloading ##
 
-Install [python-watchdog](http://pythonhosted.org/watchdog/):
-
-    pip install watchdog
-
-Run the included Watcher script:
-
-    python /path/to/this/repo/vagrant/watcher.py
-
-This will watch for changes to `.py` or `.html` files in the `aspc` subfolder
-and tell the running application to reload and pick up your changes as you
-work.
+GUnicorn workers have `max_requests = 1` set in `vagrant/gunicorn.cfg.py`. This
+means that after at most one refresh, the worker will be running your code.
 
 If you need to force a reload, use `vagrant ssh -c "service gunicorn reload"`.
 
