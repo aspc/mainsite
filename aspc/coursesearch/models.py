@@ -12,8 +12,8 @@ CAMPUSES_LOOKUP = dict([(a[1], a[0]) for a in CAMPUSES])
 CAMPUSES_LOOKUP['CM'] = CAMPUSES_LOOKUP['CMC']
 CAMPUSES_LOOKUP['CUC'] = CAMPUSES_LOOKUP['CU']
 
-START_DATE = date(2013, 1, 22)
-END_DATE = date(2013, 5, 8)
+START_DATE = date(2013, 9, 3)
+END_DATE = date(2013, 12, 11)
 
 class RefreshHistory(models.Model):
     FULL = 0
