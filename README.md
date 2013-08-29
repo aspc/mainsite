@@ -25,7 +25,14 @@ you `vagrant up`, but you can also run `vagrant provision` yourself.)
 ## Deploying to Peninsula ##
 
 Ensure [Fabric] is installed (`pip install fabric`) and the `fab` command is
-available.
+available. Create a file called `fabfile/config.py` and add your Peninsula
+credentials in the following format:
+
+    host_strings = [
+        "yourname@peninsula.pomona.edu",
+    ]
+
+Then, to deploy:
 
   1. Assuming you have been doing work on a feature branch, check out master and
      `git merge yourfeaturebranch`.
