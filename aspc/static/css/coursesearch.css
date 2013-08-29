@@ -240,6 +240,7 @@ div#footer a {
 .campus_CGU { background-color: #da3d38;}
 .campus_CMC { background-color: #71101b;}
 .campus_CU { background-color: #391858;}
+.campus_KS { background-color: #391858;}
 .campus_HM { background-color: #ca9a0a;}
 .campus_PO { background-color: #1860cc;}
 .campus_PZ { background-color: #f49700;}
@@ -248,22 +249,18 @@ div#footer a {
 .wc-cal-event.campus_CGU { background-color: #da3d38;}
 .wc-cal-event.campus_CGU .wc-time { background-color: #564241;}
 .wc-cal-event.campus_CMC { background-color: #71101b;}
-
 .wc-cal-event.campus_CMC .wc-time { background-color: #564144;}
 .wc-cal-event.campus_CU { background-color: #391858;}
-
 .wc-cal-event.campus_CU .wc-time { background-color: #4c4156;}
+.wc-cal-event.campus_KS { background-color: #391858;}
+.wc-cal-event.campus_KS .wc-time { background-color: #4c4156;}
 .wc-cal-event.campus_HM { background-color: #ca9a0a;}
-
 .wc-cal-event.campus_HM .wc-time { background-color: #565141;}
 .wc-cal-event.campus_PO { background-color: #1860cc;}
-
 .wc-cal-event.campus_PO .wc-time { background-color: #414a56;}
 .wc-cal-event.campus_PZ { background-color: #f49700;}
-
 .wc-cal-event.campus_PZ .wc-time { background-color: #564e41;}
 .wc-cal-event.campus_SC { background-color: #889e5a;}
-
 .wc-cal-event.campus_SC .wc-time { background-color: #4f5641;}
 
 

@@ -4,13 +4,14 @@ from datetime import date, time, datetime, timedelta
 import json
 from django.core.serializers.json import DjangoJSONEncoder
 
-CAMPUSES = ((1, u'PO'), (2, u'SC'), (3, u'CMC'), (4, u'HM'), (5, u'PZ'), (6, u'CGU'), (7, u'CU'), (-1, u'?'))
+CAMPUSES = ((1, u'PO'), (2, u'SC'), (3, u'CMC'), (4, u'HM'), (5, u'PZ'), (6, u'CGU'), (7, u'CU'), (8, u'KS'), (-1, u'?'))
 CAMPUSES_FULL_NAMES = {1: 'Pomona', 2: 'Scripps', 3: 'Claremont-McKenna', 4: 'Harvey Mudd', 5: 'Pitzer'}
 CAMPUSES_LOOKUP = dict([(a[1], a[0]) for a in CAMPUSES])
 
 # Some campuses are represented more than one way so we make aliases
 CAMPUSES_LOOKUP['CM'] = CAMPUSES_LOOKUP['CMC']
 CAMPUSES_LOOKUP['CUC'] = CAMPUSES_LOOKUP['CU']
+CAMPUSES_LOOKUP['CG'] = CAMPUSES_LOOKUP['CGU']
 
 START_DATE = date(2013, 9, 3)
 END_DATE = date(2013, 12, 11)
@@ -81,6 +82,7 @@ class Course(models.Model):
     description = models.TextField(blank=True, null=True)
     note = models.TextField(blank=True, null=True)
     credit = models.FloatField()
+    campus = models.SmallIntegerField(choices=CAMPUSES)
     
     fee = models.BooleanField()
     spots = models.IntegerField()

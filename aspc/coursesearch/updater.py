@@ -199,6 +199,9 @@ def refresh_meetings(cursor, course):
         if mtg.Room and mtg.Building:
             room_number = ROOM_REGEX.findall(mtg.MeetTime)[0]
             location = "{0}, {1}".format(mtg.Building, room_number)
+            # special case for Keck building / CU campus
+            if mtg.Building == u'Keck Science Center':
+                campus = CAMPUSES_LOOKUP['KS']
         else:
             location = ''
         
@@ -241,6 +244,7 @@ def refresh_one_course(cursor, course):
     course.number = int(course_row.Number)
     course.spots = int(course_row.SeatsTotal)
     course.filled = int(course_row.SeatsFilled)
+    course.primary_association = CAMPUSES_LOOKUP.get(course_row.PrimaryAssociation, -1)
     
     course.save()
     

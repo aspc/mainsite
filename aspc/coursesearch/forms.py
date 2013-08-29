@@ -103,7 +103,7 @@ class SearchForm(forms.Form):
     
     c_cgu = forms.BooleanField(required=False)
     c_cm = forms.BooleanField(required=False)
-    c_cu = forms.BooleanField(required=False)
+    c_ks = forms.BooleanField(required=False)
     c_hm = forms.BooleanField(required=False)
     c_po = forms.BooleanField(required=False)
     c_pz = forms.BooleanField(required=False)
@@ -116,7 +116,7 @@ class SearchForm(forms.Form):
         if self._errors:
             return cleaned_data # user has to fix field errors first
         if not any(map(cleaned_data.get, ('m', 't', 'w', 'r', 'f', 'instructor',
-            'start_range', 'end_range', 'c_cgu', 'c_cm', 'c_cu', 'c_hm', 'c_po', 'c_pz', 'c_sc',
+            'start_range', 'end_range', 'c_cgu', 'c_cm', 'c_ks', 'c_hm', 'c_po', 'c_pz', 'c_sc',
             'department', 'requirement_area', 'keywords'))):
             raise forms.ValidationError("You must specify at least one constraint.")
         return cleaned_data
@@ -182,7 +182,7 @@ class SearchForm(forms.Form):
         campus_ids = []
         if self.cleaned_data.get('c_cgu'): campus_ids.append(CAMPUSES_LOOKUP['CGU'])
         if self.cleaned_data.get('c_cm'): campus_ids.append(CAMPUSES_LOOKUP['CMC'])
-        if self.cleaned_data.get('c_cu'): campus_ids.append(CAMPUSES_LOOKUP['CU'])
+        if self.cleaned_data.get('c_ks'): campus_ids.append(CAMPUSES_LOOKUP['KS'])
         if self.cleaned_data.get('c_hm'): campus_ids.append(CAMPUSES_LOOKUP['HM'])
         if self.cleaned_data.get('c_po'): campus_ids.append(CAMPUSES_LOOKUP['PO'])
         if self.cleaned_data.get('c_pz'): campus_ids.append(CAMPUSES_LOOKUP['PZ'])
