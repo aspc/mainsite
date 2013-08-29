@@ -82,7 +82,6 @@ class Course(models.Model):
     description = models.TextField(blank=True, null=True)
     note = models.TextField(blank=True, null=True)
     credit = models.FloatField()
-    campus = models.SmallIntegerField(choices=CAMPUSES)
     
     fee = models.BooleanField()
     spots = models.IntegerField()
