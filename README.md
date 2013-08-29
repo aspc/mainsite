@@ -22,6 +22,16 @@ want to start from scratch, `vagrant destroy` and then `vagrant up` anew.
 (Applying future changes to the Vagrant setup will be done automatically when 
 you `vagrant up`, but you can also run `vagrant provision` yourself.)
 
+## Deploying to Peninsula ##
+
+Ensure [Fabric] is installed (`pip install fabric`) and the `fab` command is
+available.
+
+  1. Assuming you have been doing work on a feature branch, check out master and
+     `git merge yourfeaturebranch`.
+  2. `fab stage`
+  3. If everything looks good on staging, `fab deploy`.
+
 ## Auto-Reloading ##
 
 GUnicorn workers have `max_requests = 1` set in `vagrant/gunicorn.cfg.py`. This

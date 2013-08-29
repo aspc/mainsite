@@ -59,6 +59,7 @@ def reload():
     run("/srv/www/{0}/bin/gunicorn.sh reload".format(env.site))
 
 def git_push_pull():
+    local("git checkout master")
     local("git push {0} master".format(env.origin))
     local("git checkout {0}".format(env.branch))
     local("git merge master")
