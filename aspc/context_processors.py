@@ -1,9 +1,10 @@
 from django.contrib.sites.models import Site, RequestSite
 
 def site(request):
+    port_string = request.META.get('SERVER_PORT')
     site_info = {
         'protocol': request.is_secure() and 'https' or 'http',
-        'port': request.META.get('SERVER_PORT')
+        'port': port_string if port_string != "80" else None
     }
     if Site._meta.installed:
         site_info['domain'] = Site.objects.get_current().domain
