@@ -22,8 +22,8 @@
 	{% if not saved %}
 	<form action="" method="POST">
 		{% csrf_token %}
-		<p>Once you click submit, you will get a link to this schedule that you can share on Facebook or in an email. You'll also get a link to download your schedule for use in Google Calendar or iCal.</p>
-		<p>The same link works to get your saved schedule back and add to it later.</p>
+		<p>Once you click submit, you will get a link to this schedule that you can share on Facebook or in an email.</p>
+		<p>The same link works to get your saved schedule back and add to it later. You'll also get a link to download your schedule for use in Google Calendar or iCal.</p>
 		<input type="submit" value="Save Schedule">
 	</form>
 	{% else %}
