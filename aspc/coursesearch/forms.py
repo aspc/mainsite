@@ -231,3 +231,15 @@ class SearchForm(forms.Form):
 
 class ScheduleForm(forms.Form):
     key = forms.CharField(max_length=100)
+
+class ICalExportForm(forms.Form):
+    start = forms.DateField(label="First day of classes")
+    end = forms.DateField(label="Last day of classes")
+
+    def clean_end(self):
+        start, end = self.cleaned_data['start'], self.cleaned_data['end']
+        if end > start:
+            return end
+        else:
+            raise forms.ValidationError("The last day of the semester "
+                "must be after the first day of classes.")

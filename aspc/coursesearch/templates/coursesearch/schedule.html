@@ -44,8 +44,8 @@
   <h2 id="schedule_course_label" class="header">your courses:</h2>
   <ol id="schedule_courses">
   </ol>
-  {% block share_clear %}<h4 id="share_clear"><a id="share_schedule" href="{% url aspc.coursesearch.views.share_schedule %}">&#x2191; share</a><a id="clear_schedule">&#x2326; clear</a></h4>{% endblock %}
-  <div id="calendar"><h2 id="message">You should upgrade to IE8 (or install <a href="http://www.mozilla.com/en-US/firefox/firefox.html">Firefox</a> or <a href="http://www.google.com/chrome">Chrome</a>) to use this</h2></div>
+  {% block share_clear %}<h4 id="share_clear"><a id="share_schedule" href="{% url aspc.coursesearch.views.share_schedule %}">&#x2191; share</a><a id="download_ical" href="{% url aspc.coursesearch.views.ical_export %}">export to calendar</a><a id="clear_schedule">&#x2326; clear</a></h4>{% endblock %}
+  <div id="calendar"><h2 id="message">Loading...</h2></div>
 </div>
 {% block side_panel %}
   <div id="side_panel" class="panel">

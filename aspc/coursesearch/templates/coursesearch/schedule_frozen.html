@@ -33,7 +33,7 @@ if you make changes, you will have to share them again and get a new link.</p>
 	<p><input type="submit" value="load for editing"></p>
 </form>
 <h3>export:</h3>
-<p><a href="{% url aspc.coursesearch.views.ical_from_schedule schedule_id=schedule.id %}">download this schedule</a> as a .ics file, then drop the downloaded file on the iCal dock icon or read <a href="http://support.google.com/calendar/bin/answer.py?hl=en&answer=37118">how to import into Google Calendar</a></p>
+<p><a href="{% url aspc.coursesearch.views.ical_export schedule_id=schedule.id %}">export this schedule</a> as .ics for your Google or Apple calendar</p>
 </div>
 <ol class="course_list">
 {% for c in schedule.courses.all %}

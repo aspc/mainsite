@@ -426,16 +426,8 @@ h4#share_clear {
 
 h2#message {
 	padding: 0.3em;
-	color: #ffec52;
+	color: #ccc;
 	text-align: center;	
-}
-
-h2#message a {
-	color: #ffec52;
-}
-
-h2#message a:hover {
-	color: white;
 }
 
 a#share_schedule, a#clear_schedule {

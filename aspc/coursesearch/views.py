@@ -7,7 +7,7 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.serializers.json import DjangoJSONEncoder
 from aspc.coursesearch.models import (Course, Department, Meeting, Schedule,
     RefreshHistory, START_DATE, END_DATE)
-from aspc.coursesearch.forms import SearchForm
+from aspc.coursesearch.forms import SearchForm, ICalExportForm
 import re
 import json
 import datetime
@@ -175,11 +175,54 @@ def view_minimal_schedule(request, schedule_id):
     schedule = get_object_or_404(Schedule, pk=schedule_id)
     return render(request, 'coursesearch/minimal_schedule_frozen.html', {'schedule': schedule,})
 
-def ical_from_schedule(request, schedule_id):
-    schedule = get_object_or_404(Schedule, pk=schedule_id)
+def ical_export(request, schedule_id=None):
+    if schedule_id is not None:
+        schedule = get_object_or_404(Schedule, pk=schedule_id)
+        schedule_courses = schedule.courses.all()
+    else:
+        schedule_courses = Course.objects.filter(
+            id__in=request.session.get('schedule_courses',[])
+        )
+
+    if request.method == "POST":
+        form = ICalExportForm(request.POST)
+        if not form.is_valid():
+            return render(
+                request,
+                'coursesearch/ical_export.html',
+                {'form': form, 'schedule_courses': schedule_courses}
+            )
+
+        icalendar = _ical_from_courses(
+            schedule_courses,
+            form.cleaned_data['start'],
+            form.cleaned_data['end']
+        )
+
+        response = HttpResponse(icalendar.serialize(), mimetype='text/calendar')
+
+        if schedule_id is not None:
+            filename = 'schedule_{0}.ics'.format(schedule_id)
+        else:
+            filename = 'schedule.ics'
+        response['Filename'] = filename
+        response['Content-Disposition'] = 'attachment; filename={0}'.format(filename)
+        return response
+    else:
+        form = ICalExportForm(initial={
+            'start': START_DATE,
+            'end': END_DATE
+        })
+        return render(
+            request,
+            'coursesearch/ical_export.html',
+            {'form': form, 'schedule_courses': schedule_courses}
+        )
+
+def _ical_from_courses(courses, start_date, end_date):
     cal = vobject.iCalendar()
     cal.add('prodid').value = '-//Associated Students of Pomona College//Schedule Builder//EN'
-    for course in schedule.courses.all():
+    for course in courses:
         for meeting in course.meeting_set.all():
             v = cal.add('vevent')
             v.add('summary').value = '[{0}] {1}'.format(course.code, course.name)
@@ -191,7 +234,7 @@ def ical_from_schedule(request, schedule_id):
             if meeting.thursday: weekdays.append(rrule.TH)
             if meeting.friday: weekdays.append(rrule.FR)
             
-            timepairs = meeting.to_datetime_ranges(base_date=START_DATE)
+            timepairs = meeting.to_datetime_ranges(base_date=start_date)
             
             if not timepairs: # some meetings in CX don't have weekdays entered
                 continue
@@ -211,17 +254,14 @@ def ical_from_schedule(request, schedule_id):
             course_rr = rrule.rruleset()
             course_rr.rrule(rrule.rrule(
                 rrule.WEEKLY,
-                until=END_DATE,
+                until=end_date,
                 dtstart=dtstart,
                 byweekday=weekdays
             ))
             
             v.rruleset = course_rr
-    
-    response = HttpResponse(cal.serialize(), mimetype='text/calendar')
-    response['Filename'] = 'schedule_{0}.ics'.format(schedule.id)
-    response['Content-Disposition'] = 'attachment; filename=schedule_{0}.ics'.format(schedule_id)
-    return response
+
+    return cal
 
 def course_detail(request, dept, course_code):
     department = get_object_or_404(Department, code=dept)

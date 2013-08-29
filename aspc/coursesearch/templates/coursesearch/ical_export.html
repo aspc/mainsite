@@ -1,0 +1,38 @@
+{% extends "coursesearch/base.html" %}
+
+{% block "title" %}Export to Calendar{% endblock %}
+{% block "ogtitle" %}Export to Calendar{% endblock %}
+{% block "page_title" %}Export to Calendar{% endblock %}
+
+{% block "ogdesc" %}Export an iCalendar file for import into most calendaring applications{% endblock %}
+{% block "metadesc" %}Export an iCalendar file for import into most calendaring applications{% endblock %}
+
+{% block "coursesearch_breadcrumbs" %}
+  <li><a href="{% url aspc.coursesearch.views.schedule %}">Schedule</a></li>
+  <li>Export to Calendar</li>
+{% endblock %}
+
+{% block "content" %}
+{% if schedule_courses %}
+<h3>Courses to export:</h3>
+<ul>
+{% for course in schedule_courses %}
+	<li>{{ course.code }} &mdash; {{ course.name }}</li>
+{% endfor %}
+</ul>
+<p>
+  Once you click submit, you will be prompted to download your schedule 
+  for use in Google Calendar or iCal. Drop the downloaded file on the iCal
+  application icon to import, or read 
+  <a href="http://support.google.com/calendar/bin/answer.py?hl=en&answer=37118">how to import into Google Calendar</a>.
+</p>
+<form action="" method="POST">
+	{% csrf_token %}
+  {{ form.as_p }}
+  <p><em>(Dates are in the format YYYY-MM-DD)</em></p>
+	<input type="submit" value="Export Schedule">
+</form>
+{% else %}
+<h3>There don't seem to be any courses in your schedule.</h3>
+{% endif %}
+{% endblock %}
