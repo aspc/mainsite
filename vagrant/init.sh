@@ -32,6 +32,9 @@ fi
 # Dependencies for ASPC Main Site
 apt-get -y install build-essential git nginx postgresql libpq-dev python-dev python-virtualenv python-pip libldap2-dev libsasl2-dev libssl-dev python-psycopg2 curl unixodbc unixodbc-dev tdsodbc freetds-bin
 
+# Set up FreeTDS
+cp /vagrant/vagrant/odbcinst.ini /etc/odbcinst.ini
+
 # Set up PostgreSQL
 /etc/init.d/postgresql stop
 cat /vagrant/vagrant/pg_hba_prepend.conf /etc/postgresql/9.1/main/pg_hba.conf > /tmp/pg_hba.conf
