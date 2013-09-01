@@ -24,7 +24,10 @@ class SimpleLDAPBackend(object):
         try:
             l = ldap.initialize("ldap://{0}:{1}/".format(ldap_info['server'], ldap_info['port']))
             l.protocol_version = ldap.VERSION3
-            l.simple_bind_s(ldap_info['bind_as'].format(username), password)
+            l.simple_bind_s(
+                ldap_info['bind_as'].format(username).encode('utf-8'),
+                password.encode('utf-8')
+            )
         except ldap.LDAPError, e:
             # most likely (but not definitely) because credentials were incorrect
             # return None because this is all we know.
