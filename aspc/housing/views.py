@@ -248,6 +248,10 @@ class ReviewRoomWithChoice(CreateView):
         })
         return context_data
 
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super(ReviewRoomWithChoice, self).form_valid(form)
+
 class ReviewRoom(CreateView):
     form_class = ReviewRoomForm
     template_name = "housing/review_room.html"
@@ -261,7 +265,6 @@ class ReviewRoom(CreateView):
         return context_data
     
     def get_form_kwargs(self):
-        
         building_shortname, floor_id, room_number = self.kwargs.get('building'), int(self.kwargs.get('floor', False)), self.kwargs.get('room', False)
         
         try:
@@ -286,3 +289,7 @@ class ReviewRoom(CreateView):
         print 'wat'
         #kwargs.update({'room_instance': self.room,})
         return kwargs
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super(ReviewRoom, self).form_valid(form)
