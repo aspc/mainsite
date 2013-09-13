@@ -13,12 +13,12 @@ def coop_fountain(request):
         page = Page.objects.get(slug=COOP_FOUNTAIN_SLUG)
     except Page.DoesNotExist:
         page = None
-    
+
     try:
         coop = Business.objects.on_campus().get(pk=COOP_FOUNTAIN_ID)
     except Business.DoesNotExist:
         raise Http404
-    
+
     return render(request, "eatshop/coop_fountain.html",
                   {'business': coop, 'page': page})
 
