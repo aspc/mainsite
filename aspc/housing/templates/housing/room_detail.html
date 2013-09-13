@@ -21,7 +21,7 @@
 	<ol id="reviews" class="content">
 	{% for review in room.review_set.all %}
 		<li id="review_{{ review.get_timestamp }}">
-		  <div class="posted">Posted on {{ review.create_ts|date:"N j, Y" }} at {{ review.create_ts|date:"P"}}</div>
+		  <div class="posted">Posted {% if review.author %}by {{ review.author.get_full_name }} {% endif %}on {{ review.create_ts|date:"N j, Y" }} at {{ review.create_ts|date:"P"}}</div>
 			<dl class="ratings">
 			  <dt class="overall">overall</dt><dd class="overall">{% show_stars review.overall %}</dd>
 				<dt>quiet</dt><dd>{% show_stars review.quiet %}</dd>
