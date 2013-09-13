@@ -58,20 +58,25 @@ def format_hours(business):
     total_times = sum([len(ranges) for day, ranges in as_list])
 
     sorted_as_list = sorted(as_list, key=lambda day: day[1])  # sort by hours
-    #grouped_list = itertools.groupby(sorted_as_list, key=lambda day: day[1])  # group by equivalent hours
+
+    abbreviations = {
+        'monday': 'Mon',
+        'tuesday': 'Tues',
+        'wednesday': 'Wed',
+        'thursday': 'Thurs',
+        'friday': 'Fri',
+        'saturday': 'Sat',
+        'sunday': 'Sun'
+    }
 
     grouped_list = []
     for key, day_group in itertools.groupby(sorted_as_list, lambda day: day[1]): # key = hours!
-        logger.debug(len(key))
         data = [key, []]  # dictionary in format {hours: [days]} i.e. {(datetime.time(10, 0), datetime.time(17, 30)): ['m', 'w', 'f']}
         for day in day_group:
-            data[1].append(list(day)[0][0])
+            data[1].append(abbreviations[list(day)[0]])
 
         grouped_list.append(data)
-        logger.debug(data)
-
-        #for day in day_group:
-         #   grouped_list.append(day) # Store group iterator as a list
+        logger.debug(list(day))
 
     r = {"grouped_hours": grouped_list, 'hours_available': total_times > 0,}
 
