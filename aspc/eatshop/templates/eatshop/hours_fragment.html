@@ -1,14 +1,14 @@
 {% if hours_available %}
-<dl class="hours">
-{% for group in grouped_hours %}
+  <dl class="hours">
+  {% for group in grouped_hours %}
     <dt>
-      {{ group.1|join:", "}}
+      {{ group.1 }}
     </dt>
     {% for begin, end in group.0 %}
       <dd>{{ begin }}&nbsp;&ndash;&nbsp;{{ end }}</dd>
       {% empty %}
       <dd>closed</dd>
     {% endfor %}
-{% endfor %}
-</dl>
+  {% endfor %}
+  </dl>
 {% endif %}

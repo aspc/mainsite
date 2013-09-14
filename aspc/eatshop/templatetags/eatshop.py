@@ -72,8 +72,8 @@ def format_hours(business):
 
     #  Groups the sorted hour list into an array of groups where each group has equivalent hours
     grouped_list = []
-    for key, day_group in itertools.groupby(sorted_as_list, lambda day: day[1]):
-        data = [key, []]  # Array in format [(begin, end), [days]]
+    for hours, day_group in itertools.groupby(sorted_as_list, lambda day: day[1]):
+        data = [hours, []]  # Array in format [(begin, end), [days]]
         for day in day_group:
             data[1].append(abbreviations[list(day)[0]])  # Converts iterator to a list, and then looks up the appropriate day abbreivation
 
@@ -84,10 +84,25 @@ def format_hours(business):
         index = 6  # Assume Sunday
         for day in group[1]:
             if day_indices.index(day) < index:
-                index = day_indices.index(day)  # If the day is earlier than the previous one, update the index
+                index = day_indices.index(day)  # If the day is earlier than the existing earliest, update the index
 
         return index  # Return the index of the earliest day in the group
 
     grouped_list = sorted(grouped_list, key=group_comparator_function)  # Sorts groups to ensure the group with Mon is always first, etc.
+
+    # Function that checks if a list of days is in a sequence, i.e. [Mon, Tues, Wed] would return True
+    def is_sequence(days):
+        for i, day in enumerate(days):
+            if day_indices.index(days[i]) + 1 != day_indices.index(days[(i + 1) % len(days)]):  # Checks if the next day follows the current one
+                return False
+            if i == len(days) - 2:  # No need to compare the last day to anything, so at this point assume True
+                return True
+
+    # Formats the string representation of each groups days
+    for group in grouped_list:
+        if is_sequence(group[1]):  # Checks if the days are in a sequence
+            group[1] = group[1][0] + ' - ' + group[1][len(group[1]) - 1]  # If they are, format the days with a hyphen
+        else:
+            group[1] = ','.join(group[1])  # If they aren't, format the days as a comma separated list
 
     return {"grouped_hours": grouped_list, 'hours_available': total_times > 0}
