@@ -19,7 +19,6 @@ def format_hours(business):
     midnight = datetime.time(0,0) # beginning of the day
 
     weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
-   # weekdays = ['M', 'T', 'W', 'R', 'F', 'S', 'U']
     combined = {}
 
     # First, gather 'normal' hour ranges (not beginning at midnight)
@@ -90,7 +89,7 @@ def format_hours(business):
 
     grouped_list = sorted(grouped_list, key=group_comparator_function)  # Sorts groups to ensure the group with Mon is always first, etc.
 
-    # Function that checks if a list of days is in a sequence, i.e. [Mon, Tues, Wed] would return True
+    # Function that checks if a list of days is in a sequence; i.e. [Mon, Tues, Wed] would return True
     def is_sequence(days):
         for i, day in enumerate(days):
             if day_indices.index(days[i]) + 1 != day_indices.index(days[(i + 1) % len(days)]):  # Checks if the next day follows the current one
@@ -103,6 +102,6 @@ def format_hours(business):
         if is_sequence(group[1]):  # Checks if the days are in a sequence
             group[1] = group[1][0] + ' - ' + group[1][len(group[1]) - 1]  # If they are, format the days with a hyphen
         else:
-            group[1] = ','.join(group[1])  # If they aren't, format the days as a comma separated list
+            group[1] = ', '.join(group[1])  # If they aren't, format the days as a comma separated list
 
     return {"grouped_hours": grouped_list, 'hours_available': total_times > 0}
