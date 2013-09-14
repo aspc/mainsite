@@ -54,10 +54,10 @@ def format_hours(business):
             new_pd = (old_pd[0], midnight_period.end)
             combined[weekdays[day_idx - 1]][-1] = new_pd # Swap in new pd
 
-    as_list = [(a, combined.get(a, [])) for a in weekdays]
-    total_times = sum([len(ranges) for day, ranges in as_list])
+    hours_as_list = [(a, combined.get(a, [])) for a in weekdays]
+    total_times = sum([len(ranges) for day, ranges in hours_as_list])
 
-    sorted_as_list = sorted(as_list, key=lambda day: day[1])  # sort by hours
+    sorted_as_list = sorted(hours_as_list, key=lambda day: day[1])  # Sort by hours
 
     abbreviations = {
         'monday': 'Mon',
@@ -68,18 +68,26 @@ def format_hours(business):
         'saturday': 'Sat',
         'sunday': 'Sun'
     }
+    day_indices = ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun']
 
+    #  Groups the sorted hour list into an array of groups where each group has equivalent hours
     grouped_list = []
-    for key, day_group in itertools.groupby(sorted_as_list, lambda day: day[1]): # key = hours!
-        data = [key, []]  # dictionary in format {hours: [days]} i.e. {(datetime.time(10, 0), datetime.time(17, 30)): ['m', 'w', 'f']}
+    for key, day_group in itertools.groupby(sorted_as_list, lambda day: day[1]):
+        data = [key, []]  # Array in format [(begin, end), [days]]
         for day in day_group:
-            data[1].append(abbreviations[list(day)[0]])
+            data[1].append(abbreviations[list(day)[0]])  # Converts iterator to a list, and then looks up the appropriate day abbreivation
 
         grouped_list.append(data)
-        logger.debug(list(day))
 
-    r = {"grouped_hours": grouped_list, 'hours_available': total_times > 0,}
+    # Function for sorting groups by their respective earliest day
+    def group_comparator_function(group):
+        index = 6  # Assume Sunday
+        for day in group[1]:
+            if day_indices.index(day) < index:
+                index = day_indices.index(day)  # If the day is earlier than the previous one, update the index
 
-    logger.debug(r)
+        return index  # Return the index of the earliest day in the group
 
-    return r
+    grouped_list = sorted(grouped_list, key=group_comparator_function)  # Sorts groups to ensure the group with Mon is always first, etc.
+
+    return {"grouped_hours": grouped_list, 'hours_available': total_times > 0}
