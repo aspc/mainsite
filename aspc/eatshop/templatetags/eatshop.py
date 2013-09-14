@@ -1,9 +1,6 @@
 from django import template
 import datetime
-import logging
 import itertools
-
-logger = logging.getLogger(__name__)
 
 register = template.Library()
 
