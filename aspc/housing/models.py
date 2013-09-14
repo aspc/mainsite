@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.humanize.templatetags.humanize import ordinal
+from django.contrib.auth.models import User
 from aspc.college.models import Term, Location, Building, Floor, RoomLocation
 
 class Suite(models.Model):
@@ -174,6 +175,7 @@ class Review(models.Model):
     
     create_ts = models.DateTimeField(editable=False, auto_now_add=True, verbose_name='posted at')
     room = models.ForeignKey(Room)
+    author = models.ForeignKey(User, null=True, blank=True)
     overall = models.FloatField(editable=False)
     quiet = models.IntegerField(choices=NOISY_QUIET, blank=False, default=NOISY_QUIET[2][0])
     spacious = models.IntegerField(choices=SMALL_SPACIOUS, blank=False, default=SMALL_SPACIOUS[2][0])
