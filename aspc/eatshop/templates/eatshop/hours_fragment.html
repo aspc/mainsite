@@ -1,12 +1,14 @@
 {% if hours_available %}
-<dl class="hours">
-{% for day, hours_list in hours %}
-  <dt>{{ day|capfirst }}</dt>
-  {% for begin, end in hours_list %}
-  <dd>{{ begin }}&nbsp;&ndash;&nbsp;{{ end }}</dd>
-  {% empty %}
-  <dd>closed</dd>
+  <dl class="hours">
+  {% for group in grouped_hours %}
+    <dt>
+      {{ group.1 }}
+    </dt>
+    {% for begin, end in group.0 %}
+      <dd>{{ begin }}&nbsp;&ndash;&nbsp;{{ end }}</dd>
+      {% empty %}
+      <dd>closed</dd>
+    {% endfor %}
   {% endfor %}
-{% endfor %}
-</dl>
+  </dl>
 {% endif %}
