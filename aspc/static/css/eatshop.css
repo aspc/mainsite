@@ -98,7 +98,7 @@ ul.results > li:after {
 }
 
 .hours_payment dl dt {
-	width: 40%;
+	width: 43%;
 	float: left;
 	clear: left;
 	padding: 0; margin: 0;
@@ -111,7 +111,7 @@ ul.results > li:after {
 }
 
 .hours_payment dl dd {
-	width: 60%;
+	width: 57%;
 	float: left;
 	padding: 0; margin: 0;
 }
