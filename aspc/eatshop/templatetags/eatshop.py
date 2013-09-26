@@ -26,7 +26,7 @@ def format_hours(business):
 
     for day in weekdays:
         q = {day: True, 'begin__gt': midnight,}
-        key = str(business) + '_' + str(day) + '_hours'
+        key = str(business) + '_' + str(day) + '_hours_a'
 
         # Check the cache to see if anything already is stored for this business
         if cache.get(key):
@@ -34,8 +34,8 @@ def format_hours(business):
             logger.debug('cached')
         else:
             business_hours = business.hours.filter(**q);
-            cache.set(key, business_hours, 1000)
-            logger.debug('saving')
+            cache.set(key, business_hours, None)
+            logger.debug('sss')
 
         if business_hours.count():
             dayranges = combined.get(day, []) # get list of ranges to
@@ -52,14 +52,26 @@ def format_hours(business):
 
     for day_idx, day in enumerate(weekdays):
         q = {day: True, 'begin': midnight,}
+        key = str(business) + '_' + str(day) + '_hours_b'
 
-        # If there's no period starting at midnight for this day, skip it
-        if not business.hours.filter(**q).count(): continue
+        # First check the cache to see if anything already is stored for this business
+        if cache.get(key):
+            logger.debug('cached')
+            business_hours = cache.get(key)
+        else:
+            logger.debug('sss')
+            business_hours = business.hours.filter(**q);
+            cache.set(key, business_hours, None)
 
-        # Otherwise, take end of said period and replace midnight end time
+        if not business_hours.count():  # If there's no period starting at midnight for this day, skip it
+            continue
+
+        # Then take end of said period and replace midnight end time
         # of previous day (if it exists)
 
-        midnight_period = business.hours.filter(**q)[0]
+        logger.debug(business_hours)
+
+        midnight_period = business_hours[0]
         old_pd = combined[weekdays[day_idx - 1]][-1]  # Last pd yesterday
         if old_pd[1] == midnight:
             new_pd = (old_pd[0], midnight_period.end)
