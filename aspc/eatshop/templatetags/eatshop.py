@@ -1,6 +1,10 @@
 from django import template
+from django.core.cache import cache
 import datetime
 import itertools
+import logging
+
+logger = logging.getLogger(__name__)
 
 register = template.Library()
 
@@ -22,11 +26,22 @@ def format_hours(business):
 
     for day in weekdays:
         q = {day: True, 'begin__gt': midnight,}
-        if business.hours.filter(**q).count():
+        key = str(business) + '_' + str(day) + '_hours'
+
+        # Check the cache to see if anything already is stored for this business
+        if cache.get(key):
+            business_hours = cache.get(key)
+            logger.debug('cached')
+        else:
+            business_hours = business.hours.filter(**q);
+            cache.set(key, business_hours, 1000)
+            logger.debug('saving')
+
+        if business_hours.count():
             dayranges = combined.get(day, []) # get list of ranges to
                                               # append to
 
-            raw_ranges = business.hours.filter(**q).values_list('begin', 'end')
+            raw_ranges = business_hours.values_list('begin', 'end')
 
             for b, e in raw_ranges:
                 if e >= almost_midnight: # Clean midnight for display
@@ -45,10 +60,10 @@ def format_hours(business):
         # of previous day (if it exists)
 
         midnight_period = business.hours.filter(**q)[0]
-        old_pd = combined[weekdays[day_idx - 1]][-1] # Last pd yesterday
+        old_pd = combined[weekdays[day_idx - 1]][-1]  # Last pd yesterday
         if old_pd[1] == midnight:
             new_pd = (old_pd[0], midnight_period.end)
-            combined[weekdays[day_idx - 1]][-1] = new_pd # Swap in new pd
+            combined[weekdays[day_idx - 1]][-1] = new_pd  # Swap in new pd
 
     hours_as_list = [(a, combined.get(a, [])) for a in weekdays]
     total_times = sum([len(ranges) for day, ranges in hours_as_list])
