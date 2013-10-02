@@ -1,3 +1,6 @@
+{% load cache %}
+{% cache 86400 hours business %} <!-- Caches for 24 hours -->
+
 {% load markup %}
 {% load eatshop %}
   <div class="main_info">
@@ -25,3 +28,5 @@
     {% format_hours business %}
   </div>
   {% endif %}
+
+{% endcache %}
