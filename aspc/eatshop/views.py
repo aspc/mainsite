@@ -7,7 +7,6 @@ from aspc.eatshop.models import Business
 from aspc.eatshop.filters import (OnCampusFilterSet, RestaurantsFilterSet,
     AllBusinessesFilterSet)
 from aspc.eatshop.config import COOP_FOUNTAIN_ID, COOP_FOUNTAIN_SLUG
-from django.views.decorators.cache import cache_page
 
 def coop_fountain(request):
     try:
