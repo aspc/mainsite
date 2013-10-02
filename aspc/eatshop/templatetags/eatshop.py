@@ -1,10 +1,6 @@
 from django import template
-from django.core.cache import cache
 import datetime
 import itertools
-import logging
-
-logger = logging.getLogger(__name__)
 
 register = template.Library()
 
@@ -16,11 +12,6 @@ def format_hours(business):
     Mon 4pm-11:59pm + Tues 12am-1am)
     """
 
-    key = str(business) + '_hours'
-    if cache.get(key):
-        logger.debug('cached')
-        return cache.get(key)
-
     almost_midnight = datetime.time(23,59) # end of the day
     midnight = datetime.time(0,0) # beginning of the day
 
@@ -31,13 +22,11 @@ def format_hours(business):
 
     for day in weekdays:
         q = {day: True, 'begin__gt': midnight,}
-        business_hours = business.hours.filter(**q);
-
-        if business_hours.count():
+        if business.hours.filter(**q).count():
             dayranges = combined.get(day, []) # get list of ranges to
                                               # append to
 
-            raw_ranges = business_hours.values_list('begin', 'end')
+            raw_ranges = business.hours.filter(**q).values_list('begin', 'end')
 
             for b, e in raw_ranges:
                 if e >= almost_midnight: # Clean midnight for display
@@ -48,21 +37,18 @@ def format_hours(business):
 
     for day_idx, day in enumerate(weekdays):
         q = {day: True, 'begin': midnight,}
-        business_hours = business.hours.filter(**q);
 
-        if not business_hours.count():  # If there's no period starting at midnight for this day, skip it
-            continue
+        # If there's no period starting at midnight for this day, skip it
+        if not business.hours.filter(**q).count(): continue
 
-        # Then take end of said period and replace midnight end time
+        # Otherwise, take end of said period and replace midnight end time
         # of previous day (if it exists)
 
-        logger.debug(business_hours)
-
-        midnight_period = business_hours[0]
-        old_pd = combined[weekdays[day_idx - 1]][-1]  # Last pd yesterday
+        midnight_period = business.hours.filter(**q)[0]
+        old_pd = combined[weekdays[day_idx - 1]][-1] # Last pd yesterday
         if old_pd[1] == midnight:
             new_pd = (old_pd[0], midnight_period.end)
-            combined[weekdays[day_idx - 1]][-1] = new_pd  # Swap in new pd
+            combined[weekdays[day_idx - 1]][-1] = new_pd # Swap in new pd
 
     hours_as_list = [(a, combined.get(a, [])) for a in weekdays]
     total_times = sum([len(ranges) for day, ranges in hours_as_list])
@@ -115,9 +101,4 @@ def format_hours(business):
         else:
             group[1] = ', '.join(group[1])  # If they aren't, format the days as a comma separated list
 
-    to_return = {"grouped_hours": grouped_list, 'hours_available': total_times > 0}
-
-    cache.set(key, to_return, None)
-    logger.debug('setting')
-
-    return to_return
+    return {"grouped_hours": grouped_list, 'hours_available': total_times > 0}
