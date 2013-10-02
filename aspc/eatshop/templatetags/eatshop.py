@@ -16,6 +16,11 @@ def format_hours(business):
     Mon 4pm-11:59pm + Tues 12am-1am)
     """
 
+    key = str(business) + '_hours'
+    if cache.get(key):
+        logger.debug('cached')
+        return cache.get(key)
+
     almost_midnight = datetime.time(23,59) # end of the day
     midnight = datetime.time(0,0) # beginning of the day
 
@@ -26,16 +31,7 @@ def format_hours(business):
 
     for day in weekdays:
         q = {day: True, 'begin__gt': midnight,}
-        key = str(business) + '_' + str(day) + '_hours_a'
-
-        # Check the cache to see if anything already is stored for this business
-        if cache.get(key):
-            business_hours = cache.get(key)
-            logger.debug('cached')
-        else:
-            business_hours = business.hours.filter(**q);
-            cache.set(key, business_hours, None)
-            logger.debug('sss')
+        business_hours = business.hours.filter(**q);
 
         if business_hours.count():
             dayranges = combined.get(day, []) # get list of ranges to
@@ -52,16 +48,7 @@ def format_hours(business):
 
     for day_idx, day in enumerate(weekdays):
         q = {day: True, 'begin': midnight,}
-        key = str(business) + '_' + str(day) + '_hours_b'
-
-        # First check the cache to see if anything already is stored for this business
-        if cache.get(key):
-            logger.debug('cached')
-            business_hours = cache.get(key)
-        else:
-            logger.debug('sss')
-            business_hours = business.hours.filter(**q);
-            cache.set(key, business_hours, None)
+        business_hours = business.hours.filter(**q);
 
         if not business_hours.count():  # If there's no period starting at midnight for this day, skip it
             continue
@@ -128,4 +115,9 @@ def format_hours(business):
         else:
             group[1] = ', '.join(group[1])  # If they aren't, format the days as a comma separated list
 
-    return {"grouped_hours": grouped_list, 'hours_available': total_times > 0}
+    to_return = {"grouped_hours": grouped_list, 'hours_available': total_times > 0}
+
+    cache.set(key, to_return, None)
+    logger.debug('setting')
+
+    return to_return
