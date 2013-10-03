@@ -17,16 +17,16 @@ class CustomIndexDashboard(Dashboard):
     """
     Custom index dashboard for www.
     """
-    
+
     def init_with_context(self, context):
         site_name = get_admin_site_name(context)
-        
+
         # append a group for "Administration" & "Applications"
         self.children.append(modules.Group(
             _('Group: Administration & Applications'),
             column=1,
             collapsible=True,
-            children = [
+            children=[
                 modules.AppList(
                     _('Administration'),
                     column=1,
@@ -41,7 +41,7 @@ class CustomIndexDashboard(Dashboard):
                 )
             ]
         ))
-        
+
         # append another link list module for "support".
         self.children.append(modules.LinkList(
             _('Media Management'),
@@ -54,7 +54,7 @@ class CustomIndexDashboard(Dashboard):
                 },
             ]
         ))
-        
+
         # append another link list module for "support".
         self.children.append(modules.LinkList(
             _('Support'),
@@ -87,7 +87,21 @@ class CustomIndexDashboard(Dashboard):
                 },
             ]
         ))
-        
+
+
+        # append another link list module for "support".
+        self.children.append(modules.LinkList(
+            _('Other'),
+            column=2,
+            children=[
+                {
+                    'title': _('Housing Reviews Raffle'),
+                    'url': '/admin/housing/review/raffle',
+                    'external': False,
+                },
+            ]
+        ))
+
         # append a recent actions module
         self.children.append(modules.RecentActions(
             _('Recent Actions'),

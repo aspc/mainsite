@@ -86,3 +86,8 @@ class RefineForm(forms.Form):
     #     coerce=int,
     #     empty_value=(),
     # )
+
+class RaffleForm(forms.Form):
+    start_date = forms.DateField()
+    end_date = forms.DateField()
+    num_winners = forms.IntegerField(initial=1, min_value=1)
