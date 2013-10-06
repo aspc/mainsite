@@ -20,15 +20,21 @@
 {% endblock %}
 
 {% block content %}
-    <form method="get">
-        Start date: {{ form.start_date }}<br><br>
-        End date: {{ form.end_date }}<br><br>
-        Number of winners: {{ form.num_winners }}<br><br>
-        <input type="submit" value="Run Raffle"><br><br>
+    <p>
+      Provide a range of dates and return one or more randomly selected
+      reviewers. Each review submitted in the date range counts as a single
+      raffle entry.
+    </p>
+
+    <form method="GET" action=".">
+      {{ form.as_p }}
+      <input type="submit" value="Run Raffle"><br><br>
     </form>
+    {% if winners %}
     <ul>
         {% for u in winners %}
         <li>{{ u.get_full_name }} (<a href="mailto:{{ u.email }}">{{ u.email }}</a>)</li>
         {% endfor %}
     </ul>
+    {% endif %}
 {% endblock content %}

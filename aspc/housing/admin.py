@@ -13,7 +13,7 @@ class ReviewAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super(ReviewAdmin, self).get_urls()
         extra_urls = patterns('',
-                              (r'^raffle/$', self.admin_site.admin_view(self.raffle_view))
+            (r'^raffle/$', self.admin_site.admin_view(self.raffle_view))
         )
         return extra_urls + urls
 
