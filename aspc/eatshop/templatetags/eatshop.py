@@ -1,6 +1,9 @@
 from django import template
 import datetime
 import itertools
+from django.core.cache import cache
+import pickle
+from aspc.eatshop.models import Hours
 
 register = template.Library()
 
@@ -12,13 +15,24 @@ def format_hours(business):
     Mon 4pm-11:59pm + Tues 12am-1am)
     """
 
+    # First, do we have this cached?
+    cache_key = Hours.CACHE_KEY_TEMPLATE.format(id=business.id)
+    hours_data = cache.get(cache_key)
+    if hours_data:
+        hours = pickle.loads(hours_data)
+        return {
+            "grouped_hours": hours['grouped_hours'],
+            'hours_available': hours['hours_available']
+        }
+
+    # If it's not cached, we'll have to recompute the hours info...
     almost_midnight = datetime.time(23,59) # end of the day
     midnight = datetime.time(0,0) # beginning of the day
 
     weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
     combined = {}
 
-    # First, gather 'normal' hour ranges (not beginning at midnight)
+    # Gather 'normal' hour ranges (not beginning at midnight)
 
     for day in weekdays:
         q = {day: True, 'begin__gt': midnight,}
@@ -101,4 +115,9 @@ def format_hours(business):
         else:
             group[1] = ', '.join(group[1])  # If they aren't, format the days as a comma separated list
 
-    return {"grouped_hours": grouped_list, 'hours_available': total_times > 0}
+    context = {"grouped_hours": grouped_list, 'hours_available': total_times > 0}
+
+    # Cache this so we don't have to hit the db again for a long time
+    # (timeout=None means until the cache is flushed or a new value replaces it)
+    cache.set(cache_key, pickle.dumps(context), None)
+    return context
