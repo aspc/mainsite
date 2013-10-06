@@ -7,6 +7,10 @@ from django.utils.http import urlquote
 from django.core.cache import cache
 
 class BusinessManager(models.Manager):
+    def get_query_set(self):
+        qs = super(BusinessManager, self).get_query_set()
+        return qs.annotate(hours_count=models.Count('hours'))
+
     def off_campus(self, qs=None):
         """Off campus businesses of all types"""
         qs = qs or self.get_query_set()
@@ -109,6 +113,7 @@ class Business(models.Model):
 
 
 class Hours(models.Model):
+    CACHE_KEY_TEMPLATE = "aspc.eatshop.business:{id}.hours"
     business = models.ForeignKey(Business, related_name="hours")
     monday = models.BooleanField()
     tuesday = models.BooleanField()
@@ -145,19 +150,6 @@ class Hours(models.Model):
 
     # Override this method to invalidate cached business template for the business that is being updated (saved)
     def save(self, *args, **kwargs):
-        # Code extracted from django version 1.6: https://github.com/django/django/blob/master/django/core/cache/utils.py
-        # When we upgrade to that version we can simply do "from django.core.cache import cache" and invoke this method
-
-        TEMPLATE_FRAGMENT_KEY_TEMPLATE = 'template.cache.%s.%s'
-        def make_template_fragment_key(fragment_name, vary_on=None):
-            if vary_on is None:
-                vary_on = ()
-            key = ':'.join(urlquote(var) for var in vary_on)
-            args = hashlib.md5(key)
-            return TEMPLATE_FRAGMENT_KEY_TEMPLATE % (fragment_name, args.hexdigest())
-
-        # Generates the appropriate key (a md5 hash, not just a string) and deletes it from the cache
-        key = make_template_fragment_key('business_info_fragment', [self.business])
-        cache.delete(key)
-
         super(Hours, self).save(*args, **kwargs)
+        cache_key = self.CACHE_KEY_TEMPLATE.format(id=self.business.id)
+        cache.delete(key)

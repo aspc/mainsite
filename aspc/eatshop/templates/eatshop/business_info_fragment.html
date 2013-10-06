@@ -1,6 +1,3 @@
-{% load cache %}
-{% cache 86400 business_info_fragment business %} <!-- Caches for 24 hours -->
-
 {% load markup %}
 {% load eatshop %}
   <div class="main_info">
@@ -20,7 +17,7 @@
     </div>
     {% endif %}
   </div>
-  {% if business.flex or business.claremont_cash or business.hours.count %}
+  {% if business.flex or business.claremont_cash or business.hours_count %}
   <div class="hours_payment">
     {% if business.flex or business.claremont_cash %}
     <p class="accepts">Accepts {% if business.flex %}<strong>Flex</strong> {% if business.claremont_cash %}and {% endif %}{% endif %}{% if business.claremont_cash %}<strong>ClaremontCash</strong>{% endif %}</p>
@@ -28,5 +25,3 @@
     {% format_hours business %}
   </div>
   {% endif %}
-
-{% endcache %}
