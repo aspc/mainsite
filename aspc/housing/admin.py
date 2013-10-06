@@ -25,9 +25,11 @@ class ReviewAdmin(admin.ModelAdmin):
                 start = form.cleaned_data["start_date"]
                 end = form.cleaned_data["end_date"]
                 num = form.cleaned_data["num_winners"]
-                winners = [User.objects.get(pk=pk) for pk in
-                           Review.objects.filter(create_ts__range=[start, end]).order_by('?')[:num].values_list(
-                               'author', flat=True)]
+                winner_ids = Review.objects\
+                    .filter(create_ts__range=[start, end])\
+                    .order_by('?')[:num]\
+                    .values_list('author', flat=True)
+                winners = User.objects.filter(pk__in=winner_ids)
                 context.update({'winners': winners})
         else:
             form = RaffleForm()
