@@ -18,3 +18,4 @@ vobject==0.8.1c
 django-grappelli==2.4.1
 django-filebrowser==3.5.0
 psycopg2==2.4.5
+python-memcached==1.53
