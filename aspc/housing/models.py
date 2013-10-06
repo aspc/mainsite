@@ -214,6 +214,5 @@ class Review(models.Model):
     
     @models.permalink
     def get_absolute_url(self):
-        print 'foo?'
         return ('housing_browse_room', [], {'building': self.room.floor.building.shortname, 'floor': self.room.floor.number, 'room': self.room.number})
 
