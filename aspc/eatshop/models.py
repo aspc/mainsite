@@ -2,8 +2,6 @@ from django.db import models
 from django.contrib.localflavor.us.models import PhoneNumberField
 import datetime
 from aspc.eatshop.config import COOP_FOUNTAIN_ID
-import hashlib
-from django.utils.http import urlquote
 from django.core.cache import cache
 
 class BusinessManager(models.Manager):
