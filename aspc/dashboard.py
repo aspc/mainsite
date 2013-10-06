@@ -44,14 +44,19 @@ class CustomIndexDashboard(Dashboard):
 
         # append another link list module for "support".
         self.children.append(modules.LinkList(
-            _('Media Management'),
+            _('Management Tools'),
             column=2,
             children=[
+                {
+                    'title': _('Housing Reviews Raffle'),
+                    'url': '/admin/housing/review/raffle',
+                    'external': False,
+                },
                 {
                     'title': _('FileBrowser'),
                     'url': '/admin/filebrowser/browse/',
                     'external': False,
-                },
+                }
             ]
         ))
 
@@ -88,20 +93,6 @@ class CustomIndexDashboard(Dashboard):
             ]
         ))
 
-
-        # append another link list module for "support".
-        self.children.append(modules.LinkList(
-            _('Other'),
-            column=2,
-            children=[
-                {
-                    'title': _('Housing Reviews Raffle'),
-                    'url': '/admin/housing/review/raffle',
-                    'external': False,
-                },
-            ]
-        ))
-
         # append a recent actions module
         self.children.append(modules.RecentActions(
             _('Recent Actions'),
@@ -109,5 +100,3 @@ class CustomIndexDashboard(Dashboard):
             collapsible=False,
             column=3,
         ))
-
-
