@@ -1,0 +1,40 @@
+{% extends "admin/base_site.html" %}
+{% load url from future %}
+
+
+{% block breadcrumbs %}
+    {% if not is_popup %}
+        <ul class="grp-horizontal-list">
+            <li><a href="../../../">Home</a></li>
+            <li><a href="../../">Housing</a></li>
+            <li><a href="../">Reviews</a></li>
+            <li>Housing Reviews Raffle</li>
+        </ul>
+    {% endif %}
+{% endblock %}
+
+{% block title %}Housing Reviews Raffle{% endblock %}
+
+{% block content_title %}
+    <h1>Housing Reviews Raffle</h1>
+{% endblock %}
+
+{% block content %}
+    <p>
+      Provide a range of dates and return one or more randomly selected
+      reviewers. Each review submitted in the date range counts as a single
+      raffle entry.
+    </p>
+
+    <form method="GET" action=".">
+      {{ form.as_p }}
+      <input type="submit" value="Run Raffle"><br><br>
+    </form>
+    {% if winners %}
+    <ul>
+        {% for u in winners %}
+        <li>{{ u.get_full_name }} (<a href="mailto:{{ u.email }}">{{ u.email }}</a>)</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endblock content %}
