@@ -56,13 +56,7 @@ class SearchForm(forms.Form):
         coerce=int,
         empty_value=(),
     )
-    # suite = forms.TypedMultipleChoiceField(
-    #     choices=Suite.OCCUPANCY_TYPES,
-    #     required=False,
-    #     widget=ColumnCheckboxSelectMultiple(columns=2, css_class="col"),
-    #     coerce=int,
-    #     empty_value=(),
-    # )
+
 
 class RefineForm(forms.Form):
     prefer = forms.TypedChoiceField(choices=ORDERING_CHOICES, coerce=int, empty_value=(), help_text="rooms first")
@@ -79,10 +73,12 @@ class RefineForm(forms.Form):
         coerce=int,
         empty_value=(),
     )
-    # suite = forms.TypedMultipleChoiceField(
-    #     choices=Suite.OCCUPANCY_TYPES,
-    #     required=False,
-    #     widget=ColumnCheckboxSelectMultiple(columns=2, css_class="col"),
-    #     coerce=int,
-    #     empty_value=(),
-    # )
+
+class RaffleForm(forms.Form):
+    start_date = forms.DateField(widget=widgets.DateInput(attrs={
+        'placeholder': 'YYYY-MM-DD',
+    }))
+    end_date = forms.DateField(widget=widgets.DateInput(attrs={
+        'placeholder': 'YYYY-MM-DD',
+    }))
+    num_winners = forms.IntegerField(initial=1, min_value=1)
