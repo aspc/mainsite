@@ -5,8 +5,7 @@ class PositionAdmin(admin.ModelAdmin):
     list_display = ("title",  "description", "sort_order",)
 
 class AppointmentAdmin(admin.ModelAdmin):
-    list_display = ("position",  "name", "login_id")
-    list_editable = list_display[1:]
+    list_display = ("position",  "name", "login_id", "start", "end")
     exclude = ("user",)
 
 class DocumentAdmin(admin.ModelAdmin):
