@@ -1,0 +1,18 @@
+{% extends "base_page.html" %}
+{% load url from future %}
+
+{% block "ogtitle" %}Events Calendar{% endblock %}
+{% block "title" %}Events Calendar{% endblock %}
+{% block "page_title" %}Events Calendar{% endblock %}
+
+{% block "head" %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/eatshop.css" type="text/css">
+{% endblock %}
+
+{% block "breadcrumbs" %}
+<ol class="breadcrumbs">
+  <li><a href="{% url "eatshop" %}">Events Calendar</a></li>
+  {% block "events_breadcrumbs" %}
+  {% endblock %}
+</ol>
+{% endblock %}
