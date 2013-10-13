@@ -18,7 +18,7 @@
       </ul>
     </li>
     {% endwith %}
-    
+
     {% root_navigation_list services as navigation %}
     {% with navigation.0.1 as pages %}
     <li id="services" class="group{% if active_section == "services" %} active{% endif %}">
@@ -28,14 +28,14 @@
         <li><a href="http://aspc.pomona.edu/course-reviews/">Course Reviews</a></li>
         <li><a href="{% url "housing_home" %}">Housing Search</a></li>
         <li><a href="{% url "sagelist" %}">SageBooks</a></li>
-        <!-- <li><a href="">Events Calendar</a></li> -->
+        <li><a href="{% url "events" %}">Events Calendar</a></li>
         {% for sub in pages %}
         <li><a href="{{ sub.get_absolute_url }}">{{ sub.display_title }}</a></li>
         {% endfor %}
       </ul>
     </li>
     {% endwith %}
-    
+
     {% root_navigation_list information as navigation %}
     {% with navigation.0.1 as pages %}
     <li id="information" class="group{% if active_section == "information" %} active{% endif %}">
@@ -48,9 +48,9 @@
       </ul>
     </li>
     {% endwith %}
-    
+
     {% root_navigation_list senate as navigation %}
-    
+
     {% with navigation.0.1 as pages %}
     <li id="senate" class="group{% if active_section == "senate" %} active{% endif %}">
       <h1>Senate</h1>
@@ -62,10 +62,10 @@
       </ul>
     </li>
     {% endwith %}
-    
+
     {% root_navigation_list as navigation excluding eatshop,senate,information,services %}
     {% include "navigation_fragment.html" %}
-    
+
     <li id="partners" class="group"><h1>Partners</h1>
       <ul>
         <li><a href="http://www.pomona.edu/administration/campus-center/index.aspx">Smith Campus Center</a></li>
