@@ -111,6 +111,7 @@ INSTALLED_APPS = (
     'aspc.coursesearch',
     'aspc.minutes',
     'aspc.eatshop',
+    'aspc.events'
 )
 
 # A sample logging configuration. The only tangible logging
@@ -235,10 +236,10 @@ ACADEMIC_TERM_DEFAULTS = {
   # Not the real start and end dates. Since those change year to year
   # this just provides defaults for prepopulating terms. Because of the way
   # current_term is calculated from these, it's better to have wider ranges.
-  
+
   # Syntax:
   # term name: ((begin month, begin day), (end month, end day))
-  
+
   'fall': ((8, 1), (12, 22)),
   'spring': ((1,10), (5, 25)),
 }
@@ -261,7 +262,7 @@ CELERYBEAT_SCHEDULE = {
         "task": "aspc.coursesearch.tasks.smart_update",
         # Looks like the actual time the refresh finishes drifts
         # but it's usually done by 20 after the hour
-        "schedule": crontab(hour="*", minute=20), 
+        "schedule": crontab(hour="*", minute=20),
     },
 }
 
