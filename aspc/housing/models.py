@@ -1,3 +1,4 @@
+from PIL import Image
 from django.db import models
 from django.contrib.humanize.templatetags.humanize import ordinal
 from django.contrib.auth.models import User
@@ -185,6 +186,9 @@ class Review(models.Model):
     best = models.TextField()
     worst = models.TextField()
     comments = models.TextField(blank=True)
+    photo1 = models.ImageField(blank=True, null=True, upload_to='housing/reviews/%Y/%m/%d/')
+    photo2 = models.ImageField(blank=True, null=True, upload_to='housing/reviews/%Y/%m/%d/')
+    photo3 = models.ImageField(blank=True, null=True, upload_to='housing/reviews/%Y/%m/%d/')
 
     class Meta:
         ordering = ['-create_ts']
@@ -211,7 +215,7 @@ class Review(models.Model):
         super(Review, self).save(*args, **kwargs)
         self.room.update_average_rating()
         self.room.save()
-    
+
     @models.permalink
     def get_absolute_url(self):
         return ('housing_browse_room', [], {'building': self.room.floor.building.shortname, 'floor': self.room.floor.number, 'room': self.room.number})

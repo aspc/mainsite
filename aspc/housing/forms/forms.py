@@ -1,4 +1,5 @@
 from django import forms
+from django.core.files.images import get_image_dimensions
 from django.forms import widgets
 from aspc.college.models import Building
 from aspc.housing.models import Review, Room, Suite
@@ -17,18 +18,30 @@ rating_widgets = {
             'comments': widgets.Textarea(attrs={'rows':5, 'cols':60,}),
         }
 
-class NewReviewForm(forms.ModelForm):
-    room = RoomField()
-    class Meta:
-        model = Review
-        exclude = ('create_ts',)
-        widgets = rating_widgets
+class CustomImageField(forms.ImageField):
+    def clean(self, data, initial):
+        f = super(CustomImageField, self).clean(data)
+        if f:
+            (w, h) = get_image_dimensions(f)
+            if w > 500 or h > 500:
+                raise forms.ValidationError((u'Image is too large. The height and width must be no greater than 500px.' ))
+        return f
+
 
 class ReviewRoomForm(forms.ModelForm):
+    photo1 = CustomImageField(required=False)
+    photo2 = CustomImageField(required=False)
+    photo3 = CustomImageField(required=False)
+
     class Meta:
         model = Review
         exclude = ('create_ts', 'room')
         widgets = rating_widgets
+
+
+class NewReviewForm(ReviewRoomForm):
+    room = RoomField()
+
 
 SEARCH_ORDERING = (
     (('average_rating',), "highest rated"),
