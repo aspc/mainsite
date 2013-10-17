@@ -7,5 +7,11 @@
 {% block "outer_content" %}
 <div class="content">
   <h1>Submit a Facebook Event</h1>
+  <form>
+  	<label for="facebook_event_url">Facebook Event URL:</label><input type="text" id="facebook_event_url" name="facebook_event_url" />
+  	<input type="button" value="Submit" onClick="ASPC.Events.submit_facebook_event()"/>
+  </form>
+  <div id="facebook_event_submit_status"></div>
 </div>
+{% csrf_token %}
 {% endblock %}
