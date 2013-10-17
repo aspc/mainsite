@@ -13,6 +13,7 @@ class Migration(SchemaMigration):
             ('end', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
             ('location', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('description', self.gf('django.db.models.fields.TextField')()),
+            ('url', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
             ('status', self.gf('django.db.models.fields.CharField')(max_length=255)),
         ))
         db.send_create_signal('events', ['Event'])
@@ -32,6 +33,7 @@ class Migration(SchemaMigration):
             'end': ('django.db.models.fields.DateTimeField', [], {}),
             'location': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'description': ('django.db.models.fields.TextField', [], {}),
+            'url': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'status': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         }
     }

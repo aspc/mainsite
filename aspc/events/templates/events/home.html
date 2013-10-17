@@ -12,6 +12,7 @@
 	  <th>Date</th>
 	  <th>Location</th>
 	  <th>Description</th>
+	  <th>Link</th>
 	</tr>
 	{% for event in events %}
 	<tr>
@@ -19,6 +20,13 @@
 	  <td>{{ event.start }} - {{ event.end }}</td>
 	  <td>{{ event.location }}</td>
 	  <td>{{ event.description|truncatewords:20 }}</td>
+	  <td>
+	  	{% if event.url %}
+	  		<a href="{{ event.url }}">Link</a>
+	  	{% else %}
+	  		No Link
+	  	{% endif %}
+	  </td>
 	</tr>
 	{% endfor %}
   </table>

@@ -9,6 +9,7 @@ class Event(models.Model):
     end = models.DateTimeField(null=True, blank=True)
     location = models.CharField(max_length=CHARFIELD_MAX_LENGTH)
     description = models.TextField()
+    url = models.CharField(max_length=CHARFIELD_MAX_LENGTH, null=True, blank=True)
     status = models.CharField(max_length=CHARFIELD_MAX_LENGTH) #  pending, approved, or denied
 
     def __unicode__(self):

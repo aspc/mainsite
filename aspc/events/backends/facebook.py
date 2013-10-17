@@ -65,6 +65,7 @@ class FacebookBackend(object):
             'location': event_data['location'],
             'start': start,
             'description': event_data.get('description', ''),
+            'url': 'http://www.facebook.com/events/' + event_id
         }
 
         if 'end_time' in event_data.keys():
