@@ -2,8 +2,7 @@ import dateutil.parser
 from django.conf import settings
 import requests
 import urlparse
-from glean.backends import InvalidEventException
-from aspc.events.models import Event
+from aspc.events.backends import InvalidEventException
 import re
 import logging
 import pytz
@@ -12,14 +11,13 @@ logger = logging.getLogger(__name__)
 
 class FacebookBackend(object):
     required_fields = ('name', 'location', 'start_time', 'description')
-    EVENT_LINK_TEMPLATE = 'https://facebook.com/events/'
+    EVENT_LINK_TEMPLATE = 'https://graph.facebook.com/'
     accepts_link = re.compile(r'https?://(?:www\.)?facebook.com/events/(?P<resource_id>\d+)')
 
     def __init__(self, options=None):
         self.facebook_token = self._get_access_token()
-        logger.debug("facebook_token = {0}".format(self.facebook_token))
 
-    def _get_access_token():
+    def _get_access_token(self):
         response = requests.get(
             'https://graph.facebook.com/oauth/access_token',
             params = {
@@ -40,15 +38,15 @@ class FacebookBackend(object):
             }
         )
 
-        if response.status_code == 400 or 'error' in response.json.keys():
+        if response.status_code == 400:
             InvalidEventException("Unable to retrieve event details. Is the event public?")
         elif not response.status_code == 200:
             response.raise_for_status()
 
-        return response.json
+        return response.json()
 
-    def _get_event_data(self, resource_id):
-        event_id = self.accepts_link.match(resource_id).groupdict()['resource_id']
+    def get_event_data(self, event_url):
+        event_id = self.accepts_link.match(event_url).groupdict()['resource_id']
         event_data = self._event_lookup(event_id)
 
         # Checks if the event has a start and end time
@@ -74,16 +72,3 @@ class FacebookBackend(object):
             normalized['end'] = end_dt.astimezone(pytz.UTC)
 
         return normalized
-
-    def new_event(self, event_id, initial_data=None):
-        event_data = self._get_event_data()
-
-        event = Event()
-
-        for key, value in event_data.items():
-            setattr(event, key, value)
-
-        # Creates a new Event model with the Facebook data
-        event.save()
-
-        return event
