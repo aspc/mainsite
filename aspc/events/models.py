@@ -6,7 +6,7 @@ CHARFIELD_MAX_LENGTH = 255
 class Event(models.Model):
     name = models.CharField(max_length=CHARFIELD_MAX_LENGTH)
     start = models.DateTimeField()
-    end = models.DateTimeField()
+    end = models.DateTimeField(null=True, blank=True)
     location = models.CharField(max_length=CHARFIELD_MAX_LENGTH)
     description = models.TextField()
     status = models.CharField(max_length=CHARFIELD_MAX_LENGTH) #  pending, approved, or denied

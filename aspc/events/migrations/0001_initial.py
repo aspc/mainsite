@@ -10,7 +10,7 @@ class Migration(SchemaMigration):
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('start', self.gf('django.db.models.fields.DateTimeField')()),
-            ('end', self.gf('django.db.models.fields.DateTimeField')()),
+            ('end', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
             ('location', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('description', self.gf('django.db.models.fields.TextField')()),
             ('status', self.gf('django.db.models.fields.CharField')(max_length=255)),
