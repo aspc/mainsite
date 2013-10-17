@@ -39,3 +39,7 @@ class EventController(object):
 		    return event
 		else:
 			return False
+
+	@staticmethod
+	def all_events():
+		return Event.objects.all()
