@@ -38,6 +38,9 @@ fi
 source /home/vagrant/env/bin/activate
 pip install -r /vagrant/requirements.txt
 
+pip install requests
+pip install pytz
+
 # create settings if they do not exist
 if [ ! -f /vagrant/aspc/settings.py ];
 then

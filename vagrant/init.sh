@@ -35,6 +35,9 @@ apt-get -y install build-essential git nginx postgresql libpq-dev python-dev \
     python-psycopg2 curl unixodbc unixodbc-dev tdsodbc freetds-bin memcached \
     libjpeg-dev
 
+pip install requests
+pip install pytz
+
 # Set up FreeTDS
 cp /vagrant/vagrant/odbcinst.ini /etc/odbcinst.ini
 
