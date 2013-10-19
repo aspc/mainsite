@@ -16,10 +16,10 @@
 	</tr>
 	{% for event in events %}
 	<tr>
-	  <td>{{ event }}</td>
+	  <td>{{ event.name }}</td>
 	  <td>{{ event.start }} - {{ event.end }}</td>
 	  <td>{{ event.location }}</td>
-	  <td>{{ event.description|truncatewords:20 }}</td>
+	  <td>{{ event.description|truncatewords:20 }} <a href="/events/{{ event.id }}">More...</a></td>
 	  <td>
 	  	{% if event.url %}
 	  		<a href="{{ event.url }}">Link</a>

@@ -12,3 +12,8 @@ def home (request):
 	elif request.method == 'POST':
 		new_event = EventController.new_event(dict(urlparse.parse_qsl(request.body))) # Add a event manually on POST
 		return HttpResponse(serializers.serialize('json', [ new_event, ])) # Return a JSON hash of the new event
+
+def event (request, event_id):
+	if request.method == 'GET':
+		event = EventController.event_with_id(event_id)
+		return render(request, 'events/event_description.html', {'event': event})

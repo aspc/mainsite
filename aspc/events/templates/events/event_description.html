@@ -1,0 +1,56 @@
+{% extends "events/base.html" %}
+{% load url from future %}
+
+{% block "ogdesc" %}Information on upcoming events for Claremont Colleges students.{% endblock %}
+{% block "metadesc" %}Information on upcoming events for Claremont Colleges students.{% endblock %}
+
+{% block "events_breadcrumbs" %}
+<li><a href="{{ events.id }}">{{ event.name }}</a></li>
+{% endblock %}
+
+
+{% block "outer_content" %}
+<h2>{{ event.name }}</h2>
+<table>
+	<tr>
+		<td>
+			Start
+		</td>
+		<td>
+			{{ event.start }}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			End
+		</td>
+		<td>
+			{{ event.end }}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Location
+		</td>
+		<td>
+			{{ event.location }}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Description
+		</td>
+		<td>
+			{{ event.description }}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Link
+		</td>
+		<td>
+			<a href="{{ event.url }}">Link</a>
+		</td>
+	</tr>
+</table>
+{% endblock %}
