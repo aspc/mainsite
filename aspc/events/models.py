@@ -44,3 +44,7 @@ class EventController(object):
 	@staticmethod
 	def all_events():
 		return Event.objects.all()
+
+	@staticmethod
+	def approved_events():
+		return Event.objects.all().filter(status='approved')
