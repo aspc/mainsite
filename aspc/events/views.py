@@ -4,7 +4,6 @@ from django.http import HttpResponse
 import urlparse
 from django.core import serializers
 
-
 def home (request):
 	if request.method == 'GET':
 		events = EventController.approved_events()
@@ -16,4 +15,8 @@ def home (request):
 def event (request, event_id):
 	if request.method == 'GET':
 		event = EventController.event_with_id(event_id)
-		return render(request, 'events/event_description.html', {'event': event})
+
+		if not event:
+			return render(request, 'events/error.html', {'event_id': event_id})
+		else:
+			return render(request, 'events/event_description.html', {'event': event})

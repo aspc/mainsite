@@ -1,5 +1,6 @@
 from django.db import models
 from aspc.events.backends.facebook import FacebookBackend
+from django.core.exceptions import ObjectDoesNotExist
 
 CHARFIELD_MAX_LENGTH = 255
 
@@ -51,4 +52,9 @@ class EventController(object):
 
 	@staticmethod
 	def event_with_id(event_id):
-		return Event.objects.get(id=event_id)
+		try:
+			event = (EventController.approved_events()).get(id=event_id)
+		except ObjectDoesNotExist:
+			return None
+		else:
+			return event

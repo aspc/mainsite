@@ -1,0 +1,14 @@
+{% extends "events/base.html" %}
+{% load url from future %}
+
+{% block "ogdesc" %}Information on upcoming events for Claremont Colleges students.{% endblock %}
+{% block "metadesc" %}Information on upcoming events for Claremont Colleges students.{% endblock %}
+
+{% block "events_breadcrumbs" %}
+<li><a href="{{ event_id }}">Invalid Event</a></li>
+{% endblock %}
+
+
+{% block "outer_content" %}
+<h2>Oops, something went wrong. You may have visited a link to an expired event.</h2>
+{% endblock %}
