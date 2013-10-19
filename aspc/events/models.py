@@ -17,7 +17,7 @@ class Event(models.Model):
 
     class Meta:
         ordering = ('start', 'name', 'end')
-        verbose_name_plural = "published events"
+        verbose_name_plural = "Events"
 
 class EventController(object):
 	def __unicode__(self):
