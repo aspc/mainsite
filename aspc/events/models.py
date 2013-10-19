@@ -10,7 +10,7 @@ class Event(models.Model):
     location = models.CharField(max_length=CHARFIELD_MAX_LENGTH)
     description = models.TextField()
     url = models.CharField(max_length=CHARFIELD_MAX_LENGTH, null=True, blank=True)
-    status = models.CharField(max_length=CHARFIELD_MAX_LENGTH) #  pending, approved, or denied
+    status = models.CharField(max_length=CHARFIELD_MAX_LENGTH, choices=[('pending', 'Pending'), ('approved', 'Approved'), ('denied', 'Denied')], default='pending')
 
     def __unicode__(self):
         return self.name
