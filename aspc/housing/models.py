@@ -1,8 +1,8 @@
-from PIL import Image
 from django.db import models
 from django.contrib.humanize.templatetags.humanize import ordinal
 from django.contrib.auth.models import User
 from aspc.college.models import Term, Location, Building, Floor, RoomLocation
+from stdimage import StdImageField
 
 class Suite(models.Model):
     OCCUPANCY_TYPES = (
@@ -186,9 +186,9 @@ class Review(models.Model):
     best = models.TextField()
     worst = models.TextField()
     comments = models.TextField(blank=True)
-    photo1 = models.ImageField(blank=True, null=True, upload_to='housing/reviews/%Y/%m/%d/')
-    photo2 = models.ImageField(blank=True, null=True, upload_to='housing/reviews/%Y/%m/%d/')
-    photo3 = models.ImageField(blank=True, null=True, upload_to='housing/reviews/%Y/%m/%d/')
+    photo1 = StdImageField(blank=True, null=True, upload_to='housing/reviews/%Y/%m/%d/', size=(500,700))
+    photo2 = StdImageField(blank=True, null=True, upload_to='housing/reviews/%Y/%m/%d/', size=(500,700))
+    photo3 = StdImageField(blank=True, null=True, upload_to='housing/reviews/%Y/%m/%d/', size=(500,700))
 
     class Meta:
         ordering = ['-create_ts']
