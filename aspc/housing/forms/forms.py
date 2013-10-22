@@ -18,16 +18,18 @@ rating_widgets = {
         }
 
 
+class NewReviewForm(forms.ModelForm):
+    room = RoomField()
+    class Meta:
+        model = Review
+        exclude = ('create_ts',)
+        widgets = rating_widgets
+
 class ReviewRoomForm(forms.ModelForm):
     class Meta:
         model = Review
         exclude = ('create_ts', 'room')
         widgets = rating_widgets
-
-
-class NewReviewForm(ReviewRoomForm):
-    room = RoomField()
-
 
 SEARCH_ORDERING = (
     (('average_rating',), "highest rated"),
