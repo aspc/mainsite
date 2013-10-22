@@ -17,6 +17,7 @@ rating_widgets = {
             'comments': widgets.Textarea(attrs={'rows':5, 'cols':60,}),
         }
 
+
 class NewReviewForm(forms.ModelForm):
     room = RoomField()
     class Meta:

@@ -1,7 +1,6 @@
 Django==1.4.1
 Fabric==1.4.1
 Markdown==2.1.1
-PIL==1.1.7
 South==0.7.4
 gunicorn==0.14.2
 python-ldap==2.4.3
@@ -19,3 +18,5 @@ django-grappelli==2.4.1
 django-filebrowser==3.5.0
 psycopg2==2.4.5
 python-memcached==1.53
+django-stdimage==0.2.3
+Pillow==1.7.8

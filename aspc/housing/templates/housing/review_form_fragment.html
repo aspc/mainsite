@@ -1,4 +1,4 @@
-<form action="." method="POST" id="write_review">
+<form action="." method="POST" id="write_review" enctype="multipart/form-data">
 	{% csrf_token %}
 <h1>Room Report Card</h1>
 {% block "choose_room" %}
@@ -33,5 +33,12 @@
 <h3>Any other comments? (optional)</h3>
 {{ form.comments.errors }}
 <p>{{ form.comments }}</p>
+<h3>Any photos? (optional, choose up to 3)</h3>
+{{ form.photo1.errors }}
+{{ form.photo1 }}<br>
+{{ form.photo2.errors }}
+{{ form.photo2 }}<br>
+{{ form.photo3.errors }}
+{{ form.photo3 }}
 <p><input type="submit" value="submit review">
 </form>

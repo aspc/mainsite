@@ -100,6 +100,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'djcelery',
     'kombu.transport.django',
+    'stdimage',
     'aspc.folio',
     'aspc.senate',
     'aspc.blog',

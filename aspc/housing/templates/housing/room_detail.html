@@ -39,6 +39,12 @@
 				<h4>comments</h4>
 				{{ review.comments|linebreaks }}
 				{% endif %}
+                {% if review.photo1 or review.photo2 or review.photo3 %}
+                <h4>photos</h4>
+                {% if review.photo1 %}<p><img src = "{{ MEDIA_URL }}{{ review.photo1 }}"></p>{% endif %}
+                {% if review.photo2 %}<p><img src = "{{ MEDIA_URL }}{{ review.photo2 }}"></p>{% endif %}
+                {% if review.photo3 %}<p><img src = "{{ MEDIA_URL }}{{ review.photo3 }}"></p>{% endif %}
+                {% endif %}
 			</div>
 		</li>
 	{% endfor %}
