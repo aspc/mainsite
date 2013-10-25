@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ASPC &mdash; The Associated Students of Pomona College</title>
+    <link rel="stylesheet" href="css/styles.css" type="text/css" media="screen">
+    <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  </head>
+  <body>
+  <nav id="topnav" class="container">
+    <div class="row">
+      <div id="user">
+        <span class="userinfo">Some Guy</span>
+        <span id="username">ces02005</span> &middot; <a href="{% url logout %}">log out?</a>
+
+         <form action="">
+          <input type="text" name="username" placeholder="username">
+          <input type="password" name="password" placeholder="password">
+          <select name="college" id="college">
+            <option selected value="PO">Pomona</option>
+          </select>
+          <input type="submit" value="Log In">
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  <header id="aspc_main" class="container">
+    <hgroup class="row">
+      <h1>ASPC</h1>
+      <h2>Associated Students of Pomona College</h2>
+      <div id="logo"></div>
+      <form>
+        <input type="text" name="q" placeholder="search ASPC">
+      </form>
+    </hgroup>
+  </header>
+  
+  <div class="container">
+  <div id="content_main" class="row">
+  
+  <!-- <div class="info notification group primary">
+    <p>Election for 2012-2013 ASPC Senate is running from 6:00 P.M. February 28th to 6:00 P.M. February 29th. <a href="">Vote now!</a></p>
+  </div>
+  <div class="success notification group primary">
+    <p>Your review of ASTR51 &ndash; Advanced Introductory Astronomy was successfully saved.</p>
+  </div>
+  <div class="error notification group primary">
+    <p>Faculty and staff are prohibited from accessing the Course Reviews data.</p>
+  </div>
+   -->
+  <section class="group primary events">
+    <h1>Tuesday, September 1</h1>
+    <ol>
+      <li class="active">
+        <a href="#">
+        <time datetime="10:00 AM">
+          <span class="hour">10:00</span>
+          <span class="ampm">am</span>
+        </time>
+        <div class="info">
+          <h3>&ldquo;How to Do Things&rdquo;</h3>
+          <p class="host">Professor Smith, General Studies</p>
+          <p class="location">Rose Hills Theater</p>
+        </div>
+        </a>
+        <div class="more_info">
+          <h3>&ldquo;How to Do Things&rdquo;</h3>
+          <p class="host">Professor Smith, General Studies</p>
+          <p class="location">Rose Hills Theater</p>
+          <p>Prof. Smith has returned from sabbatical with a few interesting thoughts to share on the practice of doing things in cultures around the world. Come join the General Studies department in listening to Prof. Smith's first post-sabbatical lecture.</p>
+          <p>Open to members of the public.</p>
+          <p>Free admission.</p>
+        </div>
+      </li>
+      <li>
+        <a href="#">
+        <time datetime="11:15 AM">
+          <span class="hour">11:15</span>
+          <span class="ampm">am</span>
+        </time>
+        <div class="info">
+          <h3>Discount Bagels at Coop Fountain</h3>
+          <p class="location">Coop Fountain</p>
+        </div>
+        </a>
+        <div class="more_info">
+          <h3>Discount Bagels at Coop Fountain</h3>
+          <p class="location">Coop Fountain</p>
+          <p>So, like, we have some bagels that are hella old and we'd like you to take them off our hands for 47 cents. Just come and get them whenever!</p>
+          <p>Love,</p>
+          <p>The Coopsters</p>
+        </div>
+      </li>
+      <li>
+        <a href="#">
+        <time datetime="1:00 PM">
+          <span class="hour">1:00</span>
+          <span class="ampm">pm</span>
+        </time>
+        <div class="info">
+          <h3>Those Guys In That Band (live!)</h3>
+          <p class="location">Listen on KSPC 88.7</p>
+        </div>
+        </a>
+        <div class="more_info">
+          <h3>Those Guys In That Band (live!)</h3>
+          <p class="location">Listen on KSPC 88.7</p>
+          <p>Those Guys In That Band have returned to Claremont to play a live on-air set for the college radio station that gave them their first ever play in regular rotation.</p>
+          <p>Sometimes called "a cross between Massive Attack and Raffi", or "dancehall punk polka", their music really does defy genre classification.</p>
+          <p>Tune in on KSPC 88.7 fm to hear them, and be sure to check out their <a href="">page on bandcamp</a>.</p>
+        </div>
+      </li>
+      <li>
+        <a href="#">
+        <time datetime="11:00 PM">
+          <span class="hour">11:00</span>
+          <span class="ampm">pm</span>
+        </time>
+        <div class="info">
+          <h3>Ancient Astronomy: Stars and Stuff</h3>
+          <p class="host">Prof. Penprase, Astronomy Department</p>
+          <p class="location">Brackett Observatory</p>
+        </div>
+        </a>
+        <div class="more_info">
+          <h3>Ancient Astronomy: Stars and Stuff</h3>
+          <p class="host">Prof. Penprase, Astronomy Department</p>
+          <p class="location">Brackett Observatory</p>
+          <p>Professor Penprase will be delivering a lecture on ancient astronomy for interested students and members of the community at Brackett Observatory. Topics will include old rocks, old stars, really old stars, and old people. The lecture will be followed by a demonstration of the Brackett Observatory telescope.</p>
+        </div>
+      </li>
+      <li class="more"><a href="">see full calendar &rarr;</a></li>
+    </ol>
+  </section><!-- end events -->
+  
+  <nav id="sitewide" class="secondary">
+    <ul>
+      <li id="food" class="group"><h1>Food &amp; Drink</h1>
+        <ul>
+          <li><a href="">Dining Halls<span class="note">until 2 am</span></a></li>
+          <!-- <li><a href="">On-campus Eateries<span class="note">until 2 am</span></a></li>
+          <li><a href="">Restaurants<span class="note">until 2 am</span></a></li> -->
+        </ul>
+      </li>
+      <li id="services" class="group"><h1>Services</h1>
+        <ul>
+          <li><a href="">Course Search</a></li>
+          <li><a href="">Course Reviews</a></li>
+          <li><a href="">Housing Search</a></li>
+          <!-- <li><a href="">Connection47</a></li>
+          <li><a href="">Events Calendar</a></li> -->
+        </ul>
+      </li>
+      <li id="information" class="group"><h1>Information</h1>
+        <ul>
+          <li><a href="">In Claremont</a></li>
+          <!-- <li><a href="">In Los Angeles</a></li>
+          <li><a href="">Campus Map</a></li>
+          <li><a href="">Faculty Directory</a></li> -->
+          <li><a href="">Maintenance &amp; Security</a></li>
+        </ul>
+      </li>
+      <li id="senate" class="group"><h1>Senate</h1>
+        <ul>
+          <li><a href="">Policies</a></li>
+          <li><a href="">Forms</a></li>
+          <li><a href="">Positions</a></li>
+          <li><a href="">Committees</a></li>
+          <li><a href="">Initiatives</a></li>
+        </ul>
+      </li>
+      <li id="partners" class="group"><h1>Partners</h1>
+        <ul>
+          <li><a href="">KSPC 88.7</a></li>
+          <li><a href="">The Student Life</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+  
+  <section id="stream" class="group primary stream">
+    <h1>Recent Activity</h1>
+    <ol>
+      <li class="food">
+        <div class="activity">
+            <p>Some Guy wrote a new review for <a href="">Dr. Grubbs</a> restaurant in Claremont</p>
+            <div class="excerpt">
+              Lorem ipsum dolor sit amet, conectetur adipiscing elit. Mauris semper orci at lectus sollicitudin aliquam. Nam blandit libero vel lorem pharetra et tincidunt nunc ultricies. Quisque vel justo a lorem ornare mollis. Sed ipsum neque, tempor et imperdiet porta, luctus ac sapien. Nunc vel elit est, id rhoncus ante.
+            </div>
+        </div>
+        <div class="related">
+          <ul>
+            <li><a href="" class="source">Restaurant Reviews</a></li>
+            <li><a href="">read the rest</a></li>
+          </ul>
+          <time datetime="">about an hour ago</time>
+        </div>
+      </li>
+      <li class="housing">
+        <div class="activity">
+          <p>A new review of <a href="">Harwood 198</a> has been posted</p>
+          <div class="excerpt">
+            Donec ultricies ligula quis velit dictum id mollis velit interdum. Morbi adipiscing justo et nisi bibendum pulvinar. Duis non suscipit risus. Duis quis massa vitae mauris mattis fringilla. Cras pretium, diam ac porta ultricies, nunc nulla consectetur elit, nec lacinia felis libero ut arcu. Fusce dapibus enim mi, eget convallis eros.
+          </div>
+        </div>
+        <div class="related">
+          <ul>
+            <li><a href="" class="source">Housing Reviews</a></li>
+            <li><a href="">read the rest</a></li>
+          </ul>
+          <time datetime="">2 hours ago</time>
+        </div>
+      </li>
+      <li class="tsl">
+        <div class="activity">
+          <p>Some Reporter posted a new article to The Student Life's website</p>
+          <div class="excerpt">
+            <h1>Title of Article Goes Here</h1>
+            <p>Nulla facilisi. Mauris ornare rutrum diam, sit amet venenatis lorem ultricies et. Quisque ultrices pretium ullamcorper. Quisque tristique orci eu leo rhoncus quis pretium nisl gravida. Morbi at lectus vel ipsum elementum rhoncus at nec tortor. Nulla tincidunt placerat lacinia. Quisque sit amet sollicitudin magna. Maecenas faucibus, mi et vestibulum tincidunt, ipsum mauris consequat metus, ut rutrum sapien odio dapibus urna. Sed quis tortor quis dui ornare tincidunt ut vitae tellus. Fusce quis libero magna, et varius velit.</p>
+          </div>
+        </div>
+        <div class="related">
+          <ul>
+            <li><a href="" class="source">The Student Life</a></li>
+            <li><a href="">read the rest</a></li>
+          </ul>
+          <time datetime="">yesterday</time>
+        </div>
+      </li>
+      <li class="scc">
+        <div class="activity message">
+          <p>Tickets for the concert are selling out fast! Get yours at Big Bridges box office!</p>
+        </div>
+        <div class="related">
+          <ul>
+            <li><a href="" class="source">Smith Campus Center on Facebook</a></li>
+          </ul>
+          <time datetime="">yesterday</time>
+        </div>
+      </li>
+      <li class="its">
+        <div class="activity message">
+          <p>User email accounts are down until further notice. ITS is aware of the problem and working on a solution.</p>
+        </div>
+        <div class="related">
+          <ul>
+            <li><a href="" class="source">@PomonaHelp on Twitter</a></li>
+          </ul>
+          <time datetime="">yesterday</time>
+        </div>
+      </li>
+      <li class="event">
+        <div class="activity">
+          <p>A new event has been posted: Those Guys in That Band (live!) at 10:00 am on August 8, 2011</p>
+        </div>
+        <div class="related">
+          <ul>
+            <li><a href="" class="source">Calendar</a></li>
+            <li><a href="">see details</a></li>
+          </ul>
+          <time datetime="">yesterday</time>
+        </div>
+      </li>
+      <li class="kspc">
+        <div class="activity message">
+          <p>Kenny Ray's giving away a pair of tix to see Candy Claws, RACES &amp; Moses Campbell on 8/17 @ Echo between 9 &amp; 10am Thurs. 88.7FM or kspc.org!</p>
+        </div>
+        <div class="related">
+          <ul>
+            <li><a href="" class="source">@KSPC on Twitter</a></li>
+          </ul>
+          <time datetime="">yesterday</time>
+        </div>
+      </li>
+      <li class="pomonaartmuseum">
+        <div class="activity message">
+          <p>The Museum is offering 3 internships for Fall Semester 2011! Check out available internships by visiting the our website http://ow.ly/63zRt</p>
+        </div>
+        <div class="related">
+          <ul>
+            <li><a href="" class="source">@PomonaArtMuseum on Twitter</a></li>
+                        <li><a href="">@PomonaArtMuseum on Twitter</a></li>
+          </ul>
+          <time datetime="">yesterday</time>
+        </div>
+      </li>
+      <li class="courses">
+        <div class="activity">
+          <p>A new review of ASTR51 &ndash; Advanced Introductory Astronomy has been posted</p>
+        </div>
+        <div class="related">
+          <ul>
+            <li><a href="" class="source">Course Reviews</a></li>
+            <li><a href="">read the rest</a></li>
+          </ul>
+          <time datetime="">yesterday</time>
+        </div>
+      </li>
+      <li class="blog">
+        <div class="activity post">
+          <h2>Senate Blog Post Title</h2>
+          <h3>Title in News Update</h3>
+          <img src="http://placehold.it/245x160" title="Placeholder Image" alt="Placeholder Image">
+          <p>This is what blog posts will look like. They will be in the activity stream, or optionally pinned to the top of it for visibility (i.e. so that a rash of restaurant reviews doesn’t displace the election results overnight). There could also optionally be gutter icons in the blue area to the left for different senators, should we choose to include posts by individual senators on the homepage.</p>
+          <h3>To denote subsection</h3>
+          <p>Maecenas gravida hendrerit tempor. <strong>Integer elit nisl, bibendum non dictum in, dictum quis quam.</strong> Nam vel fringilla eros. Sed sed felis vestibulum risus ullamcorper pharetra. Ut adipiscing aliquet magna faucibus pulvinar. Cras dapibus, justo vel luctus gravida, sapien sapien bibendum leo, <em>vitae pharetra odio purus vitae mi</em>. Nulla et tellus sem. Aenean hendrerit suscipit augue, et pretium ligula dapibus ac. Curabitur luctus, orci ut tincidunt auctor, nisl purus tempor arcu, sed pulvinar arcu nibh sed est. Cras nec magna elit, tempus cursus arcu. Nam quis est tellus. Vestibulum ut leo at odio tempus ultrices pellentesque eget nisi. Nulla felis diam, consectetur ut rutrum eget, porta eget eros. In neque nisi, tempor eu sollicitudin ac, aliquam eget eros. Curabitur auctor, dolor rhoncus consectetur egestas, magna dolor faucibus erat, adipiscing adipiscing lorem dolor non nunc</p>
+
+          <h4>Table of stats</h4>
+          <table>
+            <tr><th>Player A</th><th>Player B</th><th>Total Widgets</th></tr>
+            <tr><td>153</td><td>483</td><td>approx. 15</td></tr>
+            <tr><td>546</td><td>126</td><td>73</td></tr>
+            <tr><td>473</td><td>375</td><td>100</td></tr>
+          </table>
+          <h4>Lists Test</h4>
+          <ol>
+            <li>First</li>
+            <li>Second</li>
+            <li>Third</li>
+          </ol>
+          <ul>
+            <li>Item A</li>
+            <li>Item B</li>
+            <li>Item C</li>
+          </ul>
+          <h3>Another Blog Subheading</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vitae nibh a sem adipiscing facilisis. Pellentesque mattis, risus sit amet dictum hendrerit, nulla sapien hendrerit odio, eget sagittis justo sapien eget quam. Mauris tristique, metus ac varius elementum, neque est ornare sem, a ornare nisi neque sed erat. Mauris commodo, lorem id iaculis mattis, massa libero mollis arcu, sagittis tincidunt massa est quis lacus. In hac habitasse platea dictumst. Proin nec eleifend odio. Nulla a metus ut nunc consequat tincidunt. Vivamus vel pulvinar sem. In vehicula, lorem in suscipit congue, risus felis ornare lacus, vitae consequat mauris ipsum vitae nisl. Suspendisse mi tortor, ultricies vitae commodo ut, dignissim sit amet dolor. Ut semper ligula a turpis interdum id vulputate arcu convallis. Sed sem purus, bibendum quis pulvinar eu, bibendum ut nisi. Phasellus sit amet aliquam sapien. Fusce at felis non dui dictum pharetra. Donec venenatis congue interdum. Phasellus eget metus quis eros fringilla laoreet. Donec feugiat diam et felis placerat laoreet aliquam diam sagittis. Sed eleifend posuere libero, molestie tempor ante tristique nec. Suspendisse vel semper orci.
+          </p>
+        </div>
+      </li>
+    </ol>
+  </section>
+  </section>
+  
+  
+  </div> <!-- end content main -->
+  </div>
+  <footer>
+    <p>&copy; 2011 Associated Students of Pomona College</p>
+    <p>Directory and course information provided by and copyright Pomona College.</p>
+    <p>Design and code by Joseph Long &rsquo;14.</p>
+  </footer>
+  </div>
+  </body>
+</html>
