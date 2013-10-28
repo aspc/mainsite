@@ -13,3 +13,4 @@ vagrant/peninsula.key
 vagrant/run/
 /static/
 .idea/
+tmp/
