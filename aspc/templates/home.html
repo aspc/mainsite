@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% load url from future %}
 
+{% block "head" %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="{{ STATIC_URL }}js/home.js"></script>
+{% endblock %}
+
 {% block "content_postnav" %}
 <section class="group primary events">
 	<h1>Today's Events</h1>
@@ -15,15 +20,15 @@
 					<h3>&ldquo;How to Do Things&rdquo;</h3>
 					<p class="host">Professor Smith, General Studies</p>
 					<p class="location">Rose Hills Theater</p>
+					<aside>
+						<h3>&ldquo;How to Do Things&rdquo;</h3>
+						<p class="host">Professor Smith, General Studies</p>
+						<p class="location">Rose Hills Theater</p>
+						<p class="description">Prof. Smith has returned from sabbatical with a few interesting thoughts to share on the practice of doing things in cultures around the world. Come join the General Studies department in listening to Prof. Smith's first post-sabbatical lecture.</p>
+						<p>Open to members of the public.</p>
+						<p>Free admission.</p>
+					</aside>
 				</div>
-				<aside>
-					<h3>&ldquo;How to Do Things&rdquo;</h3>
-					<p class="host">Professor Smith, General Studies</p>
-					<p class="location">Rose Hills Theater</p>
-					<p>Prof. Smith has returned from sabbatical with a few interesting thoughts to share on the practice of doing things in cultures around the world. Come join the General Studies department in listening to Prof. Smith's first post-sabbatical lecture.</p>
-					<p>Open to members of the public.</p>
-					<p>Free admission.</p>
-				</aside>
 			</li>
 			<li>
 				<time datetime="11:15 AM">
@@ -33,14 +38,12 @@
 				<div class="event_info">
 					<h3>Discount Bagels at the Coop Fountain</h3>
 					<p class="location">Coop Fountain</p>
+					<aside>
+						<h3>Discount Bagels at Coop Fountain</h3>
+						<p class="location">Coop Fountain</p>
+						<p class="description">So, like, we have some bagels that are hella old and we'd like you to take them off our hands for 47 cents. Just come and get them whenever! Love, The Coopsters</p>
+					</aside>
 				</div>
-				<aside>
-					<h3>Discount Bagels at Coop Fountain</h3>
-					<p class="location">Coop Fountain</p>
-					<p>So, like, we have some bagels that are hella old and we'd like you to take them off our hands for 47 cents. Just come and get them whenever!</p>
-					<p>Love,</p>
-					<p>The Coopsters</p>
-				</aside>
 			</li>
 			<li>
 				<time datetime="1:00 PM">
@@ -50,14 +53,12 @@
 				<div class="event_info">
 					<h3>Those Guys In That Band (live!)</h3>
 					<p class="location">Listen on KSPC 88.7</p>
+					<aside>
+						<h3>Those Guys In That Band (live!)</h3>
+						<p class="location">Listen on KSPC 88.7</p>
+						<p class="description">Those Guys In That Band have returned to Claremont to play a live on-air set for the college radio station that gave them their first ever play in regular rotation. Sometimes called "a cross between Massive Attack and Raffi", or "dancehall punk polka", their music really does defy genre classification. Tune in on KSPC 88.7 fm to hear them, and be sure to check out their <a href="">page on bandcamp</a>.</p>
+					</aside>
 				</div>
-				<aside>
-					<h3>Those Guys In That Band (live!)</h3>
-					<p class="location">Listen on KSPC 88.7</p>
-					<p>Those Guys In That Band have returned to Claremont to play a live on-air set for the college radio station that gave them their first ever play in regular rotation.</p>
-					<p>Sometimes called "a cross between Massive Attack and Raffi", or "dancehall punk polka", their music really does defy genre classification.</p>
-					<p>Tune in on KSPC 88.7 fm to hear them, and be sure to check out their <a href="">page on bandcamp</a>.</p>
-				</aside>
 			</li>
 			<li>
 				<time datetime="11:00 PM">
@@ -68,23 +69,21 @@
 					<h3>Ancient Astronomy: Stars and Stuff</h3>
 					<p class="host">Prof. Penprase, Astronomy Department</p>
 					<p class="location">Brackett Observatory</p>
+					<aside>
+						<h3>Ancient Astronomy: Stars and Stuff</h3>
+						<p class="host">Prof. Penprase, Astronomy Department</p>
+						<p class="location">Brackett Observatory</p>
+						<p class="description">Professor Penprase will be delivering a lecture on ancient astronomy for interested students and members of the community at Brackett Observatory. Topics will include old rocks, old stars, really old stars, and old people. The lecture will be followed by a demonstration of the Brackett Observatory telescope.</p>
+					</aside>
 				</div>
-				<aside>
-					<h3>Ancient Astronomy: Stars and Stuff</h3>
-					<p class="host">Prof. Penprase, Astronomy Department</p>
-					<p class="location">Brackett Observatory</p>
-					<p>Professor Penprase will be delivering a lecture on ancient astronomy for interested students and members of the community at Brackett Observatory. Topics will include old rocks, old stars, really old stars, and old people. The lecture will be followed by a demonstration of the Brackett Observatory telescope.</p>
-				</aside>
 			</li>
 		</ol>
 	</div>
 	<div id="events_description">
-		<h3>&ldquo;How to Do Things&rdquo;</h3>
-		<p class="host">Professor Smith, General Studies</p>
-		<p class="location">Rose Hills Theater</p>
-		<p>Prof. Smith has returned from sabbatical with a few interesting thoughts to share on the practice of doing things in cultures around the world. Come join the General Studies department in listening to Prof. Smith's first post-sabbatical lecture.</p>
-		<p>Open to members of the public.</p>
-		<p>Free admission.</p>
+		<h3 id="events_description_title">&ldquo;How to Do Things&rdquo;</h3>
+		<p id="events_description_host">Professor Smith, General Studies</p>
+		<p id="events_description_location">Rose Hills Theater</p>
+		<p id="events_description_description">Prof. Smith has returned from sabbatical with a few interesting thoughts to share on the practice of doing things in cultures around the world. Come join the General Studies department in listening to Prof. Smith's first post-sabbatical lecture. Open to members of the public. Free admission.</p>
 	</div>
 	<div id="more">
 		<a href="">see full calendar &rarr;</a>
