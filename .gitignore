@@ -11,5 +11,5 @@ media/
 vagrant/ssh_config
 vagrant/peninsula.key
 vagrant/run/
-static/
+/static/
 .idea/

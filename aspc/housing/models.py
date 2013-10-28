@@ -186,9 +186,9 @@ class Review(models.Model):
     best = models.TextField()
     worst = models.TextField()
     comments = models.TextField(blank=True)
-    photo1 = StdImageField(blank=True, null=True, upload_to='housing/reviews/%Y/%m/%d/', size=(500,700))
-    photo2 = StdImageField(blank=True, null=True, upload_to='housing/reviews/%Y/%m/%d/', size=(500,700))
-    photo3 = StdImageField(blank=True, null=True, upload_to='housing/reviews/%Y/%m/%d/', size=(500,700))
+    photo1 = StdImageField(blank=True, null=True, upload_to='housing/reviews/%Y/%m/%d/', size=(500,700), thumbnail_size=(100,100))
+    photo2 = StdImageField(blank=True, null=True, upload_to='housing/reviews/%Y/%m/%d/', size=(500,700), thumbnail_size=(100,100))
+    photo3 = StdImageField(blank=True, null=True, upload_to='housing/reviews/%Y/%m/%d/', size=(500,700), thumbnail_size=(100,100))
 
     class Meta:
         ordering = ['-create_ts']
