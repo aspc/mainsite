@@ -1094,7 +1094,10 @@ header#aspc_main form input {
 }
 
 #events_description {
-	width: 36%
+	width: 36%;
+	background: #ddd;
+	height: 100%;
+	padding: 2%;
 }
 
 .events aside {
@@ -1102,12 +1105,11 @@ header#aspc_main form input {
 }
 
 .events, .events ol {
-	background-color: #2f5184;
-	position: relative;
-	overflow: auto;
+	background-color: #ddd;
 }
 
 .events ol {
+	background: #2f5184;
 	min-height: 15em;
 	list-style-type: none;
 	padding: 0;
@@ -1151,16 +1153,6 @@ header#aspc_main form input {
 #more a {
 	color: rgb(60, 60, 60);
 	text-decoration: none;
-}
-
-
-
-#events_description {
-	background: #ddd;
-	height: 100%;
-	padding: 2%;
-	position: absolute;
-	right: 0;
 }
 
 #events_description p {
