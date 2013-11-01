@@ -5,6 +5,7 @@ from datetime import date
 
 CHARFIELD_MAX_LENGTH = 255
 
+
 class Event(models.Model):
     name = models.CharField(max_length=CHARFIELD_MAX_LENGTH)
     start = models.DateTimeField()
@@ -62,4 +63,9 @@ class EventController(object):
 
 	@staticmethod
 	def todays_events():
-		return (EventController.approved_events()).get(start__year=date.today().year, start__month=date.today().month, start__day=date.today().day)
+		try:
+			event = (EventController.approved_events()).filter(start__year=date.today().year, start__month=date.today().month, start__day=date.today().day)
+		except ObjectDoesNotExist:
+			return None
+		else:
+			return event
