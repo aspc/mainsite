@@ -62,11 +62,6 @@ body:after {
   clear: both;
 }
 
-/* line 44, ../sass/lightbox.sass */
-.lb-container {
-  padding: 4px;
-}
-
 /* line 47, ../sass/lightbox.sass */
 .lb-loader {
   position: absolute;
