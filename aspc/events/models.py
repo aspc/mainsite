@@ -12,6 +12,7 @@ class Event(models.Model):
     end = models.DateTimeField(null=True, blank=True)
     location = models.CharField(max_length=CHARFIELD_MAX_LENGTH)
     description = models.TextField()
+    host = models.CharField(max_length=CHARFIELD_MAX_LENGTH)
     url = models.CharField(max_length=CHARFIELD_MAX_LENGTH, null=True, blank=True)
     status = models.CharField(max_length=CHARFIELD_MAX_LENGTH, choices=(('pending', 'Pending'), ('approved', 'Approved'), ('denied', 'Denied')), default='pending')
 

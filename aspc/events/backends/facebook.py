@@ -65,6 +65,7 @@ class FacebookBackend(object):
             'location': event_data['location'],
             'start': start,
             'description': event_data.get('description', ''),
+            'host': event_data['owner']['name'],
             'url': 'http://www.facebook.com/events/' + event_id
         }
 
