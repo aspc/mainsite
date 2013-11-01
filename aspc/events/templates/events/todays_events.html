@@ -19,7 +19,10 @@
 						<h3>{{ event.name }}</h3>
 						<p class="host">{{ event.host }}</p>
 						<p class="location">{{ event.location }}</p>
-						<p class="description">{{ event.description }}</p>
+						<p class="description">
+							{{ event.description }} <br /> <br />
+							<a href="/events/{{ event.id }}">Event Page</a>
+						</p>
 					</aside>
 				</div>
 			</li>
