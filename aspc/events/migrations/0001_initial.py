@@ -17,8 +17,8 @@ class Migration(SchemaMigration):
             ('location', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('host', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('description', self.gf('django.db.models.fields.TextField')()),
-            ('url', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('status', self.gf('django.db.models.fields.CharField')(max_length=255, choices=(('pending', 'Pending'), ('approved', 'Approved'), ('denied', 'Denied')), default='pending')),
+            ('status', self.gf('django.db.models.fields.CharField')(default='pending', max_length=255)),
+            ('url', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True))
         ))
         db.send_create_signal('events', ['Event'])
 
@@ -36,7 +36,7 @@ class Migration(SchemaMigration):
             'host': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'start': ('django.db.models.fields.DateTimeField', [], {}),
-            'status': ('django.db.models.fields.CharField', [], {'max_length': '255', 'choices': "(('pending', 'Pending'), ('approved', 'Approved'), ('denied', 'Denied'))", 'default': 'pending'}),
+            'status': ('django.db.models.fields.CharField', [], {'default': "'pending'", 'max_length': '255'}),
             'url': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'})
         }
     }
