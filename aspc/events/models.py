@@ -1,7 +1,11 @@
 from django.db import models
 from aspc.events.backends.facebook import FacebookBackend
+from aspc.events.backends.collegiatelink import CollegiateLinkBackend
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import date
+import logging
+
+logger = logging.getLogger(__name__)
 
 CHARFIELD_MAX_LENGTH = 255
 
@@ -45,6 +49,24 @@ class EventController(object):
 		else:
 			return False
 
+	@staticmethod
+	def fetch_collegiatelink_events():
+		cl = CollegiateLinkBackend()
+		events_data = cl.get_events_data()
+
+		for event_data in events_data:
+			logger.debug(event_data['name'])
+			#event = Event.objects.get_or_create(name=event_data['name'], defaults={'status': 'pending'})  # Updates an existing event or adds a new one to the database
+			event = Event.objects.get_or_create(name=event_data['name'], status='pending')  # Updates an existing event or adds a new one to the database
+
+			for key, value in event_data.items():
+			    setattr(event, key, value)
+			event.save()
+
+
+		return events_data
+
+	# GET methods invoked by views
 	@staticmethod
 	def all_events():
 		return Event.objects.all()
