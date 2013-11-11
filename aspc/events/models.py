@@ -33,36 +33,33 @@ class EventController(object):
 
 	@staticmethod
 	def new_event(data):
-		fb = FacebookBackend()
 		if data['event_source'] == 'facebook':
-		    event_data = fb.get_event_data(data['event_url'])
-
-		    event = Event()
-
-		    for key, value in event_data.items():
-		        setattr(event, key, value)
-
-		    # Creates a new Event model with the Facebook data
-		    event.save()
-
-		    return event
-		else:
+			event_data = FacebookBackend().get_event_data(data['event_url'])
+		elif data['event_source'] == 'manual':
+			event_data = data['event_data']
+		else:  # If corrupted data or erroneous POST request, do nothing
 			return False
+
+		# Creates a new Event model with the data
+		event = Event()
+		for key, value in event_data.items():
+		    setattr(event, key, value)
+
+		event.save()
+		return event
 
 	@staticmethod
 	def fetch_collegiatelink_events():
-		cl = CollegiateLinkBackend()
-		events_data = cl.get_events_data()
+		events_data = CollegiateLinkBackend().get_events_data()
 
 		for event_data in events_data:
-			logger.debug(event_data['name'])
-			#event = Event.objects.get_or_create(name=event_data['name'], defaults={'status': 'pending'})  # Updates an existing event or adds a new one to the database
-			event = Event.objects.get_or_create(name=event_data['name'], status='pending')  # Updates an existing event or adds a new one to the database
+			# Updates an existing event or adds a new one to the database
+			# get_or_create returns an object and a boolean value specifying whether a new object was created or not
+			event, is_new = Event.objects.get_or_create(name=event_data['name'], defaults={'status': 'pending'})
 
 			for key, value in event_data.items():
-			    setattr(event, key, value)
+				setattr(event, key, value)
 			event.save()
-
 
 		return events_data
 
