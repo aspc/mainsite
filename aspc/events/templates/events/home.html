@@ -6,41 +6,109 @@
 
 {% block "outer_content" %}
 <div class="content">
-  <table id="events_table">
-  	<tr>
-	  <th>Event</th>
-	  <th>Date</th>
-	  <th>Location</th>
-	  <th>Description</th>
-	  <th>Link</th>
-	</tr>
-	{% for event in events %}
-	<tr>
-	  <td>{{ event.name }}</td>
-	  {% if event.end %}
-	  <td>{{ event.start }} - {{ event.end }}</td>
-	  {% else %}
-	  <td> {{ event.start }}</td>
-	  {% endif %}
-	  <td>{{ event.location }}</td>
-	  <td>{{ event.description|truncatewords:20 }} <a href="/events/{{ event.id }}">More...</a></td>
-	  <td>
-	  	{% if event.url %}
-	  		<a href="{{ event.url }}">Link</a>
-	  	{% else %}
-	  		No Link
-	  	{% endif %}
-	  </td>
-	</tr>
-	{% endfor %}
-  </table>
+	<table id="events_table">
+		<tr>
+			<th>Event</th>
+			<th>Date</th>
+			<th>Location</th>
+			<th>Description</th>
+			<th>Link</th>
+		</tr>
+		{% for event in events %}
+		<tr>
+			<td>{{ event.name }}</td>
+			{% if event.end %}
+			<td>{{ event.start }} - {{ event.end }}</td>
+			{% else %}
+			<td> {{ event.start }}</td>
+			{% endif %}
+			<td>{{ event.location }}</td>
+			<td>{{ event.description|truncatewords:20 }} <a href="/events/{{ event.id }}">More...</a></td>
+			<td>
+				{% if event.url %}
+				<a href="{{ event.url }}">Link</a>
+				{% else %}
+				No Link
+				{% endif %}
+			</td>
+		</tr>
+		{% endfor %}
+	</table>
 
-  <h1>Submit a Facebook Event</h1>
-  <form>
-  	<label for="facebook_event_url">Facebook Event URL:</label><input type="text" id="facebook_event_url" name="facebook_event_url" />
-  	<input type="button" value="Submit" onClick="ASPC.Events.submit_facebook_event()"/>
-  </form>
-  <div id="facebook_event_submit_status"></div>
+	<div id="facebook_event_submission">
+		<h1>Submit a Facebook Event</h1>
+		<label for="facebook_event_url">Facebook Event URL:</label><input type="text" id="facebook_event_url" name="facebook_event_url" />
+		<input type="button" value="Submit" onClick="ASPC.Events.submit_facebook_event()"/>
+		<div id="facebook_event_submit_status"></div>
+	</div>
+
+	<div id="manual_event_submission">
+		<h1>Submit an Event</h1>
+		<table>
+			<tr>
+				<td>
+					Name
+				</td>
+				<td>
+					<input type="text" id="manual_event_name">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Host
+				</td>
+				<td>
+					<input type="text" id="manual_event_host">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Start
+				</td>
+				<td>
+					<input type="datetime-local" id="manual_event_start" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					End
+				</td>
+				<td>
+					<input type="datetime-local" id="manual_event_end" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Location
+				</td>
+				<td>
+					<input type="text" id="manual_event_location">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Description
+				</td>
+				<td>
+					<textarea id="manual_event_description" cols="30" rows="5"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Link
+				</td>
+				<td>
+					<input type="text" id="manual_event_url">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="button" value="Submit" onClick="ASPC.Events.submit_manual_event()"/>
+				</td>
+		</table>
+		<div id="manual_event_submit_status"></div>
+	</div>
+
 </div>
 {% csrf_token %}
 {% endblock %}
