@@ -20,6 +20,7 @@
 			{{ event.start }}
 		</td>
 	</tr>
+	{% if event.end %}
 	<tr>
 		<td>
 			End
@@ -28,6 +29,7 @@
 			{{ event.end }}
 		</td>
 	</tr>
+	{% endif %}
 	<tr>
 		<td>
 			Location

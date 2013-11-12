@@ -25,7 +25,7 @@ nav ul, section > ul {
 
 .row {
 width: 100%;
-max-width: 70em;
+max-width: 80em;
 min-width: 765px;
 margin: 0 auto;
 overflow: hidden;

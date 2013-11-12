@@ -17,7 +17,11 @@
 	{% for event in events %}
 	<tr>
 	  <td>{{ event.name }}</td>
+	  {% if event.end %}
 	  <td>{{ event.start }} - {{ event.end }}</td>
+	  {% else %}
+	  <td> {{ event.start }}</td>
+	  {% endif %}
 	  <td>{{ event.location }}</td>
 	  <td>{{ event.description|truncatewords:20 }} <a href="/events/{{ event.id }}">More...</a></td>
 	  <td>
