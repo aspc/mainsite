@@ -46,14 +46,31 @@ ASPC.Events.submit_facebook_event = function () {
 ASPC.Events.submit_manual_event = function () {
 	var manual_event = {
 		event_source: 'manual',
-		event_name: $('#manual_event_name').val(),
-		event_start: $('#manual_event_start').val(),
-		event_end: $('#manual_event_end').val(),
-		event_location: $('#manual_event_location').val(),
-		event_description: $('#manual_event_description').val(),
-		event_host: $('#manual_event_host').val(),
-		event_url: $('#manual_event_url').val()
+		name: $('#manual_event_name').val(),
+		start: $('#manual_event_start').val(),
+		end: $('#manual_event_end').val(),
+		location: $('#manual_event_location').val(),
+		description: $('#manual_event_description').val(),
+		host: $('#manual_event_host').val(),
+		url: $('#manual_event_url').val()
 	};
+
+	if (manual_event.name.length === 0) {
+		alert('You must enter an event name!');
+		return false;
+	} else if (manual_event.start.length === 0) {
+		alert('You must enter a start time!');
+		return false;
+	} else if (manual_event.location.length === 0) {
+		alert('You must enter a location!');
+		return false;
+	} else if (manual_event.description.length === 0) {
+		alert('You must enter a description!');
+		return false;
+	} else if (manual_event.host.length === 0) {
+		alert('You must enter a host name!');
+		return false;
+	}
 
 	$.ajax({
 		type: 'POST',

@@ -33,19 +33,22 @@ class EventController(object):
 
 	@staticmethod
 	def new_event(data):
+		event_data = {}
+
 		if data['event_source'] == 'facebook':
 			event_data = FacebookBackend().get_event_data(data['event_url'])
 		elif data['event_source'] == 'manual':
-			event_data = data['event_data']
+			event_data = data
+			del event_data['event_source']
 		else:  # If corrupted data or erroneous POST request, do nothing
 			return False
 
-		# Creates a new Event model with the data
+		# Creates a new Event model with the Facebook data
 		event = Event()
 		for key, value in event_data.items():
-		    setattr(event, key, value)
-
+			setattr(event, key, value)
 		event.save()
+
 		return event
 
 	@staticmethod
