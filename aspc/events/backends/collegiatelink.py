@@ -12,7 +12,7 @@ class CollegiateLinkBackend(object):
 
     def _get_rss(self):
         events_xml_tree = requests.get(self.rss_url).text
-        return ET.fromstring(events_xml_tree)
+        return ET.fromstring(events_xml_tree.encode('ascii', 'ignore')) # CollegiateLink doesn't deign to provide proper ascii text, so re-encode it
 
     def get_events_data(self):
         normalized_events = []
@@ -28,9 +28,12 @@ class CollegiateLinkBackend(object):
             # CollegiateLink provides poorly-formed HTML in its RSS feed, so it is necessary to further parse it
             parser = CollegiateLinkHTMLParser()
             parser.feed(item.find('description').text)
-            event['start'] = datetime.strptime(parser.parsed_data['start'], '%A, %B %d, %Y (%H:%M %p)')
+            if parser.parsed_data['start'] == '': # If the event doesn't have a data, don't add it to the calendar
+                continue
+
             event['location'] = parser.parsed_data['location']
             event['description'] = parser.parsed_data['description']
+            event['start'] = datetime.strptime(parser.parsed_data['start'], '%A, %B %d, %Y (%I:%M %p)')
 
             # The host is oddly wrapped inside of parentheses... need to extract it
             event['host'] = (re.search(r'\((.*?)\)', item.find('author').text)).group(1)
