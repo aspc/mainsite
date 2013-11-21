@@ -1,0 +1,11 @@
+.approved {
+	background-color: green !important;
+}
+
+.denied {
+	background-color: red !important;
+}
+
+.pending {
+	background-color: orange !important;
+}
