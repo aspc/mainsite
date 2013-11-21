@@ -33,6 +33,7 @@ ASPC.Events.submit_facebook_event = function () {
 			console.log('success');
 			new_event = JSON.parse(data)[0].fields;
 			$('#facebook_event_submit_status').html('Thank you. Your event "' + new_event.name + '" has been added to the queue for approval. It will appear shortly.');
+			$('#facebook_event_url').val('');
 			return false;
 		},
 		error: function (jqXHR, t, e) {
@@ -87,7 +88,7 @@ ASPC.Events.submit_manual_event = function () {
 		},
 		error: function (jqXHR, t, e) {
 			console.log('error');
-			$('#manual_event_submit_status').html('Something went wrong! Are you sure the event you submitted is public?');
+			$('#manual_event_submit_status').html('Something went wrong! Please try again.');
 			return false;
 		}
 	});

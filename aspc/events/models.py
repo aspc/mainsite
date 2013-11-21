@@ -2,7 +2,7 @@ from django.db import models
 from aspc.events.backends.facebook import FacebookBackend
 from aspc.events.backends.collegiatelink import CollegiateLinkBackend
 from django.core.exceptions import ObjectDoesNotExist
-from datetime import date
+from datetime import datetime
 import logging
 
 logger = logging.getLogger(__name__)
@@ -39,11 +39,14 @@ class EventController(object):
 			event_data = FacebookBackend().get_event_data(data['event_url'])
 		elif data['event_source'] == 'manual':
 			event_data = data
+			event_data['start'] = datetime.strptime(event_data['start'], '%Y-%m-%dT%H:%M')
+			if 'end' in event_data and event_data['end'] != '':
+				event_data['end'] = datetime.strptime(event_data['end'], '%Y-%m-%dT%H:%M')
 			del event_data['event_source']
 		else:  # If corrupted data or erroneous POST request, do nothing
 			return False
 
-		# Creates a new Event model with the Facebook data
+		# Creates a new Event model with the data
 		event = Event()
 		for key, value in event_data.items():
 			setattr(event, key, value)
@@ -58,7 +61,7 @@ class EventController(object):
 		for event_data in events_data:
 			# Updates an existing event or adds a new one to the database
 			# get_or_create returns an object and a boolean value specifying whether a new object was created or not
-			event, is_new = Event.objects.get_or_create(name=event_data['name'], defaults={'start': date.today(), 'status': 'pending'})
+			event, is_new = Event.objects.get_or_create(name=event_data['name'], defaults={'start': datetime.today(), 'status': 'pending'})
 
 			for key, value in event_data.items():
 				setattr(event, key, value)
@@ -87,7 +90,7 @@ class EventController(object):
 	@staticmethod
 	def todays_events():
 		try:
-			event = (EventController.approved_events()).filter(start__year=date.today().year, start__month=date.today().month, start__day=date.today().day)
+			event = (EventController.approved_events()).filter(start__year=datetime.today().year, start__month=datetime.today().month, start__day=datetime.today().day)
 		except ObjectDoesNotExist:
 			return None
 		else:

@@ -10,7 +10,8 @@ def home (request):
 		return render(request, 'events/home.html', {'events': events}) # Render the events index on GET
 	elif request.method == 'POST':
 		new_event = EventController.new_event(dict(urlparse.parse_qsl(request.body))) # Add an event manually on POST
-		return HttpResponse(serializers.serialize('json', [ new_event, ])) # Return a JSON hash of the new event
+		#return HttpResponse(new_event)
+		return HttpResponse(serializers.serialize('json', [new_event])) # Return a JSON hash of the new event
 
 def event (request, event_id):
 	if request.method == 'GET':
