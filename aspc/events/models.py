@@ -27,6 +27,14 @@ class Event(models.Model):
         ordering = ('start', 'name', 'end')
         verbose_name_plural = "Events"
 
+
+class EventFacebookPage(models.Model):
+	name = models.CharField(max_length=CHARFIELD_MAX_LENGTH)
+	url = models.CharField(max_length=CHARFIELD_MAX_LENGTH, null=True, blank=True)
+
+	def __unicode__(self):
+	    return self.name
+
 class EventController(object):
 	def __unicode__(self):
 	    return self.name
