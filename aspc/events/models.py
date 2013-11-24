@@ -95,3 +95,17 @@ class EventController(object):
 			return None
 		else:
 			return event
+
+class EventHelper(object):
+	def __unicode__(self):
+	    return self.name
+
+	@staticmethod
+	def earliest_event_datetime(event_list):
+		start_times = [event.start for event in event_list]
+		return min(start_times)
+
+	@staticmethod
+	def latest_event_datetime(event_list):
+		start_times = [event.start for event in event_list]
+		return max(start_times)

@@ -10,8 +10,9 @@
 // Set up namespacing
 var ASPC = ASPC || {};
 ASPC.Events = ASPC.Events || {};
+ASPC.Events.calendar_data = ASPC.Events.calendar_data || {};
 
-ASPC.Events.calendar_data = [
+ASPC.Events.calendar_data.events = [
 	{% for event in events %}
 		{
 			'title': '{{event.name}}',
@@ -31,6 +32,9 @@ ASPC.Events.calendar_data = [
 		{% endif %}
 	{% endfor %}
 ];
+
+ASPC.Events.calendar_data.earliest_event = new Date({{earliest_event|date:"U"}} * 1000);
+ASPC.Events.calendar_data.latest_event =  new Date({{latest_event|date:"U"}} * 1000);
 </script>
 {% endblock %}
 
