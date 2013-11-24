@@ -61,78 +61,90 @@ ASPC.Events.calendar_data.latest_event_datetime = new Date(
 	<div id="calendar">
 	</div>
 
-	<div id="facebook_event_submission">
-		<h1>Submit a Facebook Event</h1>
-		<label for="facebook_event_url">Facebook Event URL:</label><input type="text" id="facebook_event_url" name="facebook_event_url" />
-		<input type="button" value="Submit" onClick="ASPC.Events.submit_facebook_event()"/>
-		<div id="facebook_event_submit_status"></div>
-	</div>
+	<div id="event_submission">
+		<div id="facebook_submission">
+			<h1>Submit a Facebook Event</h1>
+			<p><label for="facebook_event_url">Paste the URL to a public Facebook event.</label></p>
+			<input type="text" id="facebook_event_url" name="facebook_event_url" />
+			<input type="button" value="Submit" onClick="ASPC.Events.submit_facebook_event()"/>
 
-	<div id="manual_event_submission">
-		<h1>Submit an Event</h1>
-		<table>
-			<tr>
-				<td>
-					Name
-				</td>
-				<td>
-					<input type="text" id="manual_event_name">
-				</td>
-			</tr>
-			<tr>
-				<td>
-					Host
-				</td>
-				<td>
-					<input type="text" id="manual_event_host">
-				</td>
-			</tr>
-			<tr>
-				<td>
-					Start
-				</td>
-				<td>
-					<input type="datetime-local" id="manual_event_start" />
-				</td>
-			</tr>
-			<tr>
-				<td>
-					End
-				</td>
-				<td>
-					<input type="datetime-local" id="manual_event_end" />
-				</td>
-			</tr>
-			<tr>
-				<td>
-					Location
-				</td>
-				<td>
-					<input type="text" id="manual_event_location">
-				</td>
-			</tr>
-			<tr>
-				<td>
-					Description
-				</td>
-				<td>
-					<textarea id="manual_event_description" cols="30" rows="5"></textarea>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					Link
-				</td>
-				<td>
-					<input type="text" id="manual_event_url">
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input type="button" value="Submit" onClick="ASPC.Events.submit_manual_event()"/>
-				</td>
-		</table>
-		<div id="manual_event_submit_status"></div>
+			<p><label for="facebook_page_url">Or paste the URL to a Facebook organization page to gather that organization's events.</label></p>
+			<input type="text" id="facebook_page_url" name="facebook_page_url" />
+			<input type="button" value="Submit" onClick="ASPC.Events.submit_facebook_page()"/>
+
+			<p>Pages currently being watched:</b>
+			<ul>
+			{% for page in facebook_pages %}
+				<li>{{ page.name }}</li>
+			{% endfor %}
+			</ul>
+		</div>
+
+		<div id="manual_submission">
+			<h1>Submit Your Own Event</h1>
+			<table>
+				<tr>
+					<td>
+						Name
+					</td>
+					<td>
+						<input type="text" id="manual_event_name">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Host
+					</td>
+					<td>
+						<input type="text" id="manual_event_host">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Start
+					</td>
+					<td>
+						<input type="datetime-local" id="manual_event_start" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						End
+					</td>
+					<td>
+						<input type="datetime-local" id="manual_event_end" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Location
+					</td>
+					<td>
+						<input type="text" id="manual_event_location">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Description
+					</td>
+					<td>
+						<textarea id="manual_event_description" cols="30" rows="5"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						External Link
+					</td>
+					<td>
+						<input type="text" id="manual_event_url">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="button" value="Submit" onClick="ASPC.Events.submit_manual_event()"/>
+					</td>
+			</table>
+		</div>
 	</div>
 
 </div>
