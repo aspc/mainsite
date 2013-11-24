@@ -9,7 +9,6 @@ ASPC.Events = ASPC.Events || {};
 // Grabs the csrf_token from the DOM (something we pass along to authenticate the request)
 window.onload = function () {
 	ASPC.csrf_token = $('input[name=csrfmiddlewaretoken]').val();
-
 	ASPC.Events.init_calendar();
 };
 
@@ -20,11 +19,11 @@ ASPC.Events.init_calendar = function () {
 			center: 'title',
 			right: 'month,agendaWeek,agendaDay'
 		},
-		minTime: 8,
-		maxTime: 24,
+		minTime: ASPC.Events.calendar_data.earliest_event_datetime.getHours(),
+		maxTime: ASPC.Events.calendar_data.latest_event_datetime.getHours() + 1,
 		allDaySlot: false,
 		editable: false,
-		events: ASPC.Events.calendar_data
+		events: ASPC.Events.calendar_data.events
 	});
 };
 

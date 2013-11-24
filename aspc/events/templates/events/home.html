@@ -33,8 +33,20 @@ ASPC.Events.calendar_data.events = [
 	{% endfor %}
 ];
 
-ASPC.Events.calendar_data.earliest_event = new Date({{earliest_event|date:"U"}} * 1000);
-ASPC.Events.calendar_data.latest_event =  new Date({{latest_event|date:"U"}} * 1000);
+ASPC.Events.calendar_data.earliest_event_datetime = new Date(
+	{% if earliest_event_datetime %}
+		{{earliest_event_datetime|date:"U"}}
+	{% else %}
+		0
+	{% endif %}
+	* 1000);
+ASPC.Events.calendar_data.latest_event_datetime = new Date(
+	{% if latest_event_datetime %}
+		{{latest_event_datetime|date:"U"}}
+	{% else %}
+		0
+	{% endif %}
+	* 1000);
 </script>
 {% endblock %}
 
