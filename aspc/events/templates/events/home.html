@@ -4,36 +4,40 @@
 {% block "ogdesc" %}Information on upcoming events for Claremont Colleges students.{% endblock %}
 {% block "metadesc" %}Information on upcoming events for Claremont Colleges students.{% endblock %}
 
+{% block "head" %}
+{{ block.super }}
+<script type="text/javascript">
+// Set up namespacing
+var ASPC = ASPC || {};
+ASPC.Events = ASPC.Events || {};
+
+ASPC.Events.calendar_data = [
+	{% for event in events %}
+		{
+			'title': '{{event.name}}',
+			'start': new Date({{event.start|date:"U"}} * 1000),
+			{% if event.end %}
+				'end': new Date({{event.end|date:"U"}} * 1000),
+			{% else %}
+				'end': null,
+			{% endif %}
+			'location': '{{event.location}}',
+			'description': '{{event.description}}',
+			'url': '/events/{{event.id}}',
+			'allDay': false
+		}
+		{% if not forloop.last %}
+		,
+		{% endif %}
+	{% endfor %}
+];
+</script>
+{% endblock %}
+
 {% block "outer_content" %}
 <div class="content">
-	<table id="events_table">
-		<tr>
-			<th>Event</th>
-			<th>Date</th>
-			<th>Location</th>
-			<th>Description</th>
-			<th>Link</th>
-		</tr>
-		{% for event in events %}
-		<tr>
-			<td>{{ event.name }}</td>
-			{% if event.end %}
-			<td>{{ event.start }} - {{ event.end }}</td>
-			{% else %}
-			<td> {{ event.start }}</td>
-			{% endif %}
-			<td>{{ event.location }}</td>
-			<td>{{ event.description|truncatewords:20 }} <a href="/events/{{ event.id }}">More...</a></td>
-			<td>
-				{% if event.url %}
-				<a href="{{ event.url }}">Link</a>
-				{% else %}
-				No Link
-				{% endif %}
-			</td>
-		</tr>
-		{% endfor %}
-	</table>
+	<div id="calendar">
+	</div>
 
 	<div id="facebook_event_submission">
 		<h1>Submit a Facebook Event</h1>

@@ -9,6 +9,23 @@ ASPC.Events = ASPC.Events || {};
 // Grabs the csrf_token from the DOM (something we pass along to authenticate the request)
 window.onload = function () {
 	ASPC.csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+
+	ASPC.Events.init_calendar();
+};
+
+ASPC.Events.init_calendar = function () {
+	$('#calendar').fullCalendar({
+		header: {
+			left: 'prev,next today',
+			center: 'title',
+			right: 'month,agendaWeek,agendaDay'
+		},
+		minTime: 8,
+		maxTime: 24,
+		allDaySlot: false,
+		editable: false,
+		events: ASPC.Events.calendar_data
+	});
 };
 
 ASPC.Events.submit_facebook_event = function () {
