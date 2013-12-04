@@ -109,3 +109,36 @@ ASPC.Events.submit_manual_event = function () {
 		}
 	});
 };
+
+ASPC.Events.submit_facebook_page = function () {
+	var url = $('#facebook_page_url').val() || '';
+
+	if (url.length === 0) {
+		alert('You must enter a valid Facebook Page URL!');
+		return false;
+	}
+
+	$.ajax({
+		url: 'facebook_page/',
+		type: 'POST',
+		beforeSend: function (request) {
+			request.setRequestHeader("X-CSRFToken", ASPC.csrf_token);
+		},
+		data: {
+			page_url: url
+		},
+		timeout: 10000,
+		success: function (data) {
+			console.log('success');
+			new_page = JSON.parse(data)[0].fields;
+			alert('Thank you. Your page "' + new_page.name + '" has been added for event scrapping. Its events will appear automatically.');
+			$('#facebook_page_url').val('');
+			return false;
+		},
+		error: function (jqXHR, t, e) {
+			console.log('error');
+			alert('Something went wrong!');
+			return false;
+		}
+	});
+};

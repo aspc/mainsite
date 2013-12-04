@@ -13,7 +13,7 @@ class FacebookBackend(object):
     required_fields = ('name', 'location', 'start_time', 'description')
     GRAPH_API_TEMPLATE = 'https://graph.facebook.com/'
     event_link_template = re.compile(r'https?://(?:www\.)?facebook.com/events/(?P<event_id>\d+)')
-    page_link_template = re.compile(r'https?://(?:www\.)?facebook.com/(?P<page_id>\d+)')
+    page_link_template = re.compile(r'https?://(?:www\.)?facebook.com/(?P<page_id>\w+)')
 
     def __init__(self, options=None):
         self.facebook_token = self._get_access_token()
@@ -46,9 +46,21 @@ class FacebookBackend(object):
 
         return response.json()
 
-    def _page_events_lookup(self, page_url):
+    def _page_lookup(self, page_id):
         response = requests.get(
-            self.GRAPH_API_TEMPLATE + page_url + '/events',
+            self.GRAPH_API_TEMPLATE + page_id
+        )
+
+        if response.status_code == 400:
+            InvalidEventException("Unable to retrieve page details.")
+        elif not response.status_code == 200:
+            response.raise_for_status()
+
+        return response.json()
+
+    def _page_events_lookup(self, page_id):
+        response = requests.get(
+            self.GRAPH_API_TEMPLATE + page_id + '/events',
             params = {
                 'access_token': self.facebook_token
             }
@@ -88,19 +100,33 @@ class FacebookBackend(object):
 
         return normalized
 
+    def _parse_page_data(self, page_data):
+        normalized = {
+            'name': page_data['name'],
+            'url': page_data['link']
+        }
+
+        return normalized
+
     def get_event_data(self, event_url):
         event_id = self.event_link_template.match(event_url).groupdict()['event_id']
         event_data = self._event_lookup(event_id)
 
         return self._parse_event_data(event_data)
 
-    def get_page_event_data(self, page_url):
+    def get_page_event_ids(self, page_url):
         page_id = self.page_link_template.match(page_url).groupdict()['page_id']
         page_event_data = self._page_events_lookup(page_id)
 
         normalized_events = []
 
         for event_data in page_event_data:
-            normalized_events.append(self._parse_event_data(event_data))
+            normalized_events.append(event_data['id'])
 
         return normalized_events
+
+    def get_page_data(self, page_url):
+        page_id = self.page_link_template.match(page_url).groupdict()['page_id']
+        page_data = self._page_lookup(page_id)
+
+        return self._parse_page_data(page_data)
