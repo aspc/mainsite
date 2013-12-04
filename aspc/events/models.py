@@ -109,16 +109,16 @@ class EventHelper(object):
 	    return self.name
 
 	@staticmethod
-	def earliest_event_datetime(event_list):
-		start_times = [event.start for event in event_list]
+	def earliest_event_time(event_list):
+		start_times = [event.start.time() for event in event_list]
 		if bool(len(start_times)):
 			return min(start_times)
 		else:
 			return None
 
 	@staticmethod
-	def latest_event_datetime(event_list):
-		start_times = [event.start for event in event_list]
+	def latest_event_time(event_list):
+		start_times = [event.start.time() for event in event_list]
 		if bool(len(start_times)):
 			return max(start_times)
 		else:

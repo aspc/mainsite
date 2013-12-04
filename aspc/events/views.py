@@ -7,7 +7,7 @@ from django.core import serializers
 def home (request):
 	if request.method == 'GET':
 		events = EventController.approved_events()
-		return render(request, 'events/home.html', {'events': events, 'earliest_event_datetime': EventHelper.earliest_event_datetime(events), 'latest_event_datetime': EventHelper.latest_event_datetime(events)}) # Render the events index on GET
+		return render(request, 'events/home.html', {'events': events, 'earliest_event_time': EventHelper.earliest_event_time(events), 'latest_event_time': EventHelper.latest_event_time(events)}) # Render the events index on GET
 	elif request.method == 'POST':
 		new_event = EventController.new_event(dict(urlparse.parse_qsl(request.body))) # Add an event manually on POST
 		return HttpResponse(serializers.serialize('json', [new_event])) # Return a JSON hash of the new event
