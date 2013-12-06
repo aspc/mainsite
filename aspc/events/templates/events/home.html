@@ -29,7 +29,7 @@ ASPC.Events.calendar_data.events = [
 			{% endif %}
 			'location': '{{event.location}}',
 			'description': '{{event.description}}',
-			'url': '/events/{{event.id}}',
+			'url': '/events/event/{{event.id}}',
 			'allDay': false
 		}
 		{% if not forloop.last %}

@@ -36,6 +36,7 @@ ASPC.Events.submit_facebook_event = function () {
 	}
 
 	$.ajax({
+		url: 'event/',
 		type: 'POST',
 		beforeSend: function (request) {
 			request.setRequestHeader("X-CSRFToken", ASPC.csrf_token);
@@ -90,6 +91,7 @@ ASPC.Events.submit_manual_event = function () {
 	}
 
 	$.ajax({
+		url: 'event/',
 		type: 'POST',
 		beforeSend: function (request) {
 			request.setRequestHeader("X-CSRFToken", ASPC.csrf_token);
