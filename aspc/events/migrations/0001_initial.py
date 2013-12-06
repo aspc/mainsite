@@ -22,40 +22,40 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('events', ['Event'])
 
-        # Adding model 'EventFacebookPage'
-        db.create_table('events_eventfacebookpage', (
+        # Adding model 'FacebookEventPage'
+        db.create_table('events_facebookeventpage', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('url', self.gf('django.db.models.fields.CharField')(max_length=255)),
         ))
-        db.send_create_signal('events', ['EventFacebookPage'])
+        db.send_create_signal('events', ['FacebookEventPage'])
 
     def backwards(self, orm):
         # Deleting model 'Event'
         db.delete_table('events_event')
 
-        # Deleting model 'EventFacebookPage'
-        db.delete_table('events_eventfacebookpage')
+        # Deleting model 'FacebookEventPage'
+        db.delete_table('events_facebookeventpage')
 
     models = {
-        'events.event': {
-            'Meta': {'ordering': "('start', 'name', 'end')", 'object_name': 'Event'},
-            'description': ('django.db.models.fields.TextField', [], {}),
-            'end': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
-            'host': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'location': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'start': ('django.db.models.fields.DateTimeField', [], {}),
-            'status': ('django.db.models.fields.CharField', [], {'default': "'pending'", 'max_length': '255'}),
-            'url': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'})
-        },
-        'events.eventfacebookpage': {
-            'Meta': {'object_name': 'EventFacebookPage'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'url': ('django.db.models.fields.CharField', [], {'max_length': '255'})
+            'events.event': {
+                'Meta': {'ordering': "('start', 'name', 'end')", 'object_name': 'Event'},
+                'description': ('django.db.models.fields.TextField', [], {}),
+                'end': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+                'host': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+                'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+                'location': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+                'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+                'start': ('django.db.models.fields.DateTimeField', [], {}),
+                'status': ('django.db.models.fields.CharField', [], {'default': "'pending'", 'max_length': '255'}),
+                'url': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'})
+            },
+            'events.facebookeventpage': {
+                'Meta': {'object_name': 'FacebookEventPage'},
+                'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+                'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+                'url': ('django.db.models.fields.CharField', [], {'max_length': '255'})
+            }
         }
-    }
 
     complete_apps = ['events']

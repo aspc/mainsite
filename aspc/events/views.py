@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from aspc.events.models import EventController, EventHelper
+from aspc.events.models import EventController, FacebookEventPageController, EventHelper
 from django.http import HttpResponse
 import urlparse
 from django.core import serializers
@@ -26,5 +26,5 @@ def event (request, event_id):
 # /events/facebook_page
 def facebook_page (request):
 	if request.method == 'POST':
-		new_event_page = EventController.new_event_facebook_page(dict(urlparse.parse_qsl(request.body)))
+		new_event_page = FacebookEventPageController.new_facebook_event_page(dict(urlparse.parse_qsl(request.body)))
 		return HttpResponse(serializers.serialize('json', [new_event_page])) # Return a JSON hash of the new event page

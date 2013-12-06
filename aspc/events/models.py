@@ -28,12 +28,41 @@ class Event(models.Model):
         verbose_name_plural = "Events"
 
 
-class EventFacebookPage(models.Model):
+class FacebookEventPage(models.Model):
 	name = models.CharField(max_length=CHARFIELD_MAX_LENGTH)
 	url = models.CharField(max_length=CHARFIELD_MAX_LENGTH)
 
 	def __unicode__(self):
 	    return self.name
+
+class FacebookEventPageController(object):
+	def __unicode__(self):
+	    return self.name
+
+	@staticmethod
+	def new_facebook_event_page(data):
+		page_data = FacebookBackend().get_page_data(data['page_url'])
+
+		event_page = FacebookEventPage();
+		for key, value in page_data.items():
+			setattr(event_page, key, value)
+		event_page.save()
+
+		FacebookEventPageController().scrape_page_events(event_page)
+
+		return event_page
+
+	@staticmethod
+	def scrape_page_events(event_page):
+		event_page_event_ids = FacebookBackend().get_page_event_ids(event_page.url)
+		for event_id in event_page_event_ids:
+			# Mimics raw data being passed via GET so we can reuse the new_event method
+			normalized_event_data = {
+				'event_source': 'facebook',
+				'event_url': 'http://facebook.com/events/' + event_id
+			}
+			EventController().new_event(normalized_event_data)
+
 
 class EventController(object):
 	def __unicode__(self):
@@ -61,26 +90,6 @@ class EventController(object):
 		event.save()
 
 		return event
-
-	@staticmethod
-	def new_event_facebook_page(data):
-		page_data = FacebookBackend().get_page_data(data['page_url'])
-
-		event_page = EventFacebookPage();
-		for key, value in page_data.items():
-			setattr(event_page, key, value)
-		event_page.save()
-
-		event_page_event_ids = FacebookBackend().get_page_event_ids(event_page.url)
-		for event_id in event_page_event_ids:
-			# Mimics raw data being passed via GET so we can reuse the new_event method
-			normalized_event_data = {
-				'event_source': 'facebook',
-				'event_url': 'http://facebook.com/events/' + event_id
-			}
-			EventController().new_event(normalized_event_data)
-
-		return event_page
 
 	@staticmethod
 	def fetch_collegiatelink_events():
