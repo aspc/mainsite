@@ -60,7 +60,7 @@ ASPC.Events.calendar_data.latest_event_time = {{latest_event_time|date:"G"}};
 			<input type="text" id="facebook_page_url" name="facebook_page_url" />
 			<input type="button" value="Submit" onClick="ASPC.Events.submit_facebook_page()"/>
 
-			<p>Pages currently being watched:</b>
+			<p><b>Pages currently being watched:</b></p>
 			<ul>
 			{% for page in facebook_event_pages %}
 				<li>{{ page.name }}</li>
