@@ -63,6 +63,10 @@ class FacebookEventPageController(object):
 			}
 			EventController().new_event(normalized_event_data)
 
+	@staticmethod
+	def facebook_event_pages():
+		return FacebookEventPage.objects.all()
+
 
 class EventController(object):
 	def __unicode__(self):

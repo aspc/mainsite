@@ -6,11 +6,16 @@ from django.core import serializers
 
 # /events
 def home (request):
-	if request.method == 'GET':
+	if request.method == 'GET': # Render the events index on GET
 		events = EventController.approved_events()
-		return render(request, 'events/home.html', {'events': events, 'earliest_event_time': EventHelper.earliest_event_time(events), 'latest_event_time': EventHelper.latest_event_time(events)}) # Render the events index on GET
-	elif request.method == 'POST':
-		new_event = EventController.new_event(dict(urlparse.parse_qsl(request.body))) # Add an event manually on POST
+		return render(request, 'events/home.html', {
+			'events': events,
+			'earliest_event_time': EventHelper.earliest_event_time(events),
+			'latest_event_time': EventHelper.latest_event_time(events),
+			'facebook_event_pages': FacebookEventPageController.facebook_event_pages()
+		})
+	elif request.method == 'POST': # Add an event manually on POST
+		new_event = EventController.new_event(dict(urlparse.parse_qsl(request.body)))
 		return HttpResponse(serializers.serialize('json', [new_event])) # Return a JSON hash of the new event
 
 # /events/event/123
