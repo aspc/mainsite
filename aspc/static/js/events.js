@@ -133,7 +133,7 @@ ASPC.Events.submit_facebook_page = function () {
 		success: function (data) {
 			console.log('success');
 			new_page = JSON.parse(data)[0].fields;
-			alert('Thank you. Your page "' + new_page.name + '" has been added for event scraping. Its events will appear automatically.');
+			alert('Thank you. Your page "' + new_page.name + '" has been added to the watchlist. Its events will appear automatically.');
 			$('#facebook_page_url').val('');
 			return false;
 		},
