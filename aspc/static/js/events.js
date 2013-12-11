@@ -6,9 +6,11 @@
 var ASPC = ASPC || {};
 ASPC.Events = ASPC.Events || {};
 
-// Grabs the csrf_token from the DOM (something we pass along to authenticate the request)
 window.onload = function () {
+	// Grabs the csrf_token from the DOM (something we pass along to the server to authenticate requests)
 	ASPC.csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+
+	// Init the jQuery calendar on the page for events display
 	ASPC.Events.init_calendar();
 };
 
@@ -30,7 +32,7 @@ ASPC.Events.init_calendar = function () {
 ASPC.Events.submit_facebook_event = function () {
 	var url = $('#facebook_event_url').val() || '';
 
-	if (url.length === 0) {
+	if (!url.match(/https?:\/\/(?:www\.)?facebook\.com\/events\/\d+(?:\/\S+)?/)) {
 		alert('You must enter a valid Facebook URL!');
 		return false;
 	}
@@ -115,7 +117,7 @@ ASPC.Events.submit_manual_event = function () {
 ASPC.Events.submit_facebook_page = function () {
 	var url = $('#facebook_page_url').val() || '';
 
-	if (url.length === 0) {
+	if (!url.match(/https?:\/\/(?:www\.)?facebook\.com\/\w+(?:\/\S+)?/)) {
 		alert('You must enter a valid Facebook Page URL!');
 		return false;
 	}

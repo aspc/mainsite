@@ -14,19 +14,19 @@ def home (request):
 			'latest_event_time': EventHelper.latest_event_time(events),
 			'facebook_event_pages': FacebookEventPageController.facebook_event_pages()
 		})
-	elif request.method == 'POST': # Add an event manually on POST
-		new_event = EventController.new_event(dict(urlparse.parse_qsl(request.body)))
-		return HttpResponse(serializers.serialize('json', [new_event])) # Return a JSON hash of the new event
 
 # /events/event/123
 def event (request, event_id):
-	if request.method == 'GET':
+	if request.method == 'GET': # Render an event page for the corresponding event_id on GET
 		event = EventController.event_with_id(event_id)
 
 		if not event:
 			return render(request, 'events/error.html', {'event_id': event_id})
 		else:
 			return render(request, 'events/event_description.html', {'event': event})
+	elif request.method == 'POST': # Add an event manually on POST
+		new_event = EventController.new_event(dict(urlparse.parse_qsl(request.body)))
+		return HttpResponse(serializers.serialize('json', [new_event])) # Return a JSON hash of the new event
 
 # /events/facebook_page
 def facebook_page (request):
