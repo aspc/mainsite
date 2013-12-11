@@ -4,10 +4,12 @@ import logging
 from datetime import datetime
 from HTMLParser import HTMLParser
 import re
+from aspc.events.exceptions import InvalidEventException
 
 logger = logging.getLogger(__name__)
 
 class CollegiateLinkBackend(object):
+    required_fields = ('location', 'start', 'description') # 'name' is also required but check for it in a different way
     rss_url = 'https://claremont.collegiatelink.net/EventRss/EventsRss';
 
     def _get_rss(self):
@@ -20,6 +22,10 @@ class CollegiateLinkBackend(object):
         events_xml_root = self._get_rss()
 
         for item in events_xml_root.iter('item'):
+            # Checks for the event title
+            if not item.find('title').text or item.find('title').text == '':
+                raise InvalidEventException('Event does not have a title time.')
+
             event = {
                 'name': item.find('title').text,
                 'url': item.find('link').text,
@@ -28,8 +34,12 @@ class CollegiateLinkBackend(object):
             # CollegiateLink provides poorly-formed HTML in its RSS feed, so it is necessary to further parse it
             parser = CollegiateLinkHTMLParser()
             parser.feed(item.find('description').text)
-            if parser.parsed_data['start'] == '': # If the event doesn't have a data, don't add it to the calendar
+            if parser.parsed_data['start'] == '': # If the event doesn't have a date, don't add it to the calendar
                 continue
+
+            # Checks if the parsed data includes all the necessary fields
+            if not all((key in parser.parsed_data.keys()) for key in self.required_fields):
+                raise InvalidEventException('Unable to retrieve page details.')
 
             event['location'] = parser.parsed_data['location']
             event['description'] = parser.parsed_data['description']

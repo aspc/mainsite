@@ -57,7 +57,7 @@ ASPC.Events.submit_facebook_event = function () {
 		},
 		error: function (jqXHR, t, e) {
 			console.log('error');
-			alert('Something went wrong! Are you sure the event you submitted is public?');
+			alert('Something went wrong! Error: ' + e);
 			return false;
 		}
 	});
@@ -108,7 +108,7 @@ ASPC.Events.submit_manual_event = function () {
 		},
 		error: function (jqXHR, t, e) {
 			console.log('error');
-			alert('Something went wrong! Please try again.');
+			alert('Something went wrong! Error: ' + e);
 			return false;
 		}
 	});
@@ -141,7 +141,7 @@ ASPC.Events.submit_facebook_page = function () {
 		},
 		error: function (jqXHR, t, e) {
 			console.log('error');
-			alert('Something went wrong!');
+			alert('Something went wrong! Error: ' + e);
 			return false;
 		}
 	});

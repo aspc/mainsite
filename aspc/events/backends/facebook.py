@@ -2,7 +2,7 @@ import dateutil.parser
 from django.conf import settings
 import requests
 import urlparse
-from aspc.events.backends import InvalidEventException
+from aspc.events.exceptions import InvalidEventException, InvalidFacebookEventPageException
 import re
 import logging
 import pytz
@@ -10,7 +10,8 @@ import pytz
 logger = logging.getLogger(__name__)
 
 class FacebookBackend(object):
-    required_fields = ('name', 'location', 'start_time', 'description')
+    event_required_fields = ('name', 'location', 'start_time', 'description')
+    page_required_fields = ('name', 'link')
     GRAPH_API_TEMPLATE = 'https://graph.facebook.com/'
     event_link_template = re.compile(r'https?://(?:www\.)?facebook.com/events/(?P<event_id>\d+)')
     page_link_template = re.compile(r'https?://(?:www\.)?facebook.com/(?P<page_id>\w+)')
@@ -39,10 +40,8 @@ class FacebookBackend(object):
             }
         )
 
-        if response.status_code == 400:
-            InvalidEventException("Unable to retrieve event details. Is the event public?")
-        elif not response.status_code == 200:
-            response.raise_for_status()
+        if response.status_code != 200:
+            raise InvalidEventException('Unable to retrieve event details.')
 
         return response.json()
 
@@ -51,10 +50,8 @@ class FacebookBackend(object):
             self.GRAPH_API_TEMPLATE + page_id
         )
 
-        if response.status_code == 400:
-            InvalidEventException("Unable to retrieve page details.")
-        elif not response.status_code == 200:
-            response.raise_for_status()
+        if response.status_code != 200:
+            raise InvalidFacebookEventPageException('Unable to retrieve page details.')
 
         return response.json()
 
@@ -66,21 +63,19 @@ class FacebookBackend(object):
             }
         )
 
-        if response.status_code == 400:
-            InvalidEventException("Unable to retrieve event details. Is the event public?")
-        elif not response.status_code == 200:
-            response.raise_for_status()
+        if response.status_code != 200:
+            raise InvalidFacebookEventPageException('Unable to retrieve page event details.')
 
         return response.json()['data']
 
     def _parse_event_data(self, event_data):
         # Checks if the event has a start and end time
         if event_data.get('is_date_only', True):
-            raise InvalidEventException("Submitted events must have a time and date")
+            raise InvalidEventException('Event does not have a specific start time.')
 
         # Checks if the event has all the other necessary fields
-        if not all((key in event_data.keys()) for key in self.required_fields):
-            raise InvalidEventException("Unable to retrieve event details. Is the event public?")
+        if not all((key in event_data.keys()) for key in self.event_required_fields):
+            raise InvalidEventException('Unable to retrieve event details.')
 
         start_dt = dateutil.parser.parse(event_data['start_time'])
         start = start_dt.astimezone(pytz.UTC)
@@ -101,6 +96,10 @@ class FacebookBackend(object):
         return normalized
 
     def _parse_page_data(self, page_data):
+        # Checks if the page has all the necessary fields
+        if not all((key in page_data.keys()) for key in self.page_required_fields):
+            raise InvalidFacebookEventPageException('Unable to retrieve page details.')
+
         normalized = {
             'name': page_data['name'],
             'url': page_data['link']
@@ -108,16 +107,29 @@ class FacebookBackend(object):
 
         return normalized
 
+    # Public
+    # Intended to be invoked by EventController#new_event
     def get_event_data(self, event_url):
-        event_id = self.event_link_template.match(event_url).groupdict()['event_id']
+        try:
+            event_id = self.event_link_template.match(event_url).groupdict()['event_id']
+        except:
+            # Validation also happens client-side so an error is unlikely to occur here
+            raise InvalidEventException('Invalid url: ' + event_url)
+
         event_data = self._event_lookup(event_id)
 
         return self._parse_event_data(event_data)
 
+    # Public
+    # Intended to be invoked by FacebookEventPageController#scrape_page_events
     def get_page_event_ids(self, page_url):
-        page_id = self.page_link_template.match(page_url).groupdict()['page_id']
-        page_event_data = self._page_events_lookup(page_id)
+        try:
+            page_id = self.page_link_template.match(page_url).groupdict()['page_id']
+        except:
+            # Validation also happens client-side so an error is unlikely to occur here
+            raise InvalidFacebookEventPageException('Invalid url: ' + page_url)
 
+        page_event_data = self._page_events_lookup(page_id)
         normalized_events = []
 
         for event_data in page_event_data:
@@ -125,8 +137,15 @@ class FacebookBackend(object):
 
         return normalized_events
 
+    # Public
+    # Intended to be invoked by FacebookEventPageController#new_facebook_event_page
     def get_page_data(self, page_url):
-        page_id = self.page_link_template.match(page_url).groupdict()['page_id']
+        try:
+            page_id = self.page_link_template.match(page_url).groupdict()['page_id']
+        except:
+            # Validation also happens client-side so an error is unlikely to occur here
+            raise InvalidFacebookEventPageException('Invalid url: ' + page_url)
+
         page_data = self._page_lookup(page_id)
 
         return self._parse_page_data(page_data)

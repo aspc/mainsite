@@ -3,6 +3,7 @@ from aspc.events.models import EventController, FacebookEventPageController, Eve
 from django.http import HttpResponse
 import urlparse
 from django.core import serializers
+from aspc.events.exceptions import InvalidEventException, InvalidFacebookEventPageException
 
 # /events
 def home (request):
@@ -25,11 +26,24 @@ def event (request, event_id):
 		else:
 			return render(request, 'events/event_description.html', {'event': event})
 	elif request.method == 'POST': # Add an event manually on POST
-		new_event = EventController.new_event(dict(urlparse.parse_qsl(request.body)))
-		return HttpResponse(serializers.serialize('json', [new_event])) # Return a JSON hash of the new event
+		try:
+			new_event = EventController.new_event(dict(urlparse.parse_qsl(request.body)))
+		except (InvalidEventException, InvalidFacebookEventPageException) as e:
+			return HttpResponse(
+				content=serializers.serializer('json', [e.error_message]),
+				status=500
+			)
+		else:
+			return HttpResponse(serializers.serialize('json', [new_event])) # Return a JSON hash of the new event
 
 # /events/facebook_page
 def facebook_page (request):
 	if request.method == 'POST':
-		new_event_page = FacebookEventPageController.new_facebook_event_page(dict(urlparse.parse_qsl(request.body)))
+		try:
+			new_event_page = FacebookEventPageController.new_facebook_event_page(dict(urlparse.parse_qsl(request.body)))
+		except (InvalidEventException, InvalidFacebookEventPageException) as e:
+			return HttpResponse(
+				content=serializers.serializer('json', [e.error_message]),
+				status=500
+			)
 		return HttpResponse(serializers.serialize('json', [new_event_page])) # Return a JSON hash of the new event page
