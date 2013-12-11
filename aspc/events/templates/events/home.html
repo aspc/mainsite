@@ -16,28 +16,7 @@
 var ASPC = ASPC || {};
 ASPC.Events = ASPC.Events || {};
 ASPC.Events.calendar_data = ASPC.Events.calendar_data || {};
-
-ASPC.Events.calendar_data.events = [
-	{% for event in events %}
-		{
-			'title': '{{event.name}}',
-			'start': new Date({{event.start|date:"U"}} * 1000),
-			{% if event.end %}
-				'end': new Date({{event.end|date:"U"}} * 1000),
-			{% else %}
-				'end': null,
-			{% endif %}
-			'location': '{{event.location}}',
-			'description': '{{event.description}}',
-			'url': '/events/event/{{event.id}}',
-			'allDay': false
-		}
-		{% if not forloop.last %}
-		,
-		{% endif %}
-	{% endfor %}
-];
-
+ASPC.Events.calendar_data.events = {{ events|safe }};
 ASPC.Events.calendar_data.earliest_event_time = {{earliest_event_time|date:"G"}};
 ASPC.Events.calendar_data.latest_event_time = {{latest_event_time|date:"G"}};
 </script>

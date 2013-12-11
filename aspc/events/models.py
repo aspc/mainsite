@@ -3,7 +3,9 @@ from aspc.events.backends.facebook import FacebookBackend
 from aspc.events.backends.collegiatelink import CollegiateLinkBackend
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
+import time
 import logging
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -156,3 +158,22 @@ class EventHelper(object):
 			return max(start_times)
 		else:
 			return None
+
+	@staticmethod
+	def events_to_json(event_list):
+		parsed_events = [];
+
+		for event in event_list:
+			s = '{'
+			s += 'title: ' + json.dumps(event.name) + ', '
+			s += 'start: ' + str(time.mktime(event.start.timetuple())) + ', '
+			s += 'end: ' + (str(time.mktime(event.end.timetuple())) if event.end else 'null') + ', '
+			s += 'location: ' + (json.dumps(event.location) if event.location else 'null') + ', '
+			s += 'description: ' + (json.dumps(event.description) if event.description else 'null') + ', '
+			s += 'url: "/events/event/' + str(event.id) + '", '
+			s += 'allDay: false'
+			s += '}'
+
+			parsed_events.append(s)
+
+		return '[' + ', '.join(parsed_events) + ']'
