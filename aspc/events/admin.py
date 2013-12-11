@@ -1,5 +1,5 @@
 from django.contrib import admin
-from aspc.events.models import Event
+from aspc.events.models import Event, FacebookEventPage
 
 def approve_all(modeladmin, request, queryset):
     queryset.update(status='approved')
@@ -15,4 +15,9 @@ class EventAdmin(admin.ModelAdmin):
     ordering = ['status', 'name']
     actions = [approve_all, deny_all]
 
+class FacebookEventPageAdmin(admin.ModelAdmin):
+    list_display = ['name', 'url']
+    ordering = ['name']
+
 admin.site.register(Event, EventAdmin)
+admin.site.register(FacebookEventPage, FacebookEventPageAdmin)

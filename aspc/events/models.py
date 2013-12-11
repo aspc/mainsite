@@ -45,7 +45,9 @@ class FacebookEventPageController(object):
 	def new_facebook_event_page(data):
 		page_data = FacebookBackend().get_page_data(data['page_url'])
 
-		event_page = FacebookEventPage();
+		# Updates an existing event page or adds a new one to the database
+		# get_or_create returns an object and a boolean value specifying whether a new object was created or not
+		event_page, is_new = FacebookEventPage.objects.get_or_create(name=page_data['name'])
 		for key, value in page_data.items():
 			setattr(event_page, key, value)
 		event_page.save()
