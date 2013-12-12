@@ -6,6 +6,7 @@ from datetime import datetime
 import time
 import logging
 import json
+from aspc.events.exceptions import InvalidEventException
 
 logger = logging.getLogger(__name__)
 
@@ -66,7 +67,11 @@ class FacebookEventPageController(object):
 				'event_source': 'facebook',
 				'event_url': 'http://facebook.com/events/' + event_id
 			}
-			EventController().new_event(normalized_event_data)
+
+			try:
+				EventController().new_event(normalized_event_data)
+			except InvalidEventException:
+				pass # No need to be concerned if a page has malformed events... not our problem, we just won't import them
 
 	@staticmethod
 	def facebook_event_pages():

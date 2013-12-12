@@ -113,6 +113,7 @@ class FacebookBackend(object):
     def get_page_event_ids(self, page_id):
         page_event_ids = []
 
+        # First get the ids of the events that the page itself has created
         response = requests.get(
             self.GRAPH_API_TEMPLATE + page_id + '/events',
             params = {
@@ -125,6 +126,21 @@ class FacebookBackend(object):
 
         for event_data in response.json()['data']:
             page_event_ids.append(event_data['id'])
+
+        # Then get the ids of the events that the page has merely advertised on its wall
+        response = requests.get(
+            self.GRAPH_API_TEMPLATE + page_id + '/feed',
+            params = {
+                'access_token': self.facebook_token
+            }
+        )
+
+        if response.status_code != 200:
+            raise InvalidFacebookEventPageException('Unable to retrieve page event details.')
+
+        for wall_post in response.json()['data']:
+            if 'link' in wall_post and self.event_link_template.match(wall_post['link']):
+                page_event_ids.append(self.event_link_template.match(wall_post['link']).groupdict()['event_id'])
 
         return page_event_ids
 
