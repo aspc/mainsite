@@ -102,7 +102,8 @@ class FacebookBackend(object):
 
         normalized = {
             'name': page_data['name'],
-            'url': page_data['link']
+            'url': page_data['link'],
+            'page_id': page_data['id']
         }
 
         return normalized
@@ -122,13 +123,7 @@ class FacebookBackend(object):
 
     # Public
     # Intended to be invoked by FacebookEventPageController#scrape_page_events
-    def get_page_event_ids(self, page_url):
-        try:
-            page_id = self.page_link_template.match(page_url).groupdict()['page_id']
-        except:
-            # Validation also happens client-side so an error is unlikely to occur here
-            raise InvalidFacebookEventPageException('Invalid url: ' + page_url)
-
+    def get_page_event_ids(self, page_id):
         page_event_data = self._page_events_lookup(page_id)
         normalized_events = []
 

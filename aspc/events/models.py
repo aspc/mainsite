@@ -33,6 +33,7 @@ class Event(models.Model):
 class FacebookEventPage(models.Model):
 	name = models.CharField(max_length=CHARFIELD_MAX_LENGTH)
 	url = models.CharField(max_length=CHARFIELD_MAX_LENGTH)
+	page_id = models.CharField(max_length=CHARFIELD_MAX_LENGTH)
 
 	def __unicode__(self):
 	    return self.name
@@ -58,7 +59,7 @@ class FacebookEventPageController(object):
 
 	@staticmethod
 	def scrape_page_events(event_page):
-		event_page_event_ids = FacebookBackend().get_page_event_ids(event_page.url)
+		event_page_event_ids = FacebookBackend().get_page_event_ids(event_page.page_id)
 		for event_id in event_page_event_ids:
 			# Mimics raw data being passed via GET so we can reuse the new_event method
 			normalized_event_data = {

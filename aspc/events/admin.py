@@ -16,7 +16,7 @@ class EventAdmin(admin.ModelAdmin):
     actions = [approve_all, deny_all]
 
 class FacebookEventPageAdmin(admin.ModelAdmin):
-    list_display = ['name', 'url']
+    list_display = ['name', 'page_id', 'url']
     ordering = ['name']
 
 admin.site.register(Event, EventAdmin)
