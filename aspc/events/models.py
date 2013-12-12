@@ -97,6 +97,10 @@ class EventController(object):
 		else:  # If corrupted data or erroneous POST request, do nothing
 			return False
 
+		# Updates an existing event or adds a new one to the database
+		# get_or_create returns an object and a boolean value specifying whether a new object was created or not
+		event, is_new = Event.objects.get_or_create(name=event_data['name'], defaults={'start': datetime.today(), 'status': 'pending'})
+
 		# Creates a new Event model with the data
 		event = Event()
 		for key, value in event_data.items():
