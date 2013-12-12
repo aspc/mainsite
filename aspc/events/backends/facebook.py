@@ -55,19 +55,6 @@ class FacebookBackend(object):
 
         return response.json()
 
-    def _page_events_lookup(self, page_id):
-        response = requests.get(
-            self.GRAPH_API_TEMPLATE + page_id + '/events',
-            params = {
-                'access_token': self.facebook_token
-            }
-        )
-
-        if response.status_code != 200:
-            raise InvalidFacebookEventPageException('Unable to retrieve page event details.')
-
-        return response.json()['data']
-
     def _parse_event_data(self, event_data):
         # Checks if the event has a start and end time
         if event_data.get('is_date_only', True):
@@ -124,13 +111,22 @@ class FacebookBackend(object):
     # Public
     # Intended to be invoked by FacebookEventPageController#scrape_page_events
     def get_page_event_ids(self, page_id):
-        page_event_data = self._page_events_lookup(page_id)
-        normalized_events = []
+        page_event_ids = []
 
-        for event_data in page_event_data:
-            normalized_events.append(event_data['id'])
+        response = requests.get(
+            self.GRAPH_API_TEMPLATE + page_id + '/events',
+            params = {
+                'access_token': self.facebook_token
+            }
+        )
 
-        return normalized_events
+        if response.status_code != 200:
+            raise InvalidFacebookEventPageException('Unable to retrieve page event details.')
+
+        for event_data in response.json()['data']:
+            page_event_ids.append(event_data['id'])
+
+        return page_event_ids
 
     # Public
     # Intended to be invoked by FacebookEventPageController#new_facebook_event_page
