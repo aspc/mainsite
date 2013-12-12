@@ -12,7 +12,7 @@
 	{% if events %}
 	{% include "events/todays_events.html" %}
 	{% else %}
-	<p>No events today.</p>
+	<p>No events today. <a href="{% url "events" %}">See full calendar...</a></p>
 	{% endif %}
 </section>
 <section class="group primary news">
