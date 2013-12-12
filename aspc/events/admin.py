@@ -10,7 +10,7 @@ def deny_all(modeladmin, request, queryset):
 deny_all.short_description = "Deny selected events"
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ['name', 'status', 'description']
+    list_display = ['name', 'status', 'start', 'description']
     list_editable = ['status']
     ordering = ['status', 'name']
     actions = [approve_all, deny_all]
