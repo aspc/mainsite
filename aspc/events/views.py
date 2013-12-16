@@ -28,9 +28,7 @@ def event (request, event_id):
 	elif request.method == 'POST': # Add an event manually on POST
 		try:
 			new_event = EventController.new_event(dict(urlparse.parse_qsl(request.body)))
-		except InvalidEventException: # Display no error since it's not the submitter's fault that the page has malformed events
-			pass
-		except InvalidFacebookEventPageException as e:
+		except (InvalidEventException, InvalidFacebookEventPageException) as e:
 			return HttpResponse(
 				content=serializers.serializer('json', [e.error_message]),
 				status=500
@@ -43,7 +41,9 @@ def facebook_page (request):
 	if request.method == 'POST':
 		try:
 			new_event_page = FacebookEventPageController.new_facebook_event_page(dict(urlparse.parse_qsl(request.body)))
-		except (InvalidEventException, InvalidFacebookEventPageException) as e:
+		except InvalidEventException: # Display no error since it's not the submitter's fault that the page has malformed events
+			pass
+		except InvalidFacebookEventPageException as e:
 			return HttpResponse(
 				content=serializers.serializer('json', [e.error_message]),
 				status=500
