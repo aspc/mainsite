@@ -57,7 +57,7 @@ ASPC.Events.submit_facebook_event = function () {
 		},
 		error: function (jqXHR, t, e) {
 			console.log('error');
-			alert('Something went wrong! Error: ' + e);
+			alert('Something went wrong! Error:\n' + jqXHR.responseText);
 			return false;
 		}
 	});
@@ -111,7 +111,7 @@ ASPC.Events.submit_manual_event = function () {
 		},
 		error: function (jqXHR, t, e) {
 			console.log('error');
-			alert('Something went wrong! Error: ' + e);
+			alert('Something went wrong! Error:\n' + jqXHR.responseText);
 			return false;
 		}
 	});
@@ -144,7 +144,7 @@ ASPC.Events.submit_facebook_page = function () {
 		},
 		error: function (jqXHR, t, e) {
 			console.log('error');
-			alert('Something went wrong! Error: ' + e);
+			alert('Something went wrong! Error:\n' + jqXHR.responseText);
 			return false;
 		}
 	});

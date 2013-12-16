@@ -6,7 +6,7 @@ from datetime import datetime
 import time
 import logging
 import json
-from aspc.events.exceptions import InvalidEventException
+from aspc.events.exceptions import InvalidEventException, EventAlreadyExistsException
 
 logger = logging.getLogger(__name__)
 
@@ -90,6 +90,10 @@ class EventController(object):
 			event_data = FacebookBackend().get_event_data(data['event_url'])
 		elif data['event_source'] == 'manual':
 			event_data = data
+			# Checks if an event of the same name already exists
+			if Event.objects.get(name=event_data['name']):
+				raise EventAlreadyExistsException('Event with name "' + event_data['name'] + '" already exists.')
+
 			event_data['start'] = datetime.strptime(event_data['start'], '%Y-%m-%dT%H:%M')
 			if 'end' in event_data and event_data['end'] != '':
 				event_data['end'] = datetime.strptime(event_data['end'], '%Y-%m-%dT%H:%M')

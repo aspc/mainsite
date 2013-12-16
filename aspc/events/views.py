@@ -3,7 +3,7 @@ from aspc.events.models import EventController, FacebookEventPageController, Eve
 from django.http import HttpResponse
 import urlparse
 from django.core import serializers
-from aspc.events.exceptions import InvalidEventException, InvalidFacebookEventPageException
+from aspc.events.exceptions import InvalidEventException, InvalidFacebookEventPageException, EventAlreadyExistsException
 
 # /events
 def home (request):
@@ -28,9 +28,9 @@ def event (request, event_id):
 	elif request.method == 'POST': # Add an event manually on POST
 		try:
 			new_event = EventController.new_event(dict(urlparse.parse_qsl(request.body)))
-		except (InvalidEventException, InvalidFacebookEventPageException) as e:
+		except (InvalidEventException, InvalidFacebookEventPageException, EventAlreadyExistsException) as e:
 			return HttpResponse(
-				content=serializers.serializer('json', [e.error_message]),
+				content=e.error_message,
 				status=500
 			)
 		else:
@@ -45,7 +45,7 @@ def facebook_page (request):
 			pass
 		except InvalidFacebookEventPageException as e:
 			return HttpResponse(
-				content=serializers.serializer('json', [e.error_message]),
+				content=e.error_message,
 				status=500
 			)
 		return HttpResponse(serializers.serialize('json', [new_event_page])) # Return a JSON hash of the new event page
