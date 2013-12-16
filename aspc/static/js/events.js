@@ -90,6 +90,9 @@ ASPC.Events.submit_manual_event = function () {
 	} else if (manual_event.host.length === 0) {
 		alert('You must enter a host name!');
 		return false;
+	} else if (manual_event.url.length && !manual_event.url.match(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/)) {
+		alert('You must enter a valid URL!');
+		return false;
 	}
 
 	$.ajax({
