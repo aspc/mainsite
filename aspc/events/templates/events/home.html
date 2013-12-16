@@ -17,8 +17,16 @@ var ASPC = ASPC || {};
 ASPC.Events = ASPC.Events || {};
 ASPC.Events.calendar_data = ASPC.Events.calendar_data || {};
 ASPC.Events.calendar_data.events = {{ events|safe }};
+{% if earliest_event_time %}
 ASPC.Events.calendar_data.earliest_event_time = {{earliest_event_time|date:"G"}};
+{% else %}
+ASPC.Events.calendar_data.earliest_event_time = 0;
+{% endif %}
+{% if latest_event_time %}
 ASPC.Events.calendar_data.latest_event_time = {{latest_event_time|date:"G"}};
+{% else %}
+ASPC.Events.calendar_data.latest_event_time = 23;
+{% endif %}
 </script>
 {% endblock %}
 
