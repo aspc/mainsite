@@ -1097,7 +1097,8 @@ header#aspc_main form input {
 	width: 36%;
 	background: #ddd;
 	height: 100%;
-	padding: 2%;
+	padding-left: 2%;
+	padding-right: 2%;
 }
 
 .events aside {
@@ -1110,7 +1111,6 @@ header#aspc_main form input {
 
 .events ol {
 	background: #2f5184;
-	min-height: 15em;
 	list-style-type: none;
 	padding: 0;
 	margin: 0;
@@ -1126,7 +1126,7 @@ header#aspc_main form input {
 	width: 78%;
 	padding-left: 2%;
 	padding-right: 2%;
-	padding-bottom: 2%;
+	padding-bottom: 2.3%;
 }
 
 .event_info:hover {

@@ -13,14 +13,16 @@
 				</time>
 				<div class="event_info">
 					<h3>{{ event.name }}</h3>
-					<p class="host">{{ event.host }}</p>
-					<p class="location">{{ event.location }}</p>
+					<p class="host"><b>Host:</b> {{ event.host }}</p>
+					<p class="location"><b>Location:</b> {{ event.location }}</p>
 					<aside>
 						<h3>{{ event.name }}</h3>
 						<p class="host">{{ event.host }}</p>
 						<p class="location">{{ event.location }}</p>
 						<p class="description">
-							{{ event.description }} <br /> <br />
+							{{ event.description }}
+						</p>
+						<p class="more_link">
 							<a href="/events/event/{{ event.id }}">More...</a>
 						</p>
 					</aside>
@@ -34,6 +36,7 @@
 	<p id="events_description_host"></p>
 	<p id="events_description_location"></p>
 	<p id="events_description_description"></p>
+	<p id="events_description_more_link"></p>
 </div>
 <div id="more">
 	<a href="{% url "events" %}">see full calendar &rarr;</a>
