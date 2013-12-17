@@ -91,7 +91,7 @@ class EventController(object):
 		elif data['event_source'] == 'manual':
 			event_data = data
 			# Checks if an event of the same name already exists
-			if Event.objects.get(name=event_data['name']):
+			if Event.objects.filter(name=event_data['name']):
 				raise EventAlreadyExistsException('Event with name "' + event_data['name'] + '" already exists.')
 
 			event_data['start'] = datetime.strptime(event_data['start'], '%Y-%m-%dT%H:%M')
