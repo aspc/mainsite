@@ -13,8 +13,9 @@ class FacebookBackend(object):
     event_required_fields = ('name', 'location', 'start_time', 'description')
     page_required_fields = ('name', 'link')
     GRAPH_API_TEMPLATE = 'https://graph.facebook.com/'
-    event_link_template = re.compile(r'https?://(?:www\.)?facebook.com/events/(?P<event_id>\d+)')
-    page_link_template = re.compile(r'https?://(?:www\.)?facebook.com/(?P<page_id>\w+)')
+    event_link_template = re.compile(r'(?:https?:\/\/(?:www\.)?)?facebook.com/events/(?P<event_id>\d+)')
+
+    page_link_template = re.compile(r'(?:https?:\/\/(?:www\.)?)?facebook.com/(?P<page_id>\w+)')
 
     def __init__(self, options=None):
         self.facebook_token = self._get_access_token()

@@ -68,6 +68,6 @@ window.onload = function () {
 	// Bind listeners to the event_info elements to update the event description div when clicked
 	$('.event_info').on('click', ASPC.Home.update_event_description);
 
-	// Initializes the events_descriptions panel
+	// Initializes the events_description panel
 	$($('.event_info')[0]).trigger('click');
 };

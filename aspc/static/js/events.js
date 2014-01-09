@@ -57,7 +57,7 @@ ASPC.Events.submit_facebook_event = function () {
 		},
 		error: function (jqXHR, t, e) {
 			console.log('error');
-			alert('Something went wrong! Error:\n' + jqXHR.responseText);
+			alert('Something went wrong! Error:\n' + (jqXHR.responseText || e));
 			return false;
 		}
 	});
@@ -111,7 +111,7 @@ ASPC.Events.submit_manual_event = function () {
 		},
 		error: function (jqXHR, t, e) {
 			console.log('error');
-			alert('Something went wrong! Error:\n' + jqXHR.responseText);
+			alert('Something went wrong! Error:\n' + (jqXHR.responseText || e));
 			return false;
 		}
 	});
@@ -120,7 +120,7 @@ ASPC.Events.submit_manual_event = function () {
 ASPC.Events.submit_facebook_page = function () {
 	var url = $('#facebook_page_url').val() || '';
 
-	if (!url.match(/https?:\/\/(?:www\.)?facebook\.com\/\w+(?:\/\S+)?/)) {
+	if (!url.match(/(?:https?:\/\/(?:www\.)?)?facebook\.com\/\w+(?:\/\S+)?/)) {
 		alert('You must enter a valid Facebook Page URL!');
 		return false;
 	}
@@ -144,7 +144,7 @@ ASPC.Events.submit_facebook_page = function () {
 		},
 		error: function (jqXHR, t, e) {
 			console.log('error');
-			alert('Something went wrong! Error:\n' + jqXHR.responseText);
+			alert('Something went wrong! Error:\n' + (jqXHR.responseText || e));
 			return false;
 		}
 	});
