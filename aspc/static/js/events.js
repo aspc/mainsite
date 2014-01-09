@@ -75,11 +75,15 @@ ASPC.Events.submit_manual_event = function () {
 		url: $('#manual_event_url').val()
 	};
 
+	// Validate the all the appropriate event information has been added correctly
 	if (manual_event.name.length === 0) {
 		alert('You must enter an event name!');
 		return false;
 	} else if (manual_event.start.length === 0) {
 		alert('You must enter a start time!');
+		return false;
+	} else if (!manual_event.start.match(/^(\d{4})[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01]) ([01]\d|2[0-3]):([0-5]\d)$/)) {
+		alert('You must enter a start time in the format YYYY-MM-DD HH:MM!');
 		return false;
 	} else if (manual_event.location.length === 0) {
 		alert('You must enter a location!');
@@ -92,6 +96,17 @@ ASPC.Events.submit_manual_event = function () {
 		return false;
 	} else if (manual_event.url.length && !manual_event.url.match(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/)) {
 		alert('You must enter a valid URL!');
+		return false;
+	}
+
+	// Reformat the times if necessary
+	var start_time = manual_event.start.match(/^(\d{4})[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01]) ([01]\d|2[0-3]):([0-5]\d)$/);
+	manual_event.start = start_time[1] + '-' + start_time[2] + '-' + start_time[3] + 'T' + start_time[4] + ':' + start_time[5];
+	if (end_time = manual_event.end.match(/^(\d{4})[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01]) ([01]\d|2[0-3]):([0-5]\d)$/)) {
+		manual_event.end = end_time[1] + '-' + end_time[2] + '-' + end_time[3] + 'T' + end_time[4] + ':' + end_time[5];
+	}
+	else {
+		alert('You must enter an end time in the format YYYY-MM-DD HH:MM!');
 		return false;
 	}
 
