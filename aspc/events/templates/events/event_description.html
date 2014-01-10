@@ -49,6 +49,7 @@
 			{{ event.description }}
 		</td>
 	</tr>
+	{% if event.url %}
 	<tr>
 		<td>
 			Link
@@ -57,5 +58,6 @@
 			<a href="{{ event.url }}">Original Event Page</a>
 		</td>
 	</tr>
+	{% endif %}
 </table>
 {% endblock %}
