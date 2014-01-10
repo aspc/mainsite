@@ -63,7 +63,7 @@ class FacebookBackend(object):
 
         # Checks if the event has all the other necessary fields
         if not all((key in event_data.keys()) for key in self.event_required_fields):
-            raise InvalidEventException('Unable to retrieve event details.')
+            raise InvalidEventException('The event is missing location or description information.')
 
         start_dt = dateutil.parser.parse(event_data['start_time'])
         start = start_dt.astimezone(pytz.UTC)
