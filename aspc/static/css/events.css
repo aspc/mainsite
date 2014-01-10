@@ -1,7 +1,9 @@
-/* @override http://127.0.0.1:8000/static/css/eatshop.css */
-
 #facebook_submission, #manual_submission {
 	float: left;
 	width: 46%;
 	padding: 1%;
+}
+
+#facebook_event_submit_loading, #facebook_page_submit_loading, #manual_submit_loading {
+	display: none;
 }

@@ -37,11 +37,15 @@ ASPC.Events.submit_facebook_event = function () {
 		return false;
 	}
 
+	// Give indication of async request to the user
+	$('#facebook_event_submit_button').attr('disabled', true);
+	$('#facebook_event_submit_loading').show();
+
 	$.ajax({
 		url: 'event/',
 		type: 'POST',
 		beforeSend: function (request) {
-			request.setRequestHeader("X-CSRFToken", ASPC.csrf_token);
+			request.setRequestHeader('X-CSRFToken', ASPC.csrf_token);
 		},
 		data: {
 			event_source: 'facebook',
@@ -50,6 +54,8 @@ ASPC.Events.submit_facebook_event = function () {
 		timeout: 10000,
 		success: function (data) {
 			console.log('success');
+			$('#facebook_event_submit_button').attr('disabled', false);
+			$('#facebook_event_submit_loading').hide();
 			new_event = JSON.parse(data)[0].fields;
 			alert('Thank you. Your event "' + new_event.name + '" has been added to the queue for approval. It will appear shortly.');
 			$('#facebook_event_url').val('');
@@ -57,6 +63,8 @@ ASPC.Events.submit_facebook_event = function () {
 		},
 		error: function (jqXHR, t, e) {
 			console.log('error');
+			$('#facebook_event_submit_button').attr('disabled', false);
+			$('#facebook_event_submit_loading').hide();
 			alert('Something went wrong! Error:\n' + (jqXHR.responseText || e));
 			return false;
 		}
@@ -82,7 +90,7 @@ ASPC.Events.submit_manual_event = function () {
 	} else if (manual_event.start.length === 0) {
 		alert('You must enter a start time!');
 		return false;
-	} else if (!manual_event.start.match(/^(\d{4})[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01]) ([01]\d|2[0-3]):([0-5]\d)$/)) {
+	} else if (!manual_event.start.match(/^(\d{4})[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])T([01]\d|2[0-3]):([0-5]\d)$/) && !manual_event.start.match(/^(\d{4})[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01]) ([01]\d|2[0-3]):([0-5]\d)$/)) {
 		alert('You must enter a start time in the format YYYY-MM-DD HH:MM!');
 		return false;
 	} else if (manual_event.location.length === 0) {
@@ -100,32 +108,43 @@ ASPC.Events.submit_manual_event = function () {
 	}
 
 	// Reformat the times if necessary
-	var start_time = manual_event.start.match(/^(\d{4})[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01]) ([01]\d|2[0-3]):([0-5]\d)$/);
-	manual_event.start = start_time[1] + '-' + start_time[2] + '-' + start_time[3] + 'T' + start_time[4] + ':' + start_time[5];
-	if (end_time = manual_event.end.match(/^(\d{4})[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01]) ([01]\d|2[0-3]):([0-5]\d)$/)) {
-		manual_event.end = end_time[1] + '-' + end_time[2] + '-' + end_time[3] + 'T' + end_time[4] + ':' + end_time[5];
+	if (start_time = manual_event.start.match(/^(\d{4})[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01]) ([01]\d|2[0-3]):([0-5]\d)$/)) {
+		manual_event.start = start_time[1] + '-' + start_time[2] + '-' + start_time[3] + 'T' + start_time[4] + ':' + start_time[5];
 	}
-	else {
-		alert('You must enter an end time in the format YYYY-MM-DD HH:MM!');
-		return false;
+	if (manual_event.end.length) {
+		if (end_time = manual_event.end.match(/^(\d{4})[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01]) ([01]\d|2[0-3]):([0-5]\d)$/)) {
+			manual_event.end = end_time[1] + '-' + end_time[2] + '-' + end_time[3] + 'T' + end_time[4] + ':' + end_time[5];
+		}
+		else {
+			alert('You must enter an end time in the format YYYY-MM-DD HH:MM!');
+			return false;
+		}
 	}
+
+	// Give indication of async request to the user
+	$('#manual_submit_button').attr('disabled', true);
+	$('#manual_submit_loading').show();
 
 	$.ajax({
 		url: 'event/',
 		type: 'POST',
 		beforeSend: function (request) {
-			request.setRequestHeader("X-CSRFToken", ASPC.csrf_token);
+			request.setRequestHeader('X-CSRFToken', ASPC.csrf_token);
 		},
 		data: manual_event,
 		timeout: 10000,
 		success: function (data) {
 			console.log('success');
+			$('#manual_submit_button').attr('disabled', false);
+			$('#manual_submit_loading').hide();
 			new_event = JSON.parse(data)[0].fields;
 			alert('Thank you. Your event "' + new_event.name + '" has been added to the queue for approval. It will appear shortly.');
 			return false;
 		},
 		error: function (jqXHR, t, e) {
 			console.log('error');
+			$('#manual_submit_button').attr('disabled', false);
+			$('#manual_submit_loading').hide();
 			alert('Something went wrong! Error:\n' + (jqXHR.responseText || e));
 			return false;
 		}
@@ -140,11 +159,15 @@ ASPC.Events.submit_facebook_page = function () {
 		return false;
 	}
 
+	// Give indication of async request to the user
+	$('#facebook_page_submit_button').attr('disabled', true);
+	$('#facebook_page_submit_loading').show();
+
 	$.ajax({
 		url: 'facebook_page/',
 		type: 'POST',
 		beforeSend: function (request) {
-			request.setRequestHeader("X-CSRFToken", ASPC.csrf_token);
+			request.setRequestHeader('X-CSRFToken', ASPC.csrf_token);
 		},
 		data: {
 			page_url: url
@@ -152,6 +175,8 @@ ASPC.Events.submit_facebook_page = function () {
 		timeout: 10000,
 		success: function (data) {
 			console.log('success');
+			$('#facebook_page_submit_button').attr('disabled', false);
+			$('#facebook_page_submit_loading').hide();
 			new_page = JSON.parse(data)[0].fields;
 			alert('Thank you. Your page "' + new_page.name + '" has been added to the watchlist. Its events will appear automatically.');
 			$('#facebook_page_url').val('');
@@ -159,6 +184,8 @@ ASPC.Events.submit_facebook_page = function () {
 		},
 		error: function (jqXHR, t, e) {
 			console.log('error');
+			$('#facebook_page_submit_button').attr('disabled', false);
+			$('#facebook_page_submit_loading').hide();
 			alert('Something went wrong! Error:\n' + (jqXHR.responseText || e));
 			return false;
 		}
