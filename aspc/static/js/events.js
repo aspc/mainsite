@@ -139,6 +139,13 @@ ASPC.Events.submit_manual_event = function () {
 			$('#manual_submit_loading').hide();
 			new_event = JSON.parse(data)[0].fields;
 			alert('Thank you. Your event "' + new_event.name + '" has been added to the queue for approval. It will appear shortly.');
+			$('#manual_event_name').val('');
+			$('#manual_event_start').val('');
+			$('#manual_event_end').val('');
+			$('#manual_event_location').val('');
+			$('#manual_event_description').val('');
+			$('#manual_event_host').val('');
+			$('#manual_event_url').val('');
 			return false;
 		},
 		error: function (jqXHR, t, e) {
