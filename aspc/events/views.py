@@ -9,10 +9,11 @@ from aspc.events.exceptions import InvalidEventException, InvalidFacebookEventPa
 def home (request):
 	if request.method == 'GET': # Render the events index on GET
 		events = EventController.approved_events()
+		weeks_events = EventController.weeks_events()
 		return render(request, 'events/home.html', {
 			'events': EventHelper.events_to_json(events),
-			'earliest_event_time': EventHelper.earliest_event_time(events),
-			'latest_event_time': EventHelper.latest_event_time(events),
+			'earliest_event_time': EventHelper.earliest_event_time(weeks_events),
+			'latest_event_time': EventHelper.latest_event_time(weeks_events),
 			'facebook_event_pages': FacebookEventPageController.facebook_event_pages()
 		})
 

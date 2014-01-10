@@ -2,7 +2,7 @@ from django.db import models
 from aspc.events.backends.facebook import FacebookBackend
 from aspc.events.backends.collegiatelink import CollegiateLinkBackend
 from django.core.exceptions import ObjectDoesNotExist
-from datetime import datetime
+from datetime import datetime, timedelta
 import time
 import logging
 import json
@@ -151,6 +151,16 @@ class EventController(object):
 	def todays_events():
 		try:
 			event = (EventController.approved_events()).filter(start__year=datetime.today().year, start__month=datetime.today().month, start__day=datetime.today().day)
+		except ObjectDoesNotExist:
+			return None
+		else:
+			return event
+
+	@staticmethod
+	def weeks_events():
+		try:
+			start_week = datetime.today() - timedelta(days=datetime.today().weekday() + 1)
+			event = (EventController.approved_events()).filter(start__range=[start_week, start_week + timedelta(7)])
 		except ObjectDoesNotExist:
 			return None
 		else:
