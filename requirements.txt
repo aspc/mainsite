@@ -20,3 +20,4 @@ psycopg2==2.4.5
 python-memcached==1.53
 django-stdimage==0.2.3
 Pillow==1.7.8
+python-twitter==1.1

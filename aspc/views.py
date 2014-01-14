@@ -1,6 +1,7 @@
 from django.views.generic.dates import ArchiveIndexView
 from aspc.blog.views import PostArchive
 from aspc.blog.models import Post
+from aspc.activityfeed.models import Activity
 import logging, datetime
 
 log = logging.getLogger(__name__)
@@ -19,6 +20,7 @@ class HomeView(PostArchive):
     
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
+        context['activities'] = Activity.objects.all()[:7]
         context['all_nav'] = True
         return context
     

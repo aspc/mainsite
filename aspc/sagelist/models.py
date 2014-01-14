@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from aspc.activityfeed.signals import new_activity, delete_activity
 
 class BookSale(models.Model):
     CONDITIONS = (
@@ -26,6 +27,16 @@ class BookSale(models.Model):
 
     def __unicode__(self):
         return u"BookSale: {0} by {1} ({2})".format(self.title, self.authors, self.seller.username)
+
+    def save(self, *args, **kwargs):
+        created = self.pk is None
+        super(BookSale, self).save(*args, **kwargs)
+        if created:
+            new_activity.send(sender=self, category="sagelist", date=self.posted)
+
+    def delete(self, *args, **kwargs):
+        delete_activity.send(sender=self)
+        super(BookSale, self).delete(*args, **kwargs)
 
     @models.permalink
     def get_absolute_url(self):
