@@ -275,10 +275,6 @@ djcelery.setup_loader()
 GRAPPELLI_INDEX_DASHBOARD = 'aspc.dashboard.CustomIndexDashboard'
 GRAPPELLI_ADMIN_TITLE = 'Associated Students of Pomona College'
 
-#### Twitter API Configuration
+#### Twitter Activity Feed Sources
 
-TWITTER_CONSUMER_KEY = '5ZfRYkstQpvIzIIapsFTww'
-TWITTER_CONSUMER_SECRET = 'FhbH4K61AJYBkBSb9dMSYcaYlHfXMVRQJXrmEuWRoOI'
-TWITTER_ACCESS_TOKEN = '127800574-iBW6fYynUKfRBfc6U6tJFmjL0BO09u5gS4uSnG1H'
-TWITTER_ACCESS_TOKEN_SECRET = 'AiGChlVWPHa2V7CSCUbyDAW0qgVEEvng5Id354w5ZDkfY'
 TWITTER_FEEDS = ['pomonadining', 'SmithCampusCent', 'aspcsenate', 'pomonacollege']

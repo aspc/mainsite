@@ -63,3 +63,10 @@ COURSE_DATA_DB = {
     'PASSWORD': '',
     'DRIVER': 'FreeTDS', # or path to library
 }
+
+# Override Twitter API keys with real values
+
+TWITTER_CONSUMER_KEY = ''
+TWITTER_CONSUMER_SECRET = ''
+TWITTER_ACCESS_TOKEN = ''
+TWITTER_ACCESS_TOKEN_SECRET = ''
