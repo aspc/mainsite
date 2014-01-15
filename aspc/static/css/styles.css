@@ -325,6 +325,11 @@ form > ul > li > label {
 
 /* @group Post List */
 
+.news {
+    width: 60%;
+	float: left;
+}
+
 .news ol.posts {
 	list-style-type: none;
 	padding: 0;
@@ -625,11 +630,6 @@ ul.actions li {
 /* @end */
 
 /* @group Stream */
-
-#homepage-news {
-	width: 60%;
-	float: left;
-}
 
 .stream {
 	width: 40%;
@@ -1115,19 +1115,6 @@ header#aspc_main form input {
 
 .events, .events ol {
 	background-color: #ddd;
-}
-
-.events h1 {
-	font-size: 1.28em;
-	padding-top: 0.5em;
-	letter-spacing: 1px;
-}
-
-.events h1, .events li .info, .events li.more {
-	margin: 0;
-	margin-left: 2%;
-	padding-left: 2%;
-	background: white;
 }
 
 .events ol {
