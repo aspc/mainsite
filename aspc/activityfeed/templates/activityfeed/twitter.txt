@@ -1,0 +1,2 @@
+{% load activityfeed %}
+{% parse_tweet object.message %}

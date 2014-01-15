@@ -22,3 +22,4 @@ django-stdimage==0.2.3
 Pillow==1.7.8
 pytz==2013.9
 requests==2.2.0
+python-twitter==1.1

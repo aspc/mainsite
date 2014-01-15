@@ -1,0 +1,1 @@
+A new review of <a href="{{ object.get_absolute_url }}">{{ object.room }}</a> has been posted.

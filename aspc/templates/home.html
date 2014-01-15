@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load url from future %}
+{% load activityfeed %}
 
 {% block "head" %}
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -15,12 +16,22 @@
 	<p>No events today. <a href="{% url "events" %}">See full calendar...</a></p>
 	{% endif %}
 </section>
-<section class="group primary news">
-	<h1>Senate News</h1>
-	{% if posts %}
-	{% include "blog/posts_fragment.html" %}
-	{% else %}
-	<p>No recent posts to display.</p>
-	{% endif %}
+<section class="primary">
+  <div class="news group" id="homepage-news">
+     <h1>ASPC News</h1>
+    {% if posts %}
+    {% include "blog/posts_fragment.html" %}
+    {% else %}
+    <p>No recent posts to display</p>
+    {% endif %}
+  </div>
+  <div class="stream">
+    <h1>Campus Feed</h1>
+    <ol>
+        {% for a in activities %}
+            {% insert_activity a %}
+        {% endfor %}
+    </ol>
+  </div>
 </section>
 {% endblock %}

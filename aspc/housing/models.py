@@ -1,8 +1,9 @@
 from django.db import models
 from django.contrib.humanize.templatetags.humanize import ordinal
 from django.contrib.auth.models import User
-from aspc.college.models import Term, Location, Building, Floor, RoomLocation
 from stdimage import StdImageField
+from aspc.college.models import Term, Location, Building, Floor, RoomLocation
+from aspc.activityfeed.signals import new_activity, delete_activity
 
 class Suite(models.Model):
     OCCUPANCY_TYPES = (
@@ -173,7 +174,7 @@ class Review(models.Model):
         (3, u"good cell service"),
         (4, u"excellent cell service"),
     )
-    
+
     create_ts = models.DateTimeField(editable=False, auto_now_add=True, verbose_name='posted at')
     room = models.ForeignKey(Room)
     author = models.ForeignKey(User, null=True, blank=True)
@@ -192,29 +193,36 @@ class Review(models.Model):
 
     class Meta:
         ordering = ['-create_ts']
-        
+
 
     def __unicode__(self):
         return u"Review of {0}".format(unicode(self.room))
-    
+
     def get_overall_rating(self):
         return (self.quiet + self.spacious + self.temperate + self.maintained + self.cellphone) / 5.0
-    
+
     def get_timestamp(self):
         return self.create_ts.strftime("%Y%m%d%H%M%S")
-    
+
     def get_room(self):
         return self.room.get_name()
     get_room.short_description = "room"
-    
+
     def update_overall(self):
         self.overall = float(self.quiet + self.spacious + self.temperate + self.maintained + self.cellphone) / 5.0
-    
+
     def save(self, *args, **kwargs):
+        created = self.pk is None
         self.update_overall()
         super(Review, self).save(*args, **kwargs)
         self.room.update_average_rating()
         self.room.save()
+        if created:
+            new_activity.send(sender=self, category="housing", date=self.create_ts)
+
+    def delete(self, *args, **kwargs):
+        delete_activity.send(sender=self)
+        super(Review, self).delete(*args, **kwargs)
 
     @models.permalink
     def get_absolute_url(self):

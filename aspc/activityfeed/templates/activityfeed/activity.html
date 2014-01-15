@@ -1,0 +1,13 @@
+{% load humanize %}
+
+  <li class="{{ activity.category }}">
+    <div class="activity">
+        {{ message }}
+    </div>
+    <div class="related">
+      <ul>
+        <li><a href="" class="source">{{ activity.get_category_display }}</a></li>
+        <li><a href="{{ activity.object.get_absolute_url }}">read more</a></li>
+      </ul>
+      <time datetime="">{{ activity.date|naturaltime }}</time>
+</li>
