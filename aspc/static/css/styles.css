@@ -479,17 +479,17 @@ dl.detail dd {
 	width: 100%;
 }
 
-.primary > h1, .breadcrumbs, .primary > h2 {
+.primary > h1, .breadcrumbs, .primary > h2, .news > h1 {
 	padding: 0.5em 2%;
 	margin: 0;
 }
 
-.primary > h1, .primary > h2 {
+.primary > h1, .primary > h2, .news > h1 {
 	background-color: #0071a6;
 	color: white;
 }
 
-.primary > h1 {
+.primary > h1, .news > h1 {
 	font-size: 1.5em;
 }
 
