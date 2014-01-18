@@ -1708,6 +1708,30 @@ nav .group ul li span.note, nav .group ol li span.note {
 
 /* @group events section */
 
+.group.primary.events {
+	background-color: white;
+}
+
+#events_list {
+	width: 100%;
+}
+
+#events_description {
+	display: none;
+}
+
+.event_info {
+	width: 79.7%;
+}
+
+.events li:nth-child(even) .event_info {
+	background: white;
+}
+
+.events li:nth-child(odd) .event_info {
+	background: #eee;
+}
+
 .events h1 {
 	margin-left: 0;
 	font-size: 0.9em;
@@ -1769,18 +1793,6 @@ section > .events ol li:last-child time {
 	background: none;
 }
 
-.group.events ol li.more > a {
-	padding: 0.5em 0;
-}
-
-.events ol .info > h3 {
-	font-size: 1em;
-	line-height: 1.5em;
-	padding: 0;
-	margin: 0;
-	font-weight: normal;
-}
-
 .events ol {
 	border-radius: 0.45em;
 	border: none;
@@ -1805,51 +1817,10 @@ section > .events ol li:last-child time {
 	font-size: 1em;
 }
 
-.events ol li .info {
-	float: right;
-	margin: 0;
-	width: 16.9em;
-	padding: 0.5em 0.5em;
-	height: 100%;
-	background: white;
-	border-left: 1px solid gray;
-	border-bottom: 1px solid gray;
-	border-top: 1px solid white;
-	border-right: 1px solid gray;
-}
-
-.events ol li.active .info {
-	background-image: none;
-}
-
 .events ol p.host, .events ol p.location {
 	font-size: 0.7em;
 	margin: 0.34em 0;
 	color: #3b3b3b;
-}
-
-.events ol .more:last-child {
-	border-bottom-left-radius: 0.45em;
-	border-bottom-right-radius: 0.45em;
-	background: #858686;
-}
-
-
-.events ol li.more {
-	margin-left: 0;
-	padding-left: 0;
-}
-
-.events ol .more a {
-	text-align: center;
-	width: 100%;
-	display: block;
-	text-decoration: none;
-	padding: 0.5em 0;
-	font-size: 0.9em;
-	color: #ebebef;
-	border-top: 1px solid #777;
-	background-image: none;
 }
 
 /* @end */

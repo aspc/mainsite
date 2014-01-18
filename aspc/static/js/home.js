@@ -64,10 +64,22 @@ ASPC.Home.update_event_description = function (event) {
 	event_info.parents('li').addClass('active');
 };
 
+ASPC.Home.go_to_event = function (event) {
+	// Declares a reference to the event_info div that was clicked
+	var event_info = $(event.currentTarget).children('aside');
+
+	window.location.href = event_info.find('a').attr('href');
+};
+
 window.onload = function () {
 	// Bind listeners to the event_info elements to update the event description div when clicked
-	$('.event_info').on('click', ASPC.Home.update_event_description);
+	if ($(window).width() > 767) { // Using the desktop site...
+		$('.event_info').on('click', ASPC.Home.update_event_description);
 
-	// Initializes the events_description panel
-	$($('.event_info')[0]).trigger('click');
+		// Initializes the events_description panel
+		$($('.event_info')[0]).trigger('click');
+	}
+	else { // Using the mobile site
+		$('.event_info').on('click', ASPC.Home.go_to_event);
+	}
 };
