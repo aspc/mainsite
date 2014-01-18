@@ -7,3 +7,28 @@
 #facebook_event_submit_loading, #facebook_page_submit_loading, #manual_submit_loading {
 	display: none;
 }
+
+/* ============================= */
+/* ! Layout for mobile version   */
+/* ============================= */
+
+@media handheld, only screen and (max-width: 767px) {
+
+	#facebook_submission, #manual_submission {
+		width: 100%;
+		padding: 1%;
+	}
+
+	#manual_submission textarea {
+		width: 200px;
+	}
+
+	.fc-header-center {
+		font-size: 14px;
+	}
+
+	.fc-header-left, .fc-header-right {
+		display: none;
+	}
+
+}
