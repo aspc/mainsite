@@ -1318,8 +1318,14 @@ footer p {
 
 }
 
-.stream li:last-child .activity {
-	border-bottom-right-radius: 0.5em;
+.stream li:last-child {
+  border-bottom-right-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.stream li:last-child .related {
+  border-bottom-left-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
 }
 
 .stream .activity .excerpt {
@@ -1464,6 +1470,7 @@ overflow: visible;
 }
 
 .primary {
+  background-color: transparent;
 	width: 100%;
 	border-bottom: none;
 }
