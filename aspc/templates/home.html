@@ -7,15 +7,18 @@
 <script src="{{ STATIC_URL }}js/home.js"></script>
 {% endblock %}
 
-{% block "content_postnav" %}
+{% block "content_prenav" %}
 <section class="group primary events">
-	<h1>Today's Events</h1>
-	{% if events %}
-	{% include "events/todays_events.html" %}
-	{% else %}
-	<p>No events today. <a href="{% url "events" %}">See full calendar...</a></p>
-	{% endif %}
+  <h1>Today's Events</h1>
+  {% if events %}
+  {% include "events/todays_events.html" %}
+  {% else %}
+  <p>No events today. <a href="{% url "events" %}">See full calendar...</a></p>
+  {% endif %}
 </section>
+{% endblock %}
+
+{% block "content_postnav" %}
 <section class="primary">
   <div class="group news" id="homepage-news">
      <h1>Senate News</h1>
