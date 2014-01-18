@@ -41,13 +41,13 @@ def parse_tweet(tweet):
 
         #in tweet's text replace text with proper link, now without '@'
         tweet = tweet.replace(usr.group(0),
-            '<a href="http://twitter.com/'+url_tweet+'" title="'+usr.group(0)+'">'+usr.group(0)+'</a>')
+            '<a href="https://twitter.com/'+url_tweet+'" title="'+usr.group(0)+'">'+usr.group(0)+'</a>')
 
     #do the same for hash tags
     for hash in hash_regex.finditer(tweet):
         url_hash = hash.group(0).replace('#','%23')
         if len ( hash.group(0) ) > 2:
             tweet = tweet.replace(hash.group(0),
-                '<a href="http://search.twitter.com/search?q='+url_hash+'" title="'+hash.group(0)+'">'+hash.group(0)+'</a>');
+                '<a href="https://twitter.com/search?q='+url_hash+'" title="'+hash.group(0)+'">'+hash.group(0)+'</a>');
 
     return tweet
