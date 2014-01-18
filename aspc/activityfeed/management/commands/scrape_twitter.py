@@ -27,6 +27,12 @@ class Command(BaseCommand):
             if new_tweets:
                 for tweet in new_tweets:
                     url = 'http://twitter.com/%s/' % feedname
-                    activity = TwitterActivity(url=url, message=tweet.text, author=tweet.user.screen_name,
+                    content = tweet.text
+                    # expand the urls from the t.co shortened versions
+                    for urlsub in tweet.urls:
+                        content = content.replace(urlsub.url, urlsub.expanded_url)
+                    self.stdout.write(("[@%s] %s\n" % (feedname, content)).encode('ascii', 'ignore'))
+                    self.stdout.flush()
+                    activity = TwitterActivity(url=url, message=content, author=tweet.user.screen_name,
                                                tweet_id=tweet.id, date=dateutil.parser.parse(tweet.created_at))
                     activity.save()

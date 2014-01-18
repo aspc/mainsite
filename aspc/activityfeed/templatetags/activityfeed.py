@@ -31,7 +31,7 @@ def parse_tweet(tweet):
     user_regex = re.compile(r'@[0-9a-zA-Z+_]*',re.IGNORECASE)
 
     #first deal with links. Any http://... string change to a proper link
-    tweet = re.sub('http://[^ ,]*', lambda t: '<a href="%s">%s</a>' % (t.group(0), t.group(0)), tweet)
+    tweet = re.sub('http://[^ ,]*', lambda t: '<a href="%s" target="_blank">%s</a>' % (t.group(0), t.group(0)), tweet)
 
     #for all elements matching our pattern...
     for usr in user_regex.finditer(tweet):
@@ -50,5 +50,4 @@ def parse_tweet(tweet):
             tweet = tweet.replace(hash.group(0),
                 '<a href="http://search.twitter.com/search?q='+url_hash+'" title="'+hash.group(0)+'">'+hash.group(0)+'</a>');
 
-    #append each tweet to our list. Here I'm creating a dict containing tweet's text and date
     return tweet

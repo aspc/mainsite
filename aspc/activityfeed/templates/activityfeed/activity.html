@@ -6,8 +6,12 @@
     </div>
     <div class="related">
       <ul>
-        <li><a href="" class="source">{{ activity.get_category_display }}</a></li>
+        {% if activity.category == "twitter" %}
+        <li><a href="https://twitter.com/{{ activity.object.author }}" class="source" target="_blank">@{{ activity.object.author }}</a></li>
+        {% else %}
+        <li>{{ activity.get_category_display }}</li>
         <li><a href="{{ activity.object.get_absolute_url }}">read more</a></li>
+        {% endif %}
       </ul>
       <time datetime="">{{ activity.date|naturaltime }}</time>
 </li>
