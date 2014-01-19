@@ -22,7 +22,7 @@ class Home(ArchiveIndexView):
     template_name = "housing/home.html"
     date_field = "create_ts"
     allow_empty = True
-    queryset = Review.objects.all().select_related(depth=3)
+    queryset = Review.objects.all().select_related('room')
     paginate_by = 15
 
 def format_data(rooms):
