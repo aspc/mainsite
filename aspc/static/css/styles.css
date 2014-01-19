@@ -323,11 +323,15 @@ form > ul > li > label {
 
 /* @group Blog */
 
+#news-stream-container {
+  display: -webkit-flex;
+  display: flex;
+}
+
 /* @group Post List */
 
 .news {
     width: 60%;
-	float: left;
 }
 
 .news ol.posts {
@@ -633,7 +637,6 @@ ul.actions li {
 
 .stream {
 	width: 40%;
-	float: right;
 	background-color: #5d6673;
 }
 
@@ -1230,6 +1233,10 @@ footer p {
 @media handheld, only screen and (max-width: 767px) {
 
 /* @group Blog */
+  
+#news-stream-container {
+  display: block;
+}
 
 .post_info > h1 {
 	font-size: 1.1em;

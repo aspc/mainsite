@@ -13,13 +13,13 @@
   {% if events %}
   {% include "events/todays_events.html" %}
   {% else %}
-  <p>No events today. <a href="{% url "events" %}">See full calendar...</a></p>
+  <p>No events today. <a href="{% url "events" %}#event_submission">Submit your event</a> or <a href="{% url "events" %}">see the full calendar...</a></p>
   {% endif %}
 </section>
 {% endblock %}
 
 {% block "content_postnav" %}
-<section class="primary">
+<section class="primary" id="news-stream-container">
   <div class="group news" id="homepage-news">
      <h1>Senate News</h1>
     {% if posts %}
