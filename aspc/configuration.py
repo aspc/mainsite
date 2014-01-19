@@ -3,6 +3,10 @@ import os, django
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
 
+ADMINS = (
+    ('Digital Media Group', 'digitalmedia@aspc.pomona.edu'),
+)
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
