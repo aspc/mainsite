@@ -8,7 +8,7 @@
 {% block "metadesc" %}List of courses for the {{ object.name }} department.{% endblock %}
 
 {% block "coursesearch_breadcrumbs" %}
-<li><a href="{% url department_list %}">Departments</a></li>
+<li><a href="{% url "department_list" %}">Departments</a></li>
 <li><a href="{{ object.get_absolute_url }}">{{ object.name }}</a></li>
 {% endblock %}
 

@@ -8,7 +8,7 @@
 {% block "metadesc" %}Save a schedule made with the ASPC schedule builder to share it on Facebook or by email.{% endblock %}
 
 {% block "coursesearch_breadcrumbs" %}
-  <li><a href="{% url aspc.coursesearch.views.schedule %}">Schedule</a></li>
+  <li><a href="{% url "aspc.coursesearch.views.schedule" %}">Schedule</a></li>
   <li>Share</li>
 {% endblock %}
 
@@ -31,7 +31,7 @@
 	<p><a href="{{ protocol }}://{{ domain }}{% if port %}:{{ port }}{% endif %}{{ schedule.get_absolute_url }}">{{ protocol }}://{{ domain }}{% if port %}:{{ port }}{% endif %}{{ schedule.get_absolute_url }}</a></p>
 	<p>To come back and add to this schedule later, use the "load" link on that page.</p>
 	<h3>Export to Apple or Google Calendar</h3>
-	<p>You can also <a href="{% url aspc.coursesearch.views.ical_export schedule_id=schedule.id %}">export this schedule</a> to a calendar. Drop the downloaded file on the iCal application icon to import, or read <a href="http://support.google.com/calendar/bin/answer.py?hl=en&answer=37118">how to import into Google Calendar</a>.</p>
+	<p>You can also <a href="{% url "aspc.coursesearch.views.ical_export" schedule_id=schedule.id %}">export this schedule</a> to a calendar. Drop the downloaded file on the iCal application icon to import, or read <a href="http://support.google.com/calendar/bin/answer.py?hl=en&answer=37118">how to import into Google Calendar</a>.</p>
 	{% endif %}
 {% else %}
 <h3>There don't seem to be any courses in your schedule.</h3>
