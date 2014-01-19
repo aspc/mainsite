@@ -129,6 +129,11 @@ INSTALLED_APPS = (
     'aspc.activityfeed',
 )
 
+# Serializer to use for User sessions. Preferable not to use
+# pickle, but existing code depends on serializing more sophisticated
+# Python types than JSON can support
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error.
