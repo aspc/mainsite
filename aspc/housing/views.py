@@ -1,5 +1,3 @@
-#from django.views.generic.date_based import archive_index
-#from django.views.generic.list_detail import object_list
 from django.core.exceptions import ImproperlyConfigured, ObjectDoesNotExist
 from django.views.generic.dates import ArchiveIndexView
 from django.views.generic.detail import DetailView

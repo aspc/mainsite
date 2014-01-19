@@ -1,10 +1,11 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from django.views.generic import list_detail
+from django.views import generic
 from django.shortcuts import get_object_or_404, render
 from django.conf import settings
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.serializers.json import DjangoJSONEncoder
+from django.db.models import Count
 from aspc.coursesearch.models import (Course, Department, Meeting, Schedule,
     RefreshHistory, START_DATE, END_DATE)
 from aspc.coursesearch.forms import SearchForm, ICalExportForm
@@ -263,12 +264,13 @@ def _ical_from_courses(courses, start_date, end_date):
 
     return cal
 
-def course_detail(request, dept, course_code):
-    department = get_object_or_404(Department, code=dept)
-    kwargs = {'queryset': Course.objects.filter(primary_department=department),
-             'slug': course_code,
-             'slug_field': 'code_slug',}
-    return list_detail.object_detail(request, **kwargs)
+class CourseDetailView(generic.DetailView):
+    model = Course
+    slug_field = 'code_slug'
+    slug_url_kwarg = 'course_code'
+    def get_queryset(self):
+        dept = get_object_or_404(Department, code=self.kwargs['dept'])
+        return Course.objects.filter(primary_department=dept)
 
 
 def schedule_course_add(request, course_code):
@@ -294,4 +296,16 @@ def schedule_course_remove(request, course_code):
             for e in course_data['events']:
                 removed_ids.append(e['id'])
     
-    return HttpResponse(content=json.dumps(removed_ids, cls=DjangoJSONEncoder), mimetype='application/json')
+    return HttpResponse(content=json.dumps(removed_ids, cls=DjangoJSONEncoder), content_type='application/json')
+
+class DepartmentListView(generic.ListView):
+    queryset = (Department.objects
+                    .annotate(num_courses=Count('primary_course_set'))
+                    .filter(num_courses__gt=0)
+                    .distinct()
+                    .order_by('code')
+                )
+
+class DepartmentCoursesView(generic.DetailView):
+    model = Department
+    slug_field = 'code'
