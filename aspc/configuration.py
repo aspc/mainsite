@@ -3,6 +3,10 @@ import os, django
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
 
+ADMINS = (
+    ('Digital Media Group', 'digitalmedia@aspc.pomona.edu'),
+)
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -25,6 +29,16 @@ USE_I18N = False
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale
 USE_L10N = True
+
+# A list of strings representing the host/domain names that this Django site 
+# can serve. This is a security measure to prevent an attacker from poisoning
+# caches and password reset emails with links to malicious hosts by 
+#submitting requests with a fake HTTP Host header, which is possible even 
+# under many seemingly-safe web server configurations.
+ALLOW_HOSTS = [
+    '.aspc.pomona.edu',
+    '.aspc.pomona.edu.', # allow FQDN (with trailing dot)
+]
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -92,7 +106,6 @@ INSTALLED_APPS = (
     'filebrowser', # Must be before django.contrib.admin
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'django.contrib.markup',
     'django.contrib.redirects',
     'django.contrib.humanize',
     'gunicorn',
@@ -115,6 +128,11 @@ INSTALLED_APPS = (
     'aspc.events',
     'aspc.activityfeed',
 )
+
+# Serializer to use for User sessions. Preferable not to use
+# pickle, but existing code depends on serializing more sophisticated
+# Python types than JSON can support
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -229,7 +247,7 @@ def show_toolbar(request):
 
 DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': False,
-    'SHOW_TOOLBAR_CALLBACK': show_toolbar,
+    'SHOW_TOOLBAR_CALLBACK': 'aspc.configuration.show_toolbar',
 }
 
 # College Terms
@@ -247,26 +265,11 @@ ACADEMIC_TERM_DEFAULTS = {
 }
 
 #### Celery Configuration
-
-from celery.schedules import crontab
-from datetime import timedelta
 import djcelery
 
 BROKER_URL = "django://"
-
-CELERYBEAT_SCHEDULE = {
-    "update-catalog": {
-        "task": "aspc.coursesearch.tasks.smart_update",
-        # Full catalog refresh finishes by 5am typically
-        "schedule": crontab(hour=5),
-    },
-    "update-enrollments": {
-        "task": "aspc.coursesearch.tasks.smart_update",
-        # Looks like the actual time the refresh finishes drifts
-        # but it's usually done by 20 after the hour
-        "schedule": crontab(hour="*", minute=20),
-    },
-}
+CELERY_ACCEPT_CONTENT = ['pickle', 'json', 'msgpack', 'yaml']
+CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 
 djcelery.setup_loader()
 

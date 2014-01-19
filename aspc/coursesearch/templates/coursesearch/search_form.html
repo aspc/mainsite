@@ -29,6 +29,6 @@
     </dl>
     <p><em>Note that courses may have open seats but be open only to some students based on their major, college affiliation, or other categories! <strong>Check the portal before your registration time to confirm.</strong></em></p>
   </div>
-	<input id="submit" type="submit" value="go">{% if context == "schedule" %}<a href="{% url aspc.coursesearch.views.schedule %}" id="reset">clear search</a>{% else %}<a href="{% url aspc.coursesearch.views.search %}" id="reset">start over</a>{% endif %}
+	<input id="submit" type="submit" value="go">{% if context == "schedule" %}<a href="{% url "aspc.coursesearch.views.schedule" %}" id="reset">clear search</a>{% else %}<a href="{% url "aspc.coursesearch.views.search" %}" id="reset">start over</a>{% endif %}
 </form>
 </div>

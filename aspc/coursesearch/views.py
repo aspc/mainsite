@@ -1,10 +1,11 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from django.views.generic import list_detail
+from django.views import generic
 from django.shortcuts import get_object_or_404, render
 from django.conf import settings
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.serializers.json import DjangoJSONEncoder
+from django.db.models import Count
 from aspc.coursesearch.models import (Course, Department, Meeting, Schedule,
     RefreshHistory, START_DATE, END_DATE)
 from aspc.coursesearch.forms import SearchForm, ICalExportForm
@@ -139,7 +140,7 @@ def load_from_session(request):
         for invalid in (schedule_courses - valid_courses):
             request.session['schedule_courses'].remove(invalid)
         request.session.modified = True
-    return HttpResponse(content=json.dumps(all_events, cls=DjangoJSONEncoder), mimetype='application/json')
+    return HttpResponse(content=json.dumps(all_events, cls=DjangoJSONEncoder), content_type='application/json')
 
 def clear_schedule(request):
     courses_info = []
@@ -148,7 +149,7 @@ def clear_schedule(request):
         del request.session['schedule_courses']
         for course in Course.objects.filter(id__in=schedule_courses):
             courses_info.append(course.json())
-    return HttpResponse(content=json.dumps(courses_info, cls=DjangoJSONEncoder), mimetype='application/json')
+    return HttpResponse(content=json.dumps(courses_info, cls=DjangoJSONEncoder), content_type='application/json')
 
 def share_schedule(request):
     schedule_courses = Course.objects.filter(id__in=request.session.get('schedule_courses',[]))
@@ -199,7 +200,7 @@ def ical_export(request, schedule_id=None):
             form.cleaned_data['end']
         )
 
-        response = HttpResponse(icalendar.serialize(), mimetype='text/calendar')
+        response = HttpResponse(icalendar.serialize(), content_type='text/calendar')
 
         if schedule_id is not None:
             filename = 'schedule_{0}.ics'.format(schedule_id)
@@ -263,12 +264,13 @@ def _ical_from_courses(courses, start_date, end_date):
 
     return cal
 
-def course_detail(request, dept, course_code):
-    department = get_object_or_404(Department, code=dept)
-    kwargs = {'queryset': Course.objects.filter(primary_department=department),
-             'slug': course_code,
-             'slug_field': 'code_slug',}
-    return list_detail.object_detail(request, **kwargs)
+class CourseDetailView(generic.DetailView):
+    model = Course
+    slug_field = 'code_slug'
+    slug_url_kwarg = 'course_code'
+    def get_queryset(self):
+        dept = get_object_or_404(Department, code=self.kwargs['dept'])
+        return Course.objects.filter(primary_department=dept)
 
 
 def schedule_course_add(request, course_code):
@@ -279,7 +281,7 @@ def schedule_course_add(request, course_code):
             request.session.modified = True
     else:
         request.session['schedule_courses'] = set([course.id,])
-    return HttpResponse(content=json.dumps(course.json(), cls=DjangoJSONEncoder), mimetype='application/json')
+    return HttpResponse(content=json.dumps(course.json(), cls=DjangoJSONEncoder), content_type='application/json')
 
 
 def schedule_course_remove(request, course_code):
@@ -294,4 +296,16 @@ def schedule_course_remove(request, course_code):
             for e in course_data['events']:
                 removed_ids.append(e['id'])
     
-    return HttpResponse(content=json.dumps(removed_ids, cls=DjangoJSONEncoder), mimetype='application/json')
+    return HttpResponse(content=json.dumps(removed_ids, cls=DjangoJSONEncoder), content_type='application/json')
+
+class DepartmentListView(generic.ListView):
+    queryset = (Department.objects
+                    .annotate(num_courses=Count('primary_course_set'))
+                    .filter(num_courses__gt=0)
+                    .distinct()
+                    .order_by('code')
+                )
+
+class DepartmentCoursesView(generic.DetailView):
+    model = Department
+    slug_field = 'code'

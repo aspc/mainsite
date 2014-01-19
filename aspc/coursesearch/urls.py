@@ -1,8 +1,8 @@
 from django.conf.urls import *
 
-from django.views.generic import list_detail
+from django.views.generic.base import TemplateView
+from aspc.coursesearch.views import CourseDetailView, DepartmentListView, DepartmentCoursesView
 from aspc.coursesearch.models import Department, Course
-from django.db.models import Count
 
 urlpatterns = patterns('',
     (r'^search/$', 'aspc.coursesearch.views.search'),
@@ -16,8 +16,8 @@ urlpatterns = patterns('',
     (r'^schedule/load/$', 'aspc.coursesearch.views.load_from_session'),
     (r'^schedule/clear/$', 'aspc.coursesearch.views.clear_schedule'),
     (r'^schedule/save/$', 'aspc.coursesearch.views.share_schedule'),
-    url(r'^browse/$', list_detail.object_list, {'queryset': Department.objects.annotate(num_courses=Count('primary_course_set')).filter(num_courses__gt=0).distinct().order_by('code'),}, name="department_list"),
-    url(r'^browse/(?P<slug>[A-Z]+)/$', list_detail.object_detail, {'queryset': Department.objects.all(), 'slug_field': 'code',}, name="department_detail"),
-    url(r'^browse/(?P<dept>[A-Z]+)/(?P<course_code>[\w\d-]+)/$', 'aspc.coursesearch.views.course_detail', name="course_detail"),
-    url(r'^$', 'django.views.generic.simple.direct_to_template', {'template': 'coursesearch/landing.html',}, name="coursesearch_home"),
+    url(r'^browse/$', DepartmentListView.as_view(), name="department_list"),
+    url(r'^browse/(?P<slug>[A-Z]+)/$', DepartmentCoursesView.as_view(), name="department_detail"),
+    url(r'^browse/(?P<dept>[A-Z]+)/(?P<course_code>[\w\d-]+)/$', CourseDetailView.as_view(), name="course_detail"),
+    url(r'^$', TemplateView.as_view(template_name='coursesearch/landing.html'), name="coursesearch_home"),
 )

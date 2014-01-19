@@ -1,22 +1,21 @@
 {% extends "blog/base.html" %}
-{% load url from future %}
 {% load markup %}
 
 {% block "page_title" %}
-News from {{ year }}
+News from {{ year|date:"Y" }}
 {% endblock %}
 
 {% block "breadcrumbs" %}
 <ol class="breadcrumbs">
   <li><a href="{% url "post_index" %}">News</a></li>
-  <li><a href="{% url "post_year" year=year %}">{{ year }}</a></li>
+  <li><a href="{% url "post_year" year=year|date:"Y" %}">{{ year|date:"Y" }}</a></li>
 </ol>
 {% endblock %}
 
 {% block "content" %}
   <ol class="years">
   {% for d in date_list %}
-    <li><a href="{% url "post_month" year=year month=d|date:"b" %}">{{ d|date:"F" }}  &rarr;</a></li>
+    <li><a href="{% url "post_month" year=year|date:"Y" month=d|date:"b" %}">{{ d|date:"F" }}  &rarr;</a></li>
   {% endfor %}
   </ol>
 {% endblock %}

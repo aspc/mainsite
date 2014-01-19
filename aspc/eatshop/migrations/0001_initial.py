@@ -14,7 +14,7 @@ class Migration(SchemaMigration):
             ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('type', self.gf('django.db.models.fields.IntegerField')()),
             ('address', self.gf('django.db.models.fields.TextField')()),
-            ('phone', self.gf('django.contrib.localflavor.us.models.PhoneNumberField')(max_length=20, null=True, blank=True)),
+            ('phone', self.gf('localflavor.us.models.PhoneNumberField')(max_length=20, null=True, blank=True)),
             ('description', self.gf('django.db.models.fields.TextField')()),
             ('claremont_cash', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('flex', self.gf('django.db.models.fields.BooleanField')(default=False)),
@@ -59,7 +59,7 @@ class Migration(SchemaMigration):
             'flex': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'phone': ('django.contrib.localflavor.us.models.PhoneNumberField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
+            'phone': ('localflavor.us.models.PhoneNumberField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
             'type': ('django.db.models.fields.IntegerField', [], {}),
             'www': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
         },
