@@ -1,4 +1,3 @@
-{% load url from future %}
 <p>Nobody has purchased this book yet. You can still remove this listing if you want.</p>
 <form action="{% url "sagelist_delete" pk=book.id %}" method="POST">
   {% csrf_token %}
