@@ -8,9 +8,8 @@ from django.utils.safestring import mark_safe
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
-from django.utils import simplejson
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger, InvalidPage
-from django.utils import simplejson as json
+import json
 from django.conf import settings
 import time
 from itertools import groupby
@@ -229,7 +228,7 @@ class RoomDetail(DetailView):
         #map_data = self.object.floor.map.get_data()
         room_data = self.object.get_data()
         #room_data.update({'map': map_data})
-        room_data_json = mark_safe(simplejson.dumps(room_data))
+        room_data_json = mark_safe(json.dumps(room_data))
         context = super(RoomDetail, self).get_context_data(**kwargs)
         context.update({'browse_active': True, 'id': self.object.id, 'room_json': room_data_json})
         return context
