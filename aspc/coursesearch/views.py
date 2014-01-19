@@ -140,7 +140,7 @@ def load_from_session(request):
         for invalid in (schedule_courses - valid_courses):
             request.session['schedule_courses'].remove(invalid)
         request.session.modified = True
-    return HttpResponse(content=json.dumps(all_events, cls=DjangoJSONEncoder), mimetype='application/json')
+    return HttpResponse(content=json.dumps(all_events, cls=DjangoJSONEncoder), content_type='application/json')
 
 def clear_schedule(request):
     courses_info = []
@@ -149,7 +149,7 @@ def clear_schedule(request):
         del request.session['schedule_courses']
         for course in Course.objects.filter(id__in=schedule_courses):
             courses_info.append(course.json())
-    return HttpResponse(content=json.dumps(courses_info, cls=DjangoJSONEncoder), mimetype='application/json')
+    return HttpResponse(content=json.dumps(courses_info, cls=DjangoJSONEncoder), content_type='application/json')
 
 def share_schedule(request):
     schedule_courses = Course.objects.filter(id__in=request.session.get('schedule_courses',[]))
@@ -200,7 +200,7 @@ def ical_export(request, schedule_id=None):
             form.cleaned_data['end']
         )
 
-        response = HttpResponse(icalendar.serialize(), mimetype='text/calendar')
+        response = HttpResponse(icalendar.serialize(), content_type='text/calendar')
 
         if schedule_id is not None:
             filename = 'schedule_{0}.ics'.format(schedule_id)
@@ -281,7 +281,7 @@ def schedule_course_add(request, course_code):
             request.session.modified = True
     else:
         request.session['schedule_courses'] = set([course.id,])
-    return HttpResponse(content=json.dumps(course.json(), cls=DjangoJSONEncoder), mimetype='application/json')
+    return HttpResponse(content=json.dumps(course.json(), cls=DjangoJSONEncoder), content_type='application/json')
 
 
 def schedule_course_remove(request, course_code):
