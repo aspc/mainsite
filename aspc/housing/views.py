@@ -1,5 +1,3 @@
-#from django.views.generic.date_based import archive_index
-#from django.views.generic.list_detail import object_list
 from django.core.exceptions import ImproperlyConfigured, ObjectDoesNotExist
 from django.views.generic.dates import ArchiveIndexView
 from django.views.generic.detail import DetailView
@@ -10,9 +8,8 @@ from django.utils.safestring import mark_safe
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
-from django.utils import simplejson
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger, InvalidPage
-from django.utils import simplejson as json
+import json
 from django.conf import settings
 import time
 from itertools import groupby
@@ -24,7 +21,7 @@ class Home(ArchiveIndexView):
     template_name = "housing/home.html"
     date_field = "create_ts"
     allow_empty = True
-    queryset = Review.objects.all().select_related(depth=3)
+    queryset = Review.objects.all().select_related('room')
     paginate_by = 15
 
 def format_data(rooms):
@@ -231,7 +228,7 @@ class RoomDetail(DetailView):
         #map_data = self.object.floor.map.get_data()
         room_data = self.object.get_data()
         #room_data.update({'map': map_data})
-        room_data_json = mark_safe(simplejson.dumps(room_data))
+        room_data_json = mark_safe(json.dumps(room_data))
         context = super(RoomDetail, self).get_context_data(**kwargs)
         context.update({'browse_active': True, 'id': self.object.id, 'room_json': room_data_json})
         return context

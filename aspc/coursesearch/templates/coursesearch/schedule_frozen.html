@@ -32,7 +32,7 @@
 	<p><input type="submit" value="load for editing"></p>
 </form>
 <h3>export:</h3>
-<p><a href="{% url aspc.coursesearch.views.ical_export schedule_id=schedule.id %}">export this schedule</a> as .ics for Apple or Google Calendar</p>
+<p><a href="{% url "aspc.coursesearch.views.ical_export" schedule_id=schedule.id %}">export this schedule</a> as .ics for Apple or Google Calendar</p>
 </div>
 <ol class="course_list">
 {% for c in schedule.courses.all %}

@@ -2,7 +2,6 @@ from django.contrib import admin
 from django.conf.urls import patterns
 from django.contrib.auth.models import User
 from django.shortcuts import render
-from aspc.housing.forms import RaffleForm
 from aspc.housing.models import Room, Review
 
 
@@ -18,6 +17,7 @@ class ReviewAdmin(admin.ModelAdmin):
         return extra_urls + urls
 
     def raffle_view(self, request):
+        from aspc.housing.forms import RaffleForm
         context = {}
         if request.GET:
             form = RaffleForm(request.GET)

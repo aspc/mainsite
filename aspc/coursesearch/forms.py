@@ -222,9 +222,6 @@ class SearchForm(forms.Form):
                 qs_namefilter = qs_namefilter.filter(name__icontains=kw)
             qs = (qs_descfilter or qs_namefilter)
             qs = qs.distinct()
-        #if self.cleaned_data.get('course_name'):
-        #    qs = qs.filter(name__icontains=self.cleaned_data['course_name'])
-        
         
         qs = qs.distinct().order_by('code')
         return qs
@@ -237,6 +234,8 @@ class ICalExportForm(forms.Form):
     end = forms.DateField(label="Last day of classes")
 
     def clean_end(self):
+        if not (self.cleaned_data.get('start') and self.cleaned_data.get('end')):
+            raise forms.ValidationError("You must specify both start and end dates")
         start, end = self.cleaned_data['start'], self.cleaned_data['end']
         if end > start:
             return end

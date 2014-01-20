@@ -36,7 +36,7 @@ class NavigationListNode(template.Node):
     def render(self, context):
         nav_pages = Page.objects\
             .filter(parent__isnull=True)\
-            .select_related(depth=2)\
+            .select_related('parent', 'parent__parent')\
             .exclude(slug__in=self.exclude_pages)\
             .exclude(visible=False)
         if self.root_names:
