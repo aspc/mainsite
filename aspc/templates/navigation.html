@@ -6,7 +6,7 @@
     {% with navigation.0.1 as pages %}
     <li id="food" class="group{% if active_section == "eatshop" %} active{% endif %}"><h1>Dining &amp; Shopping</h1>
       <ul>
-        <li><a href="http://www.mikemaltese.com/5cmenu/">Dining Halls</a></li>
+        <li><a href="http://aspc.pomona.edu/menu/">Dining Halls</a></li>
         <li><a href="{% url "on_campus" %}">On-campus Eateries{# <span class="note">until 2 am</span> #}</a></li>
         <li><a href="{% url "restaurants" %}">Restaurants{# <span class="note">until 2 am</span> #}</a></li>
         <li><a href="{% url "businesses" %}">Local Businesses{# <span class="note">until 2 am</span> #}</a></li>
@@ -27,7 +27,6 @@
         <li><a href="http://aspc.pomona.edu/course-reviews/">Course Reviews</a></li>
         <li><a href="{% url "housing_home" %}">Housing Search</a></li>
         <li><a href="{% url "sagelist" %}">SageBooks</a></li>
-        <li><a href="{% url "events" %}">Events Calendar</a></li>
         {% for sub in pages %}
         <li><a href="{{ sub.get_absolute_url }}">{{ sub.display_title }}</a></li>
         {% endfor %}
@@ -40,7 +39,7 @@
     <li id="information" class="group{% if active_section == "information" %} active{% endif %}">
       <h1>Information</h1>
       <ul>
-        <li><a href="http://eventpomona.com/">Event Pomona</a></li>
+        <li><a href="{% url "events" %}">Event Calendar</a></li>
         {% for sub in pages %}
         <li><a href="{{ sub.get_absolute_url }}">{{ sub.display_title }}</a></li>
         {% endfor %}
