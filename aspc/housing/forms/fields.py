@@ -7,9 +7,9 @@ from django.core.exceptions import ValidationError
 
 class RoomField(MultiValueField):
     def __init__(self, *args, **kwargs):
-        self.buildings = tuple(Building.objects.filter(type=Building.TYPES_LOOKUP['Dormitory']).order_by('name').values_list('shortname', 'name'))
+        self.buildings = Building.objects.filter(type=Building.TYPES_LOOKUP['Dormitory']).order_by('name').values_list('shortname', 'name')
         building_field = forms.ChoiceField(choices=self.buildings)
-        room_number_field = forms.CharField()#choices=enumerate(self.room_numbers))
+        room_number_field = forms.CharField()
         kwargs.update({'fields': (building_field, room_number_field,),})
         if not 'widget' in kwargs.keys():
             kwargs.update({

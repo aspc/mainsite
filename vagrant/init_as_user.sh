@@ -53,3 +53,6 @@ fi
 /vagrant/manage.py migrate --noinput
 /vagrant/manage.py collectstatic --noinput
 /vagrant/manage.py loaddata /vagrant/fixtures/*
+/vagrant/manage.py load_dorms
+/vagrant/manage.py load_maps
+/vagrant/manage.py load_dorm_rooms
