@@ -1,1 +1,1 @@
-A new listing for book <a href="{{ object.get_absolute_url }}">"{{ object.title }}"</a> has been posted.
+The book <a href="{{ object.get_absolute_url }}">{{ object.title }}</a> has been listed for sale for ${{ object.price }}.
