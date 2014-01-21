@@ -332,6 +332,7 @@ form > ul > li > label {
 
 .news {
     width: 60%;
+    flex: 60;
 }
 
 .news ol.posts {
@@ -637,6 +638,7 @@ ul.actions li {
 
 .stream {
 	width: 40%;
+	flex: 40;
 	background-color: #5d6673;
 }
 
