@@ -13,6 +13,7 @@ class HomeView(PostArchive):
     date_field = 'posted'
     context_object_name = 'posts'
     allow_empty = True
+    paginate_by = 5 # show only 5 recent posts on homepage
 
     def get_queryset(self, *args, **kwargs):
         qs = super(HomeView, self).get_queryset(*args, **kwargs)
