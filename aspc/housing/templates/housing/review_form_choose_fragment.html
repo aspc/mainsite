@@ -2,6 +2,7 @@
 
 {% block "choose_room" %}
 <h3>Which room did you live in?</h3>
-<p>{{ form.room }} {{ form.room.errors }}</p>
+{{ form.non_field_errors }}
+<p>{{ form.building }} {{ form.building.errors }} {{ form.room_number }} {{ form.room_number.errors }}</p>
 <p><em>If your room number is not recognized, try <a href="{% url "housing_browse" %}">browsing</a> for it</em></p>
 {% endblock %}

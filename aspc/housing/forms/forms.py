@@ -2,9 +2,9 @@ from django import forms
 from django.forms import widgets
 from aspc.college.models import Building
 from aspc.housing.models import Review, Room, Suite
-from aspc.housing.forms.fields import RoomField
 from aspc.housing.forms.widgets import ColumnCheckboxSelectMultiple, RatingRadioFieldRenderer
 from django.utils.safestring import mark_safe
+from django.core.exceptions import ValidationError
 
 rating_widgets = {
             'quiet': widgets.RadioSelect(renderer=RatingRadioFieldRenderer),
@@ -19,10 +19,35 @@ rating_widgets = {
 
 
 class NewReviewForm(forms.ModelForm):
-    room = RoomField()
+    building = forms.ModelChoiceField(queryset=Building.objects.filter(type=Building.TYPES_LOOKUP['Dormitory']).order_by('name'))
+    room_number = forms.CharField()
+
+    def clean(self):
+        building = self.cleaned_data.get('building')
+        room_number = self.cleaned_data.get('room_number')
+        try:
+            room = Room.objects.get(floor__building=building, number=room_number)
+        except Room.DoesNotExist:
+            raise ValidationError("No matching room found")
+        self.cleaned_data['room'] = room
+        return self.cleaned_data
+
+    def save(self, *args, **kwargs):
+        # keep passed-in commit arg, default True
+        commit = kwargs.get('commit', True)
+
+        # don't save to db at first so we can populate instance.room
+        kwargs['commit'] = False
+
+        instance = super(NewReviewForm, self).save(*args, **kwargs)
+        instance.room = self.cleaned_data['room']
+        if commit:
+            instance.save()
+        return instance
+
     class Meta:
         model = Review
-        exclude = ('create_ts',)
+        exclude = ('create_ts', 'room')
         widgets = rating_widgets
 
 class ReviewRoomForm(forms.ModelForm):
