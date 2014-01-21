@@ -57,7 +57,7 @@ class FacebookEventPageController(object):
 		# TODO:
 		# Don't scrape on creation of a new page, because the user doesn't want to wait around for that
 		# Instead, schedule a task to scrape from the new page in the background
-		FacebookEventPageController().scrape_page_events(event_page)
+		# FacebookEventPageController().scrape_page_events(event_page)
 
 		return event_page
 
