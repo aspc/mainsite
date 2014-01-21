@@ -181,6 +181,7 @@ LOGGING = {
 }
 
 LOGIN_REDIRECT_URL = '/'
+WSGI_APPLICATION = "aspc.wsgi.application"
 
 #### ASPC Specific Configuration
 
