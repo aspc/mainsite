@@ -1,4 +1,4 @@
-
+<div class="loginstatus">
 {% if user.is_authenticated %}
 <span class="userinfo">{{ user.get_full_name }}</span>
 <span id="username">{{ user.username }}</span> &middot; <a href="{% url "logout" %}">log out?</a>{% if user.is_staff %} &middot; <a href="{% url "admin:index" %}">admin</a>{% endif %}
@@ -17,3 +17,4 @@
   <input type="submit" value="Log In">
 </form>
 {% endif %}
+</div>

@@ -939,91 +939,7 @@ nav#sitewide .group#partners {
 
 /* @end */
 
-/* @group Top Navigation */
-
-nav#topnav {
-	border-bottom: 1px solid #162554;
-	color: #dedff1;
-	background: #243546;
-	padding-top: 0.8em;
-}
-
-nav#topnav a {
-	color: #6999c9;
-	text-decoration: none;
-}
-
-/* @group subsites */
-
-nav#topnav ul {
-	list-style-type: none;
-}
-
-nav#topnav:after {
-	content: "";
-	display: block;
-	clear: both;
-}
-
-nav#topnav ul li {
-	display: inline;
-	float: left;
-}
-
-nav#topnav li a {
-	display: inline-block;
-	padding: 0 0.6em;
-	height: 1.8em;
-}
-
-nav#topnav li a:hover {
-	color: #fff;
-}
-/* @end */
-
-/* @group user */
-
-/* @group login form */
-
-#topnav #user {
-	font-size: 0.9em;
-}
-
-nav#topnav #user input, nav#topnav #user select {
-	background-color: #33465e;
-	color: #ccc;
-	font-size: 0.9em;
-}
-
-nav#topnav #user input[type="text"], nav#topnav #user input[type="password"] {
-	border: 1px solid #506c8e;
-	width: 10em;
-}
-/* @end */
-
-nav#topnav span#username {
-	margin-left: 0.4em;
-}
-
-nav#topnav span#username:before {
-	content: "(";
-}
-
-nav#topnav span#username:after {
-	content: ")";
-}
-
-nav#topnav #user {
-	text-align: right;
-	margin-bottom: 0.5em;
-}
-
-/* @end */
-
-/* @end */
-
 /* @group Header */
-
 
 header#aspc_main h1, header#aspc_main h2 {
 	font-family: Futura, "Gill Sans", Verdana, Arial;
@@ -1063,20 +979,32 @@ header#aspc_main h2 {
 	-webkit-box-shadow: 0px 0px 4px #222;
 }
 
-header#aspc_main form {
+header#aspc_main .loginstatus {
 	position: absolute;
 	right: 0em;
-	width: 16%;
 	bottom: 2.2em;
+  color: #ccc;
+}
+
+header#aspc_main .loginstatus #username:before {
+  content: "(";
+}
+
+header#aspc_main .loginstatus #username:after {
+  content: ")";
+}
+
+header#aspc_main .loginstatus a {
+  color: #6999c9;
+  text-decoration: none;
 }
 
 header#aspc_main form input {
 	background-color: #505761;
 	border: 1px solid #8c97a8;
-	width: 96%;
 	color: #ccc;
 	font-size: 1em;
-	padding: 2%;
+	padding: 0.2em;
 }
 
 #aspc_main #logo {
@@ -1367,16 +1295,32 @@ header#aspc_main {
 	margin-bottom: 1em;
 }
 
-header#aspc_main form {
-	display: none;
-}
-
 header#aspc_main h2 {
 	border-radius: 0.5em;
 }
 
 header#aspc_main hgroup {
 	padding-top: 0.5em;
+  margin-bottom: 2.5em;
+}
+
+header#aspc_main .loginstatus {
+  position: absolute;
+  bottom: -2em;
+  font-size: 0.9em;
+  left: auto;
+  right: auto;
+  text-align: center;
+  width: 100%;
+}
+
+header#aspc_main .loginstatus form {
+  margin-bottom: -0.33em;
+  font-size: 0.9em;
+}
+
+header#aspc_main .loginstatus form input[type="text"], header#aspc_main .loginstatus form input[type="password"] {
+  width: 8em;
 }
 
 /* @end */
@@ -1505,24 +1449,6 @@ overflow: visible;
 	float: left;
 }
 
-nav#topnav {
-	padding-left: 0;
-	padding-right: 0;
-}
-
-nav#topnav .row {
-	text-align: center;
-}
-
-/*#user input, #user select {
-	font-size: 0.5em;
-}*/
-
-nav#topnav #user input[type="text"], nav#topnav #user input[type="password"] {
-	border: 1px solid #506c8e;
-	width: 5em;
-}
-
 /* @group sitewide */
 
 nav#sitewide .group {
@@ -1558,41 +1484,6 @@ nav#sitewide h1 {
 	margin: 0;
 	font-size: 0.9em;
 }
-
-/* @end */
-
-/* @group top bar */
-
-nav#topnav ul {
-	text-align: center;
-	width: 100%;
-}
-
-nav#topnav ul li {
-	margin: 0em;
-	float: none;
-}
-
-/* @group user */
-
-nav#topnav span#username:before {
-	content: "";
-}
-
-nav#topnav span#username:after {
-	content: "";
-}
-
-nav#topnav #username {
-	display: none;
-}
-
-nav#topnav div#user {
-	text-align: center;
-	width: 100%;
-}
-
-/* @end */
 
 /* @end */
 
