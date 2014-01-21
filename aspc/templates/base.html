@@ -25,19 +25,12 @@
     {% endblock %}
   </head>
   <body class="{% block "content_class" %}{% endblock %}">
-  <nav id="topnav" class="container">
-    <div class="row">
-      <div id="user">
-        {% include "login_status_fragment.html" %}
-      </div>
-    </div>
-  </nav>
-
   <header id="aspc_main" class="container">
     <hgroup class="row">
       <h1><a href="{% url "home" %}">ASPC</a></h1>
       <h2><a href="{% url "home" %}">Associated Students of Pomona College</a></h2>
       <a id="logo" href="/"></a>
+{% include "login_status_fragment.html" %}
       <!-- <form>
         <input type="text" name="q" placeholder="search ASPC">
       </form> -->

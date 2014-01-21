@@ -94,5 +94,43 @@ And some apps are placeholders that have yet to be fleshed out or removed:
   - `stream` — Unused (see notes on activity stream)
   - `vote` — Unused
 
+## Running Locally ##
+
+To run locally, you need Python >= 2.7 (<3.0), PostgreSQL, virtualenv,
+virtualenvwrapper, and some patience. These instructions assume you are
+using a Mac with [Homebrew] installed.
+
+    brew install unixodbc # needed to compile pyodbc
+    brew install freetds # needed to connect to JICSWS
+    brew intall postgresql # for running a server locally
+    mkvirtualenv aspc
+    cd /path/to/your/mainsite/repo
+    pip install -r requirements.txt # this will take a while
+    
+    # to start the PostgreSQL server before starting work:
+    postgres -D /usr/local/var/postgres
+    # alternatively, set it to start at login...
+    ln -sfv /usr/local/opt/postgresql/*.plist ~/Library/LaunchAgents
+    # ...and launch it now
+    launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+    
+    # create the db
+    createdb
+    psql -c "CREATE ROLE main LOGIN PASSWORD 'dev_password';"
+    psql -c "CREATE DATABASE main_django WITH ENCODING = 'UTF-8' LC_CTYPE = 'en_US.UTF-8' LC_COLLATE = 'en_US.UTF-8' OWNER main TEMPLATE template0"
+    
+    # create db tables and superuser
+    ./manage.py syncdb
+    ./manage.py migrate
+    
+    # load default data
+    ./manage.py loaddata ./fixtures/*
+    
+    # load housing data
+    ./manage.py load_dorms
+    ./manage.py load_maps
+    ./manage.py load_dorm_rooms
+
 [Vagrant]: http://vagrantup.com
 [http://localhost:8080/]: http://localhost:8000/
+[Homebrew]: http://brew.sh/
