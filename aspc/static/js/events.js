@@ -121,6 +121,11 @@ ASPC.Events.submit_manual_event = function () {
 		}
 	}
 
+	// Reformat the URL if necessary (ensure it begins with http:// so the browser doesn't think it's a relative URL)
+	if (manual_event.url.length && !/^https?:\/\//i.test(manual_event.url)) {
+		manual_event.url = 'http://' + manual_event.url;
+	}
+
 	// Give indication of async request to the user
 	$('#manual_submit_button').attr('disabled', true);
 	$('#manual_submit_loading').show();
