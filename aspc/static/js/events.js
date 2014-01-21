@@ -115,7 +115,7 @@ ASPC.Events.submit_manual_event = function () {
 		if (end_time = manual_event.end.match(/^(\d{4})[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01]) ([01]\d|2[0-3]):([0-5]\d)$/)) {
 			manual_event.end = end_time[1] + '-' + end_time[2] + '-' + end_time[3] + 'T' + end_time[4] + ':' + end_time[5];
 		}
-		else {
+		else if (!manual_event.end.match(/^(\d{4})[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])T([01]\d|2[0-3]):([0-5]\d)$/)) {
 			alert('You must enter an end time in the format YYYY-MM-DD HH:MM!');
 			return false;
 		}
