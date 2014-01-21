@@ -6,6 +6,7 @@ from aspc.events.exceptions import InvalidEventException, InvalidFacebookEventPa
 import re
 import logging
 import pytz
+from datetime import datetime, timedelta
 
 logger = logging.getLogger(__name__)
 
@@ -61,12 +62,17 @@ class FacebookBackend(object):
         if event_data.get('is_date_only', True):
             raise InvalidEventException('Event does not have a specific start time.')
 
+        start_dt = dateutil.parser.parse(event_data['start_time'])
+        start = start_dt.astimezone(pytz.UTC)
+        yesterday = (datetime.now() - timedelta(days=1)).replace(tzinfo = pytz.utc)
+
+        # Checks if the event is in the past (compare to yesterday's date just in case)
+        if start < yesterday:
+            raise InvalidEventException('This event has already taken place!')
+
         # Checks if the event has all the other necessary fields
         if not all((key in event_data.keys()) for key in self.event_required_fields):
             raise InvalidEventException('The event is missing location or description information.')
-
-        start_dt = dateutil.parser.parse(event_data['start_time'])
-        start = start_dt.astimezone(pytz.UTC)
 
         normalized = {
             'name': event_data['name'],
