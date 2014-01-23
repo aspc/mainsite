@@ -57,7 +57,7 @@ class FacebookEventPageController(object):
 		# TODO:
 		# Don't scrape on creation of a new page, because the user doesn't want to wait around for that
 		# Instead, schedule a task to scrape from the new page in the background
-		FacebookEventPageController().scrape_page_events(event_page)
+		# FacebookEventPageController().scrape_page_events(event_page)
 
 		return event_page
 
@@ -74,7 +74,7 @@ class FacebookEventPageController(object):
 			try:
 				EventController().new_event(normalized_event_data)
 			except InvalidEventException:
-				pass # No need to be concerned if a page has malformed events... not our problem, we just won't import them
+				pass # No need to be concerned if a page has malformed or past events... not our problem, we just won't import them
 
 	@staticmethod
 	def facebook_event_pages():
