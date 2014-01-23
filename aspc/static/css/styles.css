@@ -332,6 +332,7 @@ form > ul > li > label {
 
 .news {
     width: 60%;
+    -webkit-flex: 60;
     flex: 60;
 }
 
@@ -638,6 +639,7 @@ ul.actions li {
 
 .stream {
 	width: 40%;
+  -webkit-flex: 40;
 	flex: 40;
 	background-color: #5d6673;
 }
