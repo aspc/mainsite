@@ -1,4 +1,5 @@
 settings.py
+celerybeat-schedule
 *.sqlite3
 *.pyc
 .DS_Store
