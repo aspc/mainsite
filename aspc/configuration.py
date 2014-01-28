@@ -30,15 +30,17 @@ USE_I18N = False
 # calendars according to the current locale
 USE_L10N = True
 
-# A list of strings representing the host/domain names that this Django site 
+# A list of strings representing the host/domain names that this Django site
 # can serve. This is a security measure to prevent an attacker from poisoning
-# caches and password reset emails with links to malicious hosts by 
-#submitting requests with a fake HTTP Host header, which is possible even 
+# caches and password reset emails with links to malicious hosts by
+# submitting requests with a fake HTTP Host header, which is possible even
 # under many seemingly-safe web server configurations.
-ALLOW_HOSTS = [
+ALLOWED_HOSTS = (
+    'aspc.pomona.edu',
+    'aspc.pomona.edu.',
     '.aspc.pomona.edu',
     '.aspc.pomona.edu.', # allow FQDN (with trailing dot)
-]
+)
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -245,6 +247,8 @@ def show_toolbar(request):
         return True
     else:
         return False
+
+DEBUG_TOOLBAR_PATCH_SETTINGS = False
 
 DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': False,
