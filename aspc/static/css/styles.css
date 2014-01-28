@@ -1049,20 +1049,17 @@ header#aspc_main form input {
 }
 
 .events {
-  background-color: white;
+  background-color: #ddd;
 }
 
 .events .noevents {
+  background-color: white;
   text-align: center;
   padding: 1em;
 }
 
 .events .noevents img {
   max-width: 100%;
-}
-
-.events ol {
-	background-color: #ddd;
 }
 
 .events ol {
