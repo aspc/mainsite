@@ -19,10 +19,10 @@
 						<p class="host">{{ event.host }}</p>
 						<p class="location">{{ event.location }}</p>
 						<p class="description">
-							{{ event.description }}
+							{{ event.description|linebreaksbr }}
 						</p>
 						<p class="more_link">
-							<a href="/events/event/{{ event.id }}">More...</a>
+							<a href="{% url "events_detail" event_id=event.id %}">More...</a>
 						</p>
 					</aside>
 				</div>
@@ -39,4 +39,5 @@
 </div>
 <div id="more">
 	<a href="{% url "events" %}">see full calendar &rarr;</a>
+  <a href="{% url "events" %}#event_submission">add an event &rarr;</a>
 </div>
