@@ -45,7 +45,7 @@
 			Description
 		</td>
 		<td>
-			{{ event.description }}
+			{{ event.description|linebreaksbr }}
 		</td>
 	</tr>
 	{% if event.url %}
@@ -54,7 +54,7 @@
 			Link
 		</td>
 		<td>
-			<a href="{{ event.url }}">Original Event Page</a>
+			<a href="{{ event.url }}">{{ event.url }}</a>
 		</td>
 	</tr>
 	{% endif %}
