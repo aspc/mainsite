@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 class CollegiateLinkBackend(object):
     required_fields = ('location', 'start', 'description') # 'name' is also required but check for it in a different way
-    rss_url = 'https://claremont.collegiatelink.net/EventRss/EventsRss';
+    rss_url = 'https://claremont.collegiatelink.net/EventRss/EventsRss'
 
     def _get_rss(self):
         events_xml_tree = requests.get(self.rss_url).text

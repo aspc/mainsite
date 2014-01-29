@@ -1,6 +1,7 @@
 from django.db import models
 from aspc.events.backends.facebook import FacebookBackend
 from aspc.events.backends.collegiatelink import CollegiateLinkBackend
+from django.template.defaultfilters import truncatewords
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime, timedelta
 import time
@@ -25,6 +26,15 @@ class Event(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def get_status_display_colored(self):
+        return '<div class="eventstatus {0}">{1}</span>'.format(self.status, self.get_status_display())
+    get_status_display_colored.allow_tags = True
+    get_status_display_colored.admin_order_field = 'status'
+    get_status_display_colored.short_description = "Status"
+
+    def get_description_display(self):
+        return truncatewords(self.description, 30)
 
     class Meta:
         ordering = ('start', 'name', 'end')
