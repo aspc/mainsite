@@ -33,7 +33,7 @@ fi
 apt-get -y install build-essential git nginx postgresql libpq-dev python-dev \
     python-virtualenv python-pip libldap2-dev libsasl2-dev libssl-dev \
     python-psycopg2 curl unixodbc unixodbc-dev tdsodbc freetds-bin memcached \
-    libjpeg-dev
+    libjpeg-dev rabbitmq-server
 
 pip install requests
 pip install pytz
@@ -61,12 +61,28 @@ else
     info "Database 'main_django' already exists"
 fi
 
+# Set up RabbitMQ
+if [ $(rabbitmqctl list_users 2>&1 | grep developer | wc -l) -eq 0 ]; then
+  info "Creating RabbitMQ account 'developer'"
+  rabbitmqctl add_user developer developer
+else
+  info "RabbitMQ account 'developer' exists already"
+fi
+
+rabbitmqctl set_permissions developer ".*" ".*" ".*"
+
 # Some steps should be performed as the regular vagrant user
 sudo -u vagrant bash /vagrant/vagrant/init_as_user.sh
 
 # Set up GUnicorn in Upstart
 cp /vagrant/vagrant/gunicorn.conf /etc/init/
 service gunicorn restart && info "Started GUnicorn"
+
+# Set up Celery upstart tasks
+cp /vagrant/vagrant/celeryworker.conf /etc/init/
+cp /vagrant/vagrant/celerybeat.conf /etc/init/
+service celeryworker restart
+service celerybeat restart
 
 # If it's been set up, start a tunnel to Peninsula to reach the course data db
 if [ -f /vagrant/vagrant/ssh_config ];

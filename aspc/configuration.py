@@ -115,7 +115,6 @@ INSTALLED_APPS = (
     'django_extensions',
     'debug_toolbar',
     'djcelery',
-    'kombu.transport.django',
     'stdimage',
     'aspc.folio',
     'aspc.senate',
@@ -270,13 +269,13 @@ ACADEMIC_TERM_DEFAULTS = {
 }
 
 #### Celery Configuration
-import djcelery
-
-BROKER_URL = "django://"
-CELERY_ACCEPT_CONTENT = ['pickle', 'json', 'msgpack', 'yaml']
-CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
-
-djcelery.setup_loader()
+# import djcelery
+# 
+# BROKER_URL = "django://"
+# CELERY_ACCEPT_CONTENT = ['pickle', 'json', 'msgpack', 'yaml']
+# CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+# 
+# djcelery.setup_loader()
 
 #### Grappelli Configuration
 
