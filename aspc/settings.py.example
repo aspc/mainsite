@@ -55,11 +55,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = os.path.join(PROJECT_ROOT, "temp")
 
 # Credentials for RabbitMQ (Celery)
-# BROKER_HOST = "127.0.0.1"
-# BROKER_PORT = 5672
-# BROKER_VHOST = "/celeryqueue"
-# BROKER_USER = "developer"
-# BROKER_PASSWORD = "developer"
+BROKER_URL = "amqp://developer:developer@localhost:5672//"
 
 # Override the COURSE_DATA_DB settings with real values
 

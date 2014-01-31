@@ -1,13 +1,10 @@
 from __future__ import absolute_import
-import os
-import os.path
-import time
 from celery import Celery
-# from celery.schedules import crontab
-from django.conf import settings
+import os
 
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'aspc.settings')
+from django.conf import settings
 
 app = Celery('aspc')
 
@@ -15,26 +12,20 @@ app = Celery('aspc')
 # pickle the object when using Windows.
 app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
-# 
-# app.conf.update(CELERYBEAT_SCHEDULE={
-#     "update-catalog": {
-#         "task": "aspc.coursesearch.tasks.smart_update",
-#         # Full catalog refresh finishes by 5am typically
-#         "schedule": crontab(hour=5),
-#     },
-#     "update-enrollments": {
-#         "task": "aspc.coursesearch.tasks.smart_update",
-#         # Looks like the actual time the refresh finishes drifts
-#         # but it's usually done by 20 after the hour
-#         "schedule": crontab(hour="*", minute=20),
-#     },
-# })
 
+import os.path
+import time
 
 @app.task
 def save_timestamp():
+    """
+    Saves a timestamp to PROJECT_ROOT/celery_test.tmp
+
+    Useful for testing if the workers and result backend are
+    running (also returns the timestamp as a string in the result).
+    """
     now = time.ctime()
-    outfile = os.path.join(settings.PROJECT_ROOT, 'celery_test.txt')
+    outfile = os.path.join(settings.PROJECT_ROOT, 'celery_test.tmp')
     with open(outfile, 'a') as f:
         f.write("{0}\n".format(now))
     return now

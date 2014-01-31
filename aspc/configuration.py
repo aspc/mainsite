@@ -269,13 +269,29 @@ ACADEMIC_TERM_DEFAULTS = {
 }
 
 #### Celery Configuration
-# import djcelery
-# 
-# BROKER_URL = "django://"
-# CELERY_ACCEPT_CONTENT = ['pickle', 'json', 'msgpack', 'yaml']
-# CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
-# 
-# djcelery.setup_loader()
+CELERY_RESULT_BACKEND = 'amqp'
+CELERY_TASK_RESULT_EXPIRES = 18000 # 5 hours.
+CELERY_RESULT_PERSISTENT = True
+
+# FIXME: Still need to convert management commands into tasks
+# from celery.schedules import crontab
+# CELERYBEAT_SCHEDULE = {
+#     'save-timestamp-every-minute': { # for testing only
+#         'task': 'aspc.celery_setup.save_timestamp',
+#         'schedule': crontab(minute="*"),
+#     },
+#     "update-catalog": {
+#         "task": "aspc.coursesearch.tasks.smart_update",
+#         # Full catalog refresh finishes by 5am typically
+#         "schedule": crontab(hour=5),
+#     },
+#     "update-enrollments": {
+#         "task": "aspc.coursesearch.tasks.smart_update",
+#         # Looks like the actual time the refresh finishes drifts
+#         # but it's usually done by 20 after the hour
+#         "schedule": crontab(hour="*", minute=20),
+#     },
+# }
 
 #### Grappelli Configuration
 
