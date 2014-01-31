@@ -81,8 +81,8 @@ service gunicorn restart && info "Started GUnicorn"
 # Set up Celery upstart tasks
 cp /vagrant/vagrant/celeryworker.conf /etc/init/
 cp /vagrant/vagrant/celerybeat.conf /etc/init/
-service celeryworker restart
-service celerybeat restart
+service celeryworker restart && info "Started Celery worker"
+service celerybeat restart && info "Started Celery beat process"
 
 # If it's been set up, start a tunnel to Peninsula to reach the course data db
 if [ -f /vagrant/vagrant/ssh_config ];
