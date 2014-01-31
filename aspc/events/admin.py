@@ -10,7 +10,7 @@ def deny_all(modeladmin, request, queryset):
 deny_all.short_description = "Deny selected events"
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('get_status_display_colored', 'name', 'start', 'get_description_display')
+    list_display = ('get_status_display_colored', 'name', 'host', 'location', 'description', 'start')
     list_display_links = ('name',)
     list_filter = ('status',)
     ordering = ('-status', '-start', 'end', 'name')
