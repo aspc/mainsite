@@ -1,7 +1,7 @@
 from django.views.generic.dates import ArchiveIndexView
 from aspc.blog.views import PostArchive
 from aspc.blog.models import Post
-from aspc.events.models import Event
+from aspc.events.models import EventController
 from aspc.activityfeed.models import Activity
 import logging, datetime
 
@@ -50,7 +50,7 @@ class HomeView(PostArchive):
         context = super(HomeView, self).get_context_data(**kwargs)
         context['activities'] = Activity.objects.all()[:num_activities]
         context['all_nav'] = True
-        context['events'] = Event.objects.filter(
+        context['events'] = EventController.approved_events().filter(
                                 start__gte=date_from,
                                 start__lt=date_to
                             )
