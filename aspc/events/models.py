@@ -33,9 +33,6 @@ class Event(models.Model):
     get_status_display_colored.admin_order_field = 'status'
     get_status_display_colored.short_description = "Status"
 
-    def get_description_display(self):
-        return truncatewords(self.description, 30)
-
     class Meta:
         ordering = ('start', 'name', 'end')
         verbose_name_plural = "Events"
