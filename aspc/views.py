@@ -52,6 +52,6 @@ class HomeView(PostArchive):
         context['all_nav'] = True
         context['events'] = Event.objects.filter(
                                 start__gte=date_from,
-                                end__lt=date_to
+                                start__lt=date_to
                             )
         return context
