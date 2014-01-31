@@ -21,8 +21,37 @@ class HomeView(PostArchive):
         return qs
 
     def get_context_data(self, **kwargs):
+        num_activities = self.request.GET.get('num_activities', 10)
+        try:
+            num_activities = int(num_activities)
+        except TypeError:
+            num_activities = 10
+
+        dtnow = datetime.datetime.now()
+        qs_date_from = self.request.GET.get('from')
+        qs_date_to = self.request.GET.get('to')
+
+        if qs_date_from:
+            try:
+                date_from = datetime.datetime.strptime(qs_date_from, '%Y-%m-%d')
+            except ValueError:
+                date_from = dtnow.replace(hour=0, minute=0, second=0, microsecond=0)
+        else:
+            date_from = dtnow.replace(hour=0, minute=0, second=0, microsecond=0)
+
+        if qs_date_to:
+            try:
+                date_to = datetime.datetime.strptime(qs_date_to, '%Y-%m-%d')
+            except ValueError:
+                date_to = date_from + datetime.timedelta(days=1)
+        else:
+            date_to = date_from + datetime.timedelta(days=1)
+
         context = super(HomeView, self).get_context_data(**kwargs)
-        context['activities'] = Activity.objects.all()[:7]
+        context['activities'] = Activity.objects.all()[:num_activities]
         context['all_nav'] = True
-        context['events'] = EventController.todays_events()
+        context['events'] = EventController.approved_events().filter(
+                                start__gte=date_from,
+                                start__lt=date_to
+                            )
         return context
