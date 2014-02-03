@@ -150,4 +150,4 @@ class Hours(models.Model):
     def save(self, *args, **kwargs):
         super(Hours, self).save(*args, **kwargs)
         cache_key = self.CACHE_KEY_TEMPLATE.format(id=self.business.id)
-        cache.delete(key)
+        cache.delete(cache_key)
