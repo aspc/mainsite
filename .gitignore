@@ -1,6 +1,9 @@
 settings.py
+celerybeat-schedule
 *.sqlite3
 *.pyc
+*.tmp
+*.pid
 .DS_Store
 Thumbs.db
 temp/

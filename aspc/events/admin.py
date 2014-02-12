@@ -10,14 +10,16 @@ def deny_all(modeladmin, request, queryset):
 deny_all.short_description = "Deny selected events"
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ['name', 'status', 'start', 'description']
-    list_editable = ['status']
-    ordering = ['status', 'name']
-    actions = [approve_all, deny_all]
+    list_display = ('get_status_display_colored', 'name', 'host', 'location', 'description', 'start')
+    list_display_links = ('name',)
+    list_filter = ('status',)
+    ordering = ('-status', '-start', 'end', 'name')
+    list_per_page = 50
+    actions = (approve_all, deny_all)
 
 class FacebookEventPageAdmin(admin.ModelAdmin):
-    list_display = ['name', 'page_id', 'url']
-    ordering = ['name']
+    list_display = ('name', 'page_id', 'url')
+    ordering = ('name',)
 
 admin.site.register(Event, EventAdmin)
 admin.site.register(FacebookEventPage, FacebookEventPageAdmin)

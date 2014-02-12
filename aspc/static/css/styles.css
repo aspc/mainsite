@@ -714,7 +714,7 @@ ul.actions li {
 	padding-bottom: 1em;
 	background-color: white;
 	position: relative;
-
+  word-wrap: break-word;
 }
 
 .stream .activity a {
@@ -1048,8 +1048,18 @@ header#aspc_main form input {
 	display: none;
 }
 
-.events, .events ol {
-	background-color: #ddd;
+.events {
+  background-color: #ddd;
+}
+
+.events .noevents {
+  background-color: white;
+  text-align: center;
+  padding: 1em;
+}
+
+.events .noevents img {
+  max-width: 100%;
 }
 
 .events ol {

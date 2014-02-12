@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 class CollegiateLinkBackend(object):
     required_fields = ('location', 'start', 'description') # 'name' is also required but check for it in a different way
-    rss_url = 'https://claremont.collegiatelink.net/EventRss/EventsRss';
+    rss_url = 'https://claremont.collegiatelink.net/EventRss/EventsRss'
 
     def _get_rss(self):
         events_xml_tree = requests.get(self.rss_url).text
@@ -41,9 +41,16 @@ class CollegiateLinkBackend(object):
             if not all((key in parser.parsed_data.keys()) for key in self.required_fields):
                 raise InvalidEventException('Unable to retrieve page details.')
 
+            # Builds an event object with the parsed data
             event['location'] = parser.parsed_data['location']
-            event['description'] = parser.parsed_data['description']
             event['start'] = datetime.strptime(parser.parsed_data['start'], '%A, %B %d, %Y (%I:%M %p)')
+
+            # If there is no description information given, replace that field with the category information
+            if len(parser.parsed_data['description']):
+                event['description'] = parser.parsed_data['description']
+            else:
+                categories = item.findall('category')
+                event['description'] = ', '.join([category.text for category in categories])
 
             # The host is oddly wrapped inside of parentheses... need to extract it
             event['host'] = (re.search(r'\((.*?)\)', item.find('author').text)).group(1)
@@ -54,12 +61,13 @@ class CollegiateLinkBackend(object):
 
 
 class CollegiateLinkHTMLParser(HTMLParser):
-    parsed_data = {
-        'start': '',
-        'location': '',
-        'description': ''
-    }
-    __current_state = None
+    def __init__(self):
+        self.parsed_data = {
+            'start': '',
+            'location': '',
+            'description': ''
+        }
+        self.__current_state = None
 
     def handle_starttag(self, tag, attrs):
         if ('class', 'dtstart') in attrs:

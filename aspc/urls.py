@@ -9,6 +9,8 @@ admin.autodiscover()
 
 from filebrowser.sites import site
 
+import debug_toolbar
+
 # home_kwargs = post_kwargs.copy()
 # home_kwargs.update({'template_name': 'home.html'})
 
@@ -28,6 +30,7 @@ urlpatterns = patterns('',
     url(r'^housing/', include('aspc.housing.urls')),
     url(r'^courses/', include('aspc.coursesearch.urls')),
     url(r'(?P<slug_path>(?:[\w\-\d]+/)+)$', 'aspc.folio.views.page_view', name="folio_page"),
+    url(r'^__debug__/', include(debug_toolbar.urls)),
 )
 
 if settings.DEBUG:
