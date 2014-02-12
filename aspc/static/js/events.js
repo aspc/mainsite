@@ -10,8 +10,18 @@ window.onload = function () {
 	// Grabs the csrf_token from the DOM (something we pass along to the server to authenticate requests)
 	ASPC.csrf_token = $('input[name=csrfmiddlewaretoken]').val();
 
-	// Init the jQuery calendar on the page for events display
+	// Determines if mobile site is being used
+	ASPC.Events.is_mobile = $(window).width() < 767;
+
+	// Init the jQuery calendar on the page for events display, and the datepicker for manual event submission
 	ASPC.Events.init_calendar();
+
+	if (ASPC.Events.is_mobile) {
+		ASPC.Events.init_html5_datepicker();
+	}
+	else {
+		ASPC.Events.init_datepicker();
+	}
 };
 
 ASPC.Events.init_calendar = function () {
@@ -27,6 +37,24 @@ ASPC.Events.init_calendar = function () {
 		editable: false,
 		events: ASPC.Events.calendar_data.events
 	});
+};
+
+ASPC.Events.init_datepicker = function () {
+	$('#manual_event_start').datetimepicker({
+		controlType: 'select',
+		timeFormat: 'hh:mm tt',
+		dateFormat: 'yy-mm-dd'
+	});
+	$('#manual_event_end').datetimepicker({
+		controlType: 'select',
+		timeFormat: 'hh:mm tt',
+		dateFormat: 'yy-mm-dd'
+	});
+};
+
+ASPC.Events.init_html5_datepicker = function () {
+	$('#manual_event_start').attr('type', 'datetime-local');
+	$('#manual_event_end').attr('type', 'datetime-local');
 };
 
 ASPC.Events.submit_facebook_event = function () {
@@ -90,9 +118,6 @@ ASPC.Events.submit_manual_event = function () {
 	} else if (manual_event.start.length === 0) {
 		alert('You must enter a start time!');
 		return false;
-	} else if (!manual_event.start.match(/^(\d{4})[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])T([01]\d|2[0-3]):([0-5]\d)$/) && !manual_event.start.match(/^(\d{4})[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01]) ([01]\d|2[0-3]):([0-5]\d)$/)) {
-		alert('You must enter a start time in the format YYYY-MM-DD HH:MM!');
-		return false;
 	} else if (manual_event.location.length === 0) {
 		alert('You must enter a location!');
 		return false;
@@ -107,17 +132,44 @@ ASPC.Events.submit_manual_event = function () {
 		return false;
 	}
 
-	// Reformat the times if necessary
-	if (start_time = manual_event.start.match(/^(\d{4})[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01]) ([01]\d|2[0-3]):([0-5]\d)$/)) {
-		manual_event.start = start_time[1] + '-' + start_time[2] + '-' + start_time[3] + 'T' + start_time[4] + ':' + start_time[5];
-	}
-	if (manual_event.end.length) {
-		if (end_time = manual_event.end.match(/^(\d{4})[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01]) ([01]\d|2[0-3]):([0-5]\d)$/)) {
-			manual_event.end = end_time[1] + '-' + end_time[2] + '-' + end_time[3] + 'T' + end_time[4] + ':' + end_time[5];
-		}
-		else if (!manual_event.end.match(/^(\d{4})[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])T([01]\d|2[0-3]):([0-5]\d)$/)) {
-			alert('You must enter an end time in the format YYYY-MM-DD HH:MM!');
+	// Checks and reformats the times, depending on which datepicker was used to enter them (desktop widget or native mobile HTML5 one)
+	// All times should be sent to the server in the format YYYY-MM-DDTHH:MM
+	if (!ASPC.Events.is_mobile) {
+		if (!(start_time = manual_event.start.match(/^(\d{4})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01]) ((?:0\d)|(?:1[0-2])):([0-5]\d) ((?:a|p)m)$/))) {
+			alert('You must enter a start time in the format MM/DD/YYYY HH:MM tt!');
 			return false;
+		}
+		else { // Reformat the time string
+			if (start_time[6] === 'pm') {
+				start_time[5] = parseInt(start_time[5], 10) + 12;
+			}
+			manual_event.start = start_time[1] + '-' + start_time[2] + '-' + start_time[3] + 'T' + start_time[4] + ':' + start_time[5];
+		}
+		if (manual_event.end) {
+			if (!(end_time = manual_event.end.match(/^(\d{4})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01]) ((?:0\d)|(?:1[0-2])):([0-5]\d) ((?:a|p)m)$/))) {
+				alert('You must enter an end time in the format MM/DD/YYYY HH:MM tt!');
+				return false;
+			}
+			else { // Reformat the time string
+				if (end_time[6] === 'pm') {
+					end_time[5] = parseInt(end_time[5], 10) + 12;
+				}
+				manual_event.end = end_time[1] + '-' + end_time[2] + '-' + end_time[3] + 'T' + end_time[4] + ':' + end_time[5];
+			}
+		}
+	}
+	else {
+		if (!manual_event.start.match(/^(\d{4})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01]\d|2[0-3]):([0-5]\d)$/)) {
+			// Good faith belief that modern browsers implement the HTML5 spec consistently (this error message should never appear)
+			alert('You must enter a start time in the format YYYY-MM-DDTHH:MM!');
+			return false;
+		}
+		if (manual_event.end) {
+			if (!manual_event.end.match(/^(\d{4})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T([01]\d|2[0-3]):([0-5]\d)$/)) {
+				// Good faith belief that modern browsers implement the HTML5 spec consistently (this error message should never appear)
+				alert('You must enter an end time in the format YYYY-MM-DDTHH:MM!');
+				return false;
+			}
 		}
 	}
 
