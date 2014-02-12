@@ -61,12 +61,13 @@ class CollegiateLinkBackend(object):
 
 
 class CollegiateLinkHTMLParser(HTMLParser):
-    parsed_data = {
-        'start': '',
-        'location': '',
-        'description': ''
-    }
-    __current_state = None
+    def __init__(self):
+        self.parsed_data = {
+            'start': '',
+            'location': '',
+            'description': ''
+        }
+        self.__current_state = None
 
     def handle_starttag(self, tag, attrs):
         if ('class', 'dtstart') in attrs:
