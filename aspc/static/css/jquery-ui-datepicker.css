@@ -105,6 +105,7 @@
 	width: 17em;
 	padding: .2em .2em 0;
 	display: none;
+	z-index: 10 !important;
 }
 .ui-datepicker .ui-datepicker-header {
 	position: relative;
