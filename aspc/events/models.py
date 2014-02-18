@@ -106,7 +106,7 @@ class EventController(object):
 			# Checks if an event with the same name or URL already exists
 			if Event.objects.filter(name=event_data['name']):
 				raise EventAlreadyExistsException('Event with name "' + event_data['name'] + '" already exists.')
-			elif Event.objects.filter(url=event_data.get('url', '')):
+			elif Event.objects.exclude(url='').filter(url=event_data.get('url', '')):
 				raise EventAlreadyExistsException('Event with external URL "' + event_data['url'] + '" already exists.')
 
 			event_data['start'] = datetime.strptime(event_data['start'], '%Y-%m-%dT%H:%M')
