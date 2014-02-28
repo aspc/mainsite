@@ -8,9 +8,13 @@ import lxml.html
 import os
 import re
 import requests
+import datetime
 from urllib import quote
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
+
+# Oldenborg scrapping is a little different
+is_oldenborg = False
 
 class GoogleWorksheet(object):
 	def __init__(self, w):
@@ -23,8 +27,11 @@ class GoogleWorksheet(object):
 		return self.w[key]
 
 	def _parse_hyphenated_date(self, s):
-		month, day, year = map(int, s.split("-"))
-		return date(2000 + year, month, day)
+		try:
+			month, day, year = map(int, s.split("-"))
+			return date(2000 + year, month, day)
+		except ValueError:
+			return datetime.datetime.today()
 
 	def date(self):
 		return self._parse_hyphenated_date(self.w['title']['$t'])
@@ -36,7 +43,11 @@ class GoogleCell(object):
 		self.row = int(position[1:])
 		value = c['content']['$t']
 		value = re.sub(u'[\xa0\s]+', ' ', value)
-		self.value = value.strip().encode('utf-8').split(',') # Creates a list
+
+		if is_oldenborg:
+			self.value = value.strip().encode('utf-8') # Oldenborg cells contain one fooditem each
+		else:
+			self.value = value.strip().encode('utf-8').split(',') # Creates a list
 
 	def __repr__(self):
 		return "(%s, %i, %s)" % (self.column, self.row, self.value)
@@ -106,10 +117,11 @@ class PomonaBackend(object):
 		except StopIteration:
 			raise NotFoundException(cond, seq)
 
-	def _parse_cells(self, cells):
+	def _parse_frank_frary_cells(self, cells):
 		#  Spreadsheet format
 		#
-		#  1 |   A  |   B       |    C    |  D     |  E     |
+		#    |   A  |   B       |    C    |  D     |  E     |
+		#  1 |      |           |         |        |        |
 		#  2 |  Day |Station    |Breakfast|Lunch   |Dinner  |
 		#  3 |Monday|Mealname   |         |        |        |
 		#  4 |      |Mainline   |fooditem |fooditem|fooditem|
@@ -191,16 +203,87 @@ class PomonaBackend(object):
 
 		return menus
 
-	def _get_menu(self, search_date, url):
+	def _parse_oldenborg_cells(self, cells):
+		#  Spreadsheet format
+		#
+		#    |   A     |   B       |    C   |    D    |    E   |   F    |
+		#  1 |Oldenborg|           |        |         |        |        |
+		#  2 |Dish     |Monday     |Tuesday |Wednesday|Thursday|Friday  |
+		#  3 |Meal Name|OLC Ukraine|Mexican |Italian  |Asian   |American|
+		#  4 |Soups    |fooditem   |fooditem|fooditem |fooditem|fooditem|
+		#  ...
+		#
+
+		# Menu structure to return
+		menus = {
+			'mon': {
+				'lunch': []
+			},
+			'tue': {
+				'lunch': []
+			},
+			'wed': {
+				'lunch': []
+			},
+			'thu': {
+				'lunch': []
+			},
+			'fri': {
+				'lunch': []
+			},
+			'sat': {
+				'lunch': []
+			},
+			'sun': {
+				'lunch': []
+			},
+		}
+
+		# Each cell is a tuple in the format (ColumnLetter, RowNumber, Value)
+		for cell in cells:
+			# Some cells are empty
+			if not cell.value[0]:
+				continue
+
+			# Unneeded information in the first three rows
+			if cell.row < 4:
+				continue
+
+			# Cells in the B, C, D, E, and F columns contain food items for each day
+			if cell.column == 'B':
+				menus['mon']['lunch'].append(cell.value)
+			elif cell.column == 'C':
+				menus['tue']['lunch'].append(cell.value)
+			elif cell.column == 'D':
+				menus['wed']['lunch'].append(cell.value)
+			elif cell.column == 'E':
+				menus['thu']['lunch'].append(cell.value)
+			elif cell.column == 'F':
+				menus['fri']['lunch'].append(cell.value)
+
+		return menus
+
+	def _get_menu(self, url):
+		search_date = (datetime.datetime.today() + datetime.timedelta(hours=4)).date()
+
 		html = self._download((url, self._I))
 		spreadsheet_key = self._find_spreadsheet_id(html)
 		worksheets = self._download(self._get_worksheets_for_key(spreadsheet_key))
 		worksheet = self._find(lambda _: _.date() == self._most_recent_monday(search_date), worksheets)
 		cells = self._download(self._get_cells_feed(worksheet))
-		return self._parse_cells(cells)
 
-	def frary_menu(self, search_date):
-		return self._get_menu(search_date, 'http://www.pomona.edu/administration/dining/menus/frary.aspx')
+		if is_oldenborg:
+			return self._parse_oldenborg_cells(cells)
+		else:
+			return self._parse_frank_frary_cells(cells)
 
-	def frank_menu(self, search_date):
-		return self._get_menu(search_date, 'http://www.pomona.edu/administration/dining/menus/frank.aspx')
+	def frary_menu(self):
+		return self._get_menu('http://www.pomona.edu/administration/dining/menus/frary.aspx')
+
+	def frank_menu(self):
+		return self._get_menu('http://www.pomona.edu/administration/dining/menus/frank.aspx')
+
+	def oldenborg_menu(self):
+		global is_oldenborg
+		is_oldenborg = True;
+		return self._get_menu('http://www.pomona.edu/administration/dining/menus/oldenborg.aspx')
