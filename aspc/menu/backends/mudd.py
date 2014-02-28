@@ -1,11 +1,12 @@
 # Scraper for HMC (Hoch-Shanahan) dining hall.
 
 import requests
+from datetime import datetime
 from bs4 import BeautifulSoup
 
 class MuddBackend(object):
     def __init__(self):
-        self.DAYS = ['friday', 'saturday', 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday']
+        self.DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
 
     def _get_menu_data(self, week_number):
         resp = requests.get('http://hmcdining.com/Week%d.htm' % week_number)
@@ -43,4 +44,10 @@ class MuddBackend(object):
         return menus
 
     def menu(self):
-        return self._parse_menu_data(self._get_menu_data(6))
+        # HMC stupidly changes the url to their menu every week (honestly, who conceived of this...?)
+        # so we have to calculate the difference in weeks from now and the start of term
+        # This code is fairly unstable and should be checked at the beginning of each semester at the very least
+        start_date = datetime(year=2014, month=1, day=19)
+        week_number = (datetime.today() - start_date).days / 7 + 1
+
+        return self._parse_menu_data(self._get_menu_data(week_number))
