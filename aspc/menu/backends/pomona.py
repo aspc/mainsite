@@ -17,6 +17,10 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
 is_oldenborg = False
 
 class PomonaBackend(object):
+	def __init__(self):
+		global is_oldenborg
+		is_oldenborg = False
+
 	class GoogleWorksheet(object):
 		def __init__(self, w):
 			self.w = w

@@ -29,10 +29,10 @@ class CmcBackend(object):
                     if len(station_and_food) > 1:
                         station = station_and_food[0]
                         food = station_and_food[1]
-                        meal_dict[meal_title].append(food)
+                        meal_dict[meal_title].append(food.title())
                     else:
                         food = station_and_food[0]
-                        meal_dict[meal_title].append(food)
+                        meal_dict[meal_title].append(food.title())
 
         meal_dict = dict(meal_dict)
         return {key.lower(): value for key,value in meal_dict.iteritems()}
