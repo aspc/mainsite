@@ -1,5 +1,33 @@
 from django.db import models
 
+class FrankManager(models.Manager):
+    def get_queryset(self):
+        return super(FrankManager, self).get_queryset().filter(dining_hall='frank')
+
+class FraryManager(models.Manager):
+    def get_queryset(self):
+        return super(FraryManager, self).get_queryset().filter(dining_hall='frary')
+
+class OldenborgManager(models.Manager):
+    def get_queryset(self):
+        return super(OldenborgManager, self).get_queryset().filter(dining_hall='oldenborg')
+
+class ScrippsManager(models.Manager):
+    def get_queryset(self):
+        return super(ScrippsManager, self).get_queryset().filter(dining_hall='scripps')
+
+class MuddManager(models.Manager):
+    def get_queryset(self):
+        return super(MuddManager, self).get_queryset().filter(dining_hall='mudd')
+
+class CmcManager(models.Manager):
+    def get_queryset(self):
+        return super(CmcManager, self).get_queryset().filter(dining_hall='cmc')
+
+class PitzerManager(models.Manager):
+    def get_queryset(self):
+        return super(PitzerManager, self).get_queryset().filter(dining_hall='pitzer')
+
 class Menu(models.Model):
     CHARFIELD_MAX_LENGTH = 255
     DINING_HALLS = (
@@ -31,6 +59,15 @@ class Menu(models.Model):
     meal = models.CharField(max_length=CHARFIELD_MAX_LENGTH, choices=MEALS)
     day = models.CharField(max_length=CHARFIELD_MAX_LENGTH, choices=DAYS)
 
+    objects = models.Manager()
+    frank_meals = FrankManager()
+    frary_meals = FraryManager()
+    oldenborg_meals = OldenborgManager()
+    scripps_meals = ScrippsManager()
+    mudd_meals = MuddManager()
+    cmc_meals = CmcManager()
+    pitzer_meals = PitzerManager()
+
     class Meta:
-        ordering = ('date', 'dining_hall', 'meal')
+        ordering = ('day', 'dining_hall', 'meal')
         verbose_name_plural = 'Menus'
