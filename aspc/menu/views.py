@@ -60,31 +60,31 @@ def weekend (request, day):
 			'current_week': _current_week(),
 			'current_day': day,
 			'frank_meals': {
-				'brunch': _get_or_none(Menu.frank_meals, day=day, meal='lunch'),
+				'brunch': _get_or_none(Menu.frank_meals, day=day, meal='brunch'),
 				'dinner': _get_or_none(Menu.frank_meals, day=day, meal='dinner')
 			},
 			'frary_meals': {
-				'brunch': _get_or_none(Menu.frary_meals, day=day, meal='lunch'),
+				'brunch': _get_or_none(Menu.frary_meals, day=day, meal='brunch'),
 				'dinner': _get_or_none(Menu.frary_meals, day=day, meal='dinner')
 			},
 			'oldenborg_meals': {
-				'brunch': _get_or_none(Menu.oldenborg_meals, day=day, meal='lunch'),
+				'brunch': _get_or_none(Menu.oldenborg_meals, day=day, meal='brunch'),
 				'dinner': _get_or_none(Menu.oldenborg_meals, day=day, meal='dinner')
 			},
 			'scripps_meals': {
-				'brunch': _get_or_none(Menu.scripps_meals, day=day, meal='lunch'),
+				'brunch': _get_or_none(Menu.scripps_meals, day=day, meal='brunch'),
 				'dinner': _get_or_none(Menu.scripps_meals, day=day, meal='dinner')
 			},
 			'mudd_meals': {
-				'brunch': _get_or_none(Menu.mudd_meals, day=day, meal='lunch'),
+				'brunch': _get_or_none(Menu.mudd_meals, day=day, meal='brunch'),
 				'dinner': _get_or_none(Menu.mudd_meals, day=day, meal='dinner')
 			},
 			'cmc_meals': {
-				'brunch': _get_or_none(Menu.cmc_meals, day=day, meal='lunch'),
+				'brunch': _get_or_none(Menu.cmc_meals, day=day, meal='brunch'),
 				'dinner': _get_or_none(Menu.cmc_meals, day=day, meal='dinner')
 			},
 			'pitzer_meals': {
-				'brunch': _get_or_none(Menu.pitzer_meals, day=day, meal='lunch'),
+				'brunch': _get_or_none(Menu.pitzer_meals, day=day, meal='brunch'),
 				'dinner': _get_or_none(Menu.pitzer_meals, day=day, meal='dinner')
 			}
 		})
