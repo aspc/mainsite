@@ -16,45 +16,46 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
 # Oldenborg scrapping is a little different
 is_oldenborg = False
 
-class GoogleWorksheet(object):
-	def __init__(self, w):
-		self.w = w
-
-	def __repr__(self):
-		return repr(self.w)
-
-	def __getitem__(self, key):
-		return self.w[key]
-
-	def _parse_hyphenated_date(self, s):
-		try:
-			month, day, year = map(int, s.split("-"))
-			return date(2000 + year, month, day)
-		except ValueError:
-			return datetime.datetime.today()
-
-	def date(self):
-		return self._parse_hyphenated_date(self.w['title']['$t'])
-
-class GoogleCell(object):
-	def __init__(self, c):
-		position = c['title']['$t']
-		self.column = str(position[0])
-		self.row = int(position[1:])
-		value = c['content']['$t']
-		value = re.sub(u'[\xa0\s]+', ' ', value)
-
-		if is_oldenborg:
-			self.value = value.strip().encode('utf-8') # Oldenborg cells contain one fooditem each
-		else:
-			self.value = value.strip().encode('utf-8').split(',') # Creates a list
-
-	def __repr__(self):
-		return "(%s, %i, %s)" % (self.column, self.row, self.value)
-
-class NotFoundException(Exception): pass
-
 class PomonaBackend(object):
+	class GoogleWorksheet(object):
+		def __init__(self, w):
+			self.w = w
+
+		def __repr__(self):
+			return repr(self.w)
+
+		def __getitem__(self, key):
+			return self.w[key]
+
+		def _parse_hyphenated_date(self, s):
+			try:
+				month, day, year = map(int, s.split("-"))
+				return date(2000 + year, month, day)
+			except ValueError:
+				return datetime.datetime.today()
+
+		def date(self):
+			return self._parse_hyphenated_date(self.w['title']['$t'])
+
+	class GoogleCell(object):
+		def __init__(self, c):
+			position = c['title']['$t']
+			self.column = str(position[0])
+			self.row = int(position[1:])
+			value = c['content']['$t']
+			value = re.sub(u'[\xa0\s]+', ' ', value)
+
+			if is_oldenborg:
+				self.value = value.strip().encode('utf-8') # Oldenborg cells contain one fooditem each
+			else:
+				self.value = value.strip().encode('utf-8').split(',') # Creates a list
+
+		def __repr__(self):
+			return "(%s, %i, %s)" % (self.column, self.row, self.value)
+
+	class NotFoundException(Exception):
+		pass
+
 	def _I(self, x): return x
 
 	def _download(self, (url, after)):
@@ -88,7 +89,7 @@ class PomonaBackend(object):
 		def after(resp):
 			worksheets_json = json.loads(resp)
 			worksheets = worksheets_json['feed']['entry']
-			return map(GoogleWorksheet, worksheets)
+			return map(self.GoogleWorksheet, worksheets)
 
 		worksheets_url_template = "https://spreadsheets.google.com/feeds/worksheets/{key}/public/basic?alt=json"
 		worksheets_url = worksheets_url_template.format(key=key)
@@ -98,7 +99,7 @@ class PomonaBackend(object):
 	def _get_cells_feed(self, worksheet):
 		def after(resp):
 			cells = json.loads(resp)['feed']['entry']
-			return map(GoogleCell, cells)
+			return map(self.GoogleCell, cells)
 
 		links = worksheet['link']
 		rel = "http://schemas.google.com/spreadsheets/2006#cellsfeed"
@@ -115,7 +116,7 @@ class PomonaBackend(object):
 		try:
 			return next(iter(filter(cond, seq)))
 		except StopIteration:
-			raise NotFoundException(cond, seq)
+			raise self.NotFoundException(cond, seq)
 
 	def _parse_frank_frary_cells(self, cells):
 		#  Spreadsheet format
