@@ -58,6 +58,7 @@ class Menu(models.Model):
     dining_hall = models.CharField(max_length=CHARFIELD_MAX_LENGTH, choices=DINING_HALLS)
     meal = models.CharField(max_length=CHARFIELD_MAX_LENGTH, choices=MEALS)
     day = models.CharField(max_length=CHARFIELD_MAX_LENGTH, choices=DAYS)
+    food_items = models.TextField()
 
     objects = models.Manager()
     frank_meals = FrankManager()
