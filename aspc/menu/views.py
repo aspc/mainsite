@@ -1,6 +1,6 @@
 from aspc.menu.models import Menu
 from django.shortcuts import render
-from datetime import datetime
+from datetime import datetime, date, timedelta
 
 # /menu
 def home (request):
@@ -14,6 +14,8 @@ def home (request):
 def weekday (request, day):
 	if request.method == 'GET':
 		return render(request, 'menu/weekday_menu.html', {
+			'current_week': _current_week(),
+			'current_day': day,
 			'frank_meals': {
 				'breakfast': _get_or_none(Menu.frank_meals, day=day, meal='breakfast'),
 				'lunch': _get_or_none(Menu.frank_meals, day=day, meal='lunch'),
@@ -55,6 +57,8 @@ def weekday (request, day):
 def weekend (request, day):
 	if request.method == 'GET':
 		return render(request, 'menu/weekend_menu.html', {
+			'current_week': _current_week(),
+			'current_day': day,
 			'frank_meals': {
 				'brunch': _get_or_none(Menu.frank_meals, day=day, meal='lunch'),
 				'dinner': _get_or_none(Menu.frank_meals, day=day, meal='dinner')
@@ -91,3 +95,10 @@ def _get_or_none(model_objects, **kwargs):
         return model_objects.get(**kwargs)
     except Menu.DoesNotExist:
         return None
+
+# Helper function to generate a string that represents the current weekday
+def _current_week():
+	today = date.today()
+	this_monday = today - timedelta(days=today.weekday())
+	this_sunday = this_monday + timedelta(days=6)
+	return 'Week of {0} {1} to {2} {3}'.format(this_monday.strftime('%B'), this_monday.strftime('%d').lstrip('0'), this_sunday.strftime('%B'), this_sunday.strftime('%d').lstrip('0'))
