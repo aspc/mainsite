@@ -1,1 +1,19 @@
-Hello World
+{% extends "menu/base.html" %}
+
+{% block "ogdesc" %}Meal information for the 5C dining halls.{% endblock %}
+{% block "metadesc" %}Meal information for the 5C dining halls.{% endblock %}
+
+
+{% block "outer_content" %}
+<table>
+	<tr>
+		<th><a href="{% url "menu" %}mon">Monday</a></th>
+		<th><a href="{% url "menu" %}tue">Tuesday</a></th>
+		<th><a href="{% url "menu" %}wed">Wednesday</a></th>
+		<th><a href="{% url "menu" %}thu">Thursday</a></th>
+		<th><a href="{% url "menu" %}fri">Friday</a></th>
+		<th><a href="{% url "menu" %}sat">Saturday</a></th>
+		<th><a href="{% url "menu" %}sun">Sunday</a></th>
+	</tr>
+</table>
+{% endblock %}
