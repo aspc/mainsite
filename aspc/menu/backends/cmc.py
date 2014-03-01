@@ -6,7 +6,7 @@ import feedparser
 from bs4 import BeautifulSoup
 from collections import defaultdict
 
-class CollinsBackend(object):
+class CmcBackend(object):
     rss = feedparser.parse('http://legacy.cafebonappetit.com/rss/menu/50')
 
     day_range = range(7)
