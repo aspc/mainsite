@@ -15,36 +15,39 @@ def weekday (request, day):
 	if request.method == 'GET':
 		return render(request, 'menu/weekday_menu.html', {
 			'frank_meals': {
-				'breakfast': Menu.frank_meals.get(day=day, meal='breakfast'),
-				'lunch': Menu.frank_meals.get(day=day, meal='lunch'),
-				'dinner': Menu.frank_meals.get(day=day, meal='dinner')
+				'breakfast': _get_or_none(Menu.frank_meals, day=day, meal='breakfast'),
+				'lunch': _get_or_none(Menu.frank_meals, day=day, meal='lunch'),
+				'dinner': _get_or_none(Menu.frank_meals, day=day, meal='dinner')
 			},
 			'frary_meals': {
-				'breakfast': Menu.frary_meals.get(day=day, meal='breakfast'),
-				'lunch': Menu.frary_meals.get(day=day, meal='lunch'),
-				'dinner': Menu.frary_meals.get(day=day, meal='dinner')
+				'breakfast': _get_or_none(Menu.frary_meals, day=day, meal='breakfast'),
+				'lunch': _get_or_none(Menu.frary_meals, day=day, meal='lunch'),
+				'dinner': _get_or_none(Menu.frary_meals, day=day, meal='dinner')
 			},
 			'oldenborg_meals': {
-				'lunch': Menu.oldenborg_meals.get(day=day, meal='lunch')
+				'breakfast': _get_or_none(Menu.oldenborg_meals, day=day, meal='breakfast'),
+				'lunch': _get_or_none(Menu.oldenborg_meals, day=day, meal='lunch'),
+				'dinner': _get_or_none(Menu.oldenborg_meals, day=day, meal='dinner')
 			},
 			'scripps_meals': {
-				'breakfast': Menu.scripps_meals.get(day=day, meal='breakfast'),
-				'lunch': Menu.scripps_meals.get(day=day, meal='lunch'),
-				'dinner': Menu.scripps_meals.get(day=day, meal='dinner')
+				'breakfast': _get_or_none(Menu.scripps_meals, day=day, meal='breakfast'),
+				'lunch': _get_or_none(Menu.scripps_meals, day=day, meal='lunch'),
+				'dinner': _get_or_none(Menu.scripps_meals, day=day, meal='dinner')
 			},
 			'mudd_meals': {
-				'breakfast': Menu.mudd_meals.get(day=day, meal='breakfast'),
-				'lunch': Menu.mudd_meals.get(day=day, meal='lunch'),
-				'dinner': Menu.mudd_meals.get(day=day, meal='dinner')
+				'breakfast': _get_or_none(Menu.mudd_meals, day=day, meal='breakfast'),
+				'lunch': _get_or_none(Menu.mudd_meals, day=day, meal='lunch'),
+				'dinner': _get_or_none(Menu.mudd_meals, day=day, meal='dinner')
 			},
 			'cmc_meals': {
-				'breakfast': Menu.cmc_meals.get(day=day, meal='breakfast'),
-				'lunch': Menu.cmc_meals.get(day=day, meal='lunch'),
-				'dinner': Menu.cmc_meals.get(day=day, meal='dinner')
+				'breakfast': _get_or_none(Menu.cmc_meals, day=day, meal='breakfast'),
+				'lunch': _get_or_none(Menu.cmc_meals, day=day, meal='lunch'),
+				'dinner': _get_or_none(Menu.cmc_meals, day=day, meal='dinner')
 			},
 			'pitzer_meals': {
-				'lunch': Menu.pitzer_meals.get(day=day, meal='lunch'),
-				'dinner': Menu.pitzer_meals.get(day=day, meal='dinner')
+				'breakfast': _get_or_none(Menu.pitzer_meals, day=day, meal='breakfast'),
+				'lunch': _get_or_none(Menu.pitzer_meals, day=day, meal='lunch'),
+				'dinner': _get_or_none(Menu.pitzer_meals, day=day, meal='dinner')
 			}
 		})
 
@@ -53,31 +56,38 @@ def weekend (request, day):
 	if request.method == 'GET':
 		return render(request, 'menu/weekend_menu.html', {
 			'frank_meals': {
-				'brunch': Menu.frank_meals.get(day=day, meal='lunch'),
-				'dinner': Menu.frank_meals.get(day=day, meal='dinner')
+				'brunch': _get_or_none(Menu.frank_meals, day=day, meal='lunch'),
+				'dinner': _get_or_none(Menu.frank_meals, day=day, meal='dinner')
 			},
 			'frary_meals': {
-				'brunch': Menu.frary_meals.get(day=day, meal='lunch'),
-				'dinner': Menu.frary_meals.get(day=day, meal='dinner')
+				'brunch': _get_or_none(Menu.frary_meals, day=day, meal='lunch'),
+				'dinner': _get_or_none(Menu.frary_meals, day=day, meal='dinner')
 			},
 			'oldenborg_meals': {
-				'brunch': Menu.oldenborg_meals.get(day=day, meal='lunch'),
-				'dinner': Menu.oldenborg_meals.get(day=day, meal='dinner')
+				'brunch': _get_or_none(Menu.oldenborg_meals, day=day, meal='lunch'),
+				'dinner': _get_or_none(Menu.oldenborg_meals, day=day, meal='dinner')
 			},
 			'scripps_meals': {
-				'brunch': Menu.scripps_meals.get(day=day, meal='lunch'),
-				'dinner': Menu.scripps_meals.get(day=day, meal='dinner')
+				'brunch': _get_or_none(Menu.scripps_meals, day=day, meal='lunch'),
+				'dinner': _get_or_none(Menu.scripps_meals, day=day, meal='dinner')
 			},
 			'mudd_meals': {
-				'brunch': Menu.mudd_meals.get(day=day, meal='lunch'),
-				'dinner': Menu.mudd_meals.get(day=day, meal='dinner')
+				'brunch': _get_or_none(Menu.mudd_meals, day=day, meal='lunch'),
+				'dinner': _get_or_none(Menu.mudd_meals, day=day, meal='dinner')
 			},
 			'cmc_meals': {
-				'brunch': Menu.cmc_meals.get(day=day, meal='lunch'),
-				'dinner': Menu.cmc_meals.get(day=day, meal='dinner')
+				'brunch': _get_or_none(Menu.cmc_meals, day=day, meal='lunch'),
+				'dinner': _get_or_none(Menu.cmc_meals, day=day, meal='dinner')
 			},
 			'pitzer_meals': {
-				'brunch': Menu.pitzer_meals.get(day=day, meal='lunch'),
-				'dinner': Menu.pitzer_meals.get(day=day, meal='dinner')
+				'brunch': _get_or_none(Menu.pitzer_meals, day=day, meal='lunch'),
+				'dinner': _get_or_none(Menu.pitzer_meals, day=day, meal='dinner')
 			}
 		})
+
+# Helper function to prevent lookup errors on days when certain dining halls aren't serving
+def _get_or_none(model_objects, **kwargs):
+    try:
+        return model_objects.get(**kwargs)
+    except Menu.DoesNotExist:
+        return None
