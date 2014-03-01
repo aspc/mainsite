@@ -1,0 +1,20 @@
+#day_nav {
+	border-top: 2px solid #386d8e;
+}
+
+#day_nav th {
+	background-color: #2f5184;
+	border-bottom: none;
+}
+
+#day_nav a {
+	text-decoration: none;
+	color: white;
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.active {
+	background-color: #313E53 !important;
+}
