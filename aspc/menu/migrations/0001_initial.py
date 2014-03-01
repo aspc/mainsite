@@ -14,6 +14,7 @@ class Migration(SchemaMigration):
             ('dining_hall', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('meal', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('day', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('food_items', self.gf('django.db.models.fields.TextField')()),
         ))
         db.send_create_signal(u'menu', ['Menu'])
 
@@ -28,6 +29,7 @@ class Migration(SchemaMigration):
             'Meta': {'ordering': "('day', 'dining_hall', 'meal')", 'object_name': 'Menu'},
             'day': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'dining_hall': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'food_items': ('django.db.models.fields.TextField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'meal': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         }
