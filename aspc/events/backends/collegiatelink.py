@@ -62,6 +62,11 @@ class CollegiateLinkBackend(object):
 
 class CollegiateLinkHTMLParser(HTMLParser):
     def __init__(self):
+        # Reinstantiate the super class in case the same instance of the parser is being reused
+        HTMLParser.__init__(self)
+        self._lines = []
+        self.reset()
+
         self.parsed_data = {
             'start': '',
             'location': '',
