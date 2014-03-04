@@ -10,7 +10,10 @@ class MuddBackend(object):
 
     def _get_menu_data(self, week_number):
         resp = requests.get('http://hmcdining.com/Week%d.htm' % week_number)
-        return BeautifulSoup(resp.text)
+        if resp.status_code == 404: # Sometimes Mudd does not update its menu on time...
+            return None
+        else:
+            return BeautifulSoup(resp.text)
 
     def _parse_menu_data(self, menu_data):
         current_meal = None
@@ -25,6 +28,9 @@ class MuddBackend(object):
             'sat': {},
             'sun': {}
         }
+
+        if not menu_data: # If the data can't be loaded for some reason, just return an empty dict
+            return menus
 
         for day in self.DAYS:
             day_node = menu_data.find(id=day) # i.e. Find all the meals that correspond to 'monday' first
