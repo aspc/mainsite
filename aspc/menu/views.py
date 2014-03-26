@@ -27,9 +27,7 @@ def weekday (request, day):
 				'dinner': _get_or_none(Menu.frary_meals, day=day, meal='dinner')
 			},
 			'oldenborg_meals': {
-				'breakfast': _get_or_none(Menu.oldenborg_meals, day=day, meal='breakfast'),
 				'lunch': _get_or_none(Menu.oldenborg_meals, day=day, meal='lunch'),
-				'dinner': _get_or_none(Menu.oldenborg_meals, day=day, meal='dinner')
 			},
 			'scripps_meals': {
 				'breakfast': _get_or_none(Menu.scripps_meals, day=day, meal='breakfast'),
@@ -67,10 +65,6 @@ def weekend (request, day):
 				'brunch': _get_or_none(Menu.frary_meals, day=day, meal='brunch'),
 				'dinner': _get_or_none(Menu.frary_meals, day=day, meal='dinner')
 			},
-			'oldenborg_meals': {
-				'brunch': _get_or_none(Menu.oldenborg_meals, day=day, meal='brunch'),
-				'dinner': _get_or_none(Menu.oldenborg_meals, day=day, meal='dinner')
-			},
 			'scripps_meals': {
 				'brunch': _get_or_none(Menu.scripps_meals, day=day, meal='brunch'),
 				'dinner': _get_or_none(Menu.scripps_meals, day=day, meal='dinner')
@@ -94,7 +88,7 @@ def _get_or_none(model_objects, **kwargs):
     try:
         return model_objects.get(**kwargs)
     except Menu.DoesNotExist:
-        return None
+        return {'food_items': 'No menu.'}
 
 # Helper function to generate a string that represents the current weekday
 def _current_week():
