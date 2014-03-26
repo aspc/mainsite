@@ -55,14 +55,14 @@ class Command(BaseCommand):
         frary_meals = PomonaBackend().frary_menu()
         for day in frary_meals:
             for meal in frary_meals[day]:
-                new_menu = Menu(dining_hall='frary', day=day, meal=meal, food_items=','.join(frary_meals[day][meal]))
+                new_menu = Menu(dining_hall='frary', day=day, meal=meal, food_items=', '.join(frary_meals[day][meal]))
                 new_menu.save()
         self.stdout.write('frary menus loaded \n')
 
         frank_meals = PomonaBackend().frank_menu()
         for day in frank_meals:
             for meal in frank_meals[day]:
-                new_menu = Menu(dining_hall='frank', day=day, meal=meal, food_items=','.join(frank_meals[day][meal]))
+                new_menu = Menu(dining_hall='frank', day=day, meal=meal, food_items=', '.join(frank_meals[day][meal]))
                 new_menu.save()
         self.stdout.write('frank menus loaded \n')
 
