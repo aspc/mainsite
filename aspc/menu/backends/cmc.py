@@ -3,8 +3,10 @@
 # Originally from https://github.com/sean-adler/5c-dining-api
 
 import feedparser
+import HTMLParser
 from bs4 import BeautifulSoup
 from collections import defaultdict
+
 
 class CmcBackend(object):
     rss = feedparser.parse('http://legacy.cafebonappetit.com/rss/menu/50')
@@ -28,10 +30,10 @@ class CmcBackend(object):
                     station_and_food = f.split('] ')
                     if len(station_and_food) > 1:
                         station = station_and_food[0]
-                        food = station_and_food[1]
+                        food = HTMLParser.HTMLParser().unescape(station_and_food[1])
                         meal_dict[meal_title].append(food.title())
                     else:
-                        food = station_and_food[0]
+                        food = HTMLParser.HTMLParser().unescape(station_and_food[0])
                         meal_dict[meal_title].append(food.title())
 
         meal_dict = dict(meal_dict)
