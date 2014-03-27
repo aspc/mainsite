@@ -1,0 +1,15 @@
+{% extends "base_page.html" %}
+
+{% block "ogtitle" %}5C Menu{% endblock %}
+{% block "title" %}5C Menu{% endblock %}
+{% block "page_title" %}5C Menu: {{ current_week }}{% endblock %}
+
+{% block "head" %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/menu.css" type="text/css">
+{% endblock %}
+
+{% block "breadcrumbs" %}
+<ol class="breadcrumbs">
+  <li><a href="{% url "menu" %}">5C Menu</a></li>
+</ol>
+{% endblock %}

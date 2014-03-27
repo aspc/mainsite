@@ -128,6 +128,7 @@ INSTALLED_APPS = (
     'aspc.eatshop',
     'aspc.events',
     'aspc.activityfeed',
+    'aspc.menu'
 )
 
 # Serializer to use for User sessions. Preferable not to use

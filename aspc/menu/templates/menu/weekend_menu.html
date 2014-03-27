@@ -1,0 +1,42 @@
+{% extends "menu/home.html" %}
+
+{% block "outer_content" %}
+{{ block.super }}
+<table id="menu_table">
+	<tr>
+		<th></th>
+		<th>Brunch</th>
+		<th>Dinner</th>
+	</tr>
+	<tr>
+		<th><a href="http://www.pomona.edu/administration/dining/menus/frank.aspx">Frank</a></th>
+		<td>{{ frank_meals.brunch.food_items }}</td>
+		<td>{{ frank_meals.dinner.food_items }}</td>
+	</tr>
+	<tr>
+		<th><a href="http://www.pomona.edu/administration/dining/menus/frary.aspx">Frary</a></th>
+		<td>{{ frary_meals.brunch.food_items }}</td>
+		<td>{{ frary_meals.dinner.food_items }}</td>
+	</tr>
+	<tr>
+		<th><a href="http://collins-cmc.cafebonappetit.com/hungry/collins/">CMC</a></th>
+		<td>{{ cmc_meals.brunch.food_items }}</td>
+		<td>{{ cmc_meals.dinner.food_items }}</td>
+	</tr>
+	<tr>
+		<th><a href="http://www.scrippscollege.edu/students/dining-services/">Scripps</a></th>
+		<td>{{ scripps_meals.brunch.food_items }}</td>
+		<td>{{ scripps_meals.dinner.food_items }}</td>
+	</tr>
+	<tr>
+		<th><a href="http://pitzer.cafebonappetit.com/">Pitzer</a></th>
+		<td>{{ pitzer_meals.brunch.food_items }}</td>
+		<td>{{ pitzer_meals.dinner.food_items }}</td>
+	</tr>
+	<tr>
+		<th><a href="http://www.hmcdining.com/dining/index.html">Mudd</a></th>
+		<td>{{ mudd_meals.brunch.food_items }}</td>
+		<td>{{ mudd_meals.dinner.food_items }}</td>
+	</tr>
+</table>
+{% endblock %}

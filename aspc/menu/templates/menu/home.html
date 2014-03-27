@@ -1,0 +1,19 @@
+{% extends "menu/base.html" %}
+
+{% block "ogdesc" %}Meal information for the 5C dining halls.{% endblock %}
+{% block "metadesc" %}Meal information for the 5C dining halls.{% endblock %}
+
+
+{% block "outer_content" %}
+<table id="day_nav">
+	<tr>
+		<th {% if current_day == 'mon' %} class="active" {% endif %}><a href="{% url "menu" %}mon">Monday</a></th>
+		<th {% if current_day == 'tue' %} class="active" {% endif %}><a href="{% url "menu" %}tue">Tuesday</a></th>
+		<th {% if current_day == 'wed' %} class="active" {% endif %}><a href="{% url "menu" %}wed">Wednesday</a></th>
+		<th {% if current_day == 'thu' %} class="active" {% endif %}><a href="{% url "menu" %}thu">Thursday</a></th>
+		<th {% if current_day == 'fri' %} class="active" {% endif %}><a href="{% url "menu" %}fri">Friday</a></th>
+		<th {% if current_day == 'sat' %} class="active" {% endif %}><a href="{% url "menu" %}sat">Saturday</a></th>
+		<th {% if current_day == 'sun' %} class="active" {% endif %}><a href="{% url "menu" %}sun">Sunday</a></th>
+	</tr>
+</table>
+{% endblock %}

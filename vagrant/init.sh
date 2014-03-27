@@ -33,7 +33,7 @@ fi
 apt-get -y install build-essential git nginx postgresql libpq-dev python-dev \
     python-virtualenv python-pip libldap2-dev libsasl2-dev libssl-dev \
     python-psycopg2 curl unixodbc unixodbc-dev tdsodbc freetds-bin memcached \
-    libjpeg-dev rabbitmq-server
+    libjpeg-dev rabbitmq-server libxml2-dev libxslt-dev
 
 pip install requests
 pip install pytz
