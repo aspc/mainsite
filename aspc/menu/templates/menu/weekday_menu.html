@@ -11,45 +11,159 @@
 	</tr>
 	<tr>
 		<th><a href="http://www.pomona.edu/administration/dining/menus/frank.aspx">Frank</a></th>
-		<td>{{ frank_meals.breakfast.food_items }}</td>
-		<td>{{ frank_meals.lunch.food_items }}</td>
-		<td>{{ frank_meals.dinner.food_items }}</td>
+		<td>
+			<ul>
+				{% for item in frank_meals.breakfast_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
+		<td>
+			<ul>
+				{% for item in frank_meals.lunch_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
+		<td>
+			<ul>
+				{% for item in frank_meals.dinner_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
 	</tr>
 	<tr>
 		<th><a href="http://www.pomona.edu/administration/dining/menus/frary.aspx">Frary</a></th>
-		<td>{{ frary_meals.breakfast.food_items }}</td>
-		<td>{{ frary_meals.lunch.food_items }}</td>
-		<td>{{ frary_meals.dinner.food_items }}</td>
+		<td>
+			<ul>
+				{% for item in frary_meals.breakfast_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
+		<td>
+			<ul>
+				{% for item in frary_meals.lunch_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
+		<td>
+			<ul>
+				{% for item in frary_meals.dinner_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
 	</tr>
 	<tr>
 		<th><a href="http://www.pomona.edu/administration/dining/menus/oldenborg.aspx">Oldenborg</a></th>
 		<td>No menu.</td>
-		<td>{{ oldenborg_meals.lunch.food_items }}</td>
+		<td>
+			<ul>
+				{% for item in oldenborg_meals.lunch_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
 		<td>No menu.</td>
 	</tr>
 	<tr>
 		<th><a href="http://collins-cmc.cafebonappetit.com/hungry/collins/">CMC</a></th>
-		<td>{{ cmc_meals.breakfast.food_items }}</td>
-		<td>{{ cmc_meals.lunch.food_items }}</td>
-		<td>{{ cmc_meals.dinner.food_items }}</td>
+		<td>
+			<ul>
+				{% for item in cmc_meals.breakfast_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
+		<td>
+			<ul>
+				{% for item in cmc_meals.lunch_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
+		<td>
+			<ul>
+				{% for item in cmc_meals.dinner_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
 	</tr>
 	<tr>
 		<th><a href="http://www.scrippscollege.edu/students/dining-services/">Scripps</a></th>
-		<td>{{ scripps_meals.breakfast.food_items }}</td>
-		<td>{{ scripps_meals.lunch.food_items }}</td>
-		<td>{{ scripps_meals.dinner.food_items }}</td>
+		<td>
+			<ul>
+				{% for item in scripps_meals.breakfast_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
+		<td>
+			<ul>
+				{% for item in scripps_meals.lunch_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
+		<td>
+			<ul>
+				{% for item in scripps_meals.dinner_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
 	</tr>
 	<tr>
 		<th><a href="http://pitzer.cafebonappetit.com/">Pitzer</a></th>
-		<td>{{ pitzer_meals.breakfast.food_items }}</td>
-		<td>{{ pitzer_meals.lunch.food_items }}</td>
-		<td>{{ pitzer_meals.dinner.food_items }}</td>
+		<td>
+			<ul>
+				{% for item in frank_meals.breakfast_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
+		<td>
+			<ul>
+				{% for item in frank_meals.lunch_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
+		<td>
+			<ul>
+				{% for item in frank_meals.dinner_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
 	</tr>
 	<tr>
 		<th><a href="http://www.hmcdining.com/dining/index.html">Mudd</a></th>
-		<td>{{ mudd_meals.breakfast.food_items }}</td>
-		<td>{{ mudd_meals.lunch.food_items }}</td>
-		<td>{{ mudd_meals.dinner.food_items }}</td>
+		<td>
+			<ul>
+				{% for item in mudd_meals.breakfast_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
+		<td>
+			<ul>
+				{% for item in mudd_meals.lunch_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
+		<td>
+			<ul>
+				{% for item in mudd_meals.dinner_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
 	</tr>
 </table>
 {% endblock %}

@@ -23,3 +23,7 @@
 	text-decoration: none;
 	color: black;
 }
+
+#menu_table td {
+	vertical-align: top; !important
+}
