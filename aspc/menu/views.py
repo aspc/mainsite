@@ -91,7 +91,7 @@ def _get_or_none(model_objects, **kwargs):
     try:
         return json.loads(model_objects.get(**kwargs).food_items)
     except Menu.DoesNotExist:
-        return {'No menu.'}
+        return ['No menu.']
 
 # Helper function to generate a string that represents the current weekday
 def _current_week():
