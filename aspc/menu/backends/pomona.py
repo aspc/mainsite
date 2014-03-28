@@ -180,6 +180,10 @@ class PomonaBackend(object):
 			if cell.column == 'B':
 				continue
 
+			# On weekends, the D column is not used
+			if cell.column == 'D' and current_day is weekends:
+				continue
+
 			if cell.value[0] in days:
 				current_day = cell.value[0][:3].lower()
 				ignored_row = cell.row
@@ -192,9 +196,7 @@ class PomonaBackend(object):
 				current_meal = 'brunch'
 			elif cell.column == 'D' and current_day in weekdays:
 				current_meal = 'lunch'
-			elif cell.column == 'D' and current_day in weekends:
-				current_meal = 'dinner'
-			elif cell.column == 'E' and current_day in weekdays:
+			elif cell.column == 'E':
 				current_meal = 'dinner'
 
 			# Anything else that is in a cell should be a food item that we want to append to the appropriate menu
