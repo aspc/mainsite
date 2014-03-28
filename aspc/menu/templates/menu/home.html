@@ -5,6 +5,17 @@
 
 
 {% block "outer_content" %}
+<table id="dining_hall_nav">
+	<tr>
+		<th class="frank_background"><a href="#frank_menu">Frank</a></th>
+		<th class="frary_background"><a href="#frary_menu">Frary</a></th>
+		<th class="oldenborg_background"><a href="#oldenborg_menu">Oldenborg</a></th>
+		<th class="cmc_background"><a href="#cmc_menu">CMC</a></th>
+		<th class="scripps_background"><a href="#scripps_menu">Scripps</a></th>
+		<th class="pitzer_background"><a href="#pitzer_menu">Pitzer</a></th>
+		<th class="mudd_background"><a href="#mudd_menu">Mudd</a></th>
+	</tr>
+</table>
 <table id="day_nav">
 	<tr>
 		<th {% if current_day == 'mon' %} class="active" {% endif %}><a href="{% url "menu" %}mon">Monday</a></th>

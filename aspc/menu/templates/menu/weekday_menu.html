@@ -4,13 +4,13 @@
 {{ block.super }}
 <table id="menu_table">
 	<tr>
-		<th></th>
+		<th>Location</th>
 		<th>Breakfast</th>
 		<th>Lunch</th>
 		<th>Dinner</th>
 	</tr>
-	<tr>
-		<th><a href="http://www.pomona.edu/administration/dining/menus/frank.aspx">Frank</a></th>
+	<tr id="frank_menu">
+		<th class="frank_background"><a href="http://www.pomona.edu/administration/dining/menus/frank.aspx">Frank</a></th>
 		<td>
 			<ul>
 				{% for item in frank_meals.breakfast_items %}
@@ -33,8 +33,8 @@
 			</ul>
 		</td>
 	</tr>
-	<tr>
-		<th><a href="http://www.pomona.edu/administration/dining/menus/frary.aspx">Frary</a></th>
+	<tr id="frary_menu">
+		<th class="frary_background"><a href="http://www.pomona.edu/administration/dining/menus/frary.aspx">Frary</a></th>
 		<td>
 			<ul>
 				{% for item in frary_meals.breakfast_items %}
@@ -57,8 +57,8 @@
 			</ul>
 		</td>
 	</tr>
-	<tr>
-		<th><a href="http://www.pomona.edu/administration/dining/menus/oldenborg.aspx">Oldenborg</a></th>
+	<tr id="oldenborg_menu">
+		<th class="oldenborg_background"><a href="http://www.pomona.edu/administration/dining/menus/oldenborg.aspx">Oldenborg</a></th>
 		<td>No menu.</td>
 		<td>
 			<ul>
@@ -69,8 +69,8 @@
 		</td>
 		<td>No menu.</td>
 	</tr>
-	<tr>
-		<th><a href="http://collins-cmc.cafebonappetit.com/hungry/collins/">CMC</a></th>
+	<tr id="cmc_menu">
+		<th class="cmc_background"><a href="http://collins-cmc.cafebonappetit.com/hungry/collins/">CMC</a></th>
 		<td>
 			<ul>
 				{% for item in cmc_meals.breakfast_items %}
@@ -93,8 +93,8 @@
 			</ul>
 		</td>
 	</tr>
-	<tr>
-		<th><a href="http://www.scrippscollege.edu/students/dining-services/">Scripps</a></th>
+	<tr id="scripps_menu">
+		<th class="scripps_background"><a href="http://www.scrippscollege.edu/students/dining-services/">Scripps</a></th>
 		<td>
 			<ul>
 				{% for item in scripps_meals.breakfast_items %}
@@ -117,8 +117,8 @@
 			</ul>
 		</td>
 	</tr>
-	<tr>
-		<th><a href="http://pitzer.cafebonappetit.com/">Pitzer</a></th>
+	<tr id="pitzer_menu">
+		<th class="pitzer_background"><a href="http://pitzer.cafebonappetit.com/">Pitzer</a></th>
 		<td>
 			<ul>
 				{% for item in frank_meals.breakfast_items %}
@@ -141,8 +141,8 @@
 			</ul>
 		</td>
 	</tr>
-	<tr>
-		<th><a href="http://www.hmcdining.com/dining/index.html">Mudd</a></th>
+	<tr id="mudd_menu">
+		<th class="mudd_background"><a href="http://www.hmcdining.com/dining/index.html">Mudd</a></th>
 		<td>
 			<ul>
 				{% for item in mudd_meals.breakfast_items %}
