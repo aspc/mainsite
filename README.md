@@ -70,8 +70,10 @@ which are Django "apps":
   - `coursesearch` — Course search & schedule builder. 
     Includes management commands to sync with ITS course database
   - `eatshop` — Local business & discount directory
+  - `events` - 5C event calendar and scraper
   - `folio` — Simple CMS to add pages to ASPC site
   - `housing` — Housing directory & reviews
+  - `menu` - 5C weekly dining hall menus
   - `minutes` — History of ASPC minutes + summaries
   - `sagelist` — aka SageBooks, student-to-student textbook sales
   - `senate` — Positions, appointments, and documents. Includes functionality
@@ -89,7 +91,6 @@ Folders without an `__init__.py` are not apps, but contain supporting files:
 And some apps are placeholders that have yet to be fleshed out or removed:
 
   - `courses` — Currently used only for the Term model
-  - `events` — Unused (see Glean project)
   - `map` — Unused
   - `stream` — Unused (see notes on activity stream)
   - `vote` — Unused

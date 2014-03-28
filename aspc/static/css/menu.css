@@ -1,5 +1,45 @@
-#day_nav {
+#dining_hall_nav {
 	border-top: 2px solid #386d8e;
+}
+
+#dining_hall_nav th {
+	border-bottom: none;
+}
+
+#dining_hall_nav a {
+	text-decoration: none;
+	color: black;
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.frank_background {
+	background-color: rgb(10, 151, 209) !important;
+}
+
+.frary_background {
+	background-color: rgb(71, 160, 119) !important;
+}
+
+.oldenborg_background {
+	background-color: rgb(135, 168, 80) !important;
+}
+
+.cmc_background {
+	background-color: rgb(255, 207, 76) !important;
+}
+
+.scripps_background {
+	background-color: rgb(240, 148, 70) !important;
+}
+
+.pitzer_background {
+	background-color: rgb(224, 62, 63) !important;
+}
+
+.mudd_background {
+	background-color: rgb(168, 60, 94) !important;
 }
 
 #day_nav th {
@@ -16,10 +56,63 @@
 }
 
 .active {
-	background-color: rgba(41, 83, 132, 0.5) !important
+	background-color: rgba(41, 83, 132, 0.5) !important;
+}
+
+.mobile_meal_header {
+	display: none;
 }
 
 #menu_table a {
 	text-decoration: none;
 	color: black;
+}
+
+#menu_table td {
+	vertical-align: top !important;
+}
+
+#desktop_page_title {
+	display: block;
+}
+
+#mobile_page_title {
+	display: none;
+}
+
+/******** Mobile Styles *********/
+
+@media handheld, only screen and (max-width: 767px) {
+	#dining_hall_nav {
+		border-bottom: 2px solid #364e69;
+	}
+
+	#dining_hall_nav th {
+		display: block;
+	}
+
+	#day_nav, #meal_header {
+		display: none;
+	}
+
+	.mobile_meal_header {
+		display: block;
+		font-weight: bold;
+	}
+
+	#frank_menu, #frary_menu, #oldenborg_menu, #cmc_menu, #scripps_menu, #pitzer_menu, #mudd_menu {
+		display: block;
+	}
+
+	#menu_table th, td {
+		display: block;
+	}
+
+	#desktop_page_title {
+		display: none;
+	}
+
+	#mobile_page_title {
+		display: block;
+	}
 }

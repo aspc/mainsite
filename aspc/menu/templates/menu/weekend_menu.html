@@ -3,40 +3,124 @@
 {% block "outer_content" %}
 {{ block.super }}
 <table id="menu_table">
-	<tr>
-		<th></th>
+	<tr id="meal_header">
+		<th>Location</th>
 		<th>Brunch</th>
 		<th>Dinner</th>
 	</tr>
-	<tr>
-		<th><a href="http://www.pomona.edu/administration/dining/menus/frank.aspx">Frank</a></th>
-		<td>{{ frank_meals.brunch.food_items }}</td>
-		<td>{{ frank_meals.dinner.food_items }}</td>
+	<tr id="frank_menu">
+		<th class="frank_background"><a href="http://www.pomona.edu/administration/dining/menus/frank.aspx">Frank</a></th>
+		<td>
+			<span class="mobile_meal_header">Brunch</span>
+			<ul>
+				{% for item in frank_meals.brunch_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
+		<td>
+			<span class="mobile_meal_header">Dinner</span>
+			<ul>
+				{% for item in frank_meals.dinner_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
 	</tr>
-	<tr>
-		<th><a href="http://www.pomona.edu/administration/dining/menus/frary.aspx">Frary</a></th>
-		<td>{{ frary_meals.brunch.food_items }}</td>
-		<td>{{ frary_meals.dinner.food_items }}</td>
+	<tr id="frary_menu">
+		<th class="frary_background"><a href="http://www.pomona.edu/administration/dining/menus/frary.aspx">Frary</a></th>
+		<td>
+			<span class="mobile_meal_header">Brunch</span>
+			<ul>
+				{% for item in frary_meals.brunch_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
+		<td>
+			<span class="mobile_meal_header">Dinner</span>
+			<ul>
+				{% for item in frary_meals.dinner_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
 	</tr>
-	<tr>
-		<th><a href="http://collins-cmc.cafebonappetit.com/hungry/collins/">CMC</a></th>
-		<td>{{ cmc_meals.brunch.food_items }}</td>
-		<td>{{ cmc_meals.dinner.food_items }}</td>
+	<tr id="cmc_menu">
+		<th class="cmc_background"><a href="http://collins-cmc.cafebonappetit.com/hungry/collins/">CMC</a></th>
+		<td>
+			<span class="mobile_meal_header">Brunch</span>
+			<ul>
+				{% for item in cmc_meals.brunch_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
+		<td>
+			<span class="mobile_meal_header">Dinner</span>
+			<ul>
+				{% for item in cmc_meals.dinner_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
 	</tr>
-	<tr>
-		<th><a href="http://www.scrippscollege.edu/students/dining-services/">Scripps</a></th>
-		<td>{{ scripps_meals.brunch.food_items }}</td>
-		<td>{{ scripps_meals.dinner.food_items }}</td>
+	<tr id="scripps_menu">
+		<th class="scripps_background"><a href="http://www.scrippscollege.edu/students/dining-services/">Scripps</a></th>
+		<td>
+			<span class="mobile_meal_header">Brunch</span>
+			<ul>
+				{% for item in scripps_meals.brunch_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
+		<td>
+			<span class="mobile_meal_header">Dinner</span>
+			<ul>
+				{% for item in scripps_meals.dinner_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
 	</tr>
-	<tr>
-		<th><a href="http://pitzer.cafebonappetit.com/">Pitzer</a></th>
-		<td>{{ pitzer_meals.brunch.food_items }}</td>
-		<td>{{ pitzer_meals.dinner.food_items }}</td>
+	<tr id="pitzer_menu">
+		<th class="pitzer_background"><a href="http://pitzer.cafebonappetit.com/">Pitzer</a></th>
+		<td>
+			<span class="mobile_meal_header">Brunch</span>
+			<ul>
+				{% for item in pitzer_meals.brunch_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
+		<td>
+			<span class="mobile_meal_header">Dinner</span>
+			<ul>
+				{% for item in pitzer_meals.dinner_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
 	</tr>
-	<tr>
-		<th><a href="http://www.hmcdining.com/dining/index.html">Mudd</a></th>
-		<td>{{ mudd_meals.brunch.food_items }}</td>
-		<td>{{ mudd_meals.dinner.food_items }}</td>
+	<tr id="mudd_menu">
+		<th class="mudd_background"><a href="http://www.hmcdining.com/dining/index.html">Mudd</a></th>
+		<td>
+			<span class="mobile_meal_header">Brunch</span>
+			<ul>
+				{% for item in mudd_meals.brunch_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
+		<td>
+			<span class="mobile_meal_header">Dinner</span>
+			<ul>
+				{% for item in mudd_meals.dinner_items %}
+					<li>{{ item }}</li>
+				{% endfor %}
+			</ul>
+		</td>
 	</tr>
 </table>
 {% endblock %}

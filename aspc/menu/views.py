@@ -1,6 +1,7 @@
 from aspc.menu.models import Menu
 from django.shortcuts import render
 from datetime import datetime, date, timedelta
+import json
 
 # /menu
 def home (request):
@@ -16,38 +17,39 @@ def weekday (request, day):
 		return render(request, 'menu/weekday_menu.html', {
 			'current_week': _current_week(),
 			'current_day': day,
+			'current_date': _current_date(),
 			'frank_meals': {
-				'breakfast': _get_or_none(Menu.frank_meals, day=day, meal='breakfast'),
-				'lunch': _get_or_none(Menu.frank_meals, day=day, meal='lunch'),
-				'dinner': _get_or_none(Menu.frank_meals, day=day, meal='dinner')
+				'breakfast_items': _get_or_none(Menu.frank_meals, day=day, meal='breakfast'),
+				'lunch_items': _get_or_none(Menu.frank_meals, day=day, meal='lunch'),
+				'dinner_items': _get_or_none(Menu.frank_meals, day=day, meal='dinner')
 			},
 			'frary_meals': {
-				'breakfast': _get_or_none(Menu.frary_meals, day=day, meal='breakfast'),
-				'lunch': _get_or_none(Menu.frary_meals, day=day, meal='lunch'),
-				'dinner': _get_or_none(Menu.frary_meals, day=day, meal='dinner')
+				'breakfast_items': _get_or_none(Menu.frary_meals, day=day, meal='breakfast'),
+				'lunch_items': _get_or_none(Menu.frary_meals, day=day, meal='lunch'),
+				'dinner_items': _get_or_none(Menu.frary_meals, day=day, meal='dinner')
 			},
 			'oldenborg_meals': {
-				'lunch': _get_or_none(Menu.oldenborg_meals, day=day, meal='lunch'),
+				'lunch_items': _get_or_none(Menu.oldenborg_meals, day=day, meal='lunch'),
 			},
 			'scripps_meals': {
-				'breakfast': _get_or_none(Menu.scripps_meals, day=day, meal='breakfast'),
-				'lunch': _get_or_none(Menu.scripps_meals, day=day, meal='lunch'),
-				'dinner': _get_or_none(Menu.scripps_meals, day=day, meal='dinner')
+				'breakfast_items': _get_or_none(Menu.scripps_meals, day=day, meal='breakfast'),
+				'lunch_items': _get_or_none(Menu.scripps_meals, day=day, meal='lunch'),
+				'dinner_items': _get_or_none(Menu.scripps_meals, day=day, meal='dinner')
 			},
 			'mudd_meals': {
-				'breakfast': _get_or_none(Menu.mudd_meals, day=day, meal='breakfast'),
-				'lunch': _get_or_none(Menu.mudd_meals, day=day, meal='lunch'),
-				'dinner': _get_or_none(Menu.mudd_meals, day=day, meal='dinner')
+				'breakfast_items': _get_or_none(Menu.mudd_meals, day=day, meal='breakfast'),
+				'lunch_items': _get_or_none(Menu.mudd_meals, day=day, meal='lunch'),
+				'dinner_items': _get_or_none(Menu.mudd_meals, day=day, meal='dinner')
 			},
 			'cmc_meals': {
-				'breakfast': _get_or_none(Menu.cmc_meals, day=day, meal='breakfast'),
-				'lunch': _get_or_none(Menu.cmc_meals, day=day, meal='lunch'),
-				'dinner': _get_or_none(Menu.cmc_meals, day=day, meal='dinner')
+				'breakfast_items': _get_or_none(Menu.cmc_meals, day=day, meal='breakfast'),
+				'lunch_items': _get_or_none(Menu.cmc_meals, day=day, meal='lunch'),
+				'dinner_items': _get_or_none(Menu.cmc_meals, day=day, meal='dinner')
 			},
 			'pitzer_meals': {
-				'breakfast': _get_or_none(Menu.pitzer_meals, day=day, meal='breakfast'),
-				'lunch': _get_or_none(Menu.pitzer_meals, day=day, meal='lunch'),
-				'dinner': _get_or_none(Menu.pitzer_meals, day=day, meal='dinner')
+				'breakfast_items': _get_or_none(Menu.pitzer_meals, day=day, meal='breakfast'),
+				'lunch_items': _get_or_none(Menu.pitzer_meals, day=day, meal='lunch'),
+				'dinner_items': _get_or_none(Menu.pitzer_meals, day=day, meal='dinner')
 			}
 		})
 
@@ -57,38 +59,39 @@ def weekend (request, day):
 		return render(request, 'menu/weekend_menu.html', {
 			'current_week': _current_week(),
 			'current_day': day,
+			'current_date': _current_date(),
 			'frank_meals': {
-				'brunch': _get_or_none(Menu.frank_meals, day=day, meal='brunch'),
-				'dinner': _get_or_none(Menu.frank_meals, day=day, meal='dinner')
+				'brunch_items': _get_or_none(Menu.frank_meals, day=day, meal='brunch'),
+				'dinner_items': _get_or_none(Menu.frank_meals, day=day, meal='dinner')
 			},
 			'frary_meals': {
-				'brunch': _get_or_none(Menu.frary_meals, day=day, meal='brunch'),
-				'dinner': _get_or_none(Menu.frary_meals, day=day, meal='dinner')
+				'brunch_items': _get_or_none(Menu.frary_meals, day=day, meal='brunch'),
+				'dinner_items': _get_or_none(Menu.frary_meals, day=day, meal='dinner')
 			},
 			'scripps_meals': {
-				'brunch': _get_or_none(Menu.scripps_meals, day=day, meal='brunch'),
-				'dinner': _get_or_none(Menu.scripps_meals, day=day, meal='dinner')
+				'brunch_items': _get_or_none(Menu.scripps_meals, day=day, meal='brunch'),
+				'dinner_items': _get_or_none(Menu.scripps_meals, day=day, meal='dinner')
 			},
 			'mudd_meals': {
-				'brunch': _get_or_none(Menu.mudd_meals, day=day, meal='brunch'),
-				'dinner': _get_or_none(Menu.mudd_meals, day=day, meal='dinner')
+				'brunch_items': _get_or_none(Menu.mudd_meals, day=day, meal='brunch'),
+				'dinner_items': _get_or_none(Menu.mudd_meals, day=day, meal='dinner')
 			},
 			'cmc_meals': {
-				'brunch': _get_or_none(Menu.cmc_meals, day=day, meal='brunch'),
-				'dinner': _get_or_none(Menu.cmc_meals, day=day, meal='dinner')
+				'brunch_items': _get_or_none(Menu.cmc_meals, day=day, meal='brunch'),
+				'dinner_items': _get_or_none(Menu.cmc_meals, day=day, meal='dinner')
 			},
 			'pitzer_meals': {
-				'brunch': _get_or_none(Menu.pitzer_meals, day=day, meal='brunch'),
-				'dinner': _get_or_none(Menu.pitzer_meals, day=day, meal='dinner')
+				'brunch_items': _get_or_none(Menu.pitzer_meals, day=day, meal='brunch'),
+				'dinner_items': _get_or_none(Menu.pitzer_meals, day=day, meal='dinner')
 			}
 		})
 
 # Helper function to prevent lookup errors on days when certain dining halls aren't serving
 def _get_or_none(model_objects, **kwargs):
     try:
-        return model_objects.get(**kwargs)
+        return json.loads(model_objects.get(**kwargs).food_items)
     except Menu.DoesNotExist:
-        return {'food_items': 'No menu.'}
+        return {'No menu.'}
 
 # Helper function to generate a string that represents the current weekday
 def _current_week():
@@ -96,3 +99,8 @@ def _current_week():
 	this_monday = today - timedelta(days=today.weekday())
 	this_sunday = this_monday + timedelta(days=6)
 	return 'Week of {0} {1} to {2} {3}'.format(this_monday.strftime('%B'), this_monday.strftime('%d').lstrip('0'), this_sunday.strftime('%B'), this_sunday.strftime('%d').lstrip('0'))
+
+# Helper function to generate a string a represents the current date
+def _current_date():
+	today = date.today()
+	return today.strftime("%A, %B %d")
