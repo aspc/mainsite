@@ -17,6 +17,7 @@ def weekday (request, day):
 		return render(request, 'menu/weekday_menu.html', {
 			'current_week': _current_week(),
 			'current_day': day,
+			'current_date': _current_date(),
 			'frank_meals': {
 				'breakfast_items': _get_or_none(Menu.frank_meals, day=day, meal='breakfast'),
 				'lunch_items': _get_or_none(Menu.frank_meals, day=day, meal='lunch'),
@@ -58,6 +59,7 @@ def weekend (request, day):
 		return render(request, 'menu/weekend_menu.html', {
 			'current_week': _current_week(),
 			'current_day': day,
+			'current_date': _current_date(),
 			'frank_meals': {
 				'brunch_items': _get_or_none(Menu.frank_meals, day=day, meal='brunch'),
 				'dinner_items': _get_or_none(Menu.frank_meals, day=day, meal='dinner')
@@ -97,3 +99,8 @@ def _current_week():
 	this_monday = today - timedelta(days=today.weekday())
 	this_sunday = this_monday + timedelta(days=6)
 	return 'Week of {0} {1} to {2} {3}'.format(this_monday.strftime('%B'), this_monday.strftime('%d').lstrip('0'), this_sunday.strftime('%B'), this_sunday.strftime('%d').lstrip('0'))
+
+# Helper function to generate a string a represents the current date
+def _current_date():
+	today = date.today()
+	return today.strftime("%A, %B %d")

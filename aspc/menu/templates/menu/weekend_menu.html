@@ -3,14 +3,15 @@
 {% block "outer_content" %}
 {{ block.super }}
 <table id="menu_table">
-	<tr>
-		<th></th>
+	<tr id="meal_header">
+		<th>Location</th>
 		<th>Brunch</th>
 		<th>Dinner</th>
 	</tr>
 	<tr>
 		<th><a href="http://www.pomona.edu/administration/dining/menus/frank.aspx">Frank</a></th>
 		<td>
+			<span class="mobile_meal_header">Brunch</span>
 			<ul>
 				{% for item in frank_meals.brunch_items %}
 					<li>{{ item }}</li>
@@ -18,6 +19,7 @@
 			</ul>
 		</td>
 		<td>
+			<span class="mobile_meal_header">Dinner</span>
 			<ul>
 				{% for item in frank_meals.dinner_items %}
 					<li>{{ item }}</li>
@@ -28,6 +30,7 @@
 	<tr>
 		<th><a href="http://www.pomona.edu/administration/dining/menus/frary.aspx">Frary</a></th>
 		<td>
+			<span class="mobile_meal_header">Brunch</span>
 			<ul>
 				{% for item in frary_meals.brunch_items %}
 					<li>{{ item }}</li>
@@ -35,6 +38,7 @@
 			</ul>
 		</td>
 		<td>
+			<span class="mobile_meal_header">Dinner</span>
 			<ul>
 				{% for item in frary_meals.dinner_items %}
 					<li>{{ item }}</li>
@@ -45,6 +49,7 @@
 	<tr>
 		<th><a href="http://collins-cmc.cafebonappetit.com/hungry/collins/">CMC</a></th>
 		<td>
+			<span class="mobile_meal_header">Brunch</span>
 			<ul>
 				{% for item in cmc_meals.brunch_items %}
 					<li>{{ item }}</li>
@@ -52,6 +57,7 @@
 			</ul>
 		</td>
 		<td>
+			<span class="mobile_meal_header">Dinner</span>
 			<ul>
 				{% for item in cmc_meals.dinner_items %}
 					<li>{{ item }}</li>
@@ -62,6 +68,7 @@
 	<tr>
 		<th><a href="http://www.scrippscollege.edu/students/dining-services/">Scripps</a></th>
 		<td>
+			<span class="mobile_meal_header">Brunch</span>
 			<ul>
 				{% for item in scripps_meals.brunch_items %}
 					<li>{{ item }}</li>
@@ -69,6 +76,7 @@
 			</ul>
 		</td>
 		<td>
+			<span class="mobile_meal_header">Dinner</span>
 			<ul>
 				{% for item in scripps_meals.dinner_items %}
 					<li>{{ item }}</li>
@@ -79,6 +87,7 @@
 	<tr>
 		<th><a href="http://pitzer.cafebonappetit.com/">Pitzer</a></th>
 		<td>
+			<span class="mobile_meal_header">Brunch</span>
 			<ul>
 				{% for item in pitzer_meals.brunch_items %}
 					<li>{{ item }}</li>
@@ -86,6 +95,7 @@
 			</ul>
 		</td>
 		<td>
+			<span class="mobile_meal_header">Dinner</span>
 			<ul>
 				{% for item in pitzer_meals.dinner_items %}
 					<li>{{ item }}</li>
@@ -96,6 +106,7 @@
 	<tr>
 		<th><a href="http://www.hmcdining.com/dining/index.html">Mudd</a></th>
 		<td>
+			<span class="mobile_meal_header">Brunch</span>
 			<ul>
 				{% for item in mudd_meals.brunch_items %}
 					<li>{{ item }}</li>
@@ -103,6 +114,7 @@
 			</ul>
 		</td>
 		<td>
+			<span class="mobile_meal_header">Dinner</span>
 			<ul>
 				{% for item in mudd_meals.dinner_items %}
 					<li>{{ item }}</li>

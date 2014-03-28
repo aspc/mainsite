@@ -56,7 +56,11 @@
 }
 
 .active {
-	background-color: rgba(41, 83, 132, 0.5) !important
+	background-color: rgba(41, 83, 132, 0.5) !important;
+}
+
+.mobile_meal_header {
+	display: none;
 }
 
 #menu_table a {
@@ -65,5 +69,50 @@
 }
 
 #menu_table td {
-	vertical-align: top; !important
+	vertical-align: top !important;
+}
+
+#desktop_page_title {
+	display: block;
+}
+
+#mobile_page_title {
+	display: none;
+}
+
+/******** Mobile Styles *********/
+
+@media handheld, only screen and (max-width: 767px) {
+	#dining_hall_nav {
+		border-bottom: 2px solid #364e69;
+	}
+
+	#dining_hall_nav th {
+		display: block;
+	}
+
+	#day_nav, #meal_header {
+		display: none;
+	}
+
+	.mobile_meal_header {
+		display: block;
+		font-weight: bold;
+	}
+
+	#frank_menu, #frary_menu, #oldenborg_menu, #cmc_menu, #scripps_menu, #pitzer_menu, #mudd_menu {
+		display: block;
+	}
+
+	#menu_table th, td {
+		display: block;
+	}
+
+	#desktop_page_title {
+		display: none;
+	}
+
+	#mobile_page_title {
+		display: block;
+	}
 }
