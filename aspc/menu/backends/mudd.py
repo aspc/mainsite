@@ -10,8 +10,12 @@ class MuddBackend(object):
 
     def _get_menu_data(self, week_number):
         # The old URL used to be at least somewhat predicable, now it seems to change weekly on the whim of whoever updates the menu
+        # week_number used to refer to the week of the semester relative to the start of the semester
         #menu_url = 'http://hmcdining.com/Week%d.htm' % week_number
-        menu_url = 'http://www.hmcdining.com/Wk1Spring.htm'
+        # This seems to be the new pattern
+        # week_number now refers to the the week of the semester relative to March spring break
+        # Note that the HMC menu calendar starts on Monday, not Sunday
+        menu_url = 'http://www.hmcdining.com/Wk%dSpring.htm' % week_number
         resp = requests.get(menu_url)
         if resp.status_code == 404: # Sometimes Mudd does not update its menu on time...
             return None
@@ -56,7 +60,7 @@ class MuddBackend(object):
         # HMC stupidly changes the url to their menu every week (honestly, who conceived of this...?)
         # so we have to calculate the difference in weeks from now and the start of term
         # This code is fairly unstable and should be checked at the beginning of each semester at the very least
-        start_date = datetime(year=2014, month=1, day=19)
+        start_date = datetime(year=2014, month=3, day=24)
         week_number = (datetime.today() - start_date).days / 7 + 1
 
         return self._parse_menu_data(self._get_menu_data(week_number))
