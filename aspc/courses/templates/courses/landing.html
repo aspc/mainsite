@@ -1,0 +1,20 @@
+{% extends "base_page.html" %}
+
+{% block "head" %}
+{{ block.super }}
+<link rel='stylesheet' type='text/css' href='{{ STATIC_URL }}css/coursesearch.css' />
+{% endblock %}
+
+{% block "title" %}Course Search{% endblock %}
+
+{% block "page_title" %}Course Search{% endblock %}
+
+{% block "content" %}
+<nav>
+<ul id="landing" class="listview">
+	<li><a href="{% url "aspc.coursesearch.views.search" %}">Search</a></li>
+	<li><a href="{% url "department_list" %}">Browse</a></li>
+	<li><a href="{% url "aspc.coursesearch.views.schedule" %}">Design Your Schedule</a></li>
+</ul>
+</nav>
+{% endblock %}
