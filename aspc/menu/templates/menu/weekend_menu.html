@@ -13,17 +13,25 @@
 		<td>
 			<span class="mobile_meal_header">Brunch</span>
 			<ul>
-				{% for item in frank_meals.brunch_items %}
-					<li>{{ item }}</li>
-				{% endfor %}
+				{% if current_day == 'sat' %}
+					<li>Closed.</li>
+				{% else %}
+					{% for item in frank_meals.brunch_items %}
+						<li>{{ item }}</li>
+					{% endfor %}
+				{% endif %}
 			</ul>
 		</td>
 		<td>
 			<span class="mobile_meal_header">Dinner</span>
 			<ul>
-				{% for item in frank_meals.dinner_items %}
-					<li>{{ item }}</li>
-				{% endfor %}
+				{% if current_day == 'sat' %}
+					<li>Closed.</li>
+				{% else %}
+					{% for item in frank_meals.dinner_items %}
+						<li>{{ item }}</li>
+					{% endfor %}
+				{% endif %}
 			</ul>
 		</td>
 	</tr>

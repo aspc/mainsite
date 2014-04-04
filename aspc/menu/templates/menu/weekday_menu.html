@@ -14,25 +14,37 @@
 		<td>
 			<span class="mobile_meal_header">Breakfast</span>
 			<ul>
-				{% for item in frank_meals.breakfast_items %}
-					<li>{{ item }}</li>
-				{% endfor %}
+				{% if current_day == 'fri' %}
+					<li>Closed.</li>
+				{% else %}
+					{% for item in frank_meals.breakfast_items %}
+						<li>{{ item }}</li>
+					{% endfor %}
+				{% endif %}
 			</ul>
 		</td>
 		<td>
 			<span class="mobile_meal_header">Lunch</span>
 			<ul>
-				{% for item in frank_meals.lunch_items %}
-					<li>{{ item }}</li>
-				{% endfor %}
+				{% if current_day == 'fri' %}
+					<li>Closed.</li>
+				{% else %}
+					{% for item in frank_meals.lunch_items %}
+						<li>{{ item }}</li>
+					{% endfor %}
+				{% endif %}
 			</ul>
 		</td>
 		<td>
 			<span class="mobile_meal_header">Dinner</span>
 			<ul>
-				{% for item in frank_meals.dinner_items %}
-					<li>{{ item }}</li>
-				{% endfor %}
+				{% if current_day == 'fri' %}
+					<li>Closed.</li>
+				{% else %}
+					{% for item in frank_meals.dinner_items %}
+						<li>{{ item }}</li>
+					{% endfor %}
+				{% endif %}
 			</ul>
 		</td>
 	</tr>
@@ -68,7 +80,7 @@
 		<td>
 			<span class="mobile_meal_header">Breakfast</span>
 			<ul>
-				<li>No Menu.</li>
+				<li>Closed.</li>
 			</ul>
 		</td>
 		<td>
@@ -82,7 +94,7 @@
 		<td>
 			<span class="mobile_meal_header">Dinner</span>
 			<ul>
-				<li>No Menu.</li>
+				<li>Closed.</li>
 			</ul>
 		</td>
 	</tr>
