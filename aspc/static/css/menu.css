@@ -14,32 +14,24 @@
 	height: 100%;
 }
 
-.frank_background {
-	background-color: rgb(10, 151, 209) !important;
-}
-
-.frary_background {
-	background-color: rgb(71, 160, 119) !important;
-}
-
-.oldenborg_background {
-	background-color: rgb(135, 168, 80) !important;
+.pomona_background {
+	background-color: rgb(49, 142, 180) !important;
 }
 
 .cmc_background {
-	background-color: rgb(255, 207, 76) !important;
+	background-color: #AC3241 !important;
 }
 
 .scripps_background {
-	background-color: rgb(240, 148, 70) !important;
+	background-color: #889e5a !important;
 }
 
 .pitzer_background {
-	background-color: rgb(224, 62, 63) !important;
+	background-color: #f49700 !important;
 }
 
 .mudd_background {
-	background-color: rgb(168, 60, 94) !important;
+	background-color: #ca9a0a !important;
 }
 
 #day_nav th {

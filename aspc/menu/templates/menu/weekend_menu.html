@@ -9,26 +9,34 @@
 		<th>Dinner</th>
 	</tr>
 	<tr id="frank_menu">
-		<th class="frank_background"><a href="http://www.pomona.edu/administration/dining/menus/frank.aspx">Frank</a></th>
+		<th class="pomona_background"><a href="http://www.pomona.edu/administration/dining/menus/frank.aspx">Frank</a></th>
 		<td>
 			<span class="mobile_meal_header">Brunch</span>
 			<ul>
-				{% for item in frank_meals.brunch_items %}
-					<li>{{ item }}</li>
-				{% endfor %}
+				{% if current_day == 'sat' %}
+					<li>Closed.</li>
+				{% else %}
+					{% for item in frank_meals.brunch_items %}
+						<li>{{ item }}</li>
+					{% endfor %}
+				{% endif %}
 			</ul>
 		</td>
 		<td>
 			<span class="mobile_meal_header">Dinner</span>
 			<ul>
-				{% for item in frank_meals.dinner_items %}
-					<li>{{ item }}</li>
-				{% endfor %}
+				{% if current_day == 'sat' %}
+					<li>Closed.</li>
+				{% else %}
+					{% for item in frank_meals.dinner_items %}
+						<li>{{ item }}</li>
+					{% endfor %}
+				{% endif %}
 			</ul>
 		</td>
 	</tr>
 	<tr id="frary_menu">
-		<th class="frary_background"><a href="http://www.pomona.edu/administration/dining/menus/frary.aspx">Frary</a></th>
+		<th class="pomona_background"><a href="http://www.pomona.edu/administration/dining/menus/frary.aspx">Frary</a></th>
 		<td>
 			<span class="mobile_meal_header">Brunch</span>
 			<ul>

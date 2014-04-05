@@ -89,7 +89,11 @@ def weekend (request, day):
 # Helper function to prevent lookup errors on days when certain dining halls aren't serving
 def _get_or_none(model_objects, **kwargs):
     try:
-        return json.loads(model_objects.get(**kwargs).food_items)
+    	food_items = json.loads(model_objects.get(**kwargs).food_items)
+    	if food_items:
+    		return food_items
+    	else:
+    		return ['No menu.']
     except Menu.DoesNotExist:
         return ['No menu.']
 
