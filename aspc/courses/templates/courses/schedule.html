@@ -1,4 +1,4 @@
-{% extends "coursesearch/base.html" %}
+{% extends "courses/base.html" %}
 {% block "title" %}Schedule{% endblock %}
 {% block "page_title" %}Schedule{% endblock %}
 {% block og_url %}http://aspc.pomona.edu/courses/schedule/{% endblock %}
@@ -35,8 +35,8 @@
 
 {% block "content_class" %}{{ block.super }} wide{% endblock %}
 
-{% block "coursesearch_breadcrumbs" %}
-  <li><a href="{% url "aspc.coursesearch.views.schedule" %}">Schedule</a></li>
+{% block "courses_breadcrumbs" %}
+  <li><a href="{% url "aspc.courses.views.schedule" %}">Schedule</a></li>
 {% endblock %}
 
 {% block "outer_content" %}
@@ -44,16 +44,16 @@
   <h2 id="schedule_course_label" class="header">your courses:</h2>
   <ol id="schedule_courses">
   </ol>
-  {% block share_clear %}<h4 id="share_clear"><a id="share_schedule" href="{% url "aspc.coursesearch.views.share_schedule" %}">&#x2191; share</a><a id="download_ical" href="{% url "aspc.coursesearch.views.ical_export" %}">export to calendar</a><a id="clear_schedule">&#x2326; clear</a></h4>{% endblock %}
+  {% block share_clear %}<h4 id="share_clear"><a id="share_schedule" href="{% url "aspc.courses.views.share_schedule" %}">&#x2191; share</a><a id="download_ical" href="{% url "aspc.courses.views.ical_export" %}">export to calendar</a><a id="clear_schedule">&#x2326; clear</a></h4>{% endblock %}
   <div id="calendar"><h2 id="message">Loading...</h2></div>
 </div>
 {% block side_panel %}
   <div id="side_panel" class="panel">
     <h2 class="header">search:</h2>
     {% with "schedule" as context %}
-    {% include "coursesearch/search_form.html" %}
+    {% include "courses/search_form.html" %}
     {% if results %}
-      {% include "coursesearch/search_results.html" %}
+      {% include "courses/search_results.html" %}
     {% endif %}
     {% endwith %}
   </div>

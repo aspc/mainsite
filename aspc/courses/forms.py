@@ -73,7 +73,7 @@ POSSIBLE_CREDIT = (('A', 'any'), ('F', 'full'), ('P', 'partial'), (0.0, '0.0'), 
 keyword_regex = re.compile(r'(\w+)')
 
 class SearchForm(forms.Form):
-    term = forms.ModelChoiceField(queryset=Term.objects.all())
+    term = forms.ModelChoiceField(queryset=Term.objects.all(), empty_label=None, required=True)
 
     department = DeptModelChoice(queryset=Department.objects.annotate(
         num_courses=Count('course_set')).\
@@ -124,7 +124,7 @@ class SearchForm(forms.Form):
         return cleaned_data
     
     def build_queryset(self):
-        qs = Section.objects.all(term=self.cleaned_data['term'])
+        qs = Section.objects.filter(term=self.cleaned_data['term'])
         if self.cleaned_data.get('department'):
             qs = qs.filter(course__departments=self.cleaned_data['department'])
         
@@ -201,7 +201,7 @@ class SearchForm(forms.Form):
         
         
         if self.cleaned_data.get('instructor'):
-            qs = qs.filter(instructors__contains=self.cleaned_data['instructor'])
+            qs = qs.filter(instructors__name__contains=self.cleaned_data['instructor'])
         if self.cleaned_data.get('credit'):
             if self.cleaned_data['credit'] == 'A':
                 pass

@@ -1,4 +1,4 @@
-{% extends "coursesearch/base.html" %}
+{% extends "courses/base.html" %}
 
 {% block "title" %}Search for Courses{% endblock %}
 {% block "ogtitle" %}Search for Courses{% endblock %}
@@ -7,16 +7,16 @@
 {% block "ogdesc" %}Search the Claremont Colleges undergraduate schedule by department, meeting times, instructors, and keywords.{% endblock %}
 {% block "metadesc" %}Search the Claremont Colleges undergraduate schedule by department, meeting times, instructors, and keywords.{% endblock %}
 
-{% block "coursesearch_breadcrumbs" %}
-<li><a href="{% url "aspc.coursesearch.views.search" %}">Search for Courses</a></li>
+{% block "courses_breadcrumbs" %}
+<li><a href="{% url "aspc.courses.views.search" %}">Search for Courses</a></li>
 {% endblock %}
 
 {% block "content" %}
 <h4>Fill in at least one field to see matching courses</h4>
 <div id="search_form">
-	{% include "coursesearch/search_form.html" %}
+	{% include "courses/search_form.html" %}
 </div>
 {% if results %}
-	{% include "coursesearch/search_results.html" %}
+	{% include "courses/search_results.html" %}
 {% endif %}
 {% endblock %}

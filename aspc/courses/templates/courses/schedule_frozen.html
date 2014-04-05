@@ -1,4 +1,4 @@
-{% extends "coursesearch/schedule.html" %}
+{% extends "courses/schedule.html" %}
 {% block title %}saved schedule{% endblock %}
 {% block og_title %}My schedule for next semester at ASPC Course Search{% endblock %}
 {% block og_url %}{{ schedule.outside_url }}{% endblock %}
@@ -32,12 +32,12 @@
 	<p><input type="submit" value="load for editing"></p>
 </form>
 <h3>export:</h3>
-<p><a href="{% url "aspc.coursesearch.views.ical_export" schedule_id=schedule.id %}">export this schedule</a> as .ics for Apple or Google Calendar</p>
+<p><a href="{% url "aspc.courses.views.ical_export" schedule_id=schedule.id %}">export this schedule</a> as .ics for Apple or Google Calendar</p>
 </div>
 <ol class="course_list">
 {% for c in schedule.courses.all %}
 	<li class="{% cycle 'odd' 'even' %}">
-		{% include "coursesearch/course_list_item.html" %}
+		{% include "courses/course_list_item.html" %}
 	</li>
 {% endfor %}
 </ol>

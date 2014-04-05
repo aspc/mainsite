@@ -1,0 +1,30 @@
+{% extends "courses/base.html" %}
+
+{% block "title" %}{{ object.code }} &mdash; {{ object.course.name }}{% endblock %}
+{% block "ogtitle" %}{{ object.code }} &mdash; {{ object.course.name }}{% endblock %}
+{% block "page_title" %}{{ object.code }} &mdash; {{ object.course.name }}{% endblock %}
+
+{% block "ogdesc" %}{% if object.description %}{{ object.description }}{% else %}{{ object.course.name }} taught by {{ object.instructors.all|join:", " }}{% endif %}{% endblock %}
+{% block "metadesc" %}{% if object.description %}{{ object.description }}{% else %}{{ object.code }} &mdash; {{ object.course.name }} taught by {{ object.instructors.all|join:", " }}{% endif %}{% endblock %}
+
+{% block "courses_breadcrumbs" %}
+<li><a href="{% url "department_list" %}">Departments</a></li>
+<li><a href="{{ object.primary_department.get_absolute_url }}">{{ object.course.primary_department.name }}</a></li>
+<li>{{ object.code }}</li>
+{% endblock %}
+
+{% block "content" %}
+<p class="info_line">{{ object.instructors.all|join:", " }} &mdash; <strong>credit:</strong> {{ object.credit }} &mdash; {% if object.filled %}{{ object.filled }} filled of {% endif %}{{ object.spots }} spots</p>
+<p class="info_line"><strong>department{% if object.course.departments.count > 1 %}s{% endif %}:</strong> {% for d in object.course.departments.all %} {{ d.non_breaking_name|safe }}{% if forloop.revcounter0 != 0 %}, {% endif %}{% endfor %}</p>
+<p>{{ object.grading_style }}</p>
+<p class="note">{{ object.note|safe|linebreaksbr }}</p>
+{% if object.description %}<p>{{ object.description|linebreaksbr }}</p>{% endif %}
+<h4>meetings:</h4>
+<ul>
+{% for mtg in object.meeting_set.all %}
+<li class="meeting"><span class="campus_icon campus_{{ mtg.get_campus }}">{{ mtg.get_campus }}</span> &mdash; {% for day in mtg.gen_days %}<span class="day_{{day}}">{{ day }}</span>{% endfor %} 
+	&mdash; {{ mtg.begin }}&ndash;{{ mtg.end }} &mdash; {{ mtg.location }}
+</li>
+{% endfor %}
+</ul>
+{% endblock %}

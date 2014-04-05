@@ -1,6 +1,7 @@
 <div id="search_form">
 <form action="" method="GET">
 	{{ form.non_field_errors }}
+    <p>during the {{ form.term }} term</p>
 	<p>in the {{ form.department }} department</p>
 	<p>satisfying the {{ form.requirement_area }} requirement</p>
 	<p>meets {{ form.only_at_least }} on {{ form.m }} 
@@ -20,15 +21,6 @@
 	<p>taught by {{ form.instructor }} for {{ form.credit }} credit</p>
 	<p>with the keywords {{ form.keywords }}</p>
   <p>including only courses with seats available {{ form.spots_left }}</p>
-  <div id="update_info">
-    <dl>
-      <dt>Last full update</dt>
-      <dd>{% if last_full %}{{ last_full.last_refresh_date }}{% else %}None yet{% endif %}</dd>
-      <dt>Last enrollment numbers update</dt>
-      <dd>{% if last_reg %}{{ last_reg.last_refresh_date }}{% else %}None yet{% endif %}</dd>
-    </dl>
-    <p><em>Note that courses may have open seats but be open only to some students based on their major, college affiliation, or other categories! <strong>Check the portal before your registration time to confirm.</strong></em></p>
-  </div>
-	<input id="submit" type="submit" value="go">{% if context == "schedule" %}<a href="{% url "aspc.coursesearch.views.schedule" %}" id="reset">clear search</a>{% else %}<a href="{% url "aspc.coursesearch.views.search" %}" id="reset">start over</a>{% endif %}
+	<input id="submit" type="submit" value="go">{% if context == "schedule" %}<a href="{% url "aspc.courses.views.schedule" %}" id="reset">clear search</a>{% else %}<a href="{% url "aspc.courses.views.search" %}" id="reset">start over</a>{% endif %}
 </form>
 </div>

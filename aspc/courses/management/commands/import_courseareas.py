@@ -32,12 +32,12 @@ class Command(BaseCommand):
                 try:
                     obj = Department.objects.get(code=code)
                     self.stdout.write('found existing department for code: "%s"\n' % obj.code)
-                except RequirementArea.DoesNotExist:
-                    obj = RequirementArea(code=code)
+                except Department.DoesNotExist:
+                    obj = Department(code=code)
                     self.stdout.write('adding new department for code: "%s"\n' % obj.code)
 
                 obj.name = description
 
                 obj.save()
 
-            self.stdout.write('Successfully added course area "%s"\n' % obj.encode('utf-8'))
+            self.stdout.write('Successfully added course area "%s"\n' % unicode(obj))

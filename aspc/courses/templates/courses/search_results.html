@@ -11,7 +11,7 @@
 	{% endif %}{% endif %}
 {% for c in results.object_list %}
 	<li class="{% cycle 'odd' 'even' %}">
-		{% include "coursesearch/course_list_item.html" %}
+		{% include "courses/course_list_item.html" %}
 	</li>
 {% endfor %}
 	{% if results.paginator.count != 0 %}{% if results.paginator.num_pages > 1 %}

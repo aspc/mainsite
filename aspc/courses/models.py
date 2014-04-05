@@ -17,20 +17,20 @@ CAMPUSES_LOOKUP['CG'] = CAMPUSES_LOOKUP['CGU']
 SESSIONS = ((u'SP', u'Spring'), (u'FA', u'Fall'))
 SUBSESSIONS = ((u'P1', u'1'), (u'P2', u'2'))
 
+START_DATE = date(2013, 9, 3)
+END_DATE = date(2013, 12, 11)
+
 
 class Term(models.Model):
     key = models.CharField(max_length=20, unique=True)
     year = models.PositiveSmallIntegerField()
     session = models.CharField(max_length=2, choices=SESSIONS)
-    subsession = models.CharField(max_length=2, choices=SUBSESSIONS, blank=True, null=True)
 
     def __unicode__(self):
-        if (self.subsession): name = u'&s &s &s' & (self.session, self.subsession, self.year)
-        else: name = u'&s &s' & (self.session, self.year)
-        return name
+        return u'%s %s' % (self.session, self.year)
 
     class Meta:
-        ordering = ['-year', 'session', '-subsession']
+        ordering = ['-year', 'session']
 
 
 class Instructor(models.Model):
@@ -98,7 +98,7 @@ class Course(models.Model):
 
 class Section(models.Model):
     term = models.ForeignKey(Term, related_name='sections')
-    course = models.ManyToManyField(Course, related_name='sections')
+    course = models.ForeignKey(Course, related_name='sections')
 
     code = models.CharField(max_length=20, unique=True)
     code_slug = models.CharField(max_length=20, unique=True, db_index=True)
@@ -112,13 +112,14 @@ class Section(models.Model):
     requisites = models.BooleanField()
     fee = models.BooleanField()
 
-    perms = models.IntegerField()
-    spots = models.IntegerField()
+    perms = models.IntegerField(null=True)
+    spots = models.IntegerField(null=True)
     filled = models.IntegerField(blank=True, null=True)
 
     def __unicode__(self):
-        return u'[%s] %s (%s)' % (
-        self.code, self.name, ', '.join(self.instructors.all().values_list('name', flatten=True)))
+        return self.code
+        # return u'[%s] %s (%s)' % (
+        #     self.code, self.course.name, ', '.join(self.instructors.all().values_list('name', flatten=True)))
 
     def get_campuses(self):
         campuses = []
@@ -151,7 +152,8 @@ class Section(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('course_detail', (), {'course_code': self.code_slug, 'dept': self.primary_department.code, })
+        if not self.course.primary_department: print self.course
+        return ('course_detail', (), {'course_code': self.code_slug, 'dept': self.course.primary_department.code, })
 
     class Meta:
         ordering = ('code',)
