@@ -80,7 +80,7 @@ class FacebookEventPageController(object):
 
 			try:
 				EventController().new_event(normalized_event_data)
-			except InvalidEventException:
+			except (InvalidEventException, EventAlreadyExistsException):
 				pass # No need to be concerned if a page has malformed or past events... not our problem, we just won't import them
 
 	@staticmethod
@@ -98,11 +98,16 @@ class EventController(object):
 
 		if data['event_source'] == 'facebook':
 			event_data = FacebookBackend().get_event_data(data['event_url'])
+			# Checks if an event with the same name or URL already exists
+			if Event.objects.filter(url=event_data.get('url', '')):
+				raise EventAlreadyExistsException('Event with name "' + event_data['name'] + '" has already been submitted.')
 		elif data['event_source'] == 'manual':
 			event_data = data
-			# Checks if an event of the same name already exists
+			# Checks if an event with the same name or URL already exists
 			if Event.objects.filter(name=event_data['name']):
 				raise EventAlreadyExistsException('Event with name "' + event_data['name'] + '" already exists.')
+			elif Event.objects.exclude(url='').filter(url=event_data.get('url', '')):
+				raise EventAlreadyExistsException('Event with external URL "' + event_data['url'] + '" already exists.')
 
 			event_data['start'] = datetime.strptime(event_data['start'], '%Y-%m-%dT%H:%M')
 			if 'end' in event_data and event_data['end'] != '':

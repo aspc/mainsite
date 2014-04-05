@@ -1,0 +1,153 @@
+#dining_hall_nav th {
+	border: 1px solid #444;
+    border-top: none;
+    border-bottom: none;
+}
+
+#dining_hall_nav th a {
+    color: white;
+    text-decoration: underline;
+    font-weight: normal;
+}
+
+#dining_hall_nav .long_name {
+    display: inline;
+}
+
+#dining_hall_nav .short_name {
+    display: none;
+}
+
+#dining_hall_nav a {
+	text-decoration: none;
+	color: black;
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+#dining_hall_nav .pomona_background, #menu_table .pomona_background {
+	background-color: rgb(49, 142, 180);
+}
+
+#dining_hall_nav .cmc_background, #menu_table .cmc_background {
+	background-color: #AC3241;
+}
+
+#dining_hall_nav .scripps_background, #menu_table .scripps_background {
+	background-color: #889e5a;
+}
+
+#dining_hall_nav .pitzer_background, #menu_table .pitzer_background {
+	background-color: #f49700;
+}
+
+#dining_hall_nav .mudd_background, #menu_table .mudd_background {
+	background-color: #ca9a0a;
+}
+
+#day_nav, #dining_hall_nav {
+    border: none;
+}
+
+#day_nav { 
+    border-bottom: 0.5em solid #004d70;
+}
+
+#day_nav th {
+	background-color: #004d70;
+    border: none;
+}
+
+#day_nav a {
+	text-decoration: none;
+	color: #99bfd0;
+	display: block;
+	width: 100%;
+	height: 100%;
+    font-weight: normal;
+}
+
+#day_nav th.active, #day_nav th:hover {
+	background-color: #0071a6;
+}
+
+#day_nav th.active a, #day_nav th:hover a {
+    color: white;
+    text-decoration: underline;
+}
+
+.mobile_meal_header {
+	display: none;
+}
+
+#menu_table a {
+	text-decoration: underline;
+	color: white;
+    font-weight: normal;
+    background-image: url(images/external_link_icon.png);
+    background-position: right;
+    background-repeat: no-repeat;
+    padding-right: 13px;
+}
+
+#menu_table a:after {
+    display: block;
+    width: 10px;
+    height: 10px;
+    background: red;
+    
+}
+
+#menu_table td {
+	vertical-align: top !important;
+}
+
+#desktop_page_title {
+	display: block;
+}
+
+#mobile_page_title {
+	display: none;
+}
+
+/******** Mobile Styles *********/
+
+@media handheld, only screen and (max-width: 767px) {
+	#dining_hall_nav {
+		border-bottom: 2px solid #364e69;
+	}
+    
+    #dining_hall_nav .long_name {
+        display: none;
+    }
+    
+    #dining_hall_nav .short_name {
+        display: inline;
+    }
+
+	#day_nav, #meal_header {
+		display: none;
+	}
+
+	.mobile_meal_header {
+		display: block;
+		font-weight: bold;
+	}
+
+	#frank_menu, #frary_menu, #oldenborg_menu, #cmc_menu, #scripps_menu, #pitzer_menu, #mudd_menu {
+		display: block;
+	}
+
+	#menu_table th, td {
+		display: block;
+	}
+
+	#desktop_page_title {
+		display: none;
+	}
+
+	#mobile_page_title {
+		display: block;
+	}
+}

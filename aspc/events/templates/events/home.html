@@ -7,8 +7,11 @@
 {{ block.super }}
 <link rel="stylesheet" href="{{ STATIC_URL }}css/event_calendar.css" type="text/css">
 <link rel="stylesheet" href="{{ STATIC_URL }}css/event_calendar.print.css" type="text/css" media="print">
+<link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui-datepicker.css" type="text/css">
 <script src="{{ STATIC_URL }}js/events.js"></script>
 <script src="{{ STATIC_URL }}js/event_calendar.min.js"></script>
+<script src="{{ STATIC_URL }}js/jquery-ui-datepicker.min.js"></script>
+<script src="{{ STATIC_URL }}js/jquery-ui-datepicker-addon.js"></script>
 
 <script type="text/javascript">
 // Set up namespacing
@@ -80,7 +83,7 @@ ASPC.Events.calendar_data.latest_event_time = 23;
 						Start
 					</td>
 					<td>
-						<input type="datetime-local" id="manual_event_start" />
+						<input type="text" id="manual_event_start" />
 					</td>
 				</tr>
 				<tr>
@@ -88,7 +91,7 @@ ASPC.Events.calendar_data.latest_event_time = 23;
 						End
 					</td>
 					<td>
-						<input type="datetime-local" id="manual_event_end" />
+						<input type="text" id="manual_event_end" />
 					</td>
 				</tr>
 				<tr>

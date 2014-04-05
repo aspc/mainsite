@@ -1,0 +1,12 @@
+{% extends "base_page.html" %}
+
+{% block "ogtitle" %}5C Menu{% endblock %}
+{% block "title" %}5C Menu{% endblock %}
+{% block "page_title" %}
+<span id="desktop_page_title">5C Menu: {{ current_week }}</span>
+<span id="mobile_page_title">5C Menu: {{ current_date }}</span>
+{% endblock %}
+
+{% block "head" %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/menu.css" type="text/css">
+{% endblock %}
