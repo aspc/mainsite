@@ -1,9 +1,10 @@
 from django.core.management.base import BaseCommand
+from django.conf import settings
 import simplejson, urllib
 from aspc.courses.models import RequirementArea, Department
 
 
-AREAS_URL = 'http://staging.aspc.pomona.edu/jicsws/courseareas'
+AREAS_URL = settings.COURSE_API_URL + 'courseareas'
 
 class Command(BaseCommand):
     args = ''

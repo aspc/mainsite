@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.template.defaultfilters import slugify
+from django.conf import settings
 from aspc.courses.models import (Course, Meeting, CAMPUSES_LOOKUP, Term, Section, Department, Instructor, RequirementArea)
 import simplejson, urllib, re
 from datetime import time
@@ -9,8 +10,8 @@ ROOM_REGEX = re.compile(r'[A-Z]+\s([^(]+)\s+')
 TIME_REGEX = re.compile(r'(\d+:\d+)(AM|PM)?-(\d+:\d+)(AM|PM).')
 BR_TAGS = re.compile(r'<br\s?/?>')
 
-COURSES_URL = 'http://staging.aspc.pomona.edu/jicsws/courses/%s/%s'
-TERMS_URL = 'http://staging.aspc.pomona.edu/jicsws/terms'
+COURSES_URL = settings.COURSE_API_URL + 'courses/%s/%s'
+TERMS_URL = settings.COURSE_API_URL + 'terms'
 
 
 def _sanitize(chardata):

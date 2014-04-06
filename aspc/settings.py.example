@@ -57,15 +57,9 @@ EMAIL_FILE_PATH = os.path.join(PROJECT_ROOT, "temp")
 # Credentials for RabbitMQ (Celery)
 BROKER_URL = "amqp://developer:developer@localhost:5672//"
 
-# Override the COURSE_DATA_DB settings with real values
+# Override the COURSE_API_URL settings with API URL
 
-COURSE_DATA_DB = {
-    'HOST': '',
-    'NAME': '',
-    'USER': '',
-    'PASSWORD': '',
-    'DRIVER': 'FreeTDS', # or path to library
-}
+COURSE_API_URL = ''
 
 # Override Twitter API keys with real values
 

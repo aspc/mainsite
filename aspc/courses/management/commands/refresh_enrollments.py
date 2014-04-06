@@ -1,9 +1,10 @@
 from django.core.management.base import BaseCommand
+from django.conf import settings
 from aspc.courses.models import Term, Section
 from aspc.courses.management.commands.import_courses import get_all_terms
 import simplejson, urllib, re
 
-ENROLLMENTS_URL = 'http://staging.aspc.pomona.edu/jicsws/courses/%s'
+ENROLLMENTS_URL = settings.COURSE_API_URL + 'courses/%s'
 
 
 class Command(BaseCommand):
