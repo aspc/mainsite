@@ -201,7 +201,7 @@ class SearchForm(forms.Form):
         
         
         if self.cleaned_data.get('instructor'):
-            qs = qs.filter(instructors__name__contains=self.cleaned_data['instructor'])
+            qs = qs.filter(instructors__name__icontains=self.cleaned_data['instructor'])
         if self.cleaned_data.get('credit'):
             if self.cleaned_data['credit'] == 'A':
                 pass
