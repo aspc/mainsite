@@ -16,7 +16,7 @@
 {% if schedule_courses %}
 <ul>
 {% for course in schedule_courses %}
-	<li>{{ course.code }} &mdash; {{ course.name }}</li>
+	<li>{{ course.code }} &mdash; {{ course.course.name }}</li>
 {% endfor %}
 </ul>
 	{% if not saved %}
