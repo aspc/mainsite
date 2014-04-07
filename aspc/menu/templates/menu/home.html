@@ -1,0 +1,52 @@
+{% extends "menu/base.html" %}
+
+{% block "ogdesc" %}Meal information for the 5C dining halls.{% endblock %}
+{% block "metadesc" %}Meal information for the 5C dining halls.{% endblock %}
+
+
+{% block "outer_content" %}
+<table id="day_nav">
+	<tr>
+		<th {% if current_day == 'mon' %} class="active" {% endif %}><a href="{% url "menu" %}mon">Monday</a></th>
+		<th {% if current_day == 'tue' %} class="active" {% endif %}><a href="{% url "menu" %}tue">Tuesday</a></th>
+		<th {% if current_day == 'wed' %} class="active" {% endif %}><a href="{% url "menu" %}wed">Wednesday</a></th>
+		<th {% if current_day == 'thu' %} class="active" {% endif %}><a href="{% url "menu" %}thu">Thursday</a></th>
+		<th {% if current_day == 'fri' %} class="active" {% endif %}><a href="{% url "menu" %}fri">Friday</a></th>
+		<th {% if current_day == 'sat' %} class="active" {% endif %}><a href="{% url "menu" %}sat">Saturday</a></th>
+		<th {% if current_day == 'sun' %} class="active" {% endif %}><a href="{% url "menu" %}sun">Sunday</a></th>
+	</tr>
+</table>
+<table id="dining_hall_nav">
+	<tr>
+		<th class="pomona_background"><a href="#frank_menu">
+      <span class="long_name">Frank</span>
+      <span class="short_name">FK</span>
+    </a></th>
+		<th class="pomona_background"><a href="#frary_menu">
+      <span class="long_name">Frary</span>
+      <span class="short_name">FR</span>
+    </a></th>
+		{% if current_day != 'sat' and current_day != 'sun' %}
+			<th class="pomona_background"><a href="#oldenborg_menu">
+        <span class="long_name">Oldenborg</span>
+        <span class="short_name">OLD</span>
+      </a></th>
+		{% endif %}
+		<th class="cmc_background"><a href="#cmc_menu">
+      CMC
+    </a></th>
+		<th class="scripps_background"><a href="#scripps_menu">
+      <span class="long_name">Scripps</span>
+      <span class="short_name">SC</span>
+    </a></th>
+		<th class="pitzer_background"><a href="#pitzer_menu">
+      <span class="long_name">Pitzer</span>
+      <span class="short_name">PZ</span>
+    </a></th>
+		<th class="mudd_background"><a href="#mudd_menu">
+      <span class="long_name">Mudd</span>
+      <span class="short_name">HM</span>
+    </a></th>
+	</tr>
+</table>
+{% endblock %}
