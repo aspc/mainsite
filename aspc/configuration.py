@@ -123,11 +123,11 @@ INSTALLED_APPS = (
     'aspc.sagelist',
     'aspc.college',
     'aspc.housing',
-    'aspc.coursesearch',
     'aspc.minutes',
     'aspc.eatshop',
     'aspc.events',
     'aspc.activityfeed',
+    'aspc.courses',
     'aspc.menu'
 )
 

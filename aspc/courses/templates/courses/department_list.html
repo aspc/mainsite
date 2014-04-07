@@ -1,0 +1,20 @@
+{% extends "courses/base.html" %}
+
+{% block "title" %}Departments{% endblock %}
+{% block "ogtitle" %}Departments{% endblock %}
+{% block "page_title" %}Departments{% endblock %}
+
+{% block "ogdesc" %}List of departments{% endblock %}
+{% block "metadesc" %}List of departments{% endblock %}
+
+{% block "courses_breadcrumbs" %}
+<li>Departments</li>
+{% endblock %}
+
+{% block "content" %}
+<ol id="dept_list">
+{% for dept in object_list %}
+	<li><a href="{{ dept.get_absolute_url }}"><span class="dept_code">{{ dept.code }}</span></a> &mdash; <span class="dept_name">{{ dept.name }}</span> <span class="dept_count">{{ dept.num_courses }} course{{ dept.num_courses|pluralize }}</span></li>
+{% endfor %}
+</ol>
+{% endblock %}
