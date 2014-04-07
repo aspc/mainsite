@@ -40,4 +40,7 @@ class CmcBackend(object):
         return {key.lower(): value for key,value in meal_dict.iteritems()}
 
     def menu(self):
-        return {self.days[i][:3] : self._dayDict(i) for i in self.day_range}
+        if self.rss.entries:
+            return {self.days[i][:3] : self._dayDict(i) for i in self.day_range}
+        else:
+            return {}
