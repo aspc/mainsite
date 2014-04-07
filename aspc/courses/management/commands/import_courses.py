@@ -156,7 +156,7 @@ class Command(BaseCommand):
                 existing = set(Section.objects.values_list('code', flat=True))
                 active = set()
 
-                if urllib.urlopen(COURSES_URL % (t, department)).read():
+                try:
                     courses = simplejson.load(urllib.urlopen(COURSES_URL % (t, department)))
                     if courses:
                         for course in courses:
@@ -198,6 +198,8 @@ class Command(BaseCommand):
 
                                 self.stdout.write('adding section "%s"\n' % code)
                                 self.refresh_one_section(object, course)
+                except simplejson.scanner.JSONDecodeError:
+                    self.stdout.write('error accessing "%s"' % (COURSES_URL % (t, department)))
 
             areas = RequirementArea.objects.all().values_list('code', flat=True)
 

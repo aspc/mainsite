@@ -16,21 +16,24 @@ class Command(BaseCommand):
         terms = get_all_terms(term)
 
         for t in terms:
-            courses = simplejson.load(urllib.urlopen(ENROLLMENTS_URL % t))
+            try:
+                courses = simplejson.load(urllib.urlopen(ENROLLMENTS_URL % t))
 
-            for course in courses:
-                code = course['CourseCode']
-                try:
-                    object = Section.objects.get(code=code)
-                    object.perms = course['PermCount']
-                    if object.perms: int(object.perms)
+                for course in courses:
+                    code = course['CourseCode']
+                    try:
+                        object = Section.objects.get(code=code)
+                        object.perms = course['PermCount']
+                        if object.perms: int(object.perms)
 
-                    object.spots = int(course['SeatsTotal'])
-                    object.filled = int(course['SeatsFilled'])
+                        object.spots = int(course['SeatsTotal'])
+                        object.filled = int(course['SeatsFilled'])
 
-                    object.save()
+                        object.save()
 
-                    self.stdout.write('enrollments for section "%s" refreshed\n' % object.code)
+                        self.stdout.write('enrollments for section "%s" refreshed\n' % object.code)
 
-                except Section.DoesNotExist:
-                    self.stdout.write('skipping unknown section "%s"\n' % code)
+                    except Section.DoesNotExist:
+                        self.stdout.write('skipping unknown section "%s"\n' % code)
+            except simplejson.scanner.JSONDecodeError:
+                self.stdout.write('error accessing "%s"' % (ENROLLMENTS_URL % t))
