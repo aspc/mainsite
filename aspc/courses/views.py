@@ -59,8 +59,6 @@ def schedule(request):
         form = SearchForm()
         return render(request, 'courses/schedule.html', {
             'form': form,
-            'last_full': last_full,
-            'last_reg': last_reg,
         })
     else:
         form = SearchForm(request.GET)
