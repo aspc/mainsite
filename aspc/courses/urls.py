@@ -18,5 +18,5 @@ urlpatterns = patterns('',
     url(r'^browse/$', DepartmentListView.as_view(), name="department_list"),
     url(r'^browse/(?P<slug>[A-Z]+)/$', DepartmentCoursesView.as_view(), name="department_detail"),
     url(r'^browse/(?P<dept>[A-Z]+)/(?P<course_code>[\w\d-]+)/$', CourseDetailView.as_view(), name="course_detail"),
-    url(r'^$', TemplateView.as_view(template_name='courses/landing.html'), name="courses_home"),
+    url(r'^$', TemplateView.as_view(template_name='courses/landing.html'), name="coursesearch_home"),
 )
