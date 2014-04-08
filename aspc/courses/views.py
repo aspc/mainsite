@@ -121,17 +121,17 @@ def share_schedule(request):
         s = Schedule()
         s.save()
         for course in schedule_courses:
-            s.courses.add(course)
+            s.sections.add(course)
         s.save()
         
-        return render(request, 'courses/share_schedule.html', {'saved': True, 'schedule': s, 'schedule_courses': s.courses.all(),})
+        return render(request, 'courses/share_schedule.html', {'saved': True, 'schedule': s, 'schedule_courses': s.sections.all(),})
     else:
         return render(request, 'courses/share_schedule.html', {'schedule_courses': schedule_courses,})
 
 def view_schedule(request, schedule_id):
     schedule = get_object_or_404(Schedule, pk=schedule_id)
     if request.method == "POST":
-        request.session['schedule_courses'] = set([c.id for c in schedule.courses.all()])
+        request.session['schedule_courses'] = set([c.id for c in schedule.sections.all()])
         return HttpResponseRedirect(reverse('aspc.course.views.schedule'))
     else:
         return render(request, 'courses/schedule_frozen.html',{'schedule': schedule,})
@@ -143,7 +143,7 @@ def view_minimal_schedule(request, schedule_id):
 def ical_export(request, schedule_id=None):
     if schedule_id is not None:
         schedule = get_object_or_404(Schedule, pk=schedule_id)
-        schedule_courses = schedule.courses.all()
+        schedule_courses = schedule.sections.all()
     else:
         schedule_courses = Section.objects.filter(
             id__in=request.session.get('schedule_courses',[])

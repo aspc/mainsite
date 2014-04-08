@@ -95,7 +95,7 @@ class SearchForm(forms.Form):
     f = forms.BooleanField(required=False)
     
     instructor = forms.CharField(max_length=100, required=False, widget=forms.TextInput(attrs={'size':'40'}))
-    spots_left = forms.BooleanField(required=False, initial=True)
+    # spots_left = forms.BooleanField(required=False, initial=True)
     course_number_min = forms.IntegerField(required=False, widget=forms.TextInput(attrs={'size':'4'}))
     course_number_max = forms.IntegerField(required=False, widget=forms.TextInput(attrs={'size':'4'}))
     credit = forms.ChoiceField(choices=POSSIBLE_CREDIT)
@@ -201,7 +201,7 @@ class SearchForm(forms.Form):
         
         
         if self.cleaned_data.get('instructor'):
-            qs = qs.filter(instructors__name__contains=self.cleaned_data['instructor'])
+            qs = qs.filter(instructors__name__icontains=self.cleaned_data['instructor'])
         if self.cleaned_data.get('credit'):
             if self.cleaned_data['credit'] == 'A':
                 pass
@@ -212,8 +212,8 @@ class SearchForm(forms.Form):
             else:
                 qs = qs.filter(credit=self.cleaned_data['credit'])
         
-        if self.cleaned_data.get('spots_left'):
-            qs = qs.exclude(spots=F('filled'))
+        # if self.cleaned_data.get('spots_left'):
+        #     qs = qs.exclude(spots=F('filled'))
         
         if self.cleaned_data.get('keywords'):
             keywords = [a.lower() for a in keyword_regex.findall(self.cleaned_data['keywords'])]

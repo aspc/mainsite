@@ -252,7 +252,7 @@ class Schedule(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('aspc.coursesearch.views.view_schedule', (self.id,))
+        return ('aspc.courses.views.view_schedule', (self.id,))
 
     def outside_url(self):
         return u''.join([settings.OUTSIDE_URL_BASE, self.get_absolute_url()])
