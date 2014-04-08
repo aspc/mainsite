@@ -179,7 +179,7 @@ class Command(BaseCommand):
                                 course_number = ''.join([s for s in course_code if s.isdigit()])
                                 if not course_number:
                                     self.stdout.write('unknown number for course "%s" - deleting...\n' % course_code)
-                                    break
+                                    continue
                                 else:
                                     course_number = int(course_number)
 
@@ -191,7 +191,7 @@ class Command(BaseCommand):
                                 try:
                                     course_object.departments.add(Department.objects.get(code=department))
                                 except Department.DoesNotExist:
-                                    break
+                                    continue
 
                                 object = Section(term=term, code=code, code_slug=code_slug)
                                 object.course = course_object
@@ -208,18 +208,17 @@ class Command(BaseCommand):
                     area_object = RequirementArea.objects.get(code=area)
                     if urllib.urlopen(COURSES_URL % (t, area)).read():
                         courses = simplejson.load(urllib.urlopen(COURSES_URL % (t, area)))
-
-                        if courses:
-                            for course in courses:
-                                code = course['CourseCode']
-                                try:
-                                    object = Section.objects.get(code=code)
-                                    object.course.requirement_areas.add(area_object)
-                                except Section.DoesNotExist:
-                                    break
+                        for course in courses:
+                            code = course['CourseCode']
+                            try:
+                                object = Section.objects.get(code=code)
+                                object.course.requirement_areas.add(area_object)
+                            except Section.DoesNotExist:
+                                self.stdout.write('unknown section "%s"' % code)
+                                continue
 
                 except RequirementArea.DoesNotExist:
-                    break
+                    continue
 
         # Remove courses that have been deleted from the catalog (or whose codes
         # have changed... can't tell the difference)
