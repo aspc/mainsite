@@ -190,7 +190,7 @@ def _ical_from_courses(courses, start_date, end_date):
     for course in courses:
         for meeting in course.meeting_set.all():
             v = cal.add('vevent')
-            v.add('summary').value = '[{0}] {1}'.format(course.code, course.name)
+            v.add('summary').value = '[{0}] {1}'.format(course.code, course.course.name)
             
             weekdays = []
             if meeting.monday: weekdays.append(rrule.MO)
