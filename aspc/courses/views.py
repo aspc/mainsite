@@ -132,7 +132,7 @@ def view_schedule(request, schedule_id):
     schedule = get_object_or_404(Schedule, pk=schedule_id)
     if request.method == "POST":
         request.session['schedule_courses'] = set([c.id for c in schedule.sections.all()])
-        return HttpResponseRedirect(reverse('aspc.course.views.schedule'))
+        return HttpResponseRedirect(reverse('aspc.courses.views.schedule'))
     else:
         return render(request, 'courses/schedule_frozen.html',{'schedule': schedule,})
 
