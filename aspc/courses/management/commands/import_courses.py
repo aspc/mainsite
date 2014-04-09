@@ -147,8 +147,8 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        term = Term.objects.all().values_list('key', flat=True)[0]
-        terms = get_all_terms(term)
+        term = Term.objects.all()[0]
+        terms = get_all_terms(term.key)
         departments = Department.objects.all().values_list('code', flat=True)
 
         for t in terms:
@@ -171,7 +171,6 @@ class Command(BaseCommand):
 
                             else:
                                 # add new course and section
-                                term = Term.objects.get(key=t)
                                 code_slug = slugify(code).upper()
                                 course_code = code[:-3]
                                 course_code_slug = code_slug[:-3]
