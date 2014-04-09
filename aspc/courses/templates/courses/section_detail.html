@@ -9,7 +9,7 @@
 
 {% block "courses_breadcrumbs" %}
 <li><a href="{% url "department_list" %}">Departments</a></li>
-<li><a href="{{ object.primary_department.get_absolute_url }}">{{ object.course.primary_department.name }}</a></li>
+<li><a href="{{ object.course.primary_department.get_absolute_url }}">{{ object.course.primary_department.name }}</a></li>
 <li>{{ object.code }}</li>
 {% endblock %}
 

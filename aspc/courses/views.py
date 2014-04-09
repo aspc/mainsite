@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render
 from django.conf import settings
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.serializers.json import DjangoJSONEncoder
-from django.db.models import Count
+from django.db.models import Count, Sum
 from aspc.courses.models import (Section, Department, Meeting, Schedule,
     START_DATE, END_DATE)
 from aspc.courses.forms import SearchForm, ICalExportForm
@@ -264,7 +264,7 @@ def schedule_course_remove(request, course_code):
 
 class DepartmentListView(generic.ListView):
     queryset = (Department.objects
-                    .annotate(num_courses=Count('primary_course_set'))
+                    .annotate(num_courses=Count('primary_course_set__sections'))
                     .filter(num_courses__gt=0)
                     .distinct()
                     .order_by('code')
