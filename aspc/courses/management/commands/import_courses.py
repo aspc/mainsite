@@ -165,9 +165,13 @@ class Command(BaseCommand):
 
                             if code in existing:
                                 # update section
-                                object = Section.objects.get(code=code)
+                                section_object = Section.objects.get(code=code)
                                 self.stdout.write('updating section "%s"\n' % code)
-                                self.refresh_one_section(object, course)
+                                try:
+                                    section_object.course.departments.add(Department.objects.get(code=department))
+                                except Department.DoesNotExist:
+                                    continue
+                                self.refresh_one_section(section_object, course)
 
                             else:
                                 # add new course and section
