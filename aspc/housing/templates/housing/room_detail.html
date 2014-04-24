@@ -56,9 +56,9 @@
                 {% if review.photo1 or review.photo2 or review.photo3 %}
                 <h4>photos</h4>
                 <ul class="thumbs">
-                {% if review.photo1 %}<li><a href="{{ MEDIA_URL }}{{ review.photo1.large.url }}" data-lightbox="photos"><img src = "{{ review.photo1.thumbnail.url }}"></a></li>{% endif %}
-                {% if review.photo2 %}<li><a href="{{ MEDIA_URL }}{{ review.photo2.large.url }}" data-lightbox="photos"><img src = "{{ review.photo2.thumbnail.url }}"></a></li>{% endif %}
-                {% if review.photo3 %}<li><a href="{{ MEDIA_URL }}{{ review.photo3.large.url }}" data-lightbox="photos"><img src = "{{ review.photo3.thumbnail.url }}"></a></li>{% endif %}
+                {% if review.photo1 %}<li><a href="{{ review.photo1.large.url }}" data-lightbox="photos"><img src = "{{ review.photo1.thumbnail.url }}"></a></li>{% endif %}
+                {% if review.photo2 %}<li><a href="{{ review.photo2.large.url }}" data-lightbox="photos"><img src = "{{ review.photo2.thumbnail.url }}"></a></li>{% endif %}
+                {% if review.photo3 %}<li><a href="{{ review.photo3.large.url }}" data-lightbox="photos"><img src = "{{ review.photo3.thumbnail.url }}"></a></li>{% endif %}
                 </ul>
                 {% endif %}
 			</div>
