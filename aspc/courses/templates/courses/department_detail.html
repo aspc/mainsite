@@ -14,10 +14,12 @@
 
 {% block "outer_content" %}
 <ol class="course_list content">
-	{% for c in object.course_set.all %}
+	{% for x in object.primary_course_set.all %}
+    {% for c in x.sections.all %}
 	<li class="{% cycle 'odd' 'even' %}">
 	{% include "courses/course_list_item.html" %}
 	</li>
+    {% endfor %}
 	{% endfor %}
 </ol>
 {% endblock %}

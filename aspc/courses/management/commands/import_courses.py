@@ -147,8 +147,8 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        term = Term.objects.all().values_list('key', flat=True)[0]
-        terms = get_all_terms(term)
+        term = Term.objects.all()[0]
+        terms = get_all_terms(term.key)
         departments = Department.objects.all().values_list('code', flat=True)
 
         for t in terms:
@@ -165,13 +165,16 @@ class Command(BaseCommand):
 
                             if code in existing:
                                 # update section
-                                object = Section.objects.get(code=code)
+                                section_object = Section.objects.get(code=code)
                                 self.stdout.write('updating section "%s"\n' % code)
-                                self.refresh_one_section(object, course)
+                                try:
+                                    section_object.course.departments.add(Department.objects.get(code=department))
+                                except Department.DoesNotExist:
+                                    continue
+                                self.refresh_one_section(section_object, course)
 
                             else:
                                 # add new course and section
-                                term = Term.objects.get(key=t)
                                 code_slug = slugify(code).upper()
                                 course_code = code[:-3]
                                 course_code_slug = code_slug[:-3]
