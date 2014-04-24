@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block "content" %}
-<p class="info_line">{{ object.instructors.all|join:", " }} &mdash; <strong>credit:</strong> {{ object.credit }} &mdash; {% if object.filled %}{{ object.filled }} filled of {% endif %}{{ object.spots }} spots</p>
+<p class="info_line">{{ object.instructors.all|join:", " }} &mdash; <strong>credit:</strong> {{ object.credit }} <!-- &mdash; {% if object.filled %}{{ object.filled }} filled of {% endif %}{{ object.spots }} spots --></p>
 <p class="info_line"><strong>department{% if object.course.departments.count > 1 %}s{% endif %}:</strong> {% for d in object.course.departments.all %} {{ d.non_breaking_name|safe }}{% if forloop.revcounter0 != 0 %}, {% endif %}{% endfor %}</p>
 <p>{{ object.grading_style }}</p>
 <p class="note">{{ object.note|safe|linebreaksbr }}</p>
