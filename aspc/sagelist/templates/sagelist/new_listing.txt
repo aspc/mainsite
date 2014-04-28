@@ -6,5 +6,8 @@ to delete it if you sell the book somewhere else), you can get to it here:
 
 {{ protocol }}://{{ domain }}{{ booksale.get_absolute_url }}
 
+Your listing will expire in 180 days if nobody purchases it, but you are free to
+re-list a book as many times as you like!
+
 SageBooks
 ASPC System

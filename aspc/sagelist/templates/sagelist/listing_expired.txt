@@ -1,0 +1,6 @@
+Hi {{ booksale.seller.get_full_name }},
+
+Your listing for {{ booksale.title }} on SageBooks has expired after 180 days. However, you are free to re-list a book as many times as you like!
+
+Thank you for using SageBooks,
+ASPC System
