@@ -1149,6 +1149,11 @@ footer p {
 	text-shadow: #333 0 -1px -1px;
 }
 
+footer a {
+    color: inherit;
+    text-decoration: underline;
+}
+
 /* @end */
 
 
