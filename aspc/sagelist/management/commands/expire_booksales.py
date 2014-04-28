@@ -38,7 +38,7 @@ class Command(BaseCommand):
         for booksale in old_booksales:
             age = (dtnow - booksale.posted).days
             self.stdout.write('[{0} days old] {1} from {2}'.format(
-                age, booksale.title.encode('utf8'), booksale.seller.username
+                age, booksale.title.encode('ascii', 'replace'), booksale.seller.username
             ))
             
                 
