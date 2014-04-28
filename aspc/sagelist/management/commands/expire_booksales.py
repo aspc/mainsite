@@ -52,8 +52,8 @@ class Command(BaseCommand):
                                     },
                                 )
                 self.stdout.write("Preparing an email to {0} [{1}]".format(booksale.seller, booksale.seller.email))
-                self.stdout.write("--> subject: {0}".format(email_subject))
-                self.stdout.write("--> content: {0}".format(email_content))
+                self.stdout.write("--> subject: {0}".format(email_subject.encode('ascii', 'replace')))
+                self.stdout.write("--> content: {0}".format(email_content.encode('ascii', 'replace')))
                 if not options['fake']:
                     booksale.seller.email_user(email_subject, email_content)
                     self.stdout.write("Email sent.")
