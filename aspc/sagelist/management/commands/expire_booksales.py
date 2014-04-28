@@ -32,7 +32,7 @@ class Command(BaseCommand):
 
         dtnow = datetime.now()
         cutoff_oldest_posted = dtnow - timedelta(days=max_age_in_days)
-        old_booksales = BookSale.objects.filter(posted__lt=cutoff_oldest_posted)
+        old_booksales = BookSale.objects.filter(posted__lt=cutoff_oldest_posted, buyer__isnull=True)
         self.stdout.write('Found {0} old booksales.'.format(len(old_booksales)))
 
         for booksale in old_booksales:
