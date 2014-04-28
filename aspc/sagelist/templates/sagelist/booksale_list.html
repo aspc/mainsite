@@ -56,14 +56,13 @@
 {% endif %}
 
 <table>
-  <tr><th class="title">Title</th><th class="authors">Author(s)</th><th class="edition">Edition</th><th class="isbn">ISBN</th><th class="condition">Condition</th><th class="price">Price</th></tr>
+  <tr><th class="title">Title</th><th class="authors">Author(s)</th><th class="isbn">ISBN</th><th class="condition">Condition</th><th class="price">Price</th></tr>
 {% for group in listings_grouped %}
 {% if listings.count > 20 %}<tr class="nav_letter{% if not group.1 %} empty{% endif %}" id="{{ group.0 }}"><td colspan="6">{{ group.0 }}</td></tr>{% endif %}
 {% for book in group.1 %}
   <tr>
-    <td class="title"><a href="{% url "sagelist_detail" pk=book.id %}">{{ book.title }}</a></td>
+    <td class="title"><a href="{% url "sagelist_detail" pk=book.id %}">{{ book.title }}</a>{% if book.edition %} [{{ book.edition }} ed.]{% endif %}</td>
     <td class="authors">{{ book.authors }}</td>
-    <td class="edition">{{ book.edition }}</td>
     <td class="isbn">{{ book.isbn }}</td>
     <td class="condition">{{ book.get_condition_display }}</td>
     <td class="price">${{ book.price }}</td>

@@ -234,7 +234,7 @@ form > ul > li > label {
 	background-color: #eee;
 }
 
-.sagelist .title, .sagelist .authors, .sagelist .edition, .sagelist .isbn, .sagelist .condition, .sagelist .price {
+.sagelist .title, .sagelist .authors, .sagelist .isbn, .sagelist .condition, .sagelist .price {
 	display: table-cell;
 }
 
@@ -1202,7 +1202,7 @@ footer a {
 }
 
 
-.sagelist .authors, .sagelist .edition, .sagelist .isbn, .sagelist .condition {
+.sagelist .authors, .sagelist .isbn, .sagelist .condition {
 	display: none;
 }
 
