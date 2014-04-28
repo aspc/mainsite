@@ -6,7 +6,7 @@ from aspc.sagelist.models import BookSale
 from datetime import datetime, timedelta
 
 class Command(BaseCommand):
-    args = '[age in days, default: 6*30]'
+    args = '[max age in days, default: 6*30]'
     help = 'expires booksales'
     option_list = BaseCommand.option_list + (
                     make_option('--silent',
@@ -37,14 +37,19 @@ class Command(BaseCommand):
 
         for booksale in old_booksales:
             age = (dtnow - booksale.posted).days
-            self.stdout.write('[{0} days old] {1}'.format(age, booksale))
+            self.stdout.write('[{0} days old] {1} from {2}'.format(
+                age, booksale.title.encode('utf8'), booksale.seller.username
+            ))
             
                 
             if not options['silent']:
                 email_subject = u"SageBooks listing expired: {0}".format(booksale.title)
                 email_content = render_to_string(
                                     'sagelist/listing_expired.txt',
-                                    {'booksale': booksale},
+                                    {
+                                        'title': booksale.title.encode('utf8'),
+                                        'seller': booksale.seller.get_full_name().encode('utf8')
+                                    },
                                 )
                 self.stdout.write("Preparing an email to {0} [{1}]".format(booksale.seller, booksale.seller.email))
                 self.stdout.write("--> subject: {0}".format(email_subject))
