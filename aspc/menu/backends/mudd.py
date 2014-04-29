@@ -9,16 +9,13 @@ class MuddBackend(object):
         self.DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
 
     def _get_menu_data(self, week_number):
-        # The old URL used to be at least somewhat predicable, now it seems to change weekly on the whim of whoever updates the menu
-        # week_number used to refer to the week of the semester relative to the start of the semester
-        #menu_url = 'http://hmcdining.com/Week%d.htm' % week_number
-        # This seems to be the new pattern
-        # week_number now refers to the the week of the semester relative to March spring break
         # Note that the HMC menu calendar starts on Monday, not Sunday
+        # The old URL used to be at least somewhat predicable, now it seems to change weekly on the whim of whoever updates the menu
+        # Record of past URL patterns:
+        # menu_url = 'http://hmcdining.com/Week%d.htm' % week_number
         # menu_url = 'http://www.hmcdining.com/Wk%dSpring.htm' % week_number
-        # Ah nope, wrong again. Time for another arbitrary change!
-        # week_number now refers to the week of the semester relative to the week of April 21
-        menu_url = 'http://www.hmcdining.com/dining/Wk%dSpringCycle2.htm' % week_number
+        # menu_url = 'http://www.hmcdining.com/dining/Wk%dSpringCycle2.htm' % week_number
+        menu_url = 'http://www.hmcdining.com/Wk%dSpringCycle2.htm' % week_number
         resp = requests.get(menu_url)
         if resp.status_code == 404: # Sometimes Mudd does not update its menu on time...
             return None
