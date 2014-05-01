@@ -1,7 +1,13 @@
 {% extends "askasagehen/base.html" %}
 
-{% block "ogdesc" %}Ask questions about Pomona and get answers from your fellow students.{% endblock %}
-{% block "metadesc" %}Ask questions about Pomona and get answers from your fellow students.{% endblock %}
-
 {% block "outer_content" %}
+<table>
+	{% for question in questions %}
+		<tr>
+			<td>{{ question.votes }}</td>
+			<td>{{ question.title }}</td>
+			<td>{{ question.post_timestamp }}</td>
+		</tr>
+	{% endfor %}
+</table>
 {% endblock %}

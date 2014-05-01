@@ -1,9 +1,20 @@
 {% extends "base_page.html" %}
 
+{% block "ogdesc" %}Ask questions about Pomona and get answers from your fellow students.{% endblock %}
+{% block "metadesc" %}Ask questions about Pomona and get answers from your fellow students.{% endblock %}
+
 {% block "ogtitle" %}Ask A Sagehen{% endblock %}
 {% block "title" %}Ask A Sagehen{% endblock %}
-{% block "page_title" %}Ask A Sagehen{% endblock %}
+{% block "page_title" %}Ask A Sagehen: Top Questions{% endblock %}
 
 {% block "head" %}
 <link rel="stylesheet" href="{{ STATIC_URL }}css/askasaghen.css" type="text/css">
+{% endblock %}
+
+{% block "breadcrumbs" %}
+<ol class="breadcrumbs">
+  <li><a href="{% url "askasagehen" %}">Ask A Sagehen Home</a></li>
+  {% block "askasagehen_breadcrumbs" %}
+  {% endblock %}
+</ol>
 {% endblock %}
