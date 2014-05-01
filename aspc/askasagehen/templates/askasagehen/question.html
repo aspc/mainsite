@@ -1,0 +1,15 @@
+{% extends "askasagehen/base.html" %}
+
+{% block "ogtitle" %}{{ question.title }}{% endblock %}
+{% block "title" %}{{ question.title }}{% endblock %}
+{% block "page_title" %}{{ question.title }} {% endblock %}
+
+{% block "askasagehen_breadcrumbs" %}
+<li><a href="{{ question.id }}">{{ question.title }}</a></li>
+{% endblock %}
+
+{% block "outer_content" %}
+<p>
+	{{ question.body }}
+</p>
+{% endblock %}
