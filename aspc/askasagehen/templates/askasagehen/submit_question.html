@@ -1,0 +1,16 @@
+{% extends "askasagehen/base.html" %}
+
+{% block "page_title" %}Ask A Sagehen: Submit a Question{% endblock %}
+
+{% block "askasagehen_breadcrumbs" %}
+<li><a href="#">Submit a Question</a></li>
+{% endblock %}
+
+
+{% block "outer_content" %}
+<form action="{% url "askasagehen" %}question" method="post">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<input type="submit" value="Submit" />
+</form>
+{% endblock %}

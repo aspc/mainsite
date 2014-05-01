@@ -1,5 +1,7 @@
 {% extends "askasagehen/base.html" %}
 
+{% block "page_title" %}Ask A Sagehen: Top Questions{% endblock %}
+
 {% block "outer_content" %}
 <table>
 	{% for question in questions %}
@@ -10,4 +12,5 @@
 		</tr>
 	{% endfor %}
 </table>
+<a href="{% url "askasagehen" %}question">Submit a new question.</a>
 {% endblock %}
