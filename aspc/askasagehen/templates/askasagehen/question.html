@@ -12,4 +12,8 @@
 <p>
 	{{ question.body }}
 </p>
+<p>
+	{{ question.author.first_name }} {{ question.author.last_name }}
+	{{ question.post_timestamp }}
+</p>
 {% endblock %}
