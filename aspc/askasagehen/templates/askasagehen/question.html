@@ -16,4 +16,20 @@
 	{{ question.author.first_name }} {{ question.author.last_name }}
 	{{ question.post_timestamp }}
 </p>
+
+{% for answer in answers %}
+	<p>
+		{{ answer.body }}
+	</p>
+	<p>
+		{{ answer.author.first_name }} {{ answer.author.last_name }}
+		{{ answer.post_timestamp }}
+	</p>
+{% endfor %}
+
+<form action="{{ request.path }}/answer" method="post">
+	{% csrf_token %}
+	{{ answer_form.as_p }}
+	<input type="submit" value="Submit" />
+</form>
 {% endblock %}

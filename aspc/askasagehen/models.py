@@ -15,4 +15,4 @@ class Answer(models.Model):
 	body = models.TextField()
 	post_timestamp = models.DateTimeField(editable=False, auto_now_add=True)
 	last_edit_timestamp = models.DateTimeField(editable=False, auto_now=True)
-	votes = models.IntegerField()
+	votes = models.IntegerField(default=0)
