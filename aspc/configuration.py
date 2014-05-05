@@ -195,13 +195,13 @@ AUTHENTICATION_BACKENDS = (
 )
 
 AUTH_LDAP = {
-    'PO': {
-        'name': "Pomona",
-        'server': "ldap.pomona.edu",
-        'port': '389',
-        'bind_as': '{0}@CAMPUS',
-        'filter': '(cn={0})',
-        'base_dn': "OU=Users and Computers,OU=ZHOME,DC=campus,DC=pomona,DC=edu",
+    u'PO': {
+        'name': u"Pomona",
+        'server': u"ldap.pomona.edu",
+        'port': 389,
+        'bind_as': u'{0}@CAMPUS',
+        'filter': u'(cn={0})',
+        'base_dn': u"OU=Users and Computers,OU=ZHOME,DC=campus,DC=pomona,DC=edu",
     },
     # 'CMC': {
     #     'name': "CMC",
