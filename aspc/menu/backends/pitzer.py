@@ -10,10 +10,10 @@ class PitzerBackend(object):
     rss = feedparser.parse('http://legacy.cafebonappetit.com/rss/menu/219')
     days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
 
-    def _dayDict(self, day_index):
-        entry = BeautifulSoup(self.rss.entries[day_index].summary)
-        date = self.rss.entries[day_index].title[:4]
-        tm = titles_and_meals = entry.findAll(['h3', 'h4'])
+    def _dayDict(self, entry):
+        body = BeautifulSoup(entry.summary)
+        date = entry.title[:4]
+        tm = titles_and_meals = body.findAll(['h3', 'h4'])
 
         meal_dict = defaultdict(list)
 
@@ -33,7 +33,7 @@ class PitzerBackend(object):
                         meal_dict[meal_title].append(food.title())
 
         meal_dict = dict(meal_dict)
-        return {key.lower(): value for key,value in meal_dict.iteritems()}
+        return {key.lower(): value for key, value in meal_dict.iteritems()}
 
     def menu(self):
-        return {self.days[i][:3] : self._dayDict(i) for i in range(7)}
+        return {self.days[self.rss.entries.index(entry)][:3] : self._dayDict(entry) for entry in self.rss.entries}
