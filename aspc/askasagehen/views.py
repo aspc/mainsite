@@ -6,7 +6,13 @@ from aspc.askasagehen.forms.forms import QuestionForm, AnswerForm
 # /askasagehen
 def home (request):
 	if request.method == 'GET':
-		return render(request, 'askasagehen/home.html', {'questions': Question.objects.all()})
+		return render(request, 'askasagehen/home.html', {
+			'latest_question': Question.objects.latest('post_timestamp'),
+			'latest_academic_questions': Question.objects.filter(category_is_academic=True).order_by('post_timestamp')[:5],
+			'latest_housing_questions': Question.objects.filter(category_is_housing=True).order_by('post_timestamp')[:5],
+			'latest_administrative_questions': Question.objects.filter(category_is_administrative=True).order_by('post_timestamp')[:5],
+			'latest_social_questions': Question.objects.filter(category_is_social=True).order_by('post_timestamp')[:5]
+		})
 
 def question (request, question_id):
 	if request.method == 'GET' and question_id: # Render an existing question

@@ -8,6 +8,10 @@ class Question(models.Model):
 	post_timestamp = models.DateTimeField(editable=False, auto_now_add=True)
 	last_edit_timestamp = models.DateTimeField(editable=False, auto_now=True)
 	votes = models.IntegerField(default=0)
+	category_is_academic = models.BooleanField(default=False)
+	category_is_housing = models.BooleanField(default=False)
+	category_is_administrative = models.BooleanField(default=False)
+	category_is_social = models.BooleanField(default=False)
 
 class Answer(models.Model):
 	question = models.ForeignKey(Question)
