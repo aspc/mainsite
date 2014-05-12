@@ -67,9 +67,9 @@ class Command(BaseCommand):
                 new_menu.save()
         self.stdout.write('frank menus loaded \n')
 
-        oldenborg_meals = PomonaBackend().oldenborg_menu()
-        for day in oldenborg_meals:
-            for meal in oldenborg_meals[day]:
-                new_menu = Menu(dining_hall='oldenborg', day=day, meal=meal, food_items=json.dumps(oldenborg_meals[day][meal]))
-                new_menu.save()
-        self.stdout.write('oldenborg menus loaded \n')
+       # oldenborg_meals = PomonaBackend().oldenborg_menu()
+       # for day in oldenborg_meals:
+       #     for meal in oldenborg_meals[day]:
+       #         new_menu = Menu(dining_hall='oldenborg', day=day, meal=meal, food_items=json.dumps(oldenborg_meals[day][meal]))
+       #         new_menu.save()
+       # self.stdout.write('oldenborg menus loaded \n')
