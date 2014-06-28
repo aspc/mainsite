@@ -1,5 +1,6 @@
 from aspc.menu.models import Menu
 from django.shortcuts import render
+from django.http import HttpResponseNotAllowed
 from datetime import datetime, date, timedelta
 import json
 
@@ -10,6 +11,8 @@ def home (request):
 			return weekday(request, datetime.today().strftime('%A')[:3].lower()) # Calls the render method with the appopriate weekday parameter
 		else:
 			return weekend(request, datetime.today().strftime('%A')[:3].lower()) # Calls the render method with the appopriate weekday parameter
+	else:
+		return HttpResponseNotAllowed(['GET'])
 
 # /menu/{weekday}
 def weekday (request, day):
@@ -52,6 +55,8 @@ def weekday (request, day):
 				'dinner_items': _get_or_none(Menu.pitzer_meals, day=day, meal='dinner')
 			}
 		})
+	else:
+		return HttpResponseNotAllowed(['GET'])
 
 # /menu/{weekend}
 def weekend (request, day):
@@ -85,6 +90,8 @@ def weekend (request, day):
 				'dinner_items': _get_or_none(Menu.pitzer_meals, day=day, meal='dinner')
 			}
 		})
+	else:
+		return HttpResponseNotAllowed(['GET'])
 
 # Helper function to prevent lookup errors on days when certain dining halls aren't serving
 def _get_or_none(model_objects, **kwargs):

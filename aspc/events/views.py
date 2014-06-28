@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from aspc.events.models import EventController, FacebookEventPageController, EventHelper
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotAllowed
 import urlparse
 from django.core import serializers
 from aspc.events.exceptions import InvalidEventException, InvalidFacebookEventPageException, EventAlreadyExistsException
@@ -16,6 +16,8 @@ def home (request):
 			'latest_event_time': EventHelper.latest_event_time(weeks_events),
 			'facebook_event_pages': FacebookEventPageController.facebook_event_pages()
 		})
+	else:
+		return HttpResponseNotAllowed(['GET'])
 
 # /events/event/123
 def event (request, event_id):
@@ -36,6 +38,8 @@ def event (request, event_id):
 			)
 		else:
 			return HttpResponse(serializers.serialize('json', [new_event])) # Return a JSON hash of the new event
+	else:
+		return HttpResponseNotAllowed(['GET', 'POST'])
 
 # /events/facebook_page
 def facebook_page (request):
@@ -50,3 +54,5 @@ def facebook_page (request):
 				status=500
 			)
 		return HttpResponse(serializers.serialize('json', [new_event_page])) # Return a JSON hash of the new event page
+	else:
+		return HttpResponseNotAllowed(['POST'])
