@@ -16,12 +16,13 @@ class BookSale(models.Model):
     edition = models.CharField(max_length=20, null=True, blank=True)
     condition = models.IntegerField(choices=CONDITIONS)
     price = models.DecimalField(max_digits=5, decimal_places=2)
-    
+    is_recoop = models.BooleanField(default=False)
+
     seller = models.ForeignKey(User, related_name="book_sales_set")
     buyer = models.ForeignKey(User, null=True, blank=True, related_name="book_purchases_set")
-    
+
     posted = models.DateTimeField(auto_now_add=True)
-    
+
     class Meta:
         ordering = ['posted']
 
