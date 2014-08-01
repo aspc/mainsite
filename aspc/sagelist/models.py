@@ -13,10 +13,11 @@ class BookSale(models.Model):
     title = models.CharField(max_length=255)
     authors = models.CharField(max_length=255, verbose_name="Author(s)")
     isbn = models.CharField(max_length=20, null=True, blank=True, verbose_name="ISBN")
-    edition = models.CharField(max_length=20, null=True, blank=True)
+    edition = models.CharField(max_length=30, null=True, blank=True)
     condition = models.IntegerField(choices=CONDITIONS)
     price = models.DecimalField(max_digits=5, decimal_places=2)
     is_recoop = models.BooleanField(default=False)
+    recoop_id = models.IntegerField(unique=True, null=True)
 
     seller = models.ForeignKey(User, related_name="book_sales_set")
     buyer = models.ForeignKey(User, null=True, blank=True, related_name="book_purchases_set")
