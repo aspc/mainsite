@@ -18,6 +18,10 @@
   <dd>{{ book.get_condition_display }}</dd>
   <dt>Price</dt>
   <dd>${{ book.price }}</dd>
+  {% if book.is_recoop %}
+  <dt class="detail_note">Note</dt>
+  <dd class="detail_note">This is a ReCoop listing! You can purchase the book like normal here on SageBooks, and it will be reserved for you at the Fall ReCoop sale. You must then go and pick it up at the sale. Contact <a href="mailto:sustainability@pomona.edu">sustainability@pomona.edu</a> with questions.</dd>
+  {% endif %}
   <dt>Posted by</dt>
   <dd>{{ book.seller.get_full_name }} on {{ book.posted }}</dd>
   {% if book.buyer %}
@@ -28,8 +32,8 @@
 <div class="info">
 {% block "form" %}
 {% if not book.buyer and not book.seller == user %}
-  <p><strong>Note:</strong> By clicking "buy this book" you are agreeing to make a purchase. Your 
-    name and email will be sent to the seller, and you will receive an email 
+  <p><strong>Note:</strong> By clicking "buy this book" you are agreeing to make a purchase. Your
+    name and email will be sent to the seller, and you will receive an email
     with their contact info.</p>
 <form action="." method="POST">
   {% csrf_token %}

@@ -56,7 +56,14 @@
 {% endif %}
 
 <table>
-  <tr><th class="title">Title</th><th class="authors">Author(s)</th><th class="isbn">ISBN</th><th class="condition">Condition</th><th class="price">Price</th></tr>
+  <tr>
+    <th class="title">Title</th>
+    <th class="authors">Author(s)</th>
+    <th class="isbn">ISBN</th>
+    <th class="condition">Condition</th>
+    <th class="price">Price</th>
+    <th class="recoop">ReCoop</th>
+  </tr>
 {% for group in listings_grouped %}
 {% if listings.count > 20 %}<tr class="nav_letter{% if not group.1 %} empty{% endif %}" id="{{ group.0 }}"><td colspan="6">{{ group.0 }}</td></tr>{% endif %}
 {% for book in group.1 %}
@@ -66,6 +73,7 @@
     <td class="isbn">{{ book.isbn }}</td>
     <td class="condition">{{ book.get_condition_display }}</td>
     <td class="price">${{ book.price }}</td>
+    <td class="recoop">{% if book.is_recoop %} <img src="{{ STATIC_URL }}img/recoop_listing_icon.png" /> {% endif %}</td>
   </tr>
 {% endfor %}
 {% endfor %}

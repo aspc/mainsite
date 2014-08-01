@@ -234,10 +234,15 @@ form > ul > li > label {
 	background-color: #eee;
 }
 
-.sagelist .title, .sagelist .authors, .sagelist .isbn, .sagelist .condition, .sagelist .price {
+.sagelist .title, .sagelist .authors, .sagelist .isbn, .sagelist .condition, .sagelist .price, .sagelist .recoop {
 	display: table-cell;
 }
 
+.sagelist .recoop img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
 
 .sagelist tr.empty {
 	display: none;
@@ -251,6 +256,11 @@ form > ul > li > label {
 	font-size: 1.5em;
 	padding: 0.25em 2%;
 	font-weight: bold;
+}
+
+
+.sagelist .detail_note {
+	height: 3.5em;
 }
 
 .sagelist form label, .sagelist form .faux_label {
@@ -1180,7 +1190,7 @@ footer a {
 @media handheld, only screen and (max-width: 767px) {
 
 /* @group Blog */
-  
+
 #news-stream-container {
   display: block;
 }
@@ -1226,6 +1236,10 @@ footer a {
 
 .sagelist dl {
 	font-size: 0.85em;
+}
+
+.sagelist .detail_note {
+	height: 11em;
 }
 
 .sagelist input[type="submit"] {
