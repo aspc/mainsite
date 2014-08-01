@@ -33,7 +33,7 @@ class BookSale(models.Model):
     def save(self, *args, **kwargs):
         created = self.pk is None
         super(BookSale, self).save(*args, **kwargs)
-        if created:
+        if created and not self.is_recoop:
             new_activity.send(sender=self, category="sagelist", date=self.posted)
 
     def delete(self, *args, **kwargs):
