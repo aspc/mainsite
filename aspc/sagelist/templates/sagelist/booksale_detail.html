@@ -11,16 +11,18 @@
   <dt>Author(s)</dt>
   <dd>{{ book.authors }}</dd>
   {% if book.edition %}<dt>Edition</dt>
-  <dd>{{ book.edition }}</dd>{% endif %}
+  <dd>{{ book.edition }}</dd>
+  {% endif %}
   {% if book.isbn %}<dt>ISBN</dt>
-  <dd>{{ book.isbn }}</dd>{% endif %}
+  <dd>{{ book.isbn }}</dd>
+  {% endif %}
   <dt>Condition</dt>
   <dd>{{ book.get_condition_display }}</dd>
   <dt>Price</dt>
   <dd>${{ book.price }}</dd>
   {% if book.is_recoop %}
   <dt class="detail_note">Note</dt>
-  <dd class="detail_note">This is a ReCoop listing! You can purchase the book like normal here on SageBooks, and it will be reserved for you at the Fall ReCoop sale. You must then go and pick it up at the sale. Contact <a href="mailto:sustainability@pomona.edu">sustainability@pomona.edu</a> with questions.</dd>
+  <dd class="detail_note">This is a ReCoop listing! You can purchase the book like normal here on SageBooks, and it will be reserved for you at the <a href="http://www.pomona.edu/administration/sustainability/programs/recoop.aspx">Fall ReCoop sale</a>. You must then go and pick it up at the sale. Contact <a href="mailto:sustainability@pomona.edu">sustainability@pomona.edu</a> with questions.</dd>
   {% endif %}
   <dt>Posted by</dt>
   <dd>{{ book.seller.get_full_name }} on {{ book.posted }}</dd>
@@ -31,14 +33,20 @@
 </dl>
 <div class="info">
 {% block "form" %}
-{% if not book.buyer and not book.seller == user %}
-  <p><strong>Note:</strong> By clicking "buy this book" you are agreeing to make a purchase. Your
+{% if book.is_recoop and book.is_frozen %}
+<p>
+  <strong>Attention:</strong> Today is the day of the ReCoop sale! Head over to Walker Lounge to buy this book in person; you can't reserve it online right now.
+</p>
+{% elif not book.buyer and not book.seller == user %}
+  <p>
+    <strong>Attention:</strong> By clicking "buy this book" you are agreeing to make a purchase. Your
     name and email will be sent to the seller, and you will receive an email
-    with their contact info.</p>
-<form action="." method="POST">
-  {% csrf_token %}
-  <p><input type="submit" value="Buy this book" id="buy"></p>
-</form>
+    with their contact info.
+  </p>
+  <form action="." method="POST">
+    {% csrf_token %}
+    <p><input type="submit" value="Buy this book" id="buy"></p>
+  </form>
 {% endif %}
 {% if book.seller == user and not book.buyer %}
 {% include "sagelist/booksale_delete_form.html" %}
