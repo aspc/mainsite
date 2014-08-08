@@ -24,61 +24,47 @@
 </div>
 
 {% if listings %}
-{% if listings.count > 20 %}
-<ol id="alphanav">
-  <li><a href="#A">A</a></li>
-  <li><a href="#B">B</a></li>
-  <li><a href="#C">C</a></li>
-  <li><a href="#D">D</a></li>
-  <li><a href="#E">E</a></li>
-  <li><a href="#F">F</a></li>
-  <li><a href="#G">G</a></li>
-  <li><a href="#H">H</a></li>
-  <li><a href="#I">I</a></li>
-  <li><a href="#J">J</a></li>
-  <li><a href="#K">K</a></li>
-  <li><a href="#L">L</a></li>
-  <li><a href="#M">M</a></li>
-  <li><a href="#N">N</a></li>
-  <li><a href="#O">O</a></li>
-  <li><a href="#P">P</a></li>
-  <li><a href="#Q">Q</a></li>
-  <li><a href="#R">R</a></li>
-  <li><a href="#S">S</a></li>
-  <li><a href="#T">T</a></li>
-  <li><a href="#U">U</a></li>
-  <li><a href="#V">V</a></li>
-  <li><a href="#W">W</a></li>
-  <li><a href="#X">X</a></li>
-  <li><a href="#Y">Y</a></li>
-  <li><a href="#Z">Z</a></li>
-</ol>
-{% endif %}
+  {% if is_paginated %}
+  <ol class="pagenav">
+      {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+      {% endif %}
+      {% for num in paginator.page_range %}
+        {% ifequal num page_obj.number %}
+          <span class="current_page">{{ forloop.counter }}</span>
+        {% else %}
+        <li>
+          <a href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
+        </li>
+        {% endifequal %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">next</a>
+      {% endif %}
+  </ol>
+  {% endif %}
 
-<table>
-  <tr>
-    <th class="title">Title</th>
-    <th class="authors">Author(s)</th>
-    <th class="isbn">ISBN</th>
-    <th class="condition">Condition</th>
-    <th class="price">Price</th>
-    <th class="recoop">ReCoop</th>
-  </tr>
-{% for group in listings_grouped %}
-{% if listings.count > 20 %}<tr class="nav_letter{% if not group.1 %} empty{% endif %}" id="{{ group.0 }}"><td colspan="6">{{ group.0 }}</td></tr>{% endif %}
-{% for book in group.1 %}
-  <tr>
-    <td class="title"><a href="{% url "sagelist_detail" pk=book.id %}">{{ book.title }}</a>{% if book.edition %} [{{ book.edition }} ed.]{% endif %}</td>
-    <td class="authors">{{ book.authors }}</td>
-    <td class="isbn">{{ book.isbn }}</td>
-    <td class="condition">{{ book.get_condition_display }}</td>
-    <td class="price">${{ book.price }}</td>
-    <td class="recoop">{% if book.is_recoop %} <img src="{{ STATIC_URL }}img/recoop_listing_icon.png" /> {% endif %}</td>
-  </tr>
-{% endfor %}
-{% endfor %}
-</table>
-{% else %}
-<p class="list_empty content">{% if not search %}No books are currently listed for sale.{% else %}No book listings matched your search. <a href="{% url "sagelist_create" %}">Post a new one?</a>{% endif %}</p>
+  <table>
+    <tr>
+      <th class="title">Title</th>
+      <th class="authors">Author(s)</th>
+      <th class="isbn">ISBN</th>
+      <th class="condition">Condition</th>
+      <th class="price">Price</th>
+      <th class="recoop">ReCoop</th>
+    </tr>
+  {% for book in listings %}
+    <tr>
+      <td class="title"><a href="{% url "sagelist_detail" pk=book.id %}">{{ book.title }}</a>{% if book.edition %} [{{ book.edition }} ed.]{% endif %}</td>
+      <td class="authors">{{ book.authors }}</td>
+      <td class="isbn">{{ book.isbn }}</td>
+      <td class="condition">{{ book.get_condition_display }}</td>
+      <td class="price">${{ book.price }}</td>
+      <td class="recoop">{% if book.is_recoop %} <img src="{{ STATIC_URL }}img/recoop_listing_icon.png" /> {% endif %}</td>
+    </tr>
+  {% endfor %}
+  </table>
+  {% else %}
+  <p class="list_empty content">{% if not search %}No books are currently listed for sale.{% else %}No book listings matched your search. <a href="{% url "sagelist_create" %}">Post a new one?</a>{% endif %}</p>
 {% endif %}
 {% endblock %}

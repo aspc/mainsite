@@ -13,9 +13,7 @@ from django.contrib import messages
 from django.utils.decorators import method_decorator
 from django.shortcuts import get_object_or_404
 from aspc.sagelist.models import BookSale
-from functools import wraps
 import string
-from pprint import pprint
 
 class BookSaleForm(forms.ModelForm):
     class Meta:
@@ -160,6 +158,7 @@ class ListUserBookSalesView(ListView):
 class ListBookSalesView(ListView):
     model = BookSale
     context_object_name = "listings"
+    paginate_by = 100
 
     def get_queryset(self):
         form = BookSearchForm(self.request.GET)

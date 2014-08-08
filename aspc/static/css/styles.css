@@ -291,7 +291,7 @@ form > ul > li > label {
 	width: 20em;
 }
 
-.sagelist ol#alphanav {
+.sagelist .pagenav {
 	margin: 0;
 	padding: 0;
 	padding: 0.5em 0;
@@ -299,14 +299,27 @@ form > ul > li > label {
 	background-color: #003a54;
 }
 
-.sagelist ol#alphanav li {
+.sagelist .pagenav {
+	border-bottom: 1px solid #004d70;
+}
+
+.sagelist .pagenav li {
 	display: inline-block;
-	padding: 0 0.5em;
+	padding: 0 0.35em;
 	margin: 0.25em 0;
 }
 
-.sagelist ol#alphanav a {
+.sagelist .pagenav a {
 	color: white;
+}
+
+.sagelist .pagenav a:hover {
+	color: #0071a6;
+}
+
+.sagelist .pagenav .current_page {
+	color: #0071a6;
+	font-weight: bold;
 }
 
 .sagelist .info {
