@@ -28,7 +28,7 @@ class BookSearchForm(forms.Form):
 class CreateBookSaleView(CreateView):
     form_class = BookSaleForm
     model = BookSale
-    
+
     def form_valid(self, form):
         sale = form.save(commit=False)
         sale.title = sale.title.strip()
@@ -50,7 +50,7 @@ class CreateBookSaleView(CreateView):
 class BookSaleDetailView(DetailView):
     model = BookSale
     context_object_name = "book"
-    
+
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -58,37 +58,44 @@ class BookSaleDetailView(DetailView):
             return HttpResponseRedirect(reverse('sagelist_detail', kwargs={'pk': self.object.pk,}))
         self.object = self.get_object()
         self.object.buyer = request.user
-        
+
         email_context = {
             'seller': self.object.seller,
             'buyer': self.object.buyer,
             'booksale': self.object,
         }
-        
+
+        if self.object.is_recoop:
+            buyer_email_template = 'sagelist/recoop_purchase_complete_buyer.txt'
+            seller_email_template = 'sagelist/recoop_purchase_complete_seller.txt'
+        else:
+            buyer_email_template = 'sagelist/purchase_complete_buyer.txt'
+            seller_email_template = 'sagelist/purchase_complete_seller.txt'
+
         self.object.buyer.email_user(
             u"Purchase of {0} from {1}".format(
                 self.object.title,
                 self.object.seller.get_full_name()
             ),
             render_to_string(
-                'sagelist/purchase_complete_buyer.txt',
+                buyer_email_template,
                 email_context,
                 context_instance=RequestContext(self.request)
             )
         )
-        
+
         self.object.seller.email_user(
             u"Sale of {0} to {1}".format(
                 self.object.title,
                 self.object.buyer.get_full_name()
             ),
             render_to_string(
-                'sagelist/purchase_complete_seller.txt',
+                seller_email_template,
                 email_context,
                 context_instance=RequestContext(self.request)
             )
         )
-        
+
         self.object.save()
         messages.add_message(self.request, messages.SUCCESS, u"Purchased {0}. An email has been sent to you and the seller.".format(self.object.title))
         return self.get(request, *args, **kwargs)
@@ -96,30 +103,30 @@ class BookSaleDetailView(DetailView):
 class BookSaleDeleteView(DeleteView):
     model = BookSale
     context_object_name = "book"
-    
+
     class AccessDenied(Exception):
         pass
-    
+
     def get_success_url(self):
         return reverse('sagelist')
-    
+
     def user_can_delete(self):
         return (self.get_object().seller == self.request.user or
                 self.request.user.has_perm('sagelist.delete_booksale'))
-    
+
     def dispatch(self, *args, **kwargs):
         try:
             return super(BookSaleDeleteView, self).dispatch(*args, **kwargs)
         except BookSaleDeleteView.AccessDenied:
             return HttpResponseForbidden("Only the seller or an administrator may delete this listing")
-    
+
     def get_object(self):
         obj = super(BookSaleDeleteView, self).get_object()
         if not (obj.seller == self.request.user or
                 self.request.user.has_perm('sagelist.delete_booksale')):
             raise BookSaleDeleteView.AccessDenied
         return obj
-    
+
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
         self.object.delete()
@@ -132,19 +139,19 @@ class ListUserBookSalesView(ListView):
     context_object_name = "listings"
     template_name = "sagelist/booksale_list_user.html"
     _user = None
-    
+
     def get_context_data(self, *args, **kwargs):
         context = super(ListUserBookSalesView, self).get_context_data(*args, **kwargs)
         context.update({
             'listings_by': self._get_user(),
         })
         return context
-    
+
     def _get_user(self):
         if not self._user:
             self._user = get_object_or_404(User, username=self.kwargs['username'])
         return self._user
-    
+
     def get_queryset(self):
         qs = super(ListUserBookSalesView, self).get_queryset()
         qs = qs.filter(seller=self._get_user())
@@ -153,25 +160,25 @@ class ListUserBookSalesView(ListView):
 class ListBookSalesView(ListView):
     model = BookSale
     context_object_name = "listings"
-    
+
     def get_queryset(self):
         form = BookSearchForm(self.request.GET)
-        
+
         qs = super(ListBookSalesView, self).get_queryset()
         qs = qs.filter(buyer__isnull=True).order_by('title')
-        
+
         if form.is_valid():
             query = Q(title__icontains=form.cleaned_data['search'])
             query |= Q(authors__icontains=form.cleaned_data['search'])
             query |= Q(edition__icontains=form.cleaned_data['search'])
             query |= Q(isbn__icontains=form.cleaned_data['search'])
             qs = qs.filter(query)
-        
+
         return qs
-    
+
     def get_context_data(self, *args, **kwargs):
         context = super(ListBookSalesView, self).get_context_data(*args, **kwargs)
-        
+
         form = BookSearchForm(self.request.GET)
         if form.is_valid:
             context['form'] = form
@@ -179,18 +186,18 @@ class ListBookSalesView(ListView):
         else:
             context['form'] = BookSearchForm()
             context['search'] = False
-        
+
         groups = {}
-        
+
         for l in string.uppercase + '#':
             groups[l] = []
-        
+
         for b in self.object_list:
             if b.title[0].upper() in groups.keys():
               groups[b.title[0].upper()].append(b)
             else:
               groups['#'].append(b)
-        
+
         context['listings_grouped'] = groups.items()
         context['listings_grouped'].sort()
         context['total_for_sale'] = self.model.objects.filter(buyer__isnull=True).count()

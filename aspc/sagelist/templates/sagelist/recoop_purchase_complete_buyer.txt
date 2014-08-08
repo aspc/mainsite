@@ -1,0 +1,10 @@
+Hi {{ buyer.get_full_name }}
+
+You have just purchased {{ booksale.title|safe }} from the Sustainability Office's ReCoop Sale for ${{ booksale.price }}. The listing has been removed from the main list, but you can still get to it here:
+
+{{ protocol }}://{{ domain }}{{ booksale.get_absolute_url }}
+
+The ReCoop staff has set aside this book for you. You must go to the sale to pick it up. For more information, see http://www.pomona.edu/administration/sustainability/programs/recoop.aspx. Contact sustainability@pomona.edu with questions or to arrange an alternative pickup location.
+
+SageBooks
+ASPC System
