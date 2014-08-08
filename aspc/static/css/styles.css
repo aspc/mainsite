@@ -1225,7 +1225,7 @@ footer a {
 }
 
 
-.sagelist .authors, .sagelist .isbn, .sagelist .condition {
+.sagelist .authors, .sagelist .isbn, .sagelist .condition, .sagelist .recoop {
 	display: none;
 }
 
