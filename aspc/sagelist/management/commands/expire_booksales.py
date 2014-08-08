@@ -32,7 +32,7 @@ class Command(BaseCommand):
 
         dtnow = datetime.now()
         cutoff_oldest_posted = dtnow - timedelta(days=max_age_in_days)
-        old_booksales = BookSale.objects.filter(posted__lt=cutoff_oldest_posted, buyer__isnull=True)
+        old_booksales = BookSale.objects.filter(posted__lt=cutoff_oldest_posted, buyer__isnull=True, is_recoop=False)
         self.stdout.write('Found {0} old booksales.'.format(len(old_booksales)))
 
         for booksale in old_booksales:
@@ -40,8 +40,8 @@ class Command(BaseCommand):
             self.stdout.write('[{0} days old] {1} from {2}'.format(
                 age, booksale.title.encode('ascii', 'replace'), booksale.seller.username
             ))
-            
-                
+
+
             if not options['silent']:
                 email_subject = u"SageBooks listing expired: {0}".format(booksale.title)
                 email_content = render_to_string(
@@ -57,10 +57,10 @@ class Command(BaseCommand):
                 if not options['fake']:
                     booksale.seller.email_user(email_subject, email_content)
                     self.stdout.write("--> Email sent.")
-            
+
             if not options['fake']:
                 booksale.delete()
                 self.stdout.write("--> BookSale deleted.")
-            
+
             self.stdout.write('\n')
 
