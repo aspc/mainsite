@@ -1,7 +1,6 @@
 {% extends "sagelist/base.html" %}
-{% block "title" %}SageBooks{% endblock %}
-{% block "full_content" %}
-<h1>SageBooks Textbook Sales</h1>
+{% block "breadcrumbs" %}{% endblock %}
+{% block "outer_content" %}
 <ul class="actions">
   <li><a href="{% url "sagelist_create" %}">List a book for sale</a></li>
   {% if user.is_authenticated %}
