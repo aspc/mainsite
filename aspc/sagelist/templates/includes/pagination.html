@@ -1,0 +1,19 @@
+{% if is_paginated %}
+<ol class="pagenav">
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+    {% endif %}
+    {% for num in paginator.page_range %}
+      {% ifequal num page_obj.number %}
+        <span class="current_page">{{ forloop.counter }}</span>
+      {% else %}
+      <li>
+        <a href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
+      </li>
+      {% endifequal %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">next</a>
+    {% endif %}
+</ol>
+{% endif %}
