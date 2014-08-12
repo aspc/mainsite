@@ -44,7 +44,7 @@ class Command(BaseCommand):
 
 						# If the listing has been flagged as sold in-person, fake it accordingly on SageBooks by setting
 						# the buyer to be the SIO itself (so that no one else tries to buy the book)
-						if listing['gsx$sold']['$t'] == 'y':
+						if not book_sale.buyer and listing['gsx$sold']['$t'] == 'y':
 							setattr(book_sale, 'buyer', User.objects.get(username='sustainability@pomona.edu'))
 
 					book_sale.save()
