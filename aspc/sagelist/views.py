@@ -18,7 +18,7 @@ import string
 class BookSaleForm(forms.ModelForm):
     class Meta:
         model = BookSale
-        exclude = ('buyer', 'seller', 'posted')
+        exclude = ('buyer', 'seller', 'posted', 'is_recoop', 'recoop_id')
 
 class BookSearchForm(forms.Form):
     search = forms.CharField(initial="search")
