@@ -15,7 +15,8 @@ class MuddBackend(object):
         # menu_url = 'http://hmcdining.com/Week%d.htm' % week_number
         # menu_url = 'http://www.hmcdining.com/Wk%dSpring.htm' % week_number
         # menu_url = 'http://www.hmcdining.com/dining/Wk%dSpringCycle2.htm' % week_number
-        menu_url = 'http://www.hmcdining.com/Wk%dSpringCycle2.htm' % week_number
+        # menu_url = 'http://www.hmcdining.com/Wk%dSpringCycle2.htm' % week_number
+        menu_url = 'http://www.hmcdining.com/dining/Week%dF14.htm' % week_number
         resp = requests.get(menu_url)
         if resp.status_code == 404: # Sometimes Mudd does not update its menu on time...
             return None
@@ -47,6 +48,8 @@ class MuddBackend(object):
             for element in day_elements:
                 if len(element.find_all('td', {'class':'mealname'})):
                     current_meal = element.find_all('td', {'class':'mealname'})[0].text.lower()
+                    if (day == 'saturday' or day == 'sunday') and current_meal == 'lunch':
+                        current_meal = 'brunch'
                     continue
                 elif element.find('div', {'class':'menuitem'}) and element.find('div', {'class':'menuitem'}).find('span'):
                     try:
@@ -60,7 +63,7 @@ class MuddBackend(object):
         # HMC stupidly changes the url to their menu every week (honestly, who conceived of this...?)
         # so we have to calculate the difference in weeks from now and the start of term
         # This code is fairly unstable and should be checked at the beginning of each semester at the very least
-        start_date = datetime(year=2014, month=4, day=21)
+        start_date = datetime(year=2014, month=8, day=31)
         week_number = (datetime.today() - start_date).days / 7 + 1
 
         return self._parse_menu_data(self._get_menu_data(week_number))

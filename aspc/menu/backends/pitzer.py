@@ -9,31 +9,41 @@ from bs4 import BeautifulSoup
 class PitzerBackend(object):
     rss = feedparser.parse('http://legacy.cafebonappetit.com/rss/menu/219')
     days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
-
-    def _dayDict(self, entry):
-        body = BeautifulSoup(entry.summary)
-        date = entry.title[:4]
-        tm = titles_and_meals = body.findAll(['h3', 'h4'])
-
-        meal_dict = defaultdict(list)
-
-        for m in tm:
-            if m.name == 'h3':
-                meal_title = m.text
-            elif m.name == 'h4':
-                food = m.text.strip().split(', ')
-                for f in food:
-                    station_and_food = f.split('] ')
-                    if len(station_and_food) > 1:
-                        station = station_and_food[0]
-                        food = station_and_food[1]
-                        meal_dict[meal_title].append(food.title())
-                    else:
-                        food = station_and_food[0]
-                        meal_dict[meal_title].append(food.title())
-
-        meal_dict = dict(meal_dict)
-        return {key.lower(): value for key, value in meal_dict.iteritems()}
+    menus = { # Menu structure to return
+        'mon': {}, # Each day dict contains key value pairs as meal_name, [fooditems]
+        'tue': {},
+        'wed': {},
+        'thu': {},
+        'fri': {},
+        'sat': {},
+        'sun': {}
+    }
 
     def menu(self):
-        return {self.days[self.rss.entries.index(entry)][:3] : self._dayDict(entry) for entry in self.rss.entries}
+        for entry in self.rss.entries:
+            body = BeautifulSoup(entry.summary)
+            date = entry.title[:4]
+            tm = titles_and_meals = body.findAll(['h3', 'h4'])
+
+            meal_dict = defaultdict(list)
+
+            for m in tm:
+                if m.name == 'h3':
+                    meal_title = m.text
+                elif m.name == 'h4':
+                    food = m.text.strip().split(', ')
+                    for f in food:
+                        station_and_food = f.split('] ')
+                        if len(station_and_food) > 1:
+                            station = station_and_food[0]
+                            food = station_and_food[1]
+                            meal_dict[meal_title].append(food.title())
+                        else:
+                            food = station_and_food[0]
+                            meal_dict[meal_title].append(food.title())
+
+            meal_dict = dict(meal_dict)
+
+            self.menus[entry.title[:3].lower()] = {key.lower(): value for key, value in meal_dict.iteritems()}
+
+        return self.menus
