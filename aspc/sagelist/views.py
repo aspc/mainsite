@@ -186,19 +186,6 @@ class ListBookSalesView(ListView):
             context['form'] = BookSearchForm()
             context['search'] = False
 
-        groups = {}
-
-        for l in string.uppercase + '#':
-            groups[l] = []
-
-        for b in self.object_list:
-            if b.title[0].upper() in groups.keys():
-              groups[b.title[0].upper()].append(b)
-            else:
-              groups['#'].append(b)
-
-        context['listings_grouped'] = groups.items()
-        context['listings_grouped'].sort()
         context['total_for_sale'] = self.model.objects.filter(buyer__isnull=True).count()
         context['total_sold'] = self.model.objects.filter(buyer__isnull=False).count()
         context['total'] = self.model.objects.count()
