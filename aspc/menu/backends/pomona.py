@@ -123,7 +123,10 @@ class PomonaBackend(object):
 			raise self.NotFoundException(cond, seq)
 
 	def _parse_frank_frary_cells(self, cells):
-		#  Spreadsheet format
+		# Frank: https://docs.google.com/spreadsheet/pub?key=0AsnKhcsREmJpdGV5RG5JbXpQVElSb3dHNHN3QmVaTVE&output=html
+		# Frary: https://docs.google.com/spreadsheet/pub?key=0AsnKhcsREmJpdDdnWm1nMkY0MHBvYkNOQVRPZkRHOUE&output=html
+		#
+		# Spreadsheet format
 		#
 		#    |   A  |   B       |    C    |  D     |  E     |
 		#  1 |      |           |         |        |        |
@@ -211,7 +214,8 @@ class PomonaBackend(object):
 		return menus
 
 	def _parse_oldenborg_cells(self, cells):
-		#  Spreadsheet format
+		# Oldenborg: https://docs.google.com/spreadsheet/pub?key=0AsnKhcsREmJpdHJBSUY2Y3Yxc0pqY0QwR29qOHhZUXc&output=html
+		# Spreadsheet format
 		#
 		#    |   A     |   B       |    C   |    D    |    E   |   F    |
 		#  1 |Oldenborg|           |        |         |        |        |
