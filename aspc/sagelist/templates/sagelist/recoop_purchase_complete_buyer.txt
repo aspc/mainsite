@@ -4,7 +4,7 @@ You have just purchased {{ booksale.title|safe }} from the Sustainability Office
 
 {{ protocol }}://{{ domain }}{{ booksale.get_absolute_url }}
 
-The ReCoop staff has set aside this book for you. You must go to the sale to pick it up. For more information, see http://www.pomona.edu/administration/sustainability/programs/recoop.aspx. Contact sustainability@pomona.edu with questions or to arrange an alternative pickup location.
+The Sustainability Office has set aside this book for you. You can go to the Walker EcoDesk in Walker Lounge to pick it up on Sunday through Wednesday from 8pm to 10pm. If you need to arrange a pickup outside of those times, please contact sustainability@pomona.edu.
 
 SageBooks
 ASPC System

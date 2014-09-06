@@ -6,7 +6,7 @@ from the main list, but you can still get to it here:
 
 {{ protocol }}://{{ domain }}{{ booksale.get_absolute_url }}
 
-You should set this book aside for pickup by them at the ReCoop sale.
+You should set this book aside for pickup by them at the Walker EcoDesk.
 
 SageBooks
 ASPC System
