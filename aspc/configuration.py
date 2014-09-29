@@ -106,6 +106,7 @@ MIDDLEWARE_CLASSES = (
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
+    'aspc.auth2.middleware.CASMiddleware'
 )
 
 ROOT_URLCONF = 'aspc.urls'
@@ -141,6 +142,7 @@ INSTALLED_APPS = (
     'aspc.senate',
     'aspc.blog',
     'aspc.auth1',
+    'aspc.auth2',
     'aspc.sagelist',
     'aspc.college',
     'aspc.housing',
@@ -211,37 +213,50 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 LOGIN_REDIRECT_URL = '/'
 WSGI_APPLICATION = "aspc.wsgi.application"
 
-#### ASPC Specific Configuration
-
-# LDAP Authentication information
-
+### CAS Configuration
 AUTHENTICATION_BACKENDS = (
-    'aspc.auth1.backends.SimpleLDAPBackend',
     'django.contrib.auth.backends.ModelBackend',
+    'aspc.auth2.backends.CASBackend',
 )
 
-AUTH_LDAP = {
-    u'PO': {
-        'name': u"Pomona",
-        'server': u"ldap.pomona.edu",
-        'port': 389,
-        'bind_as': u'{0}@CAMPUS',
-        'filter': u'(cn={0})',
-        'base_dn': u"OU=Users and Computers,OU=ZHOME,DC=campus,DC=pomona,DC=edu",
-    },
-    # 'CMC': {
-    #     'name': "CMC",
-    #     'server': "ldap.pomona.edu",
-    #     'port': '389',
-    #     'bind_as': '{0}@CAMPUS',
-    #     'filter': '(cn={0})',
-    #     'base_dn': "OU=Student Accounts,OU=Users and Computers,OU=ZHOME,DC=campus,DC=pomona,DC=edu",
-    # },
-}
+CAS_SERVER_URL = 'https://ssodev.pomona.edu/'
+CAS_LOGOUT_COMPLETELY = True
+CAS_PROVIDE_URL_TO_LOGOUT = True
+CAS_IGNORE_REFERER = True
+CAS_REDIRECT_URL = '/'
+CAS_EXTRA_LOGIN_PARAMS = None
 
-AUTH_LDAP_DEFAULT_COLLEGE = "PO"
-
-AUTH_LDAP_COLLEGES = ((i[0], i[1]['name']) for i in AUTH_LDAP.items())
+#### ASPC Specific Configuration
+#
+# LDAP Authentication information
+#
+#AUTHENTICATION_BACKENDS = (
+#    'aspc.auth.backends.SimpleLDAPBackend',
+#    'django.contrib.auth.backends.ModelBackend',
+#)
+#
+#AUTH_LDAP = {
+#    u'PO': {
+#        'name': u"Pomona",
+#        'server': u"ldap.pomona.edu",
+#       'port': 389,
+#        'bind_as': u'{0}@CAMPUS',
+#       'filter': u'(cn={0})',
+#        'base_dn': u"OU=Users and Computers,OU=ZHOME,DC=campus,DC=pomona,DC=edu",
+#    },
+#    # 'CMC': {
+#    #     'name': "CMC",
+#    #     'server': "ldap.pomona.edu",
+#    #     'port': '389',
+#    #     'bind_as': '{0}@CAMPUS',
+#    #     'filter': '(cn={0})',
+#    #     'base_dn': "OU=Student Accounts,OU=Users and Computers,OU=ZHOME,DC=campus,DC=pomona,DC=edu",
+#    # },
+#}
+#
+#AUTH_LDAP_DEFAULT_COLLEGE = "PO"
+#
+#AUTH_LDAP_COLLEGES = ((i[0], i[1]['name']) for i in AUTH_LDAP.items())
 
 # Initial Data for Housing
 
