@@ -26,7 +26,7 @@ Vagrant.configure("2") do |config|
   # Bridged networks make the machine appear as another physical device on
   # your network.
   # config.vm.network :public_network # commented because of startup hangs on Pomona wifi
-  
+
   config.vm.provision :shell, :path => "vagrant/init.sh"
 
   # Share an additional folder to the guest VM. The first argument is
@@ -50,4 +50,8 @@ Vagrant.configure("2") do |config|
   #
   # View the documentation for the provider you're using for more
   # information on available options.
+
+  # Forward local SSH keys to Vagrant
+  config.ssh.forward_agent = true
+  config.ssh.private_key_path = ['~/.ssh/id_rsa', '~/.vagrant.d/insecure_private_key']
 end
