@@ -223,7 +223,7 @@ CAS_SERVER_URL = 'https://ssodev.pomona.edu/'
 CAS_LOGOUT_COMPLETELY = True
 CAS_PROVIDE_URL_TO_LOGOUT = True
 CAS_IGNORE_REFERER = True
-CAS_REDIRECT_URL = '/'
+CAS_REDIRECT_URL = ''
 CAS_EXTRA_LOGIN_PARAMS = None
 
 #### ASPC Specific Configuration
