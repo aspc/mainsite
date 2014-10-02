@@ -50,8 +50,7 @@ def _verify_cas2(ticket, service):
     if settings.CAS_PROXY_CALLBACK:
         params['pgtUrl'] = settings.CAS_PROXY_CALLBACK
 
-    url = (urljoin(settings.CAS_SERVER_URL, 'proxyValidate') + '?' +
-           urlencode(params))
+    url = urljoin(settings.CAS_SERVER_URL, 'serviceValidate') + '?' + urlencode(params)
 
     page = urlopen(url)
 

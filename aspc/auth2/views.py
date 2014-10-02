@@ -112,6 +112,7 @@ def login(request, next_page=None, required=False, gateway=False):
 
     if ticket:
         from django.contrib import auth
+        #return HttpResponseRedirect('http://staging.aspc.pomona/?' + ticket)
         user = auth.authenticate(ticket=ticket, service=service)
 
         if user is not None:
@@ -120,7 +121,7 @@ def login(request, next_page=None, required=False, gateway=False):
             if settings.CAS_PROXY_CALLBACK:
                 proxy_callback(request)
             #keep urls
-            return HttpResponseRedirect(next_page)
+            return HttpResponseRedirect('https://staging.aspc.pomona.edu?' + user.username)
         elif settings.CAS_RETRY_LOGIN or required:
             #Has ticket,
             if gateway:

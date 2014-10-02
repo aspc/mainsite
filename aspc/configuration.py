@@ -219,12 +219,14 @@ AUTHENTICATION_BACKENDS = (
     'aspc.auth2.backends.CASBackend',
 )
 
-CAS_SERVER_URL = 'https://ssodev.pomona.edu/'
+CAS_SERVER_URL = 'https://cas-dev.campus.pomona.edu/cas/'
 CAS_LOGOUT_COMPLETELY = True
 CAS_PROVIDE_URL_TO_LOGOUT = True
 CAS_IGNORE_REFERER = True
 CAS_REDIRECT_URL = ''
 CAS_EXTRA_LOGIN_PARAMS = None
+CAS_RETRY_LOGIN = True
+CAS_PROXY_CALLBACK = True
 
 #### ASPC Specific Configuration
 #
