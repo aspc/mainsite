@@ -3,18 +3,7 @@
 <span class="userinfo">{{ user.get_full_name }}</span>
 <span id="username">{{ user.username }}</span> &middot; <a href="{% url "logout" %}">log out?</a>{% if user.is_staff %} &middot; <a href="{% url "admin:index" %}">admin</a>{% endif %}
 {% else %}
- <form action="{% url 'aspc.auth2.views.login' %}" method="POST">
-   {% csrf_token %}
-  <input type="text" name="username" placeholder="username">
-  <input type="password" name="password" placeholder="password">
-  <!-- <select name="college" id="college">
-    <option selected value="PO">Pomona</option>
-    <option value="CMC">CMC</option>
-    <option value="PZ">Pitzer</option>
-    <option value="HMC">Mudd</option>
-    <option value="SCR">Scripps</option>
-  </select> -->
-  <input type="submit" value="Log In">
-</form>
+  <input type="button" value="Login (5C Students)" onclick="window.location = '{% url 'aspc.auth2.views.login' %}';">
+  <input type="button" value="Guest Login" onclick="window.location = '{% url 'aspc.auth2.views.login' %}';">
 {% endif %}
 </div>
