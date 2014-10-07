@@ -4,6 +4,6 @@
 <span id="username">{{ user.username }}</span> &middot; <a href="{% url "logout" %}">log out?</a>{% if user.is_staff %} &middot; <a href="{% url "admin:index" %}">admin</a>{% endif %}
 {% else %}
   <input type="button" value="Login (5C Students)" onclick="window.location = '{% url 'aspc.auth2.views.login' %}';">
-  <input type="button" value="Guest Login" onclick="window.location = '{% url 'aspc.auth2.views.login' %}';">
+  <input type="button" value="Guest Login" onclick="window.location = '{% url 'aspc.auth2.views.guest_login' %}';">
 {% endif %}
 </div>

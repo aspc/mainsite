@@ -1,0 +1,34 @@
+{% extends "base_page.html" %}
+
+{% block "page_title" %}Guest Login{% endblock %}
+
+{% block "content" %}
+	<p>
+		Guests of ASPC, please use your ASPC-granted username and password to log in.
+	</p>
+	<p>
+		If you need access to the ASPC site, contact <a href="mailto:digitalmedia@aspc.pomona.edu">digitalmedia@aspc.pomona.edu</a> to inquire.
+	</p>
+
+	{% if form.errors %}
+	<p>
+		<b>Error:</b> <i>Your username and password didn't match. Please try again.</i>
+	</p>
+	{% endif %}
+
+	<form method="post" action="{% url 'aspc.auth2.views.guest_login' %}">
+		{% csrf_token %}
+		<ul>
+			<li>{{ form.username.label_tag }}{{ form.username }}{{ form.username.errors }}</li>
+			<li>{{ form.password.label_tag }}{{ form.password }}{{ form.password.errors }}</li>
+			<li><input type="submit" value="login" /></li>
+		</ul>
+
+		<input type="hidden" name="next" value="{{ next }}" />
+	</form>
+
+	<p>
+		5C students, use your 5C account credentials to log in <a href="{% url 'aspc.auth2.views.login' %}">here</a>.
+	</p>
+
+{% endblock %}

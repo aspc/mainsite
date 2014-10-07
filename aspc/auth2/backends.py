@@ -17,7 +17,6 @@ class CASBackend(object):
 
 	# Vertifies CAS ticket and gets or creates User object
 	def authenticate(self, ticket, service):
-		return _verify_cas(ticket, service)
 		username = _verify_cas(ticket, service)
 		if not username:
 			return None
@@ -41,7 +40,7 @@ class CASBackend(object):
 			return None
 
 # Verifies CAS 2.0+ XML-based authentication ticket
-# Returns username on success and None on failure
+# Returns user data on success and None on failure
 def _verify_cas(ticket, service):
 	params = {
 		'ticket': ticket,
@@ -56,6 +55,12 @@ def _verify_cas(ticket, service):
 		response = page.read()
 		tree = ElementTree.fromstring(response)
 		document = minidom.parseString(response)
+		user_data = {
+			'username': '',
+			'firstname': '',
+			'lastname': '',
+			'email': ''
+		}
 
 		#Useful for debugging
 		#print document.toprettyxml()
@@ -74,4 +79,4 @@ def _verify_cas(ticket, service):
 	finally:
 		page.close()
 
-	return str(response)
+	return username
