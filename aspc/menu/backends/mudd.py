@@ -64,7 +64,7 @@ class MuddBackend(object):
         # HMC stupidly changes the url to their menu every week (honestly, who conceived of this...?)
         # so we have to calculate the difference in weeks from now and the start of term
         # This code is fairly unstable and should be checked at the beginning of each semester at the very least
-        start_date = datetime(year=2014, month=9, day=29)
+        start_date = datetime(year=2014, month=10, day=6)
         week_number = (datetime.today() - start_date).days / 7 + 1
 
         return self._parse_menu_data(self._get_menu_data(week_number))
