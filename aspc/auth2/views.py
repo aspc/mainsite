@@ -8,13 +8,18 @@ from django.contrib.auth.forms import AuthenticationForm
 
 __all__ = ['guest_login', 'login', 'logout']
 
-# On GET, renders a login form for guest accounts (i.e. users that are backed locally, not in the 5C CAS server)
-# On POST, validates the login form, authenticates the user, and logins him in
+## GUEST LOGIN - Uses django.contrib.auth.backends.ModelBackend for authentication
+# Endpoint has two functions:
+# 1) On GET, renders a login form for guest accounts (i.e. users that are backed locally, not in the 5C CAS server)
+# 2) On POST, validates the login form, authenticates the user, and logs him in
 def guest_login(request):
 	if request.method == 'GET':
-		form = AuthenticationForm()
-		return render(request, 'auth2/guest_login.html', {'form': form})
-
+		# If the user is already authenticated, simply redirect to the homepage
+		if request.user.is_authenticated():
+			return HttpResponseRedirect('/')
+		else:
+			form = AuthenticationForm()
+			return render(request, 'auth2/guest_login.html', {'form': form})
 	elif request.method == 'POST':
 		from django.contrib import auth
 		form = AuthenticationForm(data=request.POST)
@@ -29,10 +34,10 @@ def guest_login(request):
 				return render(request, 'auth2/guest_login.html', {'form': form})
 		else:
 			return render(request, 'auth2/guest_login.html', {'form': form})
-
 	else:
 		return HttpResponseNotAllowed(['GET', 'POST'])
 
+## CAS LOGIN - Uses aspc.auth2.backends.CASBackend for authentication
 # Endpoint has two functions:
 # 1) Forwards to CAS login URL upon first login
 # 2) Validates a CAS ticket upon receipt from the CAS server
@@ -55,7 +60,7 @@ def login(request, next_page=None):
 			if user is not None:
 				# Ticket successfully validated and user data retrieved - perform login
 				auth.login(request, user)
-				return HttpResponseRedirect('https://staging.aspc.pomona.edu?' + user.username)
+				return HttpResponseRedirect('/')
 			else:
 				# Some error in the ticket validation - try the login again
 				return HttpResponseRedirect(_login_url(service_url))
@@ -84,7 +89,7 @@ def logout(request, next_page=None):
 	else:
 		return HttpResponseNotAllowed(['GET'])
 
-# Redirects to referring page, or to the homepage if no referrer is set.
+# Redirects to referring page, or to the homepage if no referrer is set
 def _next_page_url(request):
 	next_page = request.GET.get(REDIRECT_FIELD_NAME) or ''
 	host = request.get_host()
