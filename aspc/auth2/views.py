@@ -35,7 +35,7 @@ def guest_login(request):
 
 # Endpoint has two functions:
 # 1) Forwards to CAS login URL upon first login
-# 2) Validate a CAS ticket upon receipt from the CAS server
+# 2) Validates a CAS ticket upon receipt from the CAS server
 def login(request, next_page=None):
 	if request.method == 'GET':
 		next_page = next_page or _next_page_url(request)

@@ -17,17 +17,17 @@ class CASBackend(object):
 
 	# Vertifies CAS ticket and gets or creates User object
 	def authenticate(self, ticket, service):
-		username = _verify_cas(ticket, service)
-		if not username:
+		user_data = _verify_cas(ticket, service)
+		if not user_data['username']:
 			return None
 		try:
-			user = User.objects.get(username__iexact=username)
+			user = User.objects.get(username__iexact=user_data['username'])
 		except User.DoesNotExist:
 			user = User(
-				username=username,
-				first_name=None,
-				last_name=None,
-				email=None,
+				username=user_data['username'],
+				first_name=user_data['first_name'],
+				last_name=user_data['last_name'],
+				email=user_data['email']
 			)
 			user.set_unusable_password()
 			user.save()
@@ -41,6 +41,21 @@ class CASBackend(object):
 
 # Verifies CAS 2.0+ XML-based authentication ticket
 # Returns user data on success and None on failure
+#
+# Example response:
+#
+# <cas:serviceResponse xmlns:cas='http://www.yale.edu/tp/cas'>
+#	<cas:authenticationSuccess>
+#	<!-- Begin Ldap Attributes -->
+#		<cas:attributes>
+#			<cas:lastName>Dahl</cas:lastName>
+#			<cas:EmailAddress>mdd32013@MyMail.pomona.edu</cas:EmailAddress>
+#			<cas:fullName>mdd32013</cas:fullName>
+#			<cas:firstName>Matthew</cas:firstName>
+#		</cas:attributes>
+#	<!-- End Ldap Attributes -->
+#	</cas:authenticationSuccess>
+# </cas:serviceResponse>
 def _verify_cas(ticket, service):
 	params = {
 		'ticket': ticket,
@@ -49,24 +64,23 @@ def _verify_cas(ticket, service):
 
 	url = urljoin(settings.CAS_SETTINGS['SERVER_URL'], 'serviceValidate') + '?' + urlencode(params)
 	page = urlopen(url)
-	username = None
+	user_data = {
+		'username': '',
+		'first_name': '',
+		'last_name': '',
+		'email': ''
+	}
 
 	try:
 		response = page.read()
 		tree = ElementTree.fromstring(response)
 		document = minidom.parseString(response)
-		user_data = {
-			'username': '',
-			'firstname': '',
-			'lastname': '',
-			'email': ''
-		}
-
-		#Useful for debugging
-		#print document.toprettyxml()
 
 		if tree[0].tag.endswith('authenticationSuccess'):
-			username = tree[0][0].text
+			user_data['last_name'] = tree[0][0][0].text
+			user_data['email'] = tree[0][0][1].text
+			user_data['username'] = tree[0][0][2].text
+			user_data['first_name'] = tree[0][0][3].text
 
 		else:
 			failure = document.getElementsByTagName('cas:authenticationFailure')
@@ -79,4 +93,4 @@ def _verify_cas(ticket, service):
 	finally:
 		page.close()
 
-	return username
+	return user_data
