@@ -72,7 +72,7 @@ def _verify_cas(ticket, service):
 	}
 
 	try:
-		response = page.read().replace('\xc2\x97', '--') # CAS returns an ill-formed XML response...
+		response = page.read()
 		tree = ElementTree.fromstring(response)
 		document = minidom.parseString(response)
 
