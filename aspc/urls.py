@@ -3,6 +3,7 @@ from django.conf import settings
 from aspc.folio.models import Page
 from aspc.views import HomeView
 from aspc.blog.urls import post_kwargs
+from django.http import HttpResponseRedirect
 
 from django.contrib import admin
 admin.autodiscover()
@@ -30,6 +31,7 @@ urlpatterns = patterns('',
     url(r'^housing/', include('aspc.housing.urls')),
     url(r'^courses/', include('aspc.courses.urls')),
     url(r'^menu/', include('aspc.menu.urls')),
+    url(r'^rideshare/', lambda request: HttpResponseRedirect('http://5crideshare.com')),
     url(r'(?P<slug_path>(?:[\w\-\d]+/)+)$', 'aspc.folio.views.page_view', name="folio_page"),
     url(r'^__debug__/', include(debug_toolbar.urls)),
 )
