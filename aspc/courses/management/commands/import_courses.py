@@ -31,28 +31,28 @@ class Command(BaseCommand):
     help = 'imports course data'
 
 
-    def refresh_one_section(self, object, new_data):
-        object.grading_style = _sanitize(new_data['GradingStyle'])
-        object.description = _sanitize(new_data['Description'])
-        object.note = BR_TAGS.sub('\n', _sanitize(new_data['Note'])).strip()
-        object.credit = float(new_data['Credits'])
-        object.requisites = new_data['Requisites'] == 'Y'
+    def refresh_one_section(self, section, new_data):
+        section.grading_style = _sanitize(new_data['GradingStyle'])
+        section.description = _sanitize(new_data['Description'])
+        section.note = BR_TAGS.sub('\n', _sanitize(new_data['Note'])).strip()
+        section.credit = float(new_data['Credits'])
+        section.requisites = new_data['Requisites'] == 'Y'
 
         # Check for fees or prerequisites
-        object.fee = FEE_REGEX.findall(unicode(object.description))
+        section.fee = FEE_REGEX.findall(unicode(section.description))
 
-        object.save()
+        section.save()
 
-        object.course.name = _sanitize(new_data['Name'])
+        section.course.name = _sanitize(new_data['Name'])
 
         if new_data['Instructors']:
             for instructor in new_data['Instructors']:
                 instructor_object, _ = Instructor.objects.get_or_create(name=instructor['Name'])
-                object.instructors.add(instructor_object)
+                section.instructors.add(instructor_object)
 
         # refresh meetings
         # Clear old meetings
-        object.meeting_set.all().delete()
+        section.meeting_set.all().delete()
 
         if new_data['Schedules']:
             for mtg in new_data['Schedules']:
@@ -113,7 +113,7 @@ class Command(BaseCommand):
                         location = ''
 
                     meeting = Meeting(
-                        section=object,
+                        section=section,
                         monday=monday,
                         tuesday=tuesday,
                         wednesday=wednesday,
@@ -127,57 +127,57 @@ class Command(BaseCommand):
                     meeting.save()
 
         dcode = ''
-        for x in object.course.code:
+        for x in section.course.code:
             if x.isalpha():
                 dcode += x
             else:
                 break
         try:
-            object.course.primary_department = Department.objects.get(code=dcode)
-            object.course.save()
+            section.course.primary_department = Department.objects.get(code=dcode)
+            section.course.save()
         except Department.DoesNotExist:
             self.stdout.write(
-                'unknown department "%s" for section "%s" - deleting...\n' % (dcode, object.code))
-            object.delete()
+                'unknown department "%s" for section "%s" - deleting...\n' % (dcode, section.code))
+            section.delete()
             return
 
-        object.save()
+        section.save()
 
-        self.stdout.write('section "%s" added\n' % object.code)
+        self.stdout.write('section "%s" added\n' % section.code)
 
 
     def handle(self, *args, **options):
         term = Term.objects.all()[0]
         terms = get_all_terms(term.key)
         departments = Department.objects.all().values_list('code', flat=True)
+        existing = set(Section.objects.filter(term=term).values_list('code', flat=True))
+        active = set()
 
         for t in terms:
             for department in departments:
-                existing = set(Section.objects.values_list('code', flat=True))
-                active = set()
 
                 try:
-                    courses = simplejson.load(urllib.urlopen(COURSES_URL % (t, department)))
-                    if courses:
-                        for course in courses:
-                            code = course['CourseCode']
-                            active.add(code)
+                    sections = simplejson.load(urllib.urlopen(COURSES_URL % (t, department)))
+                    if sections:
+                        for section in sections:
+                            section_code = section['CourseCode']
+                            active.add(section_code)
 
-                            if code in existing:
+                            if section_code in existing:
                                 # update section
-                                section_object = Section.objects.get(code=code)
-                                self.stdout.write('updating section "%s"\n' % code)
+                                section_object = Section.objects.get(code=section_code)
+                                self.stdout.write('updating section "%s"\n' % section_code)
                                 try:
                                     section_object.course.departments.add(Department.objects.get(code=department))
                                 except Department.DoesNotExist:
                                     continue
-                                self.refresh_one_section(section_object, course)
+                                self.refresh_one_section(section_object, section)
 
                             else:
-                                # add new course and section
-                                code_slug = slugify(code).upper()
-                                course_code = code[:-3]
-                                course_code_slug = code_slug[:-3]
+                                # add new section and possible course
+                                section_code_slug = slugify(section_code).upper()
+                                course_code = section_code[:-3]
+                                course_code_slug = section_code_slug[:-3]
 
                                 course_number = ''.join([s for s in course_code if s.isdigit()])
                                 if not course_number:
@@ -196,11 +196,11 @@ class Command(BaseCommand):
                                 except Department.DoesNotExist:
                                     continue
 
-                                object = Section(term=term, code=code, code_slug=code_slug)
-                                object.course = course_object
+                                section_object = Section(term=term, code=section_code, code_slug=section_code_slug)
+                                section_object.course = course_object
 
-                                self.stdout.write('adding section "%s"\n' % code)
-                                self.refresh_one_section(object, course)
+                                self.stdout.write('adding section "%s"\n' % section_code)
+                                self.refresh_one_section(section_object, section)
                 except simplejson.scanner.JSONDecodeError:
                     self.stdout.write('error accessing "%s"' % (COURSES_URL % (t, department)))
 
@@ -210,12 +210,12 @@ class Command(BaseCommand):
                 try:
                     area_object = RequirementArea.objects.get(code=area)
                     if urllib.urlopen(COURSES_URL % (t, area)).read():
-                        courses = simplejson.load(urllib.urlopen(COURSES_URL % (t, area)))
-                        for course in courses:
-                            code = course['CourseCode']
+                        sections = simplejson.load(urllib.urlopen(COURSES_URL % (t, area)))
+                        for section in sections:
+                            code = section['CourseCode']
                             try:
-                                object = Section.objects.get(code=code)
-                                object.course.requirement_areas.add(area_object)
+                                section_object = Section.objects.get(code=code)
+                                section_object.course.requirement_areas.add(area_object)
                             except Section.DoesNotExist:
                                 self.stdout.write('unknown section "%s"' % code)
                                 continue
@@ -228,4 +228,4 @@ class Command(BaseCommand):
         stale = existing - active
 
         if stale:
-            Course.objects.filter(code__in=stale).delete()
+            Section.objects.filter(code__in=stale).delete()
