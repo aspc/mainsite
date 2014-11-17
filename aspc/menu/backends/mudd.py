@@ -18,7 +18,8 @@ class MuddBackend(object):
         # menu_url = 'http://www.hmcdining.com/Wk%dSpringCycle2.htm' % week_number
         # menu_url = 'http://www.hmcdining.com/dining/Week%dF14.htm' % week_number
         # menu_url = 'http://www.hmcdining.com/dining/Week%dF14_2.htm' % week_number
-        menu_url = 'http://www.hmcdining.com/dining/Week%dF14_3.htm' % week_number
+        # menu_url = 'http://www.hmcdining.com/dining/Week%dF14_3.htm' % week_number
+        menu_url = 'https://hmc.sodexomyway.com/images/Week%20{wn}%20F14_3_tcm1300-2231.htm'.format(wn=week_number)
         resp = requests.get(menu_url)
         if resp.status_code == 404: # Sometimes Mudd does not update its menu on time...
             return None
