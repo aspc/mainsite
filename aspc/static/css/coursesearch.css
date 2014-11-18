@@ -1,4 +1,4 @@
-/* @override 
+/* @override
 	http://localhost:8000/static/css/coursesearch.css
 	http://127.0.0.1:8000/static/css/coursesearch.css
 */
@@ -65,6 +65,20 @@ div#top_container {
 div#search_form {
 	clear: both;
 	margin-bottom: 1em;
+}
+
+div#search_form_container {
+	width: 60%;
+	float: left;
+	box-sizing: border-box;
+}
+
+div#search_warning_message {
+	width: 40%;
+	padding: 30px;
+	font-size: 16px;
+	float: left;
+	box-sizing: border-box;
 }
 
 div#search_form:after {
@@ -395,7 +409,7 @@ ol#dept_list {
 
 
 #campus_icons {
-	
+
 }
 
 #side_panel.hidden {
@@ -424,7 +438,7 @@ h4#share_clear {
 h2#message {
 	padding: 0.3em;
 	color: #ccc;
-	text-align: center;	
+	text-align: center;
 }
 
 a#share_schedule, a#clear_schedule {
