@@ -51,6 +51,12 @@
   <div id="side_panel" class="panel">
     <h2 class="header">search:</h2>
     {% with "schedule" as context %}
+    <div id="schedule_warning_message">
+      <span style="color: blue;">There have been confirmed reports that some Spring 2015 course offerings are not being returned by this search.</span>
+      <br>
+      <br>
+      <span style="color: red;">Be sure to review the schedule on My.Pomona to make sure you have seen all options for your spring course schedule.</span>
+    </div>
     {% include "courses/search_form.html" %}
     {% if results %}
       {% include "courses/search_results.html" %}

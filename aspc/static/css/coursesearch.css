@@ -85,6 +85,10 @@ div#search_warning_message {
 	box-sizing: border-box;
 }
 
+div#schedule_warning_message {
+	padding: 10px;
+}
+
 div#search_form:after {
 	content: "";
 	display: block;
