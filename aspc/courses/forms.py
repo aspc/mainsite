@@ -233,7 +233,7 @@ class SearchForm(forms.Form):
             for kw in keywords:
                 qs_descfilter = qs_descfilter.filter(description__icontains=kw)
                 qs_namefilter = qs_namefilter.filter(course__name__icontains=kw)
-            qs = (qs_descfilter or qs_namefilter)
+            qs = (qs_descfilter | qs_namefilter)
             qs = qs.distinct()
 
         qs = qs.distinct('code_slug').order_by('code_slug')
