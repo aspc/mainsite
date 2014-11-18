@@ -6,7 +6,7 @@ from django.conf import settings
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models import Count, Sum
-from aspc.courses.models import (Section, Department, Meeting, Schedule,
+from aspc.courses.models import (Section, Department, Meeting, Schedule, Term,
     START_DATE, END_DATE)
 from aspc.courses.forms import SearchForm, ICalExportForm
 import re
@@ -26,19 +26,19 @@ def search(request):
                 results_set = form.build_queryset()
                 paginator = Paginator(results_set, per_page=20, orphans=10)
                 GET_data = request.GET.copy()
-                
+
                 try:
                     page = int(request.GET.get('page', '1'))
                     if GET_data.get('page', False):
                         del GET_data['page']
                 except ValueError:
                     page = 1
-                
+
                 try:
                     results = paginator.page(page)
                 except (EmptyPage, InvalidPage):
                     results = paginator.page(paginator.num_pages)
-                
+
                 return render(request, 'courses/search.html', {
                     'form': form,
                     'results': results,
@@ -66,23 +66,23 @@ def schedule(request):
             results_set = form.build_queryset()
             paginator = Paginator(results_set, per_page=10, orphans=5)
             GET_data = request.GET.copy()
-            
+
             try:
                 page = int(request.GET.get('page', '1'))
                 if GET_data.get('page', False):
                     del GET_data['page']
             except ValueError:
                 page = 1
-            
+
             try:
                 results = paginator.page(page)
             except (EmptyPage, InvalidPage):
                 results = paginator.page(paginator.num_pages)
-            
+
             for course in results.object_list:
                 if course.id in request.session.get('schedule_courses', []):
                     course.added = True
-            
+
             return render(request, 'courses/schedule.html', {
                 'form': form,
                 'results': results,
@@ -123,7 +123,7 @@ def share_schedule(request):
         for course in schedule_courses:
             s.sections.add(course)
         s.save()
-        
+
         return render(request, 'courses/share_schedule.html', {'saved': True, 'schedule': s, 'schedule_courses': s.sections.all(),})
     else:
         return render(request, 'courses/share_schedule.html', {'schedule_courses': schedule_courses,})
@@ -191,31 +191,31 @@ def _ical_from_courses(courses, start_date, end_date):
         for meeting in course.meeting_set.all():
             v = cal.add('vevent')
             v.add('summary').value = '[{0}] {1}'.format(course.code, course.course.name)
-            
+
             weekdays = []
             if meeting.monday: weekdays.append(rrule.MO)
             if meeting.tuesday: weekdays.append(rrule.TU)
             if meeting.wednesday: weekdays.append(rrule.WE)
             if meeting.thursday: weekdays.append(rrule.TH)
             if meeting.friday: weekdays.append(rrule.FR)
-            
+
             timepairs = meeting.to_datetime_ranges(base_date=start_date)
-            
+
             if not timepairs: # some meetings in CX don't have weekdays entered
                 continue
-            
+
             timepairs.sort()
             dtstart, dtend = timepairs[0]
-            
+
             # Note: to_datetime_ranges is for the frontend. This is hacky, but
             # we want the actual first meeting, so we need to use START_DATE
             # as the base date for the timestamp.
-            
+
             v.add('dtstart').value = dtstart
             v.add('dtend').value = dtend
             v.add('dtstamp').value = datetime.datetime.now()
             v.add('location').value = ', '.join((meeting.location, meeting.get_campus_display()))
-            
+
             course_rr = rrule.rruleset()
             course_rr.rrule(rrule.rrule(
                 rrule.WEEKLY,
@@ -223,7 +223,7 @@ def _ical_from_courses(courses, start_date, end_date):
                 dtstart=dtstart,
                 byweekday=weekdays
             ))
-            
+
             v.rruleset = course_rr
 
     return cal
@@ -235,7 +235,8 @@ class CourseDetailView(generic.DetailView):
     def get_queryset(self):
         dept = get_object_or_404(Department, code=self.kwargs['dept'])
         return Section.objects.filter(course__primary_department=dept)
-
+    def get_object(self):
+        return Section.objects.filter(code_slug=self.kwargs['course_code'])[0]
 
 def schedule_course_add(request, course_code):
     course = get_object_or_404(Section, code_slug=course_code)
@@ -255,11 +256,11 @@ def schedule_course_remove(request, course_code):
         if (course.id in request.session['schedule_courses']):
             request.session['schedule_courses'].remove(course.id)
             request.session.modified = True
-            
+
             course_data = course.json()
             for e in course_data['events']:
                 removed_ids.append(e['id'])
-    
+
     return HttpResponse(content=json.dumps(removed_ids, cls=DjangoJSONEncoder), content_type='application/json')
 
 class DepartmentListView(generic.ListView):

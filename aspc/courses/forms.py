@@ -236,7 +236,7 @@ class SearchForm(forms.Form):
             qs = (qs_descfilter or qs_namefilter)
             qs = qs.distinct()
 
-        qs = qs.distinct().order_by('code')
+        qs = qs.distinct('code_slug').order_by('code_slug')
         return qs
 
 

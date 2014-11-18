@@ -100,7 +100,7 @@ class Section(models.Model):
     term = models.ForeignKey(Term, related_name='sections')
     course = models.ForeignKey(Course, related_name='sections')
 
-    code = models.CharField(max_length=20, unique=True)
+    code = models.CharField(max_length=20)
     code_slug = models.CharField(max_length=20)
 
     instructors = models.ManyToManyField(Instructor, related_name='sections')

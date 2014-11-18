@@ -4,6 +4,7 @@ from django.conf import settings
 from aspc.courses.models import (Course, Meeting, CAMPUSES_LOOKUP, Term, Section, Department, Instructor, RequirementArea)
 import simplejson, urllib, re
 from datetime import time
+from django.core.exceptions import MultipleObjectsReturned
 
 FEE_REGEX = re.compile(r'[Ff]ee:\s+\$([\d\.]+)')
 ROOM_REGEX = re.compile(r'[A-Z]+\s([^(]+)\s+')
@@ -160,12 +161,21 @@ class Command(BaseCommand):
                     sections = simplejson.load(urllib.urlopen(COURSES_URL % (t, department)))
                     if sections:
                         for section in sections:
-                            section_code = section['CourseCode']
+                            try:
+                                section_code = section['CourseCode']
+                            except TypeError:
+                                # Sometimes `section` holds the string "Message" for some reason
+                                continue
                             active.add(section_code)
 
                             if section_code in existing:
                                 # update section
-                                section_object = Section.objects.get(code=section_code)
+                                try:
+                                    section_object = Section.objects.get(code=section_code, term=term)
+                                except MultipleObjectsReturned:
+                                    self.stdout.write('multiple sections of "%s" for term "%s"' % (section_code, term))
+                                    continue
+
                                 self.stdout.write('updating section "%s"\n' % section_code)
                                 try:
                                     section_object.course.departments.add(Department.objects.get(code=department))
@@ -212,10 +222,18 @@ class Command(BaseCommand):
                     if urllib.urlopen(COURSES_URL % (t, area)).read():
                         sections = simplejson.load(urllib.urlopen(COURSES_URL % (t, area)))
                         for section in sections:
-                            code = section['CourseCode']
                             try:
-                                section_object = Section.objects.get(code=code)
+                                code = section['CourseCode']
+                            except TypeError:
+                                # Sometimes section holds the string "Message" for some reason
+                                continue
+                            try:
+                                section_object = Section.objects.get(code=code, term=term)
                                 section_object.course.requirement_areas.add(area_object)
+                            except MultipleObjectsReturned:
+                                self.stdout.write('multiple sections of "%s" for term "%s"' % (section_code, term))
+                                continue
+
                             except Section.DoesNotExist:
                                 self.stdout.write('unknown section "%s"' % code)
                                 continue
