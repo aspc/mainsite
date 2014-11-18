@@ -16,7 +16,7 @@ import shlex
 import subprocess
 import vobject
 from dateutil import rrule
-
+from django.http import Http404
 
 def search(request):
     if request.method == "GET":
@@ -238,10 +238,16 @@ class CourseDetailView(generic.DetailView):
         dept = get_object_or_404(Department, code=self.kwargs['dept'])
         return Section.objects.filter(course__primary_department=dept)
     def get_object(self):
-        return Section.objects.filter(code_slug=self.kwargs['course_code'])[0]
+        try:
+            return Section.objects.filter(code_slug=self.kwargs['course_code'])[0]
+        except IndexError:
+            raise Http404
 
 def schedule_course_add(request, course_code):
-    course = Section.objects.filter(code_slug=course_code)[0]
+    try:
+        course = Section.objects.filter(code_slug=course_code)[0]
+    except IndexError:
+        raise Http404
     if request.session.get('schedule_courses'):
         if not (course.id in request.session['schedule_courses']):
             request.session['schedule_courses'].add(course.id)
@@ -253,7 +259,10 @@ def schedule_course_add(request, course_code):
 
 def schedule_course_remove(request, course_code):
     removed_ids = []
-    course = Section.objects.filter(code_slug=course_code)[0]
+    try:
+        course = Section.objects.filter(code_slug=course_code)[0]
+    except IndexError:
+        raise Http404
     if request.session.get('schedule_courses'):
         if (course.id in request.session['schedule_courses']):
             request.session['schedule_courses'].remove(course.id)
