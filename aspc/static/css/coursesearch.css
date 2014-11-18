@@ -67,6 +67,10 @@ div#search_form {
 	margin-bottom: 1em;
 }
 
+div#search_container {
+	overflow: auto;
+}
+
 div#search_form_container {
 	width: 60%;
 	float: left;
