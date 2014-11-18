@@ -239,7 +239,7 @@ class CourseDetailView(generic.DetailView):
         return Section.objects.filter(code_slug=self.kwargs['course_code'])[0]
 
 def schedule_course_add(request, course_code):
-    course = get_object_or_404(Section, code_slug=course_code)
+    course = Section.objects.filter(code_slug=course_code)[0]
     if request.session.get('schedule_courses'):
         if not (course.id in request.session['schedule_courses']):
             request.session['schedule_courses'].add(course.id)
@@ -251,7 +251,7 @@ def schedule_course_add(request, course_code):
 
 def schedule_course_remove(request, course_code):
     removed_ids = []
-    course = get_object_or_404(Section, code_slug=course_code)
+    course = Section.objects.filter(code_slug=course_code)[0]
     if request.session.get('schedule_courses'):
         if (course.id in request.session['schedule_courses']):
             request.session['schedule_courses'].remove(course.id)
