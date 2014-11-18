@@ -14,7 +14,6 @@ class Migration(SchemaMigration):
             ('key', self.gf('django.db.models.fields.CharField')(unique=True, max_length=20)),
             ('year', self.gf('django.db.models.fields.PositiveSmallIntegerField')()),
             ('session', self.gf('django.db.models.fields.CharField')(max_length=2)),
-            ('subsession', self.gf('django.db.models.fields.CharField')(max_length=2, null=True, blank=True)),
         ))
         db.send_create_signal(u'courses', ['Term'])
 
@@ -75,6 +74,7 @@ class Migration(SchemaMigration):
         db.create_table(u'courses_section', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('term', self.gf('django.db.models.fields.related.ForeignKey')(related_name='sections', to=orm['courses.Term'])),
+            ('course', self.gf('django.db.models.fields.related.ForeignKey')(related_name='sections', to=orm['courses.Course'])),
             ('code', self.gf('django.db.models.fields.CharField')(unique=True, max_length=20)),
             ('code_slug', self.gf('django.db.models.fields.CharField')(unique=True, max_length=20, db_index=True)),
             ('grading_style', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
@@ -83,20 +83,11 @@ class Migration(SchemaMigration):
             ('credit', self.gf('django.db.models.fields.FloatField')()),
             ('requisites', self.gf('django.db.models.fields.BooleanField')()),
             ('fee', self.gf('django.db.models.fields.BooleanField')()),
-            ('perms', self.gf('django.db.models.fields.IntegerField')()),
-            ('spots', self.gf('django.db.models.fields.IntegerField')()),
+            ('perms', self.gf('django.db.models.fields.IntegerField')(null=True)),
+            ('spots', self.gf('django.db.models.fields.IntegerField')(null=True)),
             ('filled', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
         ))
         db.send_create_signal(u'courses', ['Section'])
-
-        # Adding M2M table for field course on 'Section'
-        m2m_table_name = db.shorten_name(u'courses_section_course')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('section', models.ForeignKey(orm[u'courses.section'], null=False)),
-            ('course', models.ForeignKey(orm[u'courses.course'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['section_id', 'course_id'])
 
         # Adding M2M table for field instructors on 'Section'
         m2m_table_name = db.shorten_name(u'courses_section_instructors')
@@ -165,9 +156,6 @@ class Migration(SchemaMigration):
         # Deleting model 'Section'
         db.delete_table(u'courses_section')
 
-        # Removing M2M table for field course on 'Section'
-        db.delete_table(db.shorten_name(u'courses_section_course'))
-
         # Removing M2M table for field instructors on 'Section'
         db.delete_table(db.shorten_name(u'courses_section_instructors'))
 
@@ -235,7 +223,7 @@ class Migration(SchemaMigration):
             'Meta': {'ordering': "('code',)", 'object_name': 'Section'},
             'code': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '20'}),
             'code_slug': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '20', 'db_index': 'True'}),
-            'course': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'sections'", 'symmetrical': 'False', 'to': u"orm['courses.Course']"}),
+            'course': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'sections'", 'to': u"orm['courses.Course']"}),
             'credit': ('django.db.models.fields.FloatField', [], {}),
             'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'fee': ('django.db.models.fields.BooleanField', [], {}),
@@ -244,17 +232,16 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'instructors': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'sections'", 'symmetrical': 'False', 'to': u"orm['courses.Instructor']"}),
             'note': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'perms': ('django.db.models.fields.IntegerField', [], {}),
+            'perms': ('django.db.models.fields.IntegerField', [], {'null': 'True'}),
             'requisites': ('django.db.models.fields.BooleanField', [], {}),
-            'spots': ('django.db.models.fields.IntegerField', [], {}),
+            'spots': ('django.db.models.fields.IntegerField', [], {'null': 'True'}),
             'term': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'sections'", 'to': u"orm['courses.Term']"})
         },
         u'courses.term': {
-            'Meta': {'ordering': "['-year', 'session', '-subsession']", 'object_name': 'Term'},
+            'Meta': {'ordering': "['-year', 'session']", 'object_name': 'Term'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'key': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '20'}),
             'session': ('django.db.models.fields.CharField', [], {'max_length': '2'}),
-            'subsession': ('django.db.models.fields.CharField', [], {'max_length': '2', 'null': 'True', 'blank': 'True'}),
             'year': ('django.db.models.fields.PositiveSmallIntegerField', [], {})
         }
     }
