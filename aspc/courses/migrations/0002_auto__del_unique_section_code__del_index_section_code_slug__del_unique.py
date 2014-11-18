@@ -8,20 +8,26 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        # Removing unique constraint on 'Section', fields ['code_slug']
+        db.delete_unique(u'courses_section', ['code_slug'])
 
-        # Changing field 'Section.perms'
-        db.alter_column(u'courses_section', 'perms', self.gf('django.db.models.fields.IntegerField')(null=True))
+        # Removing unique constraint on 'Section', fields ['code']
+        db.delete_unique(u'courses_section', ['code'])
 
-        # Changing field 'Section.spots'
-        db.alter_column(u'courses_section', 'spots', self.gf('django.db.models.fields.IntegerField')(null=True))
+        # Removing index on 'Section', fields ['code_slug']
+        db.delete_index(u'courses_section', ['code_slug'])
+
 
     def backwards(self, orm):
+        # Adding index on 'Section', fields ['code_slug']
+        db.create_index(u'courses_section', ['code_slug'])
 
-        # Changing field 'Section.perms'
-        db.alter_column(u'courses_section', 'perms', self.gf('django.db.models.fields.IntegerField')(default=None))
+        # Adding unique constraint on 'Section', fields ['code']
+        db.create_unique(u'courses_section', ['code'])
 
-        # Changing field 'Section.spots'
-        db.alter_column(u'courses_section', 'spots', self.gf('django.db.models.fields.IntegerField')(default=None))
+        # Adding unique constraint on 'Section', fields ['code_slug']
+        db.create_unique(u'courses_section', ['code_slug'])
+
 
     models = {
         u'courses.course': {
@@ -75,9 +81,9 @@ class Migration(SchemaMigration):
         },
         u'courses.section': {
             'Meta': {'ordering': "('code',)", 'object_name': 'Section'},
-            'code': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '20'}),
-            'code_slug': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '20', 'db_index': 'True'}),
-            'course': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'sections'", 'symmetrical': 'False', 'to': u"orm['courses.Course']"}),
+            'code': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
+            'code_slug': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
+            'course': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'sections'", 'to': u"orm['courses.Course']"}),
             'credit': ('django.db.models.fields.FloatField', [], {}),
             'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'fee': ('django.db.models.fields.BooleanField', [], {}),
