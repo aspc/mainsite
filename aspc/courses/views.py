@@ -53,6 +53,8 @@ def search(request):
             return render(request, 'courses/search.html', {
                 'form': form,
             })
+    else:
+        return HttpResponseNotAllowed(['GET'])
 
 def schedule(request):
     if not request.method == "GET" or len(request.GET) == 0:
