@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404, HttpResponseNotAllowed
 from django.core.urlresolvers import reverse
 from django.views import generic
 from django.shortcuts import get_object_or_404, render
@@ -16,7 +16,6 @@ import shlex
 import subprocess
 import vobject
 from dateutil import rrule
-from django.http import Http404
 
 def search(request):
     if request.method == "GET":
