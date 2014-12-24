@@ -1,9 +1,6 @@
-"CasTicketException, CasConfigException"
-from django.core.exceptions import ValidationError
+class CASTicketException(Exception):
+	def __init__(self, error_message):
+		self.error_message = error_message
 
-class CasTicketException(ValidationError):
-    """The ticket fails to validate"""
-
-class CasConfigException(ValidationError):
-    """The config is wrong"""
-
+	def __str__(self):
+		return repr(self.error_message)

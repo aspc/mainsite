@@ -77,7 +77,7 @@ def logout(request, next_page=None):
 		next_page = next_page or _next_page_url(request)
 		is_guest = request.user.has_usable_password()
 
-		# First logout the local Django user
+		# First log the local Django user out
 		logout(request)
 
 		# If the user is a guest (i.e. not backed by 5C CAS, but just in our local database) we're done
