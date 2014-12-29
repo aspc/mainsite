@@ -17,3 +17,4 @@ vagrant/run/
 /static/
 .idea/
 tmp/
+log/django.log
