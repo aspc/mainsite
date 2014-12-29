@@ -26,7 +26,7 @@ class CASBackend(object):
 			logger.error('Failed to verify CAS authentication', e)
 			return None
 
-		# Store user data associated with authenticate in the generic User model
+		# Store user data associated with authentication in the generic User model
 		user, is_new = User.objects.get_or_create(email__iexact=user_info['email'])
 		user.username = user.email = user_info['email']
 		user.first_name = user_info['first_name']

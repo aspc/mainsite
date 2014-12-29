@@ -45,3 +45,6 @@ class UserData(models.Model):
 				return DEFAULT_COLLEGE
 		else:
 			return DEFAULT_COLLEGE
+
+	class Meta:
+		verbose_name_plural = 'user data'
