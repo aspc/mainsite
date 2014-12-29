@@ -7,7 +7,7 @@ from django.contrib.auth.views import login, logout
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 
-from aspc.auth2.exceptions import CasTicketException
+from aspc.auth2.exceptions import CASTicketException
 from aspc.auth2.views import login as cas_login, logout as cas_logout
 
 __all__ = ['CASMiddleware']
@@ -44,10 +44,10 @@ class CASMiddleware(object):
 		return HttpResponseRedirect(reverse(cas_login) + '?' + params)
 
 	def process_exception(self, request, exception):
-		# When we get a CasTicketException, that is probably caused by the ticket timing out.
+		# When we get a CASTicketException, that is probably caused by the ticket timing out.
 		# So logout/login and get the same page again.
 
-		if isinstance(exception, CasTicketException):
+		if isinstance(exception, CASTicketException):
 			do_logout(request)
 			# This assumes that request.path requires authentication.
 			return HttpResponseRedirect(request.path)
