@@ -27,7 +27,7 @@ class CASBackend(object):
 			return None
 
 		# Store user data associated with authenticate in the generic User model
-		user, is_new = User.objects.get_or_create(username__iexact=user_info['email'])
+		user, is_new = User.objects.get_or_create(email__iexact=user_info['email'])
 		user.username = user.email = user_info['email']
 		user.first_name = user_info['first_name']
 		user.last_name = user_info['last_name']
