@@ -27,15 +27,15 @@ class CASBackend(object):
 			return None
 
 		# Store user data associated with authenticate in the generic User model
-		user, is_new = User.objects.get_or_create(username__iexact=user_info['username'])
-		user.username = user_info['username']
+		user, is_new = User.objects.get_or_create(username__iexact=user_info['email'])
+		user.username = user.email = user_info['email']
 		user.first_name = user_info['first_name']
 		user.last_name = user_info['last_name']
-		user.email = user_info['email']
 		user.save()
 
 		# Store auxiliary user data like the college in the UserData model
 		user_data, is_new = UserData.objects.get_or_create(user=user)
+		user_data.full_name = user_info['full_name']
 		user_data.college = UserData.belongs_to_college(user)
 		user_data.year = None
 		user_data.dorm = None
@@ -60,7 +60,7 @@ class CASBackend(object):
 #		<cas:attributes>
 #			<cas:lastName>Dahl</cas:lastName>
 #			<cas:EmailAddress>mdd32013@MyMail.pomona.edu</cas:EmailAddress>
-#			<cas:fullName>mdd32013</cas:fullName>
+#			<cas:fullName>Matthew Daniel Dahl</cas:fullName>
 #			<cas:firstName>Matthew</cas:firstName>
 #		</cas:attributes>
 #	<!-- End Ldap Attributes -->
@@ -74,28 +74,30 @@ def _verify_cas(ticket, service):
 
 	url = urljoin(settings.CAS_SETTINGS['SERVER_URL'], 'serviceValidate') + '?' + urlencode(params)
 	user_info = {
-		'username': '',
+		'email': '',
+		'full_name': '',
 		'first_name': '',
-		'last_name': '',
-		'email': ''
+		'last_name': ''
 	}
 
 	try:
 		page = urlopen(url)
 		response = page.read()
-		tree = ElementTree.fromstring(response)
 		document = minidom.parseString(response)
 	except Exception as e:
 		raise CASTicketException('Failed to open CAS ticket: ' + e)
 
 	if document.getElementsByTagName('cas:authenticationSuccess'):
-		user_info['last_name'] = (document.getElementsByTagName('cas:lastName') or [None])[0].text
-		user_info['email'] = (document.getElementsByTagName('cas:email') or [None])[0].text
-		user_info['username'] = (document.getElementsByTagName('cas:fullName') or [None])[0].text
-		user_info['first_name'] = (document.getElementsByTagName('cas:firstName') or [None])[0].text
-
-		if not all(user_info.values()):
-			raise CASTicketException('CAS ticket missing attributes: %s' % str(user_info))
+		try:
+			user_info['email'] = document.getElementsByTagName('cas:EmailAddress')[0].firstChild.nodeValue
+			user_info['full_name'] = document.getElementsByTagName('cas:fullName')[0].firstChild.nodeValue
+			user_info['first_name'] = document.getElementsByTagName('cas:firstName')[0].firstChild.nodeValue
+			user_info['last_name'] = document.getElementsByTagName('cas:lastName')[0].firstChild.nodeValue
+		except AttributeError as e:
+			pass
+		finally:
+			if not all(user_info.values()):
+				raise CASTicketException('CAS ticket missing attributes: %s' % str(user_info))
 	elif document.getElementsByTagName('cas:authenticationFailure'):
 		error_message = document.getElementsByTagName('cas:authenticationFailure')[0].firstChild.nodeValue
 		raise CASTicketException('Authentication failed from CAS server: %s' % error_message)

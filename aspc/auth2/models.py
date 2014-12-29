@@ -29,7 +29,8 @@ EMAIL_SUFFIXES = {
 # Access to `year` and `dorm` attributes are still in the pipeline from ITS
 class UserData(models.Model):
 	user = models.ForeignKey(User, null=False, blank=False, related_name='user')
-	college = models.CharField(max_length=255, choices=COLLEGES, default=DEFAULT_COLLEGE)
+	full_name = models.CharField(max_length=255, null=True, blank=True)
+	college = models.CharField(max_length=255, null=False, blank=False, choices=COLLEGES, default=DEFAULT_COLLEGE)
 	year = models.IntegerField(null=True, blank=True)
 	dorm = models.CharField(max_length=255, null=True, blank=True)
 
