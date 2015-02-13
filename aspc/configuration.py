@@ -132,7 +132,6 @@ INSTALLED_APPS = (
     'django.contrib.redirects',
     'django.contrib.humanize',
     'gunicorn',
-    'south',
     'django_extensions',
     'debug_toolbar',
     'djcelery',
@@ -203,6 +202,11 @@ LOGGING = {
         }
     }
 }
+
+
+# Django 1.7 requires a default test runner
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
 
 LOGIN_REDIRECT_URL = '/'
 WSGI_APPLICATION = "aspc.wsgi.application"
