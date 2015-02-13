@@ -1,47 +1,35 @@
-# encoding: utf-8
-import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
-class Migration(SchemaMigration):
-
-    def forwards(self, orm):
-        
-        # Adding model 'Page'
-        db.create_table('folio_page', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('short_title', self.gf('django.db.models.fields.CharField')(max_length=80, blank=True)),
-            ('slug', self.gf('django.db.models.fields.CharField')(max_length=80)),
-            ('parent', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['folio.Page'], null=True, blank=True)),
-            ('summary', self.gf('django.db.models.fields.TextField')()),
-            ('body', self.gf('django.db.models.fields.TextField')()),
-            ('section', self.gf('django.db.models.fields.IntegerField')()),
-            ('sort_order', self.gf('django.db.models.fields.PositiveSmallIntegerField')(blank=True)),
-        ))
-        db.send_create_signal('folio', ['Page'])
+from django.db import models, migrations
 
 
-    def backwards(self, orm):
-        
-        # Deleting model 'Page'
-        db.delete_table('folio_page')
+class Migration(migrations.Migration):
 
+    dependencies = [
+    ]
 
-    models = {
-        'folio.page': {
-            'Meta': {'ordering': "['section', 'sort_order']", 'object_name': 'Page'},
-            'body': ('django.db.models.fields.TextField', [], {}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'parent': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['folio.Page']", 'null': 'True', 'blank': 'True'}),
-            'section': ('django.db.models.fields.IntegerField', [], {}),
-            'short_title': ('django.db.models.fields.CharField', [], {'max_length': '80', 'blank': 'True'}),
-            'slug': ('django.db.models.fields.CharField', [], {'max_length': '80'}),
-            'sort_order': ('django.db.models.fields.PositiveSmallIntegerField', [], {'blank': 'True'}),
-            'summary': ('django.db.models.fields.TextField', [], {}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '255'})
-        }
-    }
-
-    complete_apps = ['folio']
+    operations = [
+        migrations.CreateModel(
+            name='Page',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('title', models.CharField(help_text=b"The page's full title", max_length=255)),
+                ('short_title', models.CharField(help_text=b'An optional abbreviated title (for sidebar display)', max_length=80, blank=True)),
+                ('slug', models.CharField(help_text=b'The slug (URL identifier) for the page', max_length=80)),
+                ('summary', models.TextField(help_text=b"Page summary for display in parent page's subpage list (plain text)", null=True, blank=True)),
+                ('body', models.TextField(help_text=b'Page body text written in Markdown', null=True, blank=True)),
+                ('sort_order', models.PositiveSmallIntegerField(help_text=b'Sort ordering', blank=True)),
+                ('stylesheet', models.CharField(help_text=b'Path to an additional stylesheet for this page (relative to /static/css/pages/)', max_length=255, null=True, blank=True)),
+                ('visible', models.BooleanField(default=True, help_text=b'Determines whether a top or second level page will be shown in the sidebar navigation')),
+                ('managed', models.BooleanField(default=False, help_text=b"Indicates whether this is a special page that should not be deleted through normal means. (Don't change this unless you know what you're doing!)")),
+                ('parent', models.ForeignKey(blank=True, to='folio.Page', help_text=b'Optional parent page for this one. If none, it is treated as a category.', null=True)),
+            ],
+            options={
+                'ordering': ['sort_order', 'title'],
+                'verbose_name': 'page',
+                'verbose_name_plural': 'pages',
+            },
+            bases=(models.Model,),
+        ),
+    ]

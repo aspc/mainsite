@@ -1,108 +1,83 @@
-# encoding: utf-8
-import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
-class Migration(SchemaMigration):
-
-    def forwards(self, orm):
-        
-        # Adding model 'Room'
-        db.create_table('housing_room', (
-            ('roomlocation_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['college.RoomLocation'], unique=True, primary_key=True)),
-            ('size', self.gf('django.db.models.fields.FloatField')(null=True, blank=True)),
-            ('occupancy', self.gf('django.db.models.fields.PositiveSmallIntegerField')(null=True, blank=True)),
-            ('reserved', self.gf('django.db.models.fields.PositiveSmallIntegerField')(null=True, blank=True)),
-            ('suite', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
-            ('average_rating', self.gf('django.db.models.fields.FloatField')(null=True, blank=True)),
-            ('average_rating_quiet', self.gf('django.db.models.fields.FloatField')(null=True, blank=True)),
-            ('average_rating_spacious', self.gf('django.db.models.fields.FloatField')(null=True, blank=True)),
-            ('average_rating_temperate', self.gf('django.db.models.fields.FloatField')(null=True, blank=True)),
-            ('average_rating_maintained', self.gf('django.db.models.fields.FloatField')(null=True, blank=True)),
-            ('average_rating_cellphone', self.gf('django.db.models.fields.FloatField')(null=True, blank=True)),
-        ))
-        db.send_create_signal('housing', ['Room'])
-
-        # Adding model 'Review'
-        db.create_table('housing_review', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('create_ts', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('room', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['housing.Room'])),
-            ('overall', self.gf('django.db.models.fields.FloatField')()),
-            ('quiet', self.gf('django.db.models.fields.IntegerField')()),
-            ('spacious', self.gf('django.db.models.fields.IntegerField')()),
-            ('temperate', self.gf('django.db.models.fields.IntegerField')()),
-            ('maintained', self.gf('django.db.models.fields.IntegerField')()),
-            ('cellphone', self.gf('django.db.models.fields.IntegerField')()),
-            ('best', self.gf('django.db.models.fields.TextField')()),
-            ('worst', self.gf('django.db.models.fields.TextField')()),
-            ('comments', self.gf('django.db.models.fields.TextField')(blank=True)),
-        ))
-        db.send_create_signal('housing', ['Review'])
+from django.db import models, migrations
+import django.db.models.deletion
+from django.conf import settings
+import stdimage.fields
 
 
-    def backwards(self, orm):
-        
-        # Deleting model 'Room'
-        db.delete_table('housing_room')
+class Migration(migrations.Migration):
 
-        # Deleting model 'Review'
-        db.delete_table('housing_review')
+    dependencies = [
+        ('college', '0001_initial'),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+    ]
 
-
-    models = {
-        'college.building': {
-            'Meta': {'ordering': "('name',)", 'object_name': 'Building'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'latitude': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
-            'longitude': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '32'}),
-            'shortname': ('django.db.models.fields.SlugField', [], {'max_length': '32', 'db_index': 'True'})
-        },
-        'college.floor': {
-            'Meta': {'ordering': "('number',)", 'object_name': 'Floor'},
-            'building': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['college.Building']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'number': ('django.db.models.fields.PositiveSmallIntegerField', [], {})
-        },
-        'college.roomlocation': {
-            'Meta': {'object_name': 'RoomLocation'},
-            'floor': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['college.Floor']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'latitude': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
-            'longitude': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
-            'number': ('django.db.models.fields.CharField', [], {'max_length': '8'})
-        },
-        'housing.review': {
-            'Meta': {'ordering': "['-create_ts']", 'object_name': 'Review'},
-            'best': ('django.db.models.fields.TextField', [], {}),
-            'cellphone': ('django.db.models.fields.IntegerField', [], {}),
-            'comments': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'create_ts': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'maintained': ('django.db.models.fields.IntegerField', [], {}),
-            'overall': ('django.db.models.fields.FloatField', [], {}),
-            'quiet': ('django.db.models.fields.IntegerField', [], {}),
-            'room': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['housing.Room']"}),
-            'spacious': ('django.db.models.fields.IntegerField', [], {}),
-            'temperate': ('django.db.models.fields.IntegerField', [], {}),
-            'worst': ('django.db.models.fields.TextField', [], {})
-        },
-        'housing.room': {
-            'Meta': {'ordering': "('number',)", 'object_name': 'Room', '_ormbases': ['college.RoomLocation']},
-            'average_rating': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
-            'average_rating_cellphone': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
-            'average_rating_maintained': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
-            'average_rating_quiet': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
-            'average_rating_spacious': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
-            'average_rating_temperate': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
-            'occupancy': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'reserved': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'roomlocation_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['college.RoomLocation']", 'unique': 'True', 'primary_key': 'True'}),
-            'size': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
-            'suite': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'})
-        }
-    }
-
-    complete_apps = ['housing']
+    operations = [
+        migrations.CreateModel(
+            name='Review',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('create_ts', models.DateTimeField(auto_now_add=True, verbose_name=b'posted at')),
+                ('overall', models.FloatField(editable=False)),
+                ('quiet', models.IntegerField(default=2, choices=[(0, 'noisy'), (1, 'some noise'), (2, 'average'), (3, 'quieter than average'), (4, 'quiet')])),
+                ('spacious', models.IntegerField(default=2, choices=[(0, 'cramped'), (1, 'small'), (2, 'adequate'), (3, 'roomy'), (4, 'spacious')])),
+                ('temperate', models.IntegerField(default=2, choices=[(0, 'too hot/cold'), (1, 'slightly uncomfortable'), (2, 'tolerable'), (3, 'comfortable'), (4, 'perfect')])),
+                ('maintained', models.IntegerField(default=2, choices=[(0, 'run-down'), (1, 'tatty'), (2, 'average'), (3, 'presentable'), (4, 'well maintained')])),
+                ('cellphone', models.IntegerField(default=2, choices=[(0, 'no cell service'), (1, 'some cell service'), (2, 'average  cell service'), (3, 'good cell service'), (4, 'excellent cell service')])),
+                ('best', models.TextField()),
+                ('worst', models.TextField()),
+                ('comments', models.TextField(blank=True)),
+                ('photo1', stdimage.fields.StdImageField(null=True, upload_to=b'housing/reviews/%Y/%m/%d/', blank=True)),
+                ('photo2', stdimage.fields.StdImageField(null=True, upload_to=b'housing/reviews/%Y/%m/%d/', blank=True)),
+                ('photo3', stdimage.fields.StdImageField(null=True, upload_to=b'housing/reviews/%Y/%m/%d/', blank=True)),
+                ('author', models.ForeignKey(blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+            ],
+            options={
+                'ordering': ['-create_ts'],
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Room',
+            fields=[
+                ('roomlocation_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='college.RoomLocation')),
+                ('size', models.FloatField(help_text=b'size in square feet', null=True, blank=True)),
+                ('occupancy', models.PositiveSmallIntegerField(blank=True, null=True, choices=[(1, b'single'), (2, b'double'), (3, b'two room double'), (4, b'two room triple')])),
+                ('reserved', models.PositiveSmallIntegerField(blank=True, null=True, choices=[(0, b'freshman housing'), (1, b'RHS')])),
+                ('average_rating', models.FloatField(null=True, editable=False, blank=True)),
+                ('average_rating_quiet', models.FloatField(null=True, editable=False, blank=True)),
+                ('average_rating_spacious', models.FloatField(null=True, editable=False, blank=True)),
+                ('average_rating_temperate', models.FloatField(null=True, editable=False, blank=True)),
+                ('average_rating_maintained', models.FloatField(null=True, editable=False, blank=True)),
+                ('average_rating_cellphone', models.FloatField(null=True, editable=False, blank=True)),
+            ],
+            options={
+                'ordering': ('number',),
+            },
+            bases=('college.roomlocation',),
+        ),
+        migrations.CreateModel(
+            name='Suite',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('occupancy', models.IntegerField(choices=[(3, b'three person'), (4, b'four person'), (5, b'five person'), (6, b'six person')])),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='room',
+            name='suite',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.SET_NULL, blank=True, to='housing.Suite', null=True),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='review',
+            name='room',
+            field=models.ForeignKey(to='housing.Room'),
+            preserve_default=True,
+        ),
+    ]

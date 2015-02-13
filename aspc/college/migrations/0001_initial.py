@@ -1,35 +1,81 @@
-# encoding: utf-8
-import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
-class Migration(SchemaMigration):
-
-    def forwards(self, orm):
-        
-        # Adding model 'Term'
-        db.create_table('college_term', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('start', self.gf('django.db.models.fields.DateField')()),
-            ('end', self.gf('django.db.models.fields.DateField')()),
-        ))
-        db.send_create_signal('college', ['Term'])
+from django.db import models, migrations
 
 
-    def backwards(self, orm):
-        
-        # Deleting model 'Term'
-        db.delete_table('college_term')
+class Migration(migrations.Migration):
 
+    dependencies = [
+    ]
 
-    models = {
-        'college.term': {
-            'Meta': {'ordering': "['-end']", 'object_name': 'Term'},
-            'end': ('django.db.models.fields.DateField', [], {}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'start': ('django.db.models.fields.DateField', [], {})
-        }
-    }
-
-    complete_apps = ['college']
+    operations = [
+        migrations.CreateModel(
+            name='Building',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('latitude', models.FloatField(null=True, blank=True)),
+                ('longitude', models.FloatField(null=True, blank=True)),
+                ('name', models.CharField(max_length=32)),
+                ('shortname', models.SlugField(max_length=32)),
+                ('type', models.IntegerField(db_index=True, choices=[(0, b'Dormitory'), (1, b'Academic'), (2, b'Dining Hall')])),
+            ],
+            options={
+                'ordering': ('name',),
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Floor',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('number', models.PositiveSmallIntegerField()),
+                ('building', models.ForeignKey(to='college.Building')),
+            ],
+            options={
+                'ordering': ('number',),
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Map',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('image', models.FileField(upload_to=b'maps/')),
+                ('n', models.FloatField()),
+                ('e', models.FloatField()),
+                ('s', models.FloatField()),
+                ('w', models.FloatField()),
+                ('floor', models.OneToOneField(to='college.Floor')),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='RoomLocation',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('latitude', models.FloatField(null=True, blank=True)),
+                ('longitude', models.FloatField(null=True, blank=True)),
+                ('number', models.CharField(help_text=b'room number in building numbering scheme', max_length=8)),
+                ('floor', models.ForeignKey(to='college.Floor')),
+            ],
+            options={
+                'abstract': False,
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Term',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('start', models.DateField()),
+                ('end', models.DateField()),
+            ],
+            options={
+                'ordering': ['-end'],
+            },
+            bases=(models.Model,),
+        ),
+    ]

@@ -1,37 +1,28 @@
-# encoding: utf-8
-import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
-class Migration(SchemaMigration):
-
-    def forwards(self, orm):
-        
-        # Adding model 'MeetingMinutes'
-        db.create_table('minutes_meetingminutes', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('date', self.gf('django.db.models.fields.DateField')()),
-            ('summary', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('body', self.gf('django.db.models.fields.TextField')(blank=True)),
-        ))
-        db.send_create_signal('minutes', ['MeetingMinutes'])
+from django.db import models, migrations
 
 
-    def backwards(self, orm):
-        
-        # Deleting model 'MeetingMinutes'
-        db.delete_table('minutes_meetingminutes')
+class Migration(migrations.Migration):
 
+    dependencies = [
+    ]
 
-    models = {
-        'minutes.meetingminutes': {
-            'Meta': {'ordering': "['-date']", 'object_name': 'MeetingMinutes'},
-            'body': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'date': ('django.db.models.fields.DateField', [], {}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'summary': ('django.db.models.fields.TextField', [], {'blank': 'True'})
-        }
-    }
-
-    complete_apps = ['minutes']
+    operations = [
+        migrations.CreateModel(
+            name='MeetingMinutes',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('date', models.DateField(help_text=b'Date of the meeting')),
+                ('summary', models.TextField(help_text=b'Summarize this meeting in a sentence or two of unformatted text. (Used for search results and overview.)', blank=True)),
+                ('body', models.TextField(help_text=b'The minutes of this meeting in <a href="http://daringfireball.net/projects/markdown/dingus">Markdown</a>', blank=True)),
+            ],
+            options={
+                'ordering': ['date'],
+                'verbose_name': 'meeting minutes',
+                'verbose_name_plural': 'meeting minutes',
+            },
+            bases=(models.Model,),
+        ),
+    ]
