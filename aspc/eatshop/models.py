@@ -5,27 +5,27 @@ from aspc.eatshop.config import COOP_FOUNTAIN_ID
 from django.core.cache import cache
 
 class BusinessManager(models.Manager):
-    def get_query_set(self):
-        qs = super(BusinessManager, self).get_query_set()
+    def get_queryset(self):
+        qs = super(BusinessManager, self).get_queryset()
         return qs.annotate(hours_count=models.Count('hours'))
 
     def off_campus(self, qs=None):
         """Off campus businesses of all types"""
-        qs = qs or self.get_query_set()
+        qs = qs or self.get_queryset()
         return qs.exclude(
             type=Business.TYPES_LOOKUP['On-Campus Restaurant']
         )
 
     def restaurants(self, qs=None):
         """Off-campus restaurants only"""
-        qs = qs or self.get_query_set()
+        qs = qs or self.get_queryset()
         return qs.filter(
             type=Business.TYPES_LOOKUP['Restaurant']
         )
 
     def non_food(self, qs=None):
         """Only businesses that aren't restaurants"""
-        qs = qs or self.get_query_set()
+        qs = qs or self.get_queryset()
         return qs.exclude(
             type__in=[
                 Business.TYPES_LOOKUP['Restaurant'],
@@ -35,7 +35,7 @@ class BusinessManager(models.Manager):
 
     def on_campus(self, qs=None):
         """Only on-campus restaurants"""
-        qs = qs or self.get_query_set()
+        qs = qs or self.get_queryset()
         return qs.filter(
             type=Business.TYPES_LOOKUP['On-Campus Restaurant']
         )
@@ -45,7 +45,7 @@ class BusinessManager(models.Manager):
         All businesses open now (aka is the current time within
         the hour range(s) for this weekday)?
         """
-        qs = qs or self.get_query_set()
+        qs = qs or self.get_queryset()
         weekday = datetime.date.today().strftime("%A").lower()
         query = {
             'hours__{0}'.format(weekday): True,
