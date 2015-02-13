@@ -72,8 +72,8 @@ class Business(models.Model):
     address = models.TextField()
     phone = PhoneNumberField(null=True, blank=True)
     description = models.TextField(help_text="Brief description for this business")
-    claremont_cash = models.BooleanField()
-    flex = models.BooleanField()
+    claremont_cash = models.BooleanField(default=False)
+    flex = models.BooleanField(default=False)
     discount = models.TextField(null=True, blank=True, verbose_name="student discount")
     www = models.URLField(null=True, blank=True)
 
@@ -113,13 +113,13 @@ class Business(models.Model):
 class Hours(models.Model):
     CACHE_KEY_TEMPLATE = "aspc.eatshop.business:{id}.hours"
     business = models.ForeignKey(Business, related_name="hours")
-    monday = models.BooleanField()
-    tuesday = models.BooleanField()
-    wednesday = models.BooleanField()
-    thursday = models.BooleanField()
-    friday = models.BooleanField()
-    saturday = models.BooleanField()
-    sunday = models.BooleanField()
+    monday = models.BooleanField(default=False)
+    tuesday = models.BooleanField(default=False)
+    wednesday = models.BooleanField(default=False)
+    thursday = models.BooleanField(default=False)
+    friday = models.BooleanField(default=False)
+    saturday = models.BooleanField(default=False)
+    sunday = models.BooleanField(default=False)
     begin = models.TimeField()
     end = models.TimeField()
 
