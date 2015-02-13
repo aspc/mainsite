@@ -1,24 +1,25 @@
 from django.contrib import admin
-from aspc.courses.models import (Section, Course, Department, Meeting,
-    RequirementArea)
+from aspc.courses.models import (Section, Course, Department, Meeting, RequirementArea)
 
 class DepartmentAdmin(admin.ModelAdmin):
-    list_display = ('code', 'name', 'course_count')
+	list_display = ('code', 'name', 'course_count')
 
 class MeetingAdmin(admin.ModelAdmin):
-    list_display = ('section', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'begin', 'end', 'location',)
+	list_display = ('section', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'begin', 'end', 'location',)
 
 class MeetingInline(admin.TabularInline):
-    model = Meeting
-    list_display = ('section', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'begin', 'end', 'location',)
+	model = Meeting
+	list_display = ('section', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'begin', 'end', 'location',)
 
 class CourseAdmin(admin.ModelAdmin):
-    # list_display = ('code', 'name', 'instructor', 'description', 'credit', 'filled', 'spots')
-    # list_filter = ('primary_department',)
-    inlines = [MeetingInline,]
+	list_display = ('code', 'number', 'name',  'primary_department')
+
+class SectionAdmin(admin.ModelAdmin):
+	list_display = ('code', 'course', 'term', 'description', 'credit', 'spots', 'filled', 'perms')
+	inlines = [MeetingInline]
 
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Department, DepartmentAdmin)
 admin.site.register(RequirementArea, DepartmentAdmin)
 admin.site.register(Meeting, MeetingAdmin)
-admin.site.register(Section)
+admin.site.register(Section, SectionAdmin)
