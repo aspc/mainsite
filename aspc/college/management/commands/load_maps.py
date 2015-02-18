@@ -45,7 +45,6 @@ class Command(BaseCommand):
         map_instance.save()
         print "Saved map instance ", map_instance
 
-    @transaction.set_autocommit(False)
     def handle(self, *args, **options):
         if len(args) > 0:
             fpath = args[0]
