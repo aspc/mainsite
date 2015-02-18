@@ -2,7 +2,6 @@ Django>=1.7,<1.8
 Fabric==1.8.1
 Markdown==2.3.1
 Pillow==2.4.0
-South>=0.8.4,<0.9
 gunicorn==18.0
 python-ldap==2.4.13
 celery==3.1.8
