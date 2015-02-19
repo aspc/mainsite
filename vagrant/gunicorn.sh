@@ -2,7 +2,7 @@
 set -e
 PIDFILE="/home/vagrant/run/gunicorn.pid"
 SOCKFILE="/home/vagrant/run/gunicorn.sock"
-RUN_GUNICORN_CMD="/home/vagrant/env/bin/python /vagrant/manage.py run_gunicorn -c /vagrant/vagrant/gunicorn.cfg.py"
+RUN_GUNICORN_CMD="cd /vagrant && /home/vagrant/env/bin/gunicorn -c /vagrant/vagrant/gunicorn.cfg.py aspc.wsgi:application -D"
 
 case "$1" in
     start)
@@ -44,7 +44,7 @@ case "$1" in
         else
             echo "missing (pidfile exists, but there is no process with this pid)"
             echo "removing stale pidfile"
-            rm -f -- $PIDFILE 
+            rm -f -- $PIDFILE
         fi
         ;;
     *)

@@ -74,10 +74,6 @@ rabbitmqctl set_permissions developer ".*" ".*" ".*"
 # Some steps should be performed as the regular vagrant user
 sudo -u vagrant bash /vagrant/vagrant/init_as_user.sh
 
-# Set up GUnicorn in Upstart
-cp /vagrant/vagrant/gunicorn.conf /etc/init/
-service gunicorn restart && info "Started GUnicorn"
-
 # Set up Celery upstart tasks
 cp /vagrant/vagrant/celeryworker.conf /etc/init/
 cp /vagrant/vagrant/celerybeat.conf /etc/init/
@@ -98,3 +94,6 @@ fi
 rm -f /etc/nginx/sites-enabled/default
 cp /vagrant/vagrant/frontend_nginx.conf /etc/nginx/sites-enabled/
 service nginx restart && info "Started nginx"
+
+# Start GUnicorn as a daemon process
+cd /vagrant && /home/vagrant/env/bin/gunicorn -c /vagrant/vagrant/gunicorn.cfg.py aspc.wsgi:application -D && info "Started GUnicorn"
