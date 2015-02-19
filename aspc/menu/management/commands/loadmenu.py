@@ -39,13 +39,6 @@ class Command(BaseCommand):
                 new_menu.save()
         self.stdout.write('pitzer menus loaded \n')
 
-        scripps_meals = ScrippsBackend().menu()
-        for day in scripps_meals:
-            for meal in scripps_meals[day]:
-                new_menu = Menu(dining_hall='scripps', day=day, meal=meal, food_items=json.dumps(scripps_meals[day][meal]))
-                new_menu.save()
-        self.stdout.write('scripps menus loaded \n')
-
         mudd_meals = MuddBackend().menu()
         for day in mudd_meals:
             for meal in mudd_meals[day]:
@@ -73,3 +66,10 @@ class Command(BaseCommand):
                 new_menu = Menu(dining_hall='oldenborg', day=day, meal=meal, food_items=json.dumps(oldenborg_meals[day][meal]))
                 new_menu.save()
         self.stdout.write('oldenborg menus loaded \n')
+
+        scripps_meals = ScrippsBackend().menu()
+        for day in scripps_meals:
+            for meal in scripps_meals[day]:
+                new_menu = Menu(dining_hall='scripps', day=day, meal=meal, food_items=json.dumps(scripps_meals[day][meal]))
+                new_menu.save()
+        self.stdout.write('scripps menus loaded \n')

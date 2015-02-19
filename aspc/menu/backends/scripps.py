@@ -14,7 +14,10 @@ class ScrippsBackend(object):
 			'https://scrippsdining.sodexomyway.com/Images/WeeklyMenu_tcm1567-47105.htm',
 			'https://scrippsdining.sodexomyway.com/Images/WeeklyMenu_tcm1567-47113.htm',
 			'https://scrippsdining.sodexomyway.com/Images/WeeklyMenu_tcm1567-50861.htm',
-			'https://scrippsdining.sodexomyway.com/Images/WeeklyMenu_tcm1567-51952.htm'
+			'https://scrippsdining.sodexomyway.com/Images/WeeklyMenu_tcm1567-51952.htm',
+			'https://scrippsdining.sodexomyway.com/Images/WeeklyMenu_tcm1567-53109.htm',
+			'https://scrippsdining.sodexomyway.com/Images/WeeklyMenu_tcm1567-52802.htm',
+			'https://scrippsdining.sodexomyway.com/Images/WeeklyMenu_tcm1567-52803.htm'
 		]
 
 	def _get_menu_data(self, week_number):
