@@ -1,7 +1,6 @@
 # Scraper for Scripps (Malott) dining hall.
 
 import requests
-from datetime import datetime
 from bs4 import BeautifulSoup
 
 class ScrippsBackend(object):
