@@ -8,22 +8,16 @@ class ScrippsBackend(object):
 	def __init__(self):
 		self.DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
 
-		# Note that the Scripps menu calendar starts on Monday, not Sunday
-		self.menu_urls = [
-			'https://scrippsdining.sodexomyway.com/Images/WeeklyMenu_tcm1567-47109.htm',
-			'https://scrippsdining.sodexomyway.com/Images/WeeklyMenu_tcm1567-47105.htm',
-			'https://scrippsdining.sodexomyway.com/Images/WeeklyMenu_tcm1567-47113.htm',
-			'https://scrippsdining.sodexomyway.com/Images/WeeklyMenu_tcm1567-50861.htm',
-			'https://scrippsdining.sodexomyway.com/Images/WeeklyMenu_tcm1567-51952.htm',
-			'https://scrippsdining.sodexomyway.com/Images/WeeklyMenu_tcm1567-53109.htm',
-			'https://scrippsdining.sodexomyway.com/Images/WeeklyMenu_tcm1567-52802.htm',
-			'https://scrippsdining.sodexomyway.com/Images/WeeklyMenu_tcm1567-52803.htm'
-		]
+	def _get_menu_url(self):
+		index_url = 'https://scrippsdining.sodexomyway.com/dining-choices/index.html'
+		resp = requests.get(index_url)
+		doc = BeautifulSoup(resp.text)
+		menu_url = doc.find_all('div', {'class': 'accordionBody'})[0].find_all('a')[0]['href']
+		return 'https://scrippsdining.sodexomyway.com' + menu_url # The href attribute is not the full URL for some reason
 
-	def _get_menu_data(self, week_number):
-		menu_url = self.menu_urls[week_number]
+	def _get_menu_data(self, menu_url):
 		resp = requests.get(menu_url)
-		if resp.status_code == 404: # Sometimes Mudd does not update its menu on time...
+		if resp.status_code == 404:
 			return None
 		else:
 			return BeautifulSoup(resp.text)
@@ -66,9 +60,7 @@ class ScrippsBackend(object):
 
 	def menu(self):
 		# Scripps stupidly changes the url to their menu every week (honestly, who conceived of this...?)
-		# so we have to calculate the difference in weeks from now and the start of term
-		# This code is fairly unstable and should be checked at the beginning of each semester at the very least
-		start_date = datetime(year=2015, month=1, day=19)
-		week_number = (datetime.today() - start_date).days / 7  # 0-indexed
+		# It used to happen in a standardized format (i.e. numerical progression), but now it appears to be quite random
+		# So we instead have to first inspect the DOM of the dining hall "index page" for the weekly URL, and then scrape that!
 
-		return self._parse_menu_data(self._get_menu_data(week_number))
+		return self._parse_menu_data(self._get_menu_data(self._get_menu_url()))
