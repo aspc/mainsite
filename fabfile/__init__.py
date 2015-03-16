@@ -1,44 +1,64 @@
+# Deployment script for ASPC's main site and staging site
+
 from fabric.api import *
 
 try:
-    from config import host_strings # varies per-user, so not tracked in Git
+    from config import host_strings # Varies per-user, so not tracked in Git
     env.hosts = host_strings
 except ImportError:
     env.hosts = ["peninsula.pomona.edu"]
 
-env.site = env.branch = "staging" # By default, run all of these tasks on 'staging'
-
+env.site = env.branch = "staging"
 env.origin = "git@github.com:aspc/mainsite.git"
 
-"""
-Deployment script for ASPC's main site and staging site
+## Fab methods
 
-Provides 'stage' as an alias for 'on_staging apply_changes'
-and 'deploy' for 'on_main apply_changes'
-"""
-
-def on_staging(branch):
-    env.site = "staging"
-    env.branch = branch
-
-def on_main():
+# Deploys `master` to the ASPC mainsite
+# e.g. `fab deploy`
+def deploy():
     env.site = "main"
     env.branch = "production"
 
-# Running `fab stage` like normal will merge master into staging and deploy that branch on staging.aspc.pomona.edu
-# Passing an argument - a specific branch name - will deploy *that* branch instead on staging.aspc.pomona.edu
-def stage(branch="staging"):
-    on_staging(branch=branch)
-    git_pull()
-    apply_changes()
+    # Merges `master` into `production`
+    _git_merge()
 
-def deploy():
-    on_main()
-    git_merge_push()
-    git_pull()
-    apply_changes()
+    # Pushes `production` to the origin
+    _git_push()
 
-def migrate():
+    # Pulls `production` down onto the ASPC mainsite
+    _git_pull()
+
+    # Reloads the server, etc.
+    _apply_changes()
+
+
+# Deploys a given branch to the ASPC staging environment
+# e.g. `fab stage:master`
+def stage(branch):
+    env.site = "staging"
+    env.branch = branch
+
+    # Pushes the given branch to the origin
+    _git_push()
+
+    # Pulls the given branch down onto the ASPC staging site
+    _git_pull()
+
+    # Reloads the server, etc.
+    _apply_changes()
+
+
+## Helper methods
+
+# Applies the changes contained in the newly-pulled branch
+def _apply_changes():
+    _install_requirements()
+    _update_static()
+    _migrate()
+    _reload()
+
+# Performs any new database migrations
+def _migrate():
     with settings(
         cd("/srv/www/{0}/mainsite".format(env.site)),
         prefix("source /srv/www/{0}/env/bin/activate".format(env.site))
@@ -46,45 +66,64 @@ def migrate():
         sudo("./manage.py migrate", user=env.site)
         sudo("./manage.py syncdb", user=env.site)
 
-def update_static():
+# Refreshes the static assets that are served
+def _update_static():
     with settings(
         cd("/srv/www/{0}/mainsite".format(env.site)),
         prefix("source /srv/www/{0}/env/bin/activate".format(env.site))
     ):
         sudo("./manage.py collectstatic", user=env.site)
 
-def install_requirements():
+# Installs any new Python requirements in requirements.txt
+def _install_requirements():
     with settings(
         cd("/srv/www/{0}/mainsite".format(env.site)),
         prefix("source /srv/www/{0}/env/bin/activate".format(env.site))
     ):
         sudo("pip install -r ./requirements.txt", user=env.site)
 
-def reload():
+# Reloads GUnicorn to serve the latest files
+def _reload():
     run("/srv/www/{0}/bin/gunicorn.sh reload".format(env.site))
 
-def git_merge_push():
-    local("git checkout master")
-    local("git push {0} master".format(env.origin))
-    local("git checkout {0}".format(env.branch))
-    local("git merge master")
+# Pushes the given branch to the origin
+def _git_push():
     local("git push {0} {1}".format(env.origin, env.branch))
+
+# Merges `master` into `production`
+def _git_merge():
+    # Sync `master` with the origin, hopefully all merge conflicts should have already been resolved...
+    local("git checkout master")
+    local("git pull")
+    local("git push {0} master".format(env.origin))
+
+    # Merge `production` into `master`
+    local("git checkout {0}".format(env.branch))
+    local("git pull")
+    local("git merge master")
+
+    # Clean up
     local("git checkout master")
     local("git status")
 
-def git_pull():
+# Pulls down the given branch to Peninsula
+def _git_pull():
     with settings(
         cd("/srv/www/{0}/mainsite".format(env.site)),
     ):
-        sudo("git clean -f", user=env.site)
-        sudo("git checkout -f .", user=env.site)
-        sudo("git fetch", user=env.site)
-        sudo("git checkout {0}".format(env.branch), user=env.site)
-        sudo("git pull origin {0}".format(env.branch), user=env.site)
-        sudo("git status", user=env.site)
+        # Check for accidental overwrite of changes made on Peninsula that haven't been committed
+        sudo("git status")
+        sudo("git clean -dfn", user=env.site)
+        prompt("Overwrite untracked files on {0}? Type 'yes' to continue, or 'no' to cancel:".format(env.site), key='should_overwrite')
+        if env.should_overwrite != 'yes':
+            abort()
 
-def apply_changes():
-    install_requirements()
-    update_static()
-    migrate()
-    reload()
+        # Reset the working directory on Peninsula to a clean state
+        sudo("git clean -df", user=env.site)
+        sudo("git reset --hard HEAD", user=env.site)
+
+        # Pull down the new branch
+        sudo("git fetch --all", user=env.site)
+        sudo("git checkout {0}".format(env.branch), user=env.site)
+        sudo("git reset --hard origin/{0}".format(env.branch), user=env.site)
+        sudo("git status", user=env.site)
