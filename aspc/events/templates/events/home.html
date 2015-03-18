@@ -14,10 +14,6 @@
 <script src="{{ STATIC_URL }}js/jquery-ui-datepicker-addon.js"></script>
 
 <script type="text/javascript">
-// Set up namespacing
-var ASPC = ASPC || {};
-ASPC.Events = ASPC.Events || {};
-ASPC.Events.calendar_data = ASPC.Events.calendar_data || {};
 ASPC.Events.calendar_data.events = {{ events|safe }};
 {% if earliest_event_time %}
 ASPC.Events.calendar_data.earliest_event_time = {{earliest_event_time|date:"G"}};
