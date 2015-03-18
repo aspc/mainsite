@@ -61,7 +61,7 @@ ASPC.Events.submit_facebook_event = function () {
 	var url = $('#facebook_event_url').val() || '';
 
 	if (!url.match(/https?:\/\/(?:www\.)?facebook\.com\/events\/\d+(?:\/\S+)?/)) {
-		alert('You must enter a valid Facebook URL!');
+		alert('You must enter a valid Facebook event URL!');
 		return false;
 	}
 
@@ -93,7 +93,7 @@ ASPC.Events.submit_facebook_event = function () {
 			console.log('error');
 			$('#facebook_event_submit_button').attr('disabled', false);
 			$('#facebook_event_submit_loading').hide();
-			alert('Something went wrong! Error:\n' + (jqXHR.responseText || e));
+			alert('Something went wrong! Are you sure your Facebook event is public? Error:\n' + (jqXHR.responseText || e));
 			return false;
 		}
 	});
@@ -219,7 +219,7 @@ ASPC.Events.submit_facebook_page = function () {
 	var url = $('#facebook_page_url').val() || '';
 
 	if (!url.match(/(?:https?:\/\/(?:www\.)?)?facebook\.com\/\w+(?:\/\S+)?/)) {
-		alert('You must enter a valid Facebook Page URL!');
+		alert('You must enter a valid Facebook page URL!');
 		return false;
 	}
 
@@ -250,7 +250,7 @@ ASPC.Events.submit_facebook_page = function () {
 			console.log('error');
 			$('#facebook_page_submit_button').attr('disabled', false);
 			$('#facebook_page_submit_loading').hide();
-			alert('Something went wrong! Error:\n' + (jqXHR.responseText || e));
+			alert('Something went wrong! Are you sure your Facebook page is public? Error:\n' + (jqXHR.responseText || e));
 			return false;
 		}
 	});

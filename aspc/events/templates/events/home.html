@@ -39,32 +39,32 @@ ASPC.Events.calendar_data.latest_event_time = 23;
 	</div>
 
 	<div id="event_submission">
-		<div id="facebook_submission">
-			<h1>Submit a Facebook Event</h1>
-			<p><label for="facebook_event_url">Paste the URL to a public Facebook event.</label></p>
-			<input type="text" id="facebook_event_url" name="facebook_event_url" />
-			<input type="button" id="facebook_event_submit_button" value="Submit" onClick="ASPC.Events.submit_facebook_event()"/>
-			<img src="{{ STATIC_URL }}img/loading.gif" id="facebook_event_submit_loading" />
-
-			<p><label for="facebook_page_url">Or paste the URL to a Facebook organization page to gather that organization's events.</label></p>
+		<div id="facebook_page_submission">
+			<h1>Watch a Facebook page for events</h1>
+			<label for="facebook_page_url">Facebook page URL:&nbsp;</label>
 			<input type="text" id="facebook_page_url" name="facebook_page_url" />
 			<input type="button" id="facebook_page_submit_button" value="Submit" onClick="ASPC.Events.submit_facebook_page()"/>
 			<img src="{{ STATIC_URL }}img/loading.gif" id="facebook_page_submit_loading" />
-
-			<p><b>Pages currently being watched:</b></p>
-			<ul>
-			{% for page in facebook_event_pages %}
-				<li>{{ page.name }}</li>
-			{% endfor %}
-			</ul>
 		</div>
 
+		<br />
+
+		<div id="facebook_event_submission">
+			<h1>Add a Facebook event</h1>
+			<label for="facebook_event_url">Facebook event URL:&nbsp;</label>
+			<input type="text" id="facebook_event_url" name="facebook_event_url" />
+			<input type="button" id="facebook_event_submit_button" value="Submit" onClick="ASPC.Events.submit_facebook_event()"/>
+			<img src="{{ STATIC_URL }}img/loading.gif" id="facebook_event_submit_loading" />
+		</div>
+
+		<br />
+
 		<div id="manual_submission">
-			<h1>Submit Your Own Event</h1>
+			<h1>Add your own event</h1>
 			<table>
 				<tr>
 					<td>
-						Event Name
+						Event name
 					</td>
 					<td>
 						<input type="text" id="manual_event_name">
@@ -112,7 +112,7 @@ ASPC.Events.calendar_data.latest_event_time = 23;
 				</tr>
 				<tr>
 					<td>
-						External Link
+						Link to event info
 					</td>
 					<td>
 						<input type="text" id="manual_event_url">
@@ -120,11 +120,22 @@ ASPC.Events.calendar_data.latest_event_time = 23;
 				</tr>
 				<tr>
 					<td>
+					</td>
+					<td>
 						<input type="button" id="manual_submit_button" value="Submit" onClick="ASPC.Events.submit_manual_event()"/>
 						<img src="{{ STATIC_URL }}img/loading.gif" id="manual_submit_loading" />
 					</td>
 			</table>
 		</div>
+	</div>
+
+	<div id="watched_pages">
+		<p><b>Pages currently being watched:</b></p>
+		<ul>
+		{% for page in facebook_event_pages %}
+			<li>{{ page.name }}</li>
+		{% endfor %}
+		</ul>
 	</div>
 
 </div>
