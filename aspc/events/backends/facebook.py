@@ -13,9 +13,8 @@ logger = logging.getLogger(__name__)
 class FacebookBackend(object):
     event_required_fields = ('name', 'location', 'start_time', 'description')
     page_required_fields = ('name', 'link')
-    GRAPH_API_TEMPLATE = 'https://graph.facebook.com/'
+    GRAPH_API_TEMPLATE = 'https://graph.facebook.com/v2.2/'
     event_link_template = re.compile(r'(?:https?:\/\/(?:www\.)?)?facebook.com/events/(?P<event_id>\d+)')
-
     page_link_template = re.compile(r'(?:https?:\/\/(?:www\.)?)?facebook.com/(?P<page_id>\w+)')
 
     def __init__(self, options=None):
@@ -23,7 +22,7 @@ class FacebookBackend(object):
 
     def _get_access_token(self):
         response = requests.get(
-            'https://graph.facebook.com/oauth/access_token',
+            self.GRAPH_API_TEMPLATE + 'oauth/access_token',
             params = {
                 'client_id': settings.FACEBOOK_APP_ID,
                 'client_secret': settings.FACEBOOK_APP_SECRET,
