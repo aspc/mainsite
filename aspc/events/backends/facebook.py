@@ -14,8 +14,7 @@ class FacebookBackend(object):
     event_required_fields = ('name', 'location', 'start_time', 'description')
     page_required_fields = ('name', 'link')
     GRAPH_API_TEMPLATE = 'https://graph.facebook.com/v2.2/'
-    event_link_template = re.compile(r'(?:https?:\/\/(?:www\.)?)?facebook.com/events/(?P<event_id>\d+)')
-    page_link_template = re.compile(r'(?:https?:\/\/(?:www\.)?)?facebook.com/(?P<page_id>\w+)')
+    EVENT_LINK_TEMPLATE = re.compile(r'(?:https?:\/\/(?:www\.)?)?facebook.com/events/(?P<event_id>\d+)')
 
     def __init__(self, options=None):
         self.facebook_token = self._get_access_token()
@@ -48,7 +47,10 @@ class FacebookBackend(object):
 
     def _page_lookup(self, page_id):
         response = requests.get(
-            self.GRAPH_API_TEMPLATE + page_id
+            self.GRAPH_API_TEMPLATE + page_id,
+            params = {
+                'access_token': self.facebook_token
+            }
         )
 
         if response.status_code != 200:
@@ -91,7 +93,7 @@ class FacebookBackend(object):
     def _parse_page_data(self, page_data):
         # Checks if the page has all the necessary fields
         if not all((key in page_data.keys()) for key in self.page_required_fields):
-            raise InvalidFacebookEventPageException('Unable to retrieve page details.')
+            raise InvalidFacebookEventPageException('Page missing required fields.')
 
         normalized = {
             'name': page_data['name'],
@@ -105,7 +107,7 @@ class FacebookBackend(object):
     # Intended to be invoked by EventController#new_event
     def get_event_data(self, event_url):
         try:
-            event_id = self.event_link_template.match(event_url).groupdict()['event_id']
+            event_id = self.EVENT_LINK_TEMPLATE.match(event_url).groupdict()['event_id']
         except:
             # Validation also happens client-side so an error is unlikely to occur here
             raise InvalidEventException('Invalid url: ' + event_url)
@@ -145,8 +147,8 @@ class FacebookBackend(object):
             raise InvalidFacebookEventPageException('Unable to retrieve page event details.')
 
         for wall_post in response.json()['data']:
-            if 'link' in wall_post and self.event_link_template.match(wall_post['link']):
-                page_event_ids.append(self.event_link_template.match(wall_post['link']).groupdict()['event_id'])
+            if 'link' in wall_post and self.EVENT_LINK_TEMPLATE.match(wall_post['link']):
+                page_event_ids.append(self.EVENT_LINK_TEMPLATE.match(wall_post['link']).groupdict()['event_id'])
 
         return page_event_ids
 
@@ -154,7 +156,12 @@ class FacebookBackend(object):
     # Intended to be invoked by FacebookEventPageController#new_facebook_event_page
     def get_page_data(self, page_url):
         try:
-            page_id = self.page_link_template.match(page_url).groupdict()['page_id']
+            # Have to account for the two ways a Facebook page event URL can be formatted:
+            # https://www.facebook.com/PomonaCollegeMockTrial
+            # https://www.facebook.com/pages/Studio-47/146452969759
+            #
+            # This slice will grab either the page ID or the page username, either of which can be used to perform a Graph API lookup
+            page_id = page_url[page_url.rfind('/')+1:]
         except:
             # Validation also happens client-side so an error is unlikely to occur here
             raise InvalidFacebookEventPageException('Invalid url: ' + page_url)
