@@ -18,11 +18,11 @@ ASPC.events = function () {
 					center: 'title',
 					right: 'month,agendaWeek,agendaDay'
 				},
-				minTime: ASPC.Events.calendar_data.earliest_event_time,
-				maxTime: ASPC.Events.calendar_data.latest_event_time + 3,
+				minTime: my.self.calendar_data.earliest_event_time,
+				maxTime: my.self.calendar_data.latest_event_time + 3,
 				allDaySlot: false,
 				editable: false,
-				events: ASPC.Events.calendar_data.events
+				events: my.self.calendar_data.events
 			});
 		},
 		init_datepicker: function () {
@@ -156,7 +156,7 @@ ASPC.events = function () {
 
 		// Checks and reformats the times, depending on which datepicker was used to enter them (desktop widget or native mobile HTML5 one)
 		// All times should be sent to the server in the format YYYY-MM-DDTHH:MM
-		if (!ASPC.Events.is_mobile) {
+		if (!my.is_mobile) {
 			if (!(start_time = manual_event.start.match(/^(\d{4})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01]) ((?:0\d)|(?:1[0-2])):([0-5]\d) ((?:a|p)m)$/))) {
 				alert('You must enter a start time in the format MM/DD/YYYY HH:MM tt!');
 				return false;
