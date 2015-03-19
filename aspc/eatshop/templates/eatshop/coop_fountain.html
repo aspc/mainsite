@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+
+{% load staticfiles %}
 {% load markup %}
 {% load eatshop %}
 
@@ -9,8 +11,10 @@
 {% block "metadesc" %}{{ page.summary }}{% endblock %}
 
 {% block "head" %}
-{% if page.stylesheet %}<link rel="stylesheet" href="{{ STATIC_URL }}css/pages/{{ page.stylesheet }}" type="text/css" media="screen">{% endif %}
-<link rel="stylesheet" href="{{ STATIC_URL }}css/eatshop.css" type="text/css">
+  {% if page.stylesheet %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/pages/{{ page.stylesheet }}" %}"/>
+  {% endif %}
+<link rel="stylesheet" type="text/css" href="{% static "css/eatshop.css" %}"/>
 {% endblock %}
 
 {% block "content_prenav" %}

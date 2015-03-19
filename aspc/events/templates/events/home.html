@@ -1,17 +1,20 @@
 {% extends "events/base.html" %}
 
+{% load staticfiles %}
+
 {% block "ogdesc" %}Information on upcoming events for Claremont Colleges students.{% endblock %}
 {% block "metadesc" %}Information on upcoming events for Claremont Colleges students.{% endblock %}
 
 {% block "head" %}
 {{ block.super }}
-<link rel="stylesheet" href="{{ STATIC_URL }}css/event_calendar.css" type="text/css">
-<link rel="stylesheet" href="{{ STATIC_URL }}css/event_calendar.print.css" type="text/css" media="print">
-<link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui-datepicker.css" type="text/css">
-<script src="{{ STATIC_URL }}js/events.js"></script>
-<script src="{{ STATIC_URL }}js/event_calendar.min.js"></script>
-<script src="{{ STATIC_URL }}js/jquery-ui-datepicker.min.js"></script>
-<script src="{{ STATIC_URL }}js/jquery-ui-datepicker-addon.js"></script>
+<link rel="stylesheet" type="text/css" href="{% static "css/events/event_calendar.css" %}"/>
+<link rel="stylesheet" type="text/css" href="{% static "css/events/event_calendar.print.css" %}" media="print"/>
+<link rel="stylesheet" type="text/css" href="{% static "css/events/jquery-ui-datepicker.css" %}"/>
+
+<script type="text/javascript" src="{% static "js/events.js" %}"></script>
+<script type="text/javascript" src="{% static "js/event_calendar.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jquery-ui-datepicker.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jquery-ui-datepicker-addon.js" %}"></script>
 
 <script type="text/javascript">
 ASPC.Events.calendar_data.events = {{ events|safe }};
@@ -40,7 +43,7 @@ ASPC.Events.calendar_data.latest_event_time = 23;
 			<label for="facebook_page_url">Facebook page URL:&nbsp;</label>
 			<input type="text" id="facebook_page_url" name="facebook_page_url" />
 			<input type="button" id="facebook_page_submit_button" value="Submit" onClick="ASPC.Events.submit_facebook_page()"/>
-			<img src="{{ STATIC_URL }}img/loading.gif" id="facebook_page_submit_loading" />
+			<img src="{% static "img/loading.gif" %}" id="facebook_page_submit_loading" />
 		</div>
 
 		<br />
@@ -50,7 +53,7 @@ ASPC.Events.calendar_data.latest_event_time = 23;
 			<label for="facebook_event_url">Facebook event URL:&nbsp;</label>
 			<input type="text" id="facebook_event_url" name="facebook_event_url" />
 			<input type="button" id="facebook_event_submit_button" value="Submit" onClick="ASPC.Events.submit_facebook_event()"/>
-			<img src="{{ STATIC_URL }}img/loading.gif" id="facebook_event_submit_loading" />
+			<img src="{% static "img/loading.gif" %}" id="facebook_event_submit_loading" />
 		</div>
 
 		<br />
@@ -119,7 +122,7 @@ ASPC.Events.calendar_data.latest_event_time = 23;
 					</td>
 					<td>
 						<input type="button" id="manual_submit_button" value="Submit" onClick="ASPC.Events.submit_manual_event()"/>
-						<img src="{{ STATIC_URL }}img/loading.gif" id="manual_submit_loading" />
+						<img src="{% static "img/loading.gif" %}" id="manual_submit_loading" />
 					</td>
 			</table>
 		</div>

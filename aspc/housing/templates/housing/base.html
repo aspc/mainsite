@@ -1,7 +1,9 @@
 {% extends 'base_page.html' %}
 
+{% load staticfiles %}
+
 {% block "head" %}
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/housing.css" type="text/css" media="screen">
+	<link rel="stylesheet" type="text/css" href="{% static "css/housing.css" %}" media="screen"/>
 {% endblock %}
 
 {% block "page_class" %}housing{% endblock %}

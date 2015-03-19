@@ -1,4 +1,7 @@
 {% extends "sagelist/base.html" %}
+
+{% load staticfiles %}
+
 {% block "breadcrumbs" %}{% endblock %}
 {% block "outer_content" %}
 <ul class="actions">
@@ -41,7 +44,7 @@
       <td class="isbn">{{ book.isbn }}</td>
       <td class="condition">{{ book.get_condition_display }}</td>
       <td class="price">${{ book.price }}</td>
-      <td class="recoop">{% if book.is_recoop %} <img src="{{ STATIC_URL }}img/recoop_listing_icon.png" /> {% endif %}</td>
+      <td class="recoop">{% if book.is_recoop %} <img src="{% static "img/recoop_listing_icon.png" %}" /> {% endif %}</td>
     </tr>
   {% endfor %}
   </table>

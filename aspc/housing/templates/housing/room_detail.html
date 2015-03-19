@@ -1,5 +1,8 @@
 {% extends 'housing/base.html' %}
+
+{% load staticfiles %}
 {% load room_tools %}
+
 {% block "page_title" %}{{ room.get_name }}{% endblock "page_title" %}
 
 {% block "housing_breadcrumbs" %}
@@ -11,9 +14,9 @@
 
 {% block "head" %}
 {{ block.super }}
-<script src="{{ STATIC_URL }}js/jquery-1.10.2.min.js"></script>
-<script src="{{ STATIC_URL }}js/lightbox-2.6.min.js"></script>
-<link href="{{ STATIC_URL }}css/lightbox.css" rel="stylesheet" />
+<script type="text/javascript" src="{% static "js/jquery-1.10.2.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js/lightbox-2.6.min.js" %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static "css/lightbox.css" %}"/>
 <style type="text/css">
     ul.thumbs {
         padding: 0;

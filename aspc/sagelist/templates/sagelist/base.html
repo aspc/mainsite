@@ -1,8 +1,15 @@
 {% extends "base_page.html" %}
 
+{% load staticfiles %}
+
 {% block "page_class" %}sagelist{% endblock %}
 {% block "title" %}SageBooks {% block "subtitle" %}{% endblock %}{% endblock %}
 {% block "page_title" %}SageBooks Textbook Sales{% endblock %}
+
+{% block "head" %}
+<link rel="stylesheet" type="text/css" href="{% static "css/sagelist/sagelist.css" %}"/>
+<link rel="stylesheet" type="text/css" href="{% static "css/sagelist/sagelist.mobile.css" %}"/>
+{% endblock %}
 
 {% block "breadcrumbs" %}
 <ol class="breadcrumbs">

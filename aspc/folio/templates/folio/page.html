@@ -1,4 +1,6 @@
 {% extends "base_page.html" %}
+
+{% load staticfiles %}
 {% load markup %}
 {% load pages %}
 
@@ -7,7 +9,9 @@
 {% block "metadesc" %}{{ page.summary }}{% endblock %}
 
 {% block "head" %}
-{% if page.stylesheet %}<link rel="stylesheet" href="{{ STATIC_URL }}css/pages/{{ page.stylesheet }}" type="text/css" media="screen">{% endif %}
+	{% if page.stylesheet %}
+		<link rel="stylesheet" href="{% static "css/pages/{{ page.stylesheet }}" %}" type="text/css" media="screen">
+	{% endif %}
 {% endblock %}
 
 {% block "title" %}{{ title }}{% endblock %}

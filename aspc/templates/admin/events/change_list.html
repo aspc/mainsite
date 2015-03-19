@@ -1,8 +1,10 @@
 {% extends "admin/change_list.html" %}
 
+{% load staticfiles %}
+
 {% block extrastyle %}
   {{ block.super }}
-  <script src="{{ STATIC_URL }}js/jquery-1.10.2.min.js"></script>
-  <script src="{{ STATIC_URL }}js/admin/event_change_list.js"></script>
-  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/admin/event_change_list.css" />
+  <script src="{% static "js/jquery-1.10.2.min.js" %}"></script>
+  <script src="{% static "js/admin/event_change_list.js" %}"></script>
+  <link rel="stylesheet" type="text/css" href="{% static "css/admin/event_change_list.css" %}" />
 {% endblock %}

@@ -1,5 +1,7 @@
 {% extends "base_page.html" %}
 
+{% load staticfiles %}
+
 {% block "ogtitle" %}5C Menu{% endblock %}
 {% block "title" %}5C Menu{% endblock %}
 {% block "page_title" %}
@@ -8,5 +10,6 @@
 {% endblock %}
 
 {% block "head" %}
-<link rel="stylesheet" href="{{ STATIC_URL }}css/menu.css" type="text/css">
+<link rel="stylesheet" type="text/css" href="{% static "css/menu/menu.css" %}"/>
+<link rel="stylesheet" type="text/css" href="{% static "css/menu/menu.mobile.css" %}"/>
 {% endblock %}

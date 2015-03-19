@@ -1,4 +1,7 @@
 {% extends "base_page.html" %}
+
+{% load staticfiles %}
+
 {% block "metadesc" %}Search for courses with advanced filters, see your schedule as you build it, and get a link to share with your advisor or on facebook!{% endblock %}
 {% block "ogdesc" %}Search for courses with advanced filters, see your schedule as you build it, and get a link to share with your advisor or on facebook!{% endblock %}
 
@@ -6,7 +9,7 @@
 {% block "page_title" %}Course Search{% endblock %}
 
 {% block "head" %}
-<link rel='stylesheet' type='text/css' href='{{ STATIC_URL }}css/coursesearch.css' />
+<link rel="stylesheet" type="text/css" href="{% static "css/coursesearch.css" %}"/>
 {% endblock %}
 
 {% block "content_class" %}schedule{% endblock %}
