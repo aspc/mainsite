@@ -42,14 +42,14 @@ ASPC.events = function () {
 	 */
 	my.self.init = function () {
 		// Bind listeners to the event_info elements to update the event description div when clicked
-		if ($(window).width() > 767) { // Using the desktop site...
+		if (ASPC.Settings.is_mobile) {
+			$('.event_info').on('click', my.self.go_to_event);
+		}
+		else {
 			$('.event_info').on('click', my.self.update_event_description);
 
 			// Initializes the events_description panel
 			$($('.event_info')[0]).trigger('click');
-		}
-		else { // Using the mobile site
-			$('.event_info').on('click', my.self.go_to_event);
 		}
 	};
 

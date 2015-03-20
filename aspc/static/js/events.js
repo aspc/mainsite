@@ -51,13 +51,10 @@ ASPC.events = function () {
 		// Grabs the csrf_token from the DOM (something we pass along to the server to authenticate requests)
 		ASPC.csrf_token = $('input[name=csrfmiddlewaretoken]').val();
 
-		// Determines if mobile site is being used
-		my.is_mobile = $(window).width() < 767;
-
 		// Init the jQuery calendar on the page for events display, and the datepicker for manual event submission
 		my.init_calendar();
 
-		if (my.is_mobile) {
+		if (ASPC.Settings.is_mobile) {
 			my.init_html5_datepicker();
 		}
 		else {
@@ -156,7 +153,7 @@ ASPC.events = function () {
 
 		// Checks and reformats the times, depending on which datepicker was used to enter them (desktop widget or native mobile HTML5 one)
 		// All times should be sent to the server in the format YYYY-MM-DDTHH:MM
-		if (!my.is_mobile) {
+		if (!ASPC.Settings.is_mobile) {
 			if (!(start_time = manual_event.start.match(/^(\d{4})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01]) ((?:0\d)|(?:1[0-2])):([0-5]\d) ((?:a|p)m)$/))) {
 				alert('You must enter a start time in the format MM/DD/YYYY HH:MM tt!');
 				return false;
