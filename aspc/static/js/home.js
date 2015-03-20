@@ -64,11 +64,29 @@ ASPC.events = function () {
 
 		// Updates the events_description panel with the appropriate information
 		if (events_list_length === 1) {
-			// If there is only one event showing, present a shortened description box
+			// If there is only one event showing, present nothing except the shortened description div
 			$('#events_description_title').html(event_info.children('h3').html());
 			$('#events_description_host').html('');
 			$('#events_description_location').html('');
-			$('#events_description_description').html(event_info.children('p.description').html().slice(0, 50) + '&hellip;' + event_info.children('p.more_link').html());
+			$('#events_description_more_link').html('');
+			$('#events_description_description').html('');
+
+			// Calculate how much description we have space to show
+			// Check the number of events today so as to know how much space is available to display long descriptions
+			var description_text = event_info.children('p.description').html(),
+				events_description_max_height = 95, // Each li element is 95px high
+				i = 0;
+
+			// Subtract the height (including margins) of the title div
+			events_description_max_height -= $('#events_description_title').outerHeight(true);
+
+			// Slowly add text to the div element, making sure not to add too much
+			while ($('#events_description_description').outerHeight(true) < events_description_max_height && i <= description_text.length) {
+				$('#events_description_description').html(description_text.slice(0, ++i));
+			}
+
+			// Append an ellipsis and the more link
+			$('#events_description_description').html($('#events_description_description').html() + '&hellip;' + event_info.children('p.more_link').html());
 		}
 		else {
 			// Set up the default text for all the elements except the description element
@@ -89,10 +107,11 @@ ASPC.events = function () {
 				$('#events_description_title').outerHeight(true) +
 				$('#events_description_host').outerHeight(true) +
 				$('#events_description_location').outerHeight(true) +
+				$('#events_description_description').outerHeight(true) +
 				$('#events_description_more_link').outerHeight(true);
 
 			// Slowly add text to the div element, making sure not to add too much
-			while ($('#events_description_description').height() < events_description_max_height && i <= description_text.length) {
+			while ($('#events_description_description').outerHeight(true) < events_description_max_height && i <= description_text.length) {
 				$('#events_description_description').html(description_text.slice(0, ++i));
 			}
 
