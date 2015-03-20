@@ -11,7 +11,9 @@
 {% block "head" %}
   <link rel="stylesheet" type="text/css" href="{% static "css/folio/page.css" %}" media="screen">
 	{% if page.stylesheet %}
-		<link rel="stylesheet" href="{% static "css/pages/{{ page.stylesheet }}" %}" type="text/css" media="screen">
+    {% with "css/pages/"|add:page.stylesheet as asset_url %}
+		  <link rel="stylesheet" href="{% static asset_url %}" type="text/css" media="screen">
+    {% endwith %}
 	{% endif %}
 {% endblock %}
 
