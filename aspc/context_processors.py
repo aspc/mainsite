@@ -1,4 +1,5 @@
 from django.contrib.sites.models import Site, RequestSite
+import re
 
 def site(request):
     port_string = request.META.get('SERVER_PORT')
@@ -13,4 +14,12 @@ def site(request):
     return site_info
 
 def absolute_uri(request):
-    return {'absolute_uri': request.build_absolute_uri(),}
+    return {
+        'absolute_uri': request.build_absolute_uri()
+    }
+
+def is_mobile(request):
+    user_agent = request.META['HTTP_USER_AGENT']
+    return {
+        'is_mobile': bool(re.search('Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|SymbianOS|Windows Phone|Mobile', user_agent, re.IGNORECASE))
+    }

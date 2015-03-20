@@ -7,8 +7,10 @@
 {% block "page_title" %}Dining and Shopping{% endblock %}
 
 {% block "head" %}
-<link rel="stylesheet" type="text/css" href="{% static "css/eatshop/eatshop.css" %}"/>
-<link rel="stylesheet" type="text/css" href="{% static "css/eatshop/eatshop.mobile.css" %}"/>
+	<link rel="stylesheet" type="text/css" href="{% static "css/eatshop/eatshop.css" %}"/>
+	{% if is_mobile %}
+		<link rel="stylesheet" type="text/css" href="{% static "css/eatshop/eatshop.mobile.css" %}"/>
+	{% endif %}
 {% endblock %}
 
 {% block "breadcrumbs" %}

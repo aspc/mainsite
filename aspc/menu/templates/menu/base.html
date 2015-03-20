@@ -10,6 +10,8 @@
 {% endblock %}
 
 {% block "head" %}
-<link rel="stylesheet" type="text/css" href="{% static "css/menu/menu.css" %}"/>
-<link rel="stylesheet" type="text/css" href="{% static "css/menu/menu.mobile.css" %}"/>
+	<link rel="stylesheet" type="text/css" href="{% static "css/menu/menu.css" %}"/>
+	{% if is_mobile %}
+		<link rel="stylesheet" type="text/css" href="{% static "css/menu/menu.mobile.css" %}"/>
+	{% endif %}
 {% endblock %}

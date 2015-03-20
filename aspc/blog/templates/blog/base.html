@@ -6,5 +6,7 @@
 
 {% block "head" %}
 	<link rel="stylesheet" type="text/css" href="{% static "css/blog/blog.css" %}"/>
-	<link rel="stylesheet" type="text/css" href="{% static "css/blog/blog.mobile.css" %}"/>
+	{% if is_mobile %}
+		<link rel="stylesheet" type="text/css" href="{% static "css/blog/blog.mobile.css" %}"/>
+	{% endif %}
 {% endblock %}
