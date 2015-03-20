@@ -1,0 +1,99 @@
+#events_list, #events_description {
+	float: left;
+}
+
+#events_list {
+	width: 60%;
+}
+
+#events_description {
+	width: 36%;
+	background: #ddd;
+	height: 100%;
+	padding-left: 2%;
+	padding-right: 2%;
+}
+
+.events aside {
+	display: none;
+}
+
+.events {
+  background-color: #ddd;
+}
+
+.events .noevents {
+  background-color: white;
+  text-align: center;
+  padding: 1em;
+}
+
+.events .noevents img {
+  max-width: 100%;
+}
+
+.events ol {
+	background: #2f5184;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+.events ol > li p {
+	margin: 0;
+}
+
+.event_info {
+	background: white;
+	display: inline-block;
+	width: 78%;
+	padding-left: 2%;
+	padding-right: 2%;
+	padding-bottom: 2.3%;
+}
+
+.event_info:hover {
+	background: #ccc;
+	cursor: pointer;
+}
+
+.event_info p {
+	font-size: 12px;
+	color: rgb(88, 88, 88);
+}
+
+.events li.active .event_info {
+	background: #eee url(../images/event_indicator.png) no-repeat 100%;
+}
+
+#more {
+	background: rgb(191, 191, 191);
+	font-size: 14px;
+	padding-left: 2%;
+	padding-top: 1%;
+	padding-bottom: 1%;
+	clear: left;
+}
+
+#more a {
+	color: rgb(60, 60, 60);
+	text-decoration: none;
+}
+
+#events_description p {
+	font-size: 12px;
+}
+
+.events ol time {
+	font-size: 0.95em;
+	padding: 2%;
+	padding-top: 1.45em;
+	float: left;
+	width: 14%;
+	height: 3em;
+	text-shadow: none;
+	color: white;
+	text-align: right;
+	letter-spacing: 1px;
+	font-family: "Hammersmith One", Verdana, "Lucida Grande", Lucida, sans-serif;
+}

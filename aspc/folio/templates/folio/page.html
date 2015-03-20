@@ -9,6 +9,7 @@
 {% block "metadesc" %}{{ page.summary }}{% endblock %}
 
 {% block "head" %}
+  <link rel="stylesheet" type="text/css" href="{% static "css/folio/page.css" %}" media="screen">
 	{% if page.stylesheet %}
 		<link rel="stylesheet" href="{% static "css/pages/{{ page.stylesheet }}" %}" type="text/css" media="screen">
 	{% endif %}

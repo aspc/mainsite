@@ -1,8 +1,15 @@
 {% extends "folio/page.html" %}
+
+{% extends "base_page.html" %}
+
 {% block "page_class" %}docarchive{% endblock %}
 
 {% block "title" %}Senate Document Archive{% endblock %}
 {% block "page_title" %}Senate Document Archive{% endblock %}
+
+{% block "head" %}
+  <link rel="stylesheet" type="text/css" href="{% static "css/senate/docarchive.css" %}"/>
+{% endblock %}
 
 {% block "breadcrumbs" %}
 <ol class="breadcrumbs">

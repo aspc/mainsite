@@ -1,0 +1,155 @@
+.stream {
+	width: 40%;
+	-webkit-flex: 40;
+	flex: 40;
+	background-color: #5d6673;
+}
+
+.stream > h1 {
+	display: none;
+}
+
+.stream > ol {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+.stream > ol > li.food {
+	background-color: #448c72;
+}
+
+.stream > ol > li.housing {
+	background-color: #627d48;
+}
+
+.stream > ol > li.twitter{
+	background-color: #8a4547;
+}
+
+.stream > ol > li.sagelist {
+	background-color: #627d48;
+}
+
+.stream > ol > li.tsl {
+	background-color: #8a4547;
+}
+
+.stream > ol > li.scc {
+	background-color: #49505a;
+}
+
+.stream > ol > li.its {
+	background-color: #49505a;
+}
+
+.stream > ol > li.event {
+	background-color: #627d48;
+}
+
+.stream > ol > li.kspc {
+	background-color: #8a4547;
+}
+
+.stream > ol > li.pomonaartmuseum {
+	background-color: #49505a;
+}
+
+.stream > ol > li.courses {
+	background-color: #627d48;
+}
+
+.stream > ol > li.blog {
+	background-color: #a87336;
+}
+
+.stream .activity {
+	margin-left: 2%;
+	padding-left: 2%;
+	padding-right: 2%;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	background-color: white;
+	position: relative;
+	word-wrap: break-word;
+}
+
+.stream .activity a {
+	color: #007bbd;
+}
+
+.stream .activity > p {
+	margin: 0;
+}
+
+
+
+.stream .activity.message p:before {
+	content: "\"";
+}
+
+.stream .activity.message p:after {
+	content: "\"";
+}
+
+.stream .related {
+	color: #1e1e1e;
+	background-color: #ddd;
+	margin-left: 2%;
+	position: relative;
+	padding: 0 0.5em 0.5em 0.5em;
+}
+
+.stream .related:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.stream .related a {
+	text-decoration: none;
+}
+
+.stream .related ul {
+	float: left;
+	padding: 0;
+}
+
+.stream .related time {
+	float: right;
+}
+
+.stream .related li {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.stream .related ul a, .stream .related time {
+	padding-top: 1.5em;
+	padding-bottom: 0.25em;
+	display: block;
+	color: #333;
+	font-size: 0.8em;
+}
+
+.stream .related ul a:hover {
+
+}
+
+.stream .related > ul a.source {
+	background: url(../images/triangle_white_down.png) no-repeat 1.5em 0;
+	font-weight: bold;
+}
+
+.stream .activity.post img {
+	float: right;
+	margin: 1em;
+}
+
+.stream .activity .excerpt {
+	margin-top: 0.5em;
+	padding-left: 1em;
+	font-style: italic;
+	color: #666666;
+	padding-right: 1em;
+}

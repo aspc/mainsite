@@ -1,4 +1,4 @@
-/* @override 
+/* @override
 	http://localhost:8000/static/css/housing.css
 	http://staging.aspc.pomona.edu/static/css/housing.css
 */
@@ -29,15 +29,15 @@
 }
 
 .housing #browse {
-	background-image: url(images/housing/browse_housing.png);
+	background-image: url(../images/housing/browse_housing.png);
 }
 
 .housing #search {
-	background-image: url(images/housing/search_housing.png);
+	background-image: url(../images/housing/search_housing.png);
 }
 
 .housing #review {
-	background-image: url(images/housing/write_review.png);
+	background-image: url(../images/housing/write_review.png);
 }
 
 /* @end */
@@ -174,19 +174,19 @@ form p {
 }
 
 .housing .attributes .floor.level_0 {
-	background-image: url(images/housing/floor_0.png);
+	background-image: url(../images/housing/floor_0.png);
 }
 
 .housing .attributes .floor.level_1 {
-	background-image: url(images/housing/floor_1.png);
+	background-image: url(../images/housing/floor_1.png);
 }
 
 .housing .attributes .floor.level_2 {
-	background-image: url(images/housing/floor_2.png);
+	background-image: url(../images/housing/floor_2.png);
 }
 
 .housing .attributes .floor.level_3 {
-	background-image: url(images/housing/floor_3.png);
+	background-image: url(../images/housing/floor_3.png);
 }
 
 
@@ -203,19 +203,19 @@ form p {
 
 
 .housing .attributes .occupancy.type_1 {
-	background-image: url(images/housing/room_single.png);
+	background-image: url(../images/housing/room_single.png);
 }
 
 .housing .attributes .occupancy.type_2 {
-	background-image: url(images/housing/room_double.png);
+	background-image: url(../images/housing/room_double.png);
 }
 
 .housing .attributes .occupancy.type_3 {
-	background-image: url(images/housing/room_2double.png);
+	background-image: url(../images/housing/room_2double.png);
 }
 
 .housing .attributes .occupancy.type_4 {
-	background-image: url(images/housing/room_2triple.png);
+	background-image: url(../images/housing/room_2triple.png);
 }
 
 .housing .attributes .suite .suite_rooms {
@@ -400,7 +400,7 @@ form p {
 
 /* @end */
 
-@media handheld, only screen and (max-width: 767px) 
+@media handheld, only screen and (max-width: 767px)
 {
 
 /* @group Home Actions */

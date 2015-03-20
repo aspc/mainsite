@@ -1,0 +1,11 @@
+@media handheld, only screen and (max-width: 767px) {
+
+	.post_info > h1 {
+		font-size: 1.1em;
+	}
+
+	.post_info > .byline {
+		font-size: 0.8em;
+	}
+
+}

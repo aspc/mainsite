@@ -1,2 +1,10 @@
 {% extends "base_page.html" %}
+
+{% load staticfiles %}
+
 {% block "page_class" %}news{% endblock %}
+
+{% block "head" %}
+	<link rel="stylesheet" type="text/css" href="{% static "css/blog/blog.css" %}"/>
+	<link rel="stylesheet" type="text/css" href="{% static "css/blog/blog.mobile.css" %}"/>
+{% endblock %}

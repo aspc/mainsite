@@ -1,8 +1,15 @@
 {% extends "folio/page.html" %}
+
+{% extends "base_page.html" %}
+
 {% block "page_class" %}positions{% endblock %}
 
 {% block "title" %}Positions{% endblock %}
 {% block "page_title" %}Positions{% endblock %}
+
+{% block "head" %}
+  <link rel="stylesheet" type="text/css" href="{% static "css/senate/positions.css" %}"/>
+{% endblock %}
 
 {% block "breadcrumbs" %}
 <ol class="breadcrumbs">

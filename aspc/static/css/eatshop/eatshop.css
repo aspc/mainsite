@@ -1,8 +1,4 @@
-/* @override http://127.0.0.1:8000/static/css/eatshop.css */
-
 @import url(http://fonts.googleapis.com/css?family=Permanent+Marker);
-
-/* @group Results List */
 
 form.filter ul {
 	font-size: 0.9em;
@@ -170,7 +166,7 @@ ul.results > li:after {
 section.coop_fountain {
 	color: #fffac9;
 	background: #222;
-	background-image: url(images/chalkboard_bg.png);
+	background-image: url(../images/chalkboard_bg.png);
 }
 
 .coop_fountain .body {
@@ -277,27 +273,4 @@ section.coop_fountain {
 	content: "";
 	display: block;
 	clear: both;
-}
-
-/* @end */
-
-@media handheld, only screen and (max-width: 767px) {
-	
-	.coop_fountain .body .menu-col {
-		width: 100%;
-		float: none;
-}
-	.coop_fountain .hours_payment {
-	border-left: none;
-}
-
-	.coop_fountain #title {
-		font-size: 2.2em;
-}
-	.coop_fountain .hours_payment, .content .main_info, .content .hours_payment {
-		width: 100%;
-}
-	.content .hours_payment {
-		margin-top: 1em;
-}
 }
