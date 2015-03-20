@@ -1,7 +1,7 @@
 /* @override http://localhost:8000/static/css/pages/PEC.css */
 
 /* PEC STYLES */
-@import url(http://fonts.googleapis.com/css?family=Podkova);
+@import url(https://fonts.googleapis.com/css?family=Podkova);
 
 @media screen and (min-width: 767px) {
 	section.page > h1 {
@@ -15,19 +15,19 @@
 		margin: 1em;
 		background: transparent url(pec_logo.png) no-repeat;
 	}
-	
+
 	section.page .content h1, section.page .content h2, section.page .content h3, section.page .content h4 {
 		font-family: Podkova;
 	}
-	
+
 	section.page .content h1 {
 		font-size: 1.9em;
 	}
-	
+
 	section.page #sidebar p {
-	font-size: 0.9em;
-}
-	
+		font-size: 0.9em;
+	}
+
 	section.page #sidebar {
 		width: 30%;
 		float: right;
@@ -36,14 +36,14 @@
 		background-color: #bd373a;
 		color: #f9ecec;
 	}
-	
+
 	section.page #sidebar h1 {
 		font-size: 1.8em;
 		margin-top: 0;
 	}
-	
+
 	section.page #sidebar a {
 		color: #fff;
-	
-	}	
+
+	}
 }
