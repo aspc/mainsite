@@ -1,0 +1,11 @@
+<script type="text/javascript">
+	// ASPC namespace
+	var ASPC = ASPC || {};
+
+	ASPC.Settings = {
+		is_mobile: {% if is_mobile %}true{% else %}false{% endif %},
+		static_url: '{{ STATIC_URL }}',
+		absolute_uri: '{{ absolute_uri }}',
+		protocol: '{{ protocol }}'
+	};
+</script>

@@ -26,13 +26,14 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static "css/images/apple_icons/touch-icon-ipad.png" %}" />
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static "css/images/apple_icons/touch-icon-iphone4.png" %}" />
     <link rel="shortcut icon" href="{% static "css/images/favicon.ico" %}" />
-<meta name="description" content="{% block "metadesc" %}ASPC exists to provide for reasonable and effective student participation in the governance of the College and provide a governance structure for the students of Pomona College. ASPC also provides various services, including club funding, Course Reviews, Housing Reviews, and the Coop Fountain and Store.{% endblock %}">
-<meta property="og:type" content="website">
-<meta property="og:image" content="http://aspc.pomona.edu/static/css/images/apple_icons/touch-icon-iphone4.png">
-<meta property="og:url" content="{{ absolute_uri }}">
-<meta property="og:site_name" content="ASPC - {% block "ogtitle" %}The Associated Students of Pomona College{% endblock %}">
-<meta property="fb:page_id" content="171112626308633">
-<meta property="og:description" content="{% block "ogdesc" %}ASPC exists to provide for reasonable and effective student participation in the governance of the College and provide a governance structure for the students of Pomona College. ASPC also provides various services, including club funding, Course Reviews, Housing Reviews, and the Coop Fountain and Store.{% endblock %}">
+    <meta name="description" content="{% block "metadesc" %}ASPC exists to provide for reasonable and effective student participation in the governance of the College and provide a governance structure for the students of Pomona College. ASPC also provides various services, including club funding, Course Reviews, Housing Reviews, and the Coop Fountain and Store.{% endblock %}">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="http://aspc.pomona.edu/static/css/images/apple_icons/touch-icon-iphone4.png">
+    <meta property="og:url" content="{{ absolute_uri }}">
+    <meta property="og:site_name" content="ASPC - {% block "ogtitle" %}The Associated Students of Pomona College{% endblock %}">
+    <meta property="fb:page_id" content="171112626308633">
+    <meta property="og:description" content="{% block "ogdesc" %}ASPC exists to provide for reasonable and effective student participation in the governance of the College and provide a governance structure for the students of Pomona College. ASPC also provides various services, including club funding, Course Reviews, Housing Reviews, and the Coop Fountain and Store.{% endblock %}">
+    {% include "settings.js.html" %}
     {% include "analytics_code.html" %}
     {% block "head" %}
     {% endblock %}
