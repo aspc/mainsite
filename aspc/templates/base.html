@@ -44,6 +44,9 @@
         {% endblock %}
       {% endcompress %}
     {% endif %}
+
+    {% block "nocompress_css" %}
+    {% endblock %}
   </head>
   <body class="{% block "content_class" %}{% endblock %}">
   <header id="aspc_main" class="container">
