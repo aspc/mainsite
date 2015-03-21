@@ -10,14 +10,14 @@
 
 {% block "css" %}
   {{ block.super }}
-  <link rel="stylesheet" type="text/css" href="{% static "css/folio/page.css" %}" media="screen">
+  <link rel="stylesheet" type="text/css" href="{% static "css/folio/page.css" %}">
 {% endblock %}
 
 {% block "nocompress_css" %}
   {{ block.super }}
   {% if page.stylesheet %}
     {% with "css/pages/"|add:page.stylesheet as asset_url %}
-      <link rel="stylesheet" href="{% static asset_url %}" type="text/css" media="screen">
+      <link rel="stylesheet" href="{% static asset_url %}" type="text/css">
     {% endwith %}
   {% endif %}
 {% endblock %}
