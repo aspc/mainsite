@@ -20,12 +20,11 @@
   <script type="text/javascript" src="{% static "js/lib/date.js" %}"></script>
   <script type="text/javascript" src="{% static "js/lib/jquery.weekcalendar.js" %}"></script>
   <script type="text/javascript" src="{% static "js/course_calendar.js" %}"></script>
-  <script type="text/javascript" charset="utf-8">
-  </script>
 {% endblock %}
 
 {% block "nocompress_js" %}
   {{ block.super }}
+  <script type="text/javascript" charset="utf-8">
   {% block startup_script %}
     var die = false;
     if (jQuery.browser.msie) {
@@ -42,6 +41,7 @@
       });
     }
   {% endblock %}
+  </script>
 {% endblock %}
 
 {% block "content_class" %}{{ block.super }} wide{% endblock %}
