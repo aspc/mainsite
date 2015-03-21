@@ -30,16 +30,20 @@
         <link rel="stylesheet" type="text/css" href="{% static "css/base/breadcrumbs.css" %}"/>
         <link rel="stylesheet" type="text/css" href="{% static "css/base/sidebar.css" %}"/>
         <link rel="stylesheet" type="text/css" href="{% static "css/base/footer.css" %}"/>
+      {% endblock %}
+    {% endcompress %}
 
-        {% if is_mobile %}
+    {% if is_mobile %}
+      {% compress css %}
+        {% block "mobile_css" %}
           <link rel="stylesheet" type="text/css" href="{% static "css/base/base.mobile.css" %}">
           <link rel="stylesheet" type="text/css" href="{% static "css/base/content.mobile.css" %}">
           <link rel="stylesheet" type="text/css" href="{% static "css/base/header.mobile.css" %}"/>
           <link rel="stylesheet" type="text/css" href="{% static "css/base/breadcrumbs.mobile.css" %}"/>
           <link rel="stylesheet" type="text/css" href="{% static "css/base/sidebar.mobile.css" %}"/>
-        {% endif %}
-      {% endblock %}
-    {% endcompress %}
+        {% endblock %}
+      {% endcompress %}
+    {% endif %}
   </head>
   <body class="{% block "content_class" %}{% endblock %}">
   <header id="aspc_main" class="container">

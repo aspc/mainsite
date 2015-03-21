@@ -9,10 +9,11 @@
 {% block "css" %}
   {{ block.super }}
   <link rel="stylesheet" type="text/css" href="{% static "css/events/events.css" %}"/>
+{% endblock %}
 
-  {% if is_mobile %}
-  	<link rel="stylesheet" type="text/css" href="{% static "css/events/events.mobile.css" %}"/>
-  {% endif %}
+{% block "mobile_css" %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static "css/events/events.mobile.css" %}"/>
 {% endblock %}
 
 {% block "js" %}
