@@ -63,7 +63,7 @@
 }
 
 .events li.active .event_info {
-	background: #eee url(../images/event_indicator.png) no-repeat 100%;
+	background: #eee url(../../images/event_indicator.png) no-repeat 100%;
 }
 
 #more {

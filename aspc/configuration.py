@@ -63,6 +63,16 @@ STATICFILES_DIRS = (
 # http://django-compressor.readthedocs.org/en/latest/settings/#django.conf.settings.COMPRESS_ENABLED
 COMPRESS_ENABLED = True
 
+# Boolean that decides if compression should also be done outside of the request/response loop -
+# independent from user requests. This allows to pre-compress CSS and JavaScript files and works
+# just like the automatic compression with the {% compress %} tag.
+# http://django-compressor.readthedocs.org/en/latest/settings/?highlight=cache#django.conf.settings.COMPRESS_OFFLINE
+COMPRESS_OFFLINE = True
+
+# Controls the directory inside COMPRESS_ROOT that compressed files will be written to.
+# http://django-compressor.readthedocs.org/en/latest/settings/#django.conf.settings.COMPRESS_OUTPUT_DIR
+COMPRESS_OUTPUT_DIR = 'compressed'
+
 # Compression filters to apply to the concatenated CSS (e.g. minifications)
 # http://django-compressor.readthedocs.org/en/latest/settings/#django.conf.settings.COMPRESS_CSS_FILTERS
 COMPRESS_CSS_FILTERS = [

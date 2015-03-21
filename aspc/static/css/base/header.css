@@ -70,7 +70,7 @@ header#aspc_main form input {
 	position: absolute;
 	bottom: 0;
 	left: 0;
-	background-image: url(../images/ASPC_logo.png);
+	background-image: url(../../images/ASPC_logo.png);
 	background-position: bottom left;
 	background-size: 100%;
 	background-repeat: no-repeat;

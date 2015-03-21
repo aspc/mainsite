@@ -166,7 +166,7 @@ ul.results > li:after {
 section.coop_fountain {
 	color: #fffac9;
 	background: #222;
-	background-image: url(../images/chalkboard_bg.png);
+	background-image: url(../../images/chalkboard_bg.png);
 }
 
 .coop_fountain .body {
