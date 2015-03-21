@@ -58,11 +58,6 @@ STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
 )
 
-# Boolean that decides if compression will happen. To test compression when DEBUG
-# is True COMPRESS_ENABLED must also be set to True.
-# http://django-compressor.readthedocs.org/en/latest/settings/#django.conf.settings.COMPRESS_ENABLED
-COMPRESS_ENABLED = True
-
 # Boolean that decides if compression should also be done outside of the request/response loop -
 # independent from user requests. This allows to pre-compress CSS and JavaScript files and works
 # just like the automatic compression with the {% compress %} tag.
