@@ -19,7 +19,12 @@ def absolute_uri(request):
     }
 
 def is_mobile(request):
-    user_agent = request.META['HTTP_USER_AGENT']
+    user_agent = request.META.get('HTTP_USER_AGENT') or request.META.get('HTTP_AGENT')
+
     return {
-        'is_mobile': bool(re.search('Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|SymbianOS|Windows Phone|Mobile', user_agent, re.IGNORECASE))
+        'is_mobile': bool(re.search(
+                'Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|SymbianOS|Windows Phone|Mobile',
+                user_agent,
+                re.IGNORECASE
+            )) if user_agent else False
     }
