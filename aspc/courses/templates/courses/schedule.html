@@ -5,15 +5,24 @@
 {% block "title" %}Schedule{% endblock %}
 {% block "page_title" %}Schedule{% endblock %}
 {% block og_url %}http://aspc.pomona.edu/courses/schedule/{% endblock %}
-{% block "head" %}
-    {{ block.super }}
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="{% static "js/date.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/jquery.weekcalendar.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/course_calendar.js" %}"></script>
-    <script type="text/javascript" charset="utf-8">
-    {% block startup_script %}
+
+{% block "css" %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static "css/coursesearch/smoothness/jquery-ui.css" %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static "css/coursesearch/jquery.weekcalendar.css" %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static "css/coursesearch/calendar.css" %}"/>
+{% endblock %}
+
+{% block "js" %}
+  {{ block.super }}
+  <script type="text/javascript" src="{% static "js/jquery-1.7.1.min.js" %}"></script>
+  <script type="text/javascript" src="{% static "js/jquery-ui-1.8.18.min.js" %}"></script>
+  <script type="text/javascript" src="{% static "js/date.js" %}"></script>
+  <script type="text/javascript" src="{% static "js/jquery.weekcalendar.js" %}"></script>
+  <script type="text/javascript" src="{% static "js/course_calendar.js" %}"></script>
+  <script type="text/javascript" charset="utf-8">
+  // TODO: Please modularize this!
+  {% block startup_script %}
     var die = false;
     if (jQuery.browser.msie) {
       var IEv = parseInt(jQuery.browser.version);
@@ -28,15 +37,8 @@
         loadCalendar();
       });
     }
-    {% endblock %}
-    </script>
-{% endblock %}
-
-{% block "css" %}
-  {{ block.super }}
-  <link rel="stylesheet" type="text/css" href="{% static "css/coursesearch/smoothness/jquery-ui.css" %}"/>
-  <link rel="stylesheet" type="text/css" href="{% static "css/coursesearch/jquery.weekcalendar.css" %}"/>
-  <link rel="stylesheet" type="text/css" href="{% static "css/coursesearch/calendar.css" %}"/>
+  {% endblock %}
+  </script>
 {% endblock %}
 
 {% block "content_class" %}{{ block.super }} wide{% endblock %}

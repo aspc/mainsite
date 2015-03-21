@@ -1,8 +1,6 @@
 {% extends 'housing/base.html' %}
 {% load room_tools %}
-{% block "head" %}
-{{ block.super }}
-{% endblock "head" %}
+
 {% block "page_title" %}search{% if result_view %} results{% endif %}{% endblock "page_title" %}
 
 {% block "housing_breadcrumbs" %}
@@ -20,7 +18,7 @@
 			</div>
 		{% endfor %}
 		<p><input type="submit" value="search"></p>
-		
+
 	</form>
 </div>
 

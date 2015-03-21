@@ -5,33 +5,36 @@
 {% block "ogdesc" %}Information on upcoming events for Claremont Colleges students.{% endblock %}
 {% block "metadesc" %}Information on upcoming events for Claremont Colleges students.{% endblock %}
 
-{% block "head" %}
-{{ block.super }}
-<script type="text/javascript" src="{% static "js/events.js" %}"></script>
-<script type="text/javascript" src="{% static "js/event_calendar.min.js" %}"></script>
-<script type="text/javascript" src="{% static "js/jquery-ui-datepicker.min.js" %}"></script>
-<script type="text/javascript" src="{% static "js/jquery-ui-datepicker-addon.js" %}"></script>
-
-<script type="text/javascript">
-ASPC.Events.calendar_data.events = {{ events|safe }};
-{% if earliest_event_time %}
-ASPC.Events.calendar_data.earliest_event_time = {{earliest_event_time|date:"G"}};
-{% else %}
-ASPC.Events.calendar_data.earliest_event_time = 0;
-{% endif %}
-{% if latest_event_time %}
-ASPC.Events.calendar_data.latest_event_time = {{latest_event_time|date:"G"}};
-{% else %}
-ASPC.Events.calendar_data.latest_event_time = 23;
-{% endif %}
-</script>
+{% block "css" %}
+	{{ block.super }}
+	<link rel="stylesheet" type="text/css" href="{% static "css/events/event_calendar.css" %}"/>
+	<link rel="stylesheet" type="text/css" href="{% static "css/events/jquery-ui-datepicker.css" %}"/>
+	<link rel="stylesheet" type="text/css" href="{% static "css/events/event_calendar.print.css" %}" media="print"/>
 {% endblock %}
 
-{% block "css" %}
-  {{ block.super }}
-  <link rel="stylesheet" type="text/css" href="{% static "css/events/event_calendar.css" %}"/>
-  <link rel="stylesheet" type="text/css" href="{% static "css/events/jquery-ui-datepicker.css" %}"/>
-  <link rel="stylesheet" type="text/css" href="{% static "css/events/event_calendar.print.css" %}" media="print"/>
+{% block "js" %}
+	{{ block.super }}
+	<script type="text/javascript" src="{% static "js/events.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/event_calendar.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/jquery-ui-datepicker.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/jquery-ui-datepicker-addon.js" %}"></script>
+{% endblock %}
+
+{% block "nocompress_js" %}
+	{{ block.super }}
+	<script type="text/javascript">
+	ASPC.Events.calendar_data.events = {{ events|safe }};
+	{% if earliest_event_time %}
+	ASPC.Events.calendar_data.earliest_event_time = {{earliest_event_time|date:"G"}};
+	{% else %}
+	ASPC.Events.calendar_data.earliest_event_time = 0;
+	{% endif %}
+	{% if latest_event_time %}
+	ASPC.Events.calendar_data.latest_event_time = {{latest_event_time|date:"G"}};
+	{% else %}
+	ASPC.Events.calendar_data.latest_event_time = 23;
+	{% endif %}
+	</script>
 {% endblock %}
 
 {% block "outer_content" %}

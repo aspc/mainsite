@@ -73,8 +73,12 @@ COMPRESS_OFFLINE = True
 # http://django-compressor.readthedocs.org/en/latest/settings/#django.conf.settings.COMPRESS_OUTPUT_DIR
 COMPRESS_OUTPUT_DIR = 'compressed'
 
-# Compression filters to apply to the concatenated CSS (e.g. minifications)
-# http://django-compressor.readthedocs.org/en/latest/settings/#django.conf.settings.COMPRESS_CSS_FILTERS
+# Compression filters to apply to the concatenated JS (e.g. minifications)
+# http://django-compressor.readthedocs.org/en/latest/settings/?highlight=cache#django.conf.settings.COMPRESS_JS_FILTERS
+COMPRESS_CSS_FILTERS = [
+    'compressor.filters.jsmin.SlimItFilter'
+]
+
 COMPRESS_CSS_FILTERS = [
     'compressor.filters.cssmin.CSSMinFilter'
 ]

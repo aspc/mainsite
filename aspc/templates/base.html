@@ -21,10 +21,6 @@
     <meta property="og:site_name" content="ASPC - {% block "ogtitle" %}The Associated Students of Pomona College{% endblock %}">
     <meta property="fb:page_id" content="171112626308633">
     <meta property="og:description" content="{% block "ogdesc" %}ASPC exists to provide for reasonable and effective student participation in the governance of the College and provide a governance structure for the students of Pomona College. ASPC also provides various services, including club funding, Course Reviews, Housing Reviews, and the Coop Fountain and Store.{% endblock %}">
-    {% include "settings.js.html" %}
-    {% include "analytics_code.html" %}
-    {% block "head" %}
-    {% endblock %}
 
     {% compress css %}
       {% block "css" %}
@@ -80,6 +76,16 @@
     <p>&copy; 2015 Associated Students of Pomona College</p>
     <p>Directory and course information provided by and copyright Pomona College.</p>
     <p>Created by the <a href="http://aspc.pomona.edu/senate/digital-media-programming/">ASPC Digital Media Group</a><br>Joseph Long &rsquo;14, Matt Dahl  &rsquo;17, Dima Smirnov  &rsquo;17.</p>
+
+    {% compress js %}
+      {% block "js" %}
+        {% include "analytics_code.html" %}
+      {% endblock %}
+    {% endcompress %}
+
+    {% block "nocompress_js" %}
+      {% include "settings.js.html" %}
+    {% endblock %}
   </footer>
   </div>
   </body>

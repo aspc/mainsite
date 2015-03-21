@@ -6,10 +6,6 @@
 {% block "title" %}Events Calendar{% endblock %}
 {% block "page_title" %}Events Calendar{% endblock %}
 
-{% block "head" %}
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-{% endblock %}
-
 {% block "css" %}
   {{ block.super }}
   <link rel="stylesheet" type="text/css" href="{% static "css/events/events.css" %}"/>
@@ -17,6 +13,11 @@
   {% if is_mobile %}
   	<link rel="stylesheet" type="text/css" href="{% static "css/events/events.mobile.css" %}"/>
   {% endif %}
+{% endblock %}
+
+{% block "js" %}
+	{{ block.super }}
+	<script type="text/javascript" src="{% static "js/jquery-2.0.3.min.js" %}"></script>
 {% endblock %}
 
 {% block "breadcrumbs" %}
