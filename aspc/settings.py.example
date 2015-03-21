@@ -64,13 +64,15 @@ EMAIL_FILE_PATH = os.path.join(PROJECT_ROOT, "temp")
 # Credentials for RabbitMQ (Celery)
 BROKER_URL = "amqp://developer:developer@localhost:5672//"
 
-# Override the COURSE_API_URL settings with API URL
-
+# Set this value to be able to fetch data from Pomona's course API
 COURSE_API_URL = ''
 
-# Override Twitter API keys with real values
-
+# Set these values to make Twitter API calls (e.g. for the activitystream app)
 TWITTER_CONSUMER_KEY = ''
 TWITTER_CONSUMER_SECRET = ''
 TWITTER_ACCESS_TOKEN = ''
 TWITTER_ACCESS_TOKEN_SECRET = ''
+
+# Set these values to make Facebook API calls (e.g. for the events app)
+FACEBOOK_APP_ID = ''
+FACEBOOK_APP_SECRET = ''
