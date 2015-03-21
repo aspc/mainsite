@@ -1,20 +1,25 @@
 {% extends "base.html" %}
 
 {% load staticfiles %}
+{% load compress %}
 {% load activityfeed %}
 
 {% block "head" %}
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="{% static "js/home.js" %}"></script>
+{% endblock %}
+
+{% block "css" %}
+  {{ block.super }}
   <link rel="stylesheet" type="text/css" href="{% static "css/home/events.css" %}"/>
   <link rel="stylesheet" type="text/css" href="{% static "css/home/blog.css" %}"/>
   <link rel="stylesheet" type="text/css" href="{% static "css/home/activity_stream.css" %}"/>
+
   {% if is_mobile %}
     <link rel="stylesheet" type="text/css" href="{% static "css/home/events.mobile.css" %}"/>
     <link rel="stylesheet" type="text/css" href="{% static "css/home/blog.mobile.css" %}"/>
     <link rel="stylesheet" type="text/css" href="{% static "css/home/activity_stream.mobile.css" %}"/>
   {% endif %}
-
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-  <script src="{% static "js/home.js" %}"></script>
 {% endblock %}
 
 {% block "content_prenav" %}

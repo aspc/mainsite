@@ -7,10 +7,6 @@
 
 {% block "head" %}
 {{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% static "css/events/event_calendar.css" %}"/>
-<link rel="stylesheet" type="text/css" href="{% static "css/events/event_calendar.print.css" %}" media="print"/>
-<link rel="stylesheet" type="text/css" href="{% static "css/events/jquery-ui-datepicker.css" %}"/>
-
 <script type="text/javascript" src="{% static "js/events.js" %}"></script>
 <script type="text/javascript" src="{% static "js/event_calendar.min.js" %}"></script>
 <script type="text/javascript" src="{% static "js/jquery-ui-datepicker.min.js" %}"></script>
@@ -29,6 +25,13 @@ ASPC.Events.calendar_data.latest_event_time = {{latest_event_time|date:"G"}};
 ASPC.Events.calendar_data.latest_event_time = 23;
 {% endif %}
 </script>
+{% endblock %}
+
+{% block "css" %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static "css/events/event_calendar.css" %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static "css/events/jquery-ui-datepicker.css" %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static "css/events/event_calendar.print.css" %}" media="print"/>
 {% endblock %}
 
 {% block "outer_content" %}

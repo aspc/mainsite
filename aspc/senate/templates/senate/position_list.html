@@ -7,7 +7,8 @@
 {% block "title" %}Positions{% endblock %}
 {% block "page_title" %}Positions{% endblock %}
 
-{% block "head" %}
+{% block "css" %}
+  {{ block.super }}
   <link rel="stylesheet" type="text/css" href="{% static "css/senate/positions.css" %}"/>
 {% endblock %}
 

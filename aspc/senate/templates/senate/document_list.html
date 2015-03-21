@@ -7,7 +7,8 @@
 {% block "title" %}Senate Document Archive{% endblock %}
 {% block "page_title" %}Senate Document Archive{% endblock %}
 
-{% block "head" %}
+{% block "css" %}
+  {{ block.super }}
   <link rel="stylesheet" type="text/css" href="{% static "css/senate/docarchive.css" %}"/>
 {% endblock %}
 

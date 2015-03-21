@@ -10,11 +10,13 @@
 {% block "ogdesc" %}{{ page.summary }}{% endblock %}
 {% block "metadesc" %}{{ page.summary }}{% endblock %}
 
-{% block "head" %}
-  {% if page.stylesheet %}
-    <link rel="stylesheet" type="text/css" href="{% static "css/pages/{{ page.stylesheet }}" %}"/>
-  {% endif %}
-<link rel="stylesheet" type="text/css" href="{% static "css/eatshop/eatshop.css" %}"/>
+{% block "css" %}
+  {{ block.super }}
+    {% if page.stylesheet %}
+      <link rel="stylesheet" type="text/css" href="{% static "css/pages/{{ page.stylesheet }}" %}"/>
+    {% endif %}
+
+    <link rel="stylesheet" type="text/css" href="{% static "css/eatshop/eatshop.css" %}"/>
 {% endblock %}
 
 {% block "content_prenav" %}

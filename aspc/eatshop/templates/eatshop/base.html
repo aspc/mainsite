@@ -6,11 +6,13 @@
 {% block "title" %}Dining and Shopping{% endblock %}
 {% block "page_title" %}Dining and Shopping{% endblock %}
 
-{% block "head" %}
-	<link rel="stylesheet" type="text/css" href="{% static "css/eatshop/eatshop.css" %}"/>
-	{% if is_mobile %}
-		<link rel="stylesheet" type="text/css" href="{% static "css/eatshop/eatshop.mobile.css" %}"/>
-	{% endif %}
+{% block "css" %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static "css/eatshop/eatshop.css" %}"/>
+
+  {% if is_mobile %}
+  	<link rel="stylesheet" type="text/css" href="{% static "css/eatshop/eatshop.mobile.css" %}"/>
+  {% endif %}
 {% endblock %}
 
 {% block "breadcrumbs" %}

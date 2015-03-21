@@ -4,9 +4,10 @@
 
 {% block "page_class" %}news{% endblock %}
 
-{% block "head" %}
-	<link rel="stylesheet" type="text/css" href="{% static "css/blog/blog.css" %}"/>
-	{% if is_mobile %}
-		<link rel="stylesheet" type="text/css" href="{% static "css/blog/blog.mobile.css" %}"/>
-	{% endif %}
+{% block "css" %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static "css/blog/blog.css" %}"/>
+  {% if is_mobile %}
+  	<link rel="stylesheet" type="text/css" href="{% static "css/blog/blog.mobile.css" %}"/>
+  {% endif %}
 {% endblock %}

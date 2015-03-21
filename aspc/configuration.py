@@ -47,7 +47,7 @@ ALLOWED_HOSTS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'compressor.finders.CompressorFinder',
 )
 
 # Additional locations of static files
@@ -57,6 +57,17 @@ STATICFILES_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(PROJECT_ROOT, 'static'),
 )
+
+# Boolean that decides if compression will happen. To test compression when DEBUG
+# is True COMPRESS_ENABLED must also be set to True.
+# http://django-compressor.readthedocs.org/en/latest/settings/#django.conf.settings.COMPRESS_ENABLED
+COMPRESS_ENABLED = True
+
+# Compression filters to apply to the concatenated CSS (e.g. minifications)
+# http://django-compressor.readthedocs.org/en/latest/settings/#django.conf.settings.COMPRESS_CSS_FILTERS
+COMPRESS_CSS_FILTERS = [
+    'compressor.filters.cssmin.CSSMinFilter'
+]
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -117,6 +128,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'djcelery',
     'stdimage',
+    'compressor',
     'aspc.folio',
     'aspc.senate',
     'aspc.blog',

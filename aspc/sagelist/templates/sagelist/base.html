@@ -6,11 +6,13 @@
 {% block "title" %}SageBooks {% block "subtitle" %}{% endblock %}{% endblock %}
 {% block "page_title" %}SageBooks Textbook Sales{% endblock %}
 
-{% block "head" %}
-	<link rel="stylesheet" type="text/css" href="{% static "css/sagelist/sagelist.css" %}"/>
-	{% if is_mobile %}
-		<link rel="stylesheet" type="text/css" href="{% static "css/sagelist/sagelist.mobile.css" %}"/>
-	{% endif %}
+{% block "css" %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static "css/sagelist/sagelist.css" %}"/>
+
+  {% if is_mobile %}
+  	<link rel="stylesheet" type="text/css" href="{% static "css/sagelist/sagelist.mobile.css" %}"/>
+  {% endif %}
 {% endblock %}
 
 {% block "breadcrumbs" %}

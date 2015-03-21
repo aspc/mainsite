@@ -1,5 +1,6 @@
 {% extends "base_page.html" %}
 
+{% load compress %}
 {% load staticfiles %}
 
 {% block "ogtitle" %}5C Menu{% endblock %}
@@ -9,9 +10,11 @@
 <span id="mobile_page_title">5C Menu: {{ current_date }}</span>
 {% endblock %}
 
-{% block "head" %}
-	<link rel="stylesheet" type="text/css" href="{% static "css/menu/menu.css" %}"/>
-	{% if is_mobile %}
-		<link rel="stylesheet" type="text/css" href="{% static "css/menu/menu.mobile.css" %}"/>
-	{% endif %}
+{% block "css" %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static "css/menu/menu.css" %}"/>
+
+  {% if is_mobile %}
+  	<link rel="stylesheet" type="text/css" href="{% static "css/menu/menu.mobile.css" %}"/>
+  {% endif %}
 {% endblock %}

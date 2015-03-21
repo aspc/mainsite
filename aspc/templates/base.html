@@ -1,3 +1,4 @@
+{% load compress %}
 {% load staticfiles %}
 
 <!DOCTYPE html>
@@ -5,19 +6,6 @@
   <head>
     <meta charset="utf-8" />
     <title>ASPC &mdash; {% block "title" %}The Associated Students of Pomona College{% endblock %}</title>
-    <link rel="stylesheet" type="text/css" href="{% static "css/base/base.css" %}" media="screen">
-    <link rel="stylesheet" type="text/css" href="{% static "css/base/content.css" %}" media="screen">
-    <link rel="stylesheet" type="text/css" href="{% static "css/base/header.css" %}"/>
-    <link rel="stylesheet" type="text/css" href="{% static "css/base/breadcrumbs.css" %}"/>
-    <link rel="stylesheet" type="text/css" href="{% static "css/base/sidebar.css" %}"/>
-    <link rel="stylesheet" type="text/css" href="{% static "css/base/footer.css" %}"/>
-    {% if is_mobile %}
-      <link rel="stylesheet" type="text/css" href="{% static "css/base/base.mobile.css" %}" media="screen">
-      <link rel="stylesheet" type="text/css" href="{% static "css/base/content.mobile.css" %}" media="screen">
-      <link rel="stylesheet" type="text/css" href="{% static "css/base/header.mobile.css" %}"/>
-      <link rel="stylesheet" type="text/css" href="{% static "css/base/breadcrumbs.mobile.css" %}"/>
-      <link rel="stylesheet" type="text/css" href="{% static "css/base/sidebar.mobile.css" %}"/>
-    {% endif %}
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -37,6 +25,25 @@
     {% include "analytics_code.html" %}
     {% block "head" %}
     {% endblock %}
+
+    {% compress css %}
+      {% block "css" %}
+        <link rel="stylesheet" type="text/css" href="{% static "css/base/base.css" %}">
+        <link rel="stylesheet" type="text/css" href="{% static "css/base/content.css" %}">
+        <link rel="stylesheet" type="text/css" href="{% static "css/base/header.css" %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static "css/base/breadcrumbs.css" %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static "css/base/sidebar.css" %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static "css/base/footer.css" %}"/>
+
+        {% if is_mobile %}
+          <link rel="stylesheet" type="text/css" href="{% static "css/base/base.mobile.css" %}">
+          <link rel="stylesheet" type="text/css" href="{% static "css/base/content.mobile.css" %}">
+          <link rel="stylesheet" type="text/css" href="{% static "css/base/header.mobile.css" %}"/>
+          <link rel="stylesheet" type="text/css" href="{% static "css/base/breadcrumbs.mobile.css" %}"/>
+          <link rel="stylesheet" type="text/css" href="{% static "css/base/sidebar.mobile.css" %}"/>
+        {% endif %}
+      {% endblock %}
+    {% endcompress %}
   </head>
   <body class="{% block "content_class" %}{% endblock %}">
   <header id="aspc_main" class="container">
