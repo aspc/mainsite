@@ -32,7 +32,7 @@
   {% else %}
   <div class="noevents">
     <p>No events today. <a href="{% url "events" %}#event_submission">Submit your event</a> or <a href="{% url "events" %}">see the full calendar...</a></p>
-    <a href="{% url "events" %}#event_submission"><img src="{{ STATIC_URL}}images/submit_event_graphic.png" alt="Submit your event and see it here on the homepage!"></a>
+    <a href="{% url "events" %}#event_submission"><img src="{% static "images/submit_event_graphic.png" %}" alt="Submit your event and see it here on the homepage!"></a>
   </div>
   {% endif %}
 </section>

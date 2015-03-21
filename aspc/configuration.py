@@ -70,8 +70,8 @@ COMPRESS_OUTPUT_DIR = 'compressed'
 
 # Compression filters to apply to the concatenated JS (e.g. minifications)
 # http://django-compressor.readthedocs.org/en/latest/settings/?highlight=cache#django.conf.settings.COMPRESS_JS_FILTERS
-COMPRESS_CSS_FILTERS = [
-    'compressor.filters.jsmin.SlimItFilter'
+COMPRESS_JS_FILTERS = [
+    'compressor.filters.jsmin.JSMinFilter'
 ]
 
 COMPRESS_CSS_FILTERS = [
