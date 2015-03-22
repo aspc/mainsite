@@ -22,6 +22,7 @@
 
 	.group.primary {
 		background-color: #364d68;
+		float: none;
 	}
 
 
@@ -90,7 +91,7 @@
 	/* @group Group blocks */
 
 	.row, .group {
-		width: 21.5em !important;
+		width: 95% !important;
 		margin: 0 auto;
 		clear: both;
 	}
