@@ -88,7 +88,7 @@ ASPC.courses = function () {
 				.fail(my.failedRequestCallback);
 		},
 		/**
-		 * Invoked either by toggleCourse() with a click on a search result, or by a click on the 'x' remove course label
+		 * Only ever invoked by toggleCourse(), either with a click on a search result on a click on the course label 'x'
 		 */
 		removeCourse: function (course_slug) {
 			my.loadingMessageElement.show();
@@ -133,7 +133,16 @@ ASPC.courses = function () {
 					.addClass('course_delete')
 					.text('x')
 					.on('click', function (event) {
-						my.removeCourse(info.course_code_slug);
+						// If the course to be removed is currently visible as a search result too,
+						// we need to call toggleCourse() too to take care of updating that
+						if ($("div[data-course_slug='" + info.course_code_slug + "']")) {
+							my.self.toggleCourse(info.course_code_slug);
+						}
+						// Otherwise, only remove the course itself without worrying about updating
+						// anything else
+						else {
+							my.removeCourse(info.course_code_slug);
+						}
 					});
 
 			if (is_frozen) {
