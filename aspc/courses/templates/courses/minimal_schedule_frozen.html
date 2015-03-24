@@ -1,20 +1,15 @@
 {% extends "courses/schedule.html" %}
-{% block startup_script %}
-	var die = false;
-	if (jQuery.browser.msie) {
-		var IEv = parseInt(jQuery.browser.version);
-		if (IEv <= 7) {
-			var die = true;
-		}
-	}
-	if (die == false){
-		$(document).ready(function() {
-			$('#message').remove();
-			init();
-			loadSavedCalendar({{ schedule.json_encoded|safe }});
-		});
-	}
+
+{% block "nocompress_js" %}
+	{{ block.super }}
+	<script type="text/javascript">
+		// ASPC namespace
+		var ASPC = ASPC || {};
+
+		ASPC.Courses.saved_calendar_data = {{ schedule.json_encoded|safe }};
+	</script>
 {% endblock %}
+
 {% block logo %}{% endblock logo %}
 {% block share_clear %}{% endblock %}
 {% block side_panel %}

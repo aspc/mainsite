@@ -19,29 +19,7 @@
   <script type="text/javascript" src="{% static "js/lib/jquery-ui-1.8.18.min.js" %}"></script>
   <script type="text/javascript" src="{% static "js/lib/date.js" %}"></script>
   <script type="text/javascript" src="{% static "js/lib/jquery.weekcalendar.js" %}"></script>
-  <script type="text/javascript" src="{% static "js/course_calendar.js" %}"></script>
-{% endblock %}
-
-{% block "nocompress_js" %}
-  {{ block.super }}
-  <script type="text/javascript" charset="utf-8">
-  {% block startup_script %}
-    var die = false;
-    if (jQuery.browser.msie) {
-      var IEv = parseInt(jQuery.browser.version);
-      if (IEv <= 7) {
-        var die = true;
-      }
-    }
-    if (die == false){
-      jQuery(document).ready(function() {
-        $('#message').remove();
-        init();
-        loadCalendar();
-      });
-    }
-  {% endblock %}
-  </script>
+  <script type="text/javascript" src="{% static "js/courses.js" %}"></script>
 {% endblock %}
 
 {% block "content_class" %}{{ block.super }} wide{% endblock %}
@@ -55,7 +33,13 @@
   <h2 id="schedule_course_label" class="header">your courses:</h2>
   <ol id="schedule_courses">
   </ol>
-  {% block share_clear %}<h4 id="share_clear"><a id="share_schedule" href="{% url "aspc.courses.views.share_schedule" %}">&#x2191; share</a><a id="download_ical" href="{% url "aspc.courses.views.ical_export" %}">export to calendar</a><a id="clear_schedule">&#x2326; clear</a></h4>{% endblock %}
+  {% block share_clear %}
+  <h4 id="share_clear">
+    <a id="share_schedule" href="{% url "aspc.courses.views.share_schedule" %}">&#x2191; share</a>
+    <a id="download_ical" href="{% url "aspc.courses.views.ical_export" %}">export to calendar</a>
+    <a id="clear_schedule" onclick="ASPC.Courses.clearCalendar()">&#x2326; clear</a>
+  </h4>
+  {% endblock %}
   <div id="calendar"><h2 id="message">Loading...</h2></div>
 </div>
 {% block side_panel %}

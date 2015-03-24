@@ -12,11 +12,13 @@
 			{% else %}&#x2192;&nbsp;&nbsp;&nbsp;&nbsp;&#x21E5;{% endif %}
 			</li>
 	{% endif %}{% endif %}
-{% for c in results.object_list %}
-	<li class="{% cycle 'odd' 'even' %}">
-		{% include "courses/course_list_item.html" %}
-	</li>
-{% endfor %}
+
+	{% for c in results.object_list %}
+		<li class="{% cycle 'odd' 'even' %}">
+			{% include "courses/course_list_item.html" %}
+		</li>
+	{% endfor %}
+
 	{% if results.paginator.count != 0 %}{% if results.paginator.num_pages > 1 %}
 		<li class="paginator">
 			{% if results.has_previous %}<a href="{{ path }}&amp;page=1">&#x21E4;</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{{ path }}&amp;page={{ results.previous_page_number }}">&#x2190;</a>
