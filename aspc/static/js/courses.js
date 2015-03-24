@@ -14,8 +14,11 @@ ASPC.courses = function () {
 		CURRENT_PAGE: ASPC.Settings.pathname,
 		ADD_TO: '+ add to schedule',
 		REMOVE_FROM: '- remove from schedule',
+		calendarElement: $('#calendar'),
+		loadingMessageElement: $('#loading_message'),
+		errorMessageElement: $('#error_message'),
 		initCalendar: function () {
-			$('#calendar').weekCalendar({
+			my.calendarElement.weekCalendar({
 				businessHours: {
 					start: 8,
 					end: 24,
@@ -28,7 +31,7 @@ ASPC.courses = function () {
 				allowCalEventOverlap: true,
 				overlapEventsSeparate: true,
 				height: function (calendar) {
-					return $('table.wc-time-slots').height() + $('#calendar').find(".wc-toolbar").outerHeight() + $('#calendar').find(".wc-header").outerHeight();
+					return $('table.wc-time-slots').height() + my.calendarElement.find(".wc-toolbar").outerHeight() + my.calendarElement.find(".wc-header").outerHeight();
 				},
 				eventHeader: function (calEvent, calendar) {
 					return calEvent.title;
@@ -55,7 +58,7 @@ ASPC.courses = function () {
 			});
 
 			// Fake the date so the calendar displays events visibly
-			$('#calendar').weekCalendar('gotoDate', new Date(2012, 8, 3, 0, 0, 0, 0));
+			my.calendarElement.weekCalendar('gotoDate', new Date(2012, 8, 3, 0, 0, 0, 0));
 		},
 		loadCalendar: function () {
 			$.get(my.CURRENT_PAGE + 'load/')
@@ -74,11 +77,11 @@ ASPC.courses = function () {
 		 * Only ever invoked by toggleCourse() with a click on a search result
 		 */
 		addCourse: function (course_slug) {
-			$('#loading_message').show();
+			my.loadingMessageElement.show();
 
 			$.get(my.CURRENT_PAGE + course_slug + '/add/')
 				.done(function (event_data) {
-					$('#loading_message').hide();
+					my.loadingMessageElement.hide();
 
 					my.addCourseDataToCalendar(event_data, false);
 				})
@@ -88,14 +91,14 @@ ASPC.courses = function () {
 		 * Invoked either by toggleCourse() with a click on a search result, or by a click on the 'x' remove course label
 		 */
 		removeCourse: function (course_slug) {
-			$('#loading_message').show();
+			my.loadingMessageElement.show();
 
 			$.get(my.CURRENT_PAGE + course_slug + '/remove/')
 				.done(function (event_ids) {
-					$('#loading_message').hide();
+					my.loadingMessageElement.hide();
 
 					$.each(event_ids, function (index, event_id) {
-						$('#calendar').weekCalendar('removeEvent', event_id);
+						my.calendarElement.weekCalendar('removeEvent', event_id);
 					});
 
 					// Remove the indicator label
@@ -109,7 +112,7 @@ ASPC.courses = function () {
 
 			// Add each event meeting time to the calendar
 			$.each(events, function (index, calendar_event) {
-				$('#calendar').weekCalendar('updateEvent', {
+				my.calendarElement.weekCalendar('updateEvent', {
 					start: Date.parse(calendar_event.start),
 					end: Date.parse(calendar_event.end),
 					title: calendar_event.title,
@@ -146,9 +149,9 @@ ASPC.courses = function () {
 			}
 		},
 		failedRequestCallback: function () {
-			$('#error_message').show();
+			my.errorMessageElement.show();
 			window.setTimeout(function () {
-				$('#error_message').hide();
+				my.errorMessageElement.hide();
 			}, 5000);
 		}
 	};
@@ -163,7 +166,7 @@ ASPC.courses = function () {
 		}
 
 		// Remove the loading message
-		$('#loading_message').hide();
+		my.loadingMessageElement.hide();
 
 		// Init the calendar widget
 		my.initCalendar();
@@ -213,12 +216,12 @@ ASPC.courses = function () {
 	 * @description Clears the calendar of all added courses
 	 */
 	my.self.clearCalendar = function () {
-		$('#loading_message').show();
+		my.loadingMessageElement.show();
 
 		$.get(my.CURRENT_PAGE + 'clear/')
 			.done(function (data) {
-				$('#loading_message').hide();
-				$('#calendar').weekCalendar('clear');
+				my.loadingMessageElement.hide();
+				my.calendarElement.weekCalendar('clear');
 				window.location.replace(my.CURRENT_PAGE);
 			})
 			.fail(my.failedRequestCallback);
@@ -227,6 +230,7 @@ ASPC.courses = function () {
 	return my.self;
 };
 
-ASPC.Courses = new ASPC.courses();
-
-$('document').ready(ASPC.Courses.init);
+$('document').ready(function () {
+	ASPC.Courses = new ASPC.courses();
+	ASPC.Courses.init();
+});
