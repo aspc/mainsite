@@ -40,7 +40,10 @@
     <a id="clear_schedule" onclick="ASPC.Courses.clearCalendar()">&#x2326; clear</a>
   </h4>
   {% endblock %}
-  <div id="calendar"><h2 id="message">Loading...</h2></div>
+  <div id="calendar">
+    <h2 id="loading_message">Loading...</h2>
+    <h2 id="error_message">Error saving calendar data!</h2>
+  </div>
 </div>
 {% block side_panel %}
   <div id="side_panel" class="panel">

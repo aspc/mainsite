@@ -449,10 +449,14 @@ h4#share_clear {
 }
 
 
-h2#message {
+h2#loading_message, h2#error_message {
 	padding: 0.3em;
 	color: #ccc;
 	text-align: center;
+}
+
+h2#error_message {
+	display: none;
 }
 
 a#share_schedule, a#clear_schedule {

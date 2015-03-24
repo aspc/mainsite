@@ -70,22 +70,38 @@ ASPC.courses = function () {
 				my.addCourseDataToCalendar(event_data, true);
 			});
 		},
+		/**
+		 * Only ever invoked by toggleCourse() with a click on a search result
+		 */
 		addCourse: function (course_slug) {
+			$('#loading_message').show();
+
 			$.get(my.CURRENT_PAGE + course_slug + '/add/')
 				.done(function (event_data) {
+					$('#loading_message').hide();
+
 					my.addCourseDataToCalendar(event_data, false);
-				});
+				})
+				.fail(my.failedRequestCallback);
 		},
+		/**
+		 * Invoked either by toggleCourse() with a click on a search result, or by a click on the 'x' remove course label
+		 */
 		removeCourse: function (course_slug) {
+			$('#loading_message').show();
+
 			$.get(my.CURRENT_PAGE + course_slug + '/remove/')
 				.done(function (event_ids) {
+					$('#loading_message').hide();
+
 					$.each(event_ids, function (index, event_id) {
 						$('#calendar').weekCalendar('removeEvent', event_id);
 					});
 
 					// Remove the indicator label
 					$('li#indicator_' + course_slug).remove();
-				});
+				})
+				.fail(my.failedRequestCallback);
 		},
 		addCourseDataToCalendar: function (course_data, is_frozen) {
 			var events = course_data.events,
@@ -128,6 +144,12 @@ ASPC.courses = function () {
 				a2.appendTo(li);
 				course_label_list.append(li);
 			}
+		},
+		failedRequestCallback: function () {
+			$('#error_message').show();
+			window.setTimeout(function () {
+				$('#error_message').hide();
+			}, 5000);
 		}
 	};
 
@@ -141,7 +163,7 @@ ASPC.courses = function () {
 		}
 
 		// Remove the loading message
-		$('#message').remove();
+		$('#loading_message').hide();
 
 		// Init the calendar widget
 		my.initCalendar();
@@ -158,6 +180,7 @@ ASPC.courses = function () {
 
 	/**
 	 * @public
+	 * @description Handler for toggling between "add"ing and "remove"ing a course in the search result list
 	 */
 	my.self.toggleCourse = function (course_slug) {
 		var search_result_div = $("div[data-course_slug='" + course_slug + "']");
@@ -187,13 +210,18 @@ ASPC.courses = function () {
 
 	/**
 	 * @public
+	 * @description Clears the calendar of all added courses
 	 */
 	my.self.clearCalendar = function () {
+		$('#loading_message').show();
+
 		$.get(my.CURRENT_PAGE + 'clear/')
 			.done(function (data) {
+				$('#loading_message').hide();
 				$('#calendar').weekCalendar('clear');
 				window.location.replace(my.CURRENT_PAGE);
-			});
+			})
+			.fail(my.failedRequestCallback);
 	};
 
 	return my.self;
