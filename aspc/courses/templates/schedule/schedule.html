@@ -1,0 +1,70 @@
+{% extends "courses/base.html" %}
+
+{% load staticfiles %}
+
+{% block "title" %}Schedule{% endblock %}
+{% block "page_title" %}Schedule{% endblock %}
+{% block og_url %}http://aspc.pomona.edu/courses/schedule/{% endblock %}
+
+{% block "css" %}
+	{{ block.super }}
+	<link rel="stylesheet" type="text/css" href="{% static "css/coursesearch/smoothness/jquery-ui.css" %}"/>
+	<link rel="stylesheet" type="text/css" href="{% static "css/coursesearch/jquery.weekcalendar.css" %}"/>
+	<link rel="stylesheet" type="text/css" href="{% static "css/coursesearch/calendar.css" %}"/>
+{% endblock %}
+
+{% block "js" %}
+	{{ block.super }}
+	<script type="text/javascript" src="{% static "js/lib/jquery-1.7.1.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/lib/jquery-ui-1.8.18.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/lib/date.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/lib/jquery.weekcalendar.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/courses.js" %}"></script>
+{% endblock %}
+
+{% block "content_class" %}
+	{{ block.super }}
+	wide
+{% endblock %}
+
+{% block "courses_breadcrumbs" %}
+	<li>
+		<a href="{% url "aspc.courses.views.schedule" %}">Schedule</a>
+	</li>
+{% endblock %}
+
+{% block "outer_content" %}
+	<div id="schedule_panel" class="panel {% block schedule_panel_class %}{% endblock %}">
+		<h2 id="schedule_course_label" class="header">your courses:</h2>
+		<ol id="schedule_courses">
+		</ol>
+		{% block share_clear %}
+			<h4 id="share_clear">
+				<a id="share_schedule" href="{% url "aspc.courses.views.share_schedule" %}">&#x2191; share</a>
+				<a id="download_ical" href="{% url "aspc.courses.views.ical_export" %}">export to calendar</a>
+				<a id="clear_schedule" onclick="ASPC.Courses.clearCalendar()">&#x2326; clear</a>
+			</h4>
+		{% endblock %}
+		<div id="calendar">
+			<h2 id="loading_message">Loading...</h2>
+			<h2 id="error_message">Error saving calendar data!</h2>
+		</div>
+	</div>
+	{% block side_panel %}
+		<div id="side_panel" class="panel">
+			<h2 class="header">search:</h2>
+			{% with "schedule" as context %}
+				<div id="schedule_warning_message">
+					<span style="color: blue;">There have been confirmed reports that some Spring 2015 course offerings are not being returned by this search.</span>
+					<br>
+					<br>
+					<span style="color: red;">Be sure to review the schedule on My.Pomona to make sure you have seen all options for your spring course schedule.</span>
+				</div>
+				{% include "includes/search_form.html" %}
+				{% if results %}
+					{% include "includes/search_results.html" %}
+				{% endif %}
+			{% endwith %}
+		</div>
+	{% endblock %}
+{% endblock %}
