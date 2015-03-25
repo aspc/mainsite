@@ -1,97 +1,76 @@
-# encoding: utf-8
-import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
-class Migration(SchemaMigration):
-
-    def forwards(self, orm):
-        
-        # Adding model 'Position'
-        db.create_table('senate_position', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=80)),
-            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('active', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('sort_order', self.gf('django.db.models.fields.PositiveSmallIntegerField')(blank=True)),
-        ))
-        db.send_create_signal('senate', ['Position'])
-
-        # Adding model 'Appointment'
-        db.create_table('senate_appointment', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('position', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['senate.Position'])),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('start', self.gf('django.db.models.fields.DateField')()),
-            ('end', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
-        ))
-        db.send_create_signal('senate', ['Appointment'])
+from django.db import models, migrations
+from django.conf import settings
 
 
-    def backwards(self, orm):
-        
-        # Deleting model 'Position'
-        db.delete_table('senate_position')
+class Migration(migrations.Migration):
 
-        # Deleting model 'Appointment'
-        db.delete_table('senate_appointment')
+    dependencies = [
+        ('auth', '0001_initial'),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+    ]
 
-
-    models = {
-        'auth.group': {
-            'Meta': {'object_name': 'Group'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '80'}),
-            'permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'})
-        },
-        'auth.permission': {
-            'Meta': {'ordering': "('content_type__app_label', 'content_type__model', 'codename')", 'unique_together': "(('content_type', 'codename'),)", 'object_name': 'Permission'},
-            'codename': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['contenttypes.ContentType']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
-        },
-        'auth.user': {
-            'Meta': {'object_name': 'User'},
-            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
-            'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Group']", 'symmetrical': 'False', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'is_superuser': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
-            'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
-        },
-        'contenttypes.contenttype': {
-            'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
-            'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
-        },
-        'senate.appointment': {
-            'Meta': {'ordering': "['start', 'position']", 'object_name': 'Appointment'},
-            'end': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'position': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['senate.Position']"}),
-            'start': ('django.db.models.fields.DateField', [], {}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
-        },
-        'senate.position': {
-            'Meta': {'ordering': "['title']", 'object_name': 'Position'},
-            'active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'appointments': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.User']", 'through': "orm['senate.Appointment']", 'symmetrical': 'False'}),
-            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'sort_order': ('django.db.models.fields.PositiveSmallIntegerField', [], {'blank': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '80'})
-        }
-    }
-
-    complete_apps = ['senate']
+    operations = [
+        migrations.CreateModel(
+            name='Appointment',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(help_text=b'The name to display on the Senate Positions page', max_length=40)),
+                ('login_id', models.CharField(max_length=20, null=True, verbose_name=b'Login ID', blank=True)),
+                ('start', models.DateField()),
+                ('end', models.DateField(null=True, blank=True)),
+                ('bio', models.TextField(null=True, blank=True)),
+            ],
+            options={
+                'ordering': ['-end', 'position__sort_order', 'name'],
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Document',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('title', models.CharField(max_length=255)),
+                ('uploaded_at', models.DateTimeField(auto_now_add=True)),
+                ('authors', models.TextField(blank=True)),
+                ('description', models.TextField(blank=True)),
+                ('file', models.FileField(upload_to=b'senate/documents/%Y/%m/%d/')),
+                ('uploaded_by', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+            ],
+            options={
+                'ordering': ['uploaded_at', 'title'],
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Position',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('title', models.CharField(help_text=b'The official title of the position', max_length=80)),
+                ('email', models.EmailField(max_length=75, null=True, blank=True)),
+                ('description', models.TextField(help_text=b'(optional) Description of the position', blank=True)),
+                ('active', models.BooleanField(default=True, help_text=b'Whether or not a position is still active (for display in the list of Senate positions)')),
+                ('sort_order', models.PositiveSmallIntegerField(help_text=b'Sort ordering', blank=True)),
+                ('appointments', models.ManyToManyField(help_text=b'Current and past appointees to this position', to=settings.AUTH_USER_MODEL, through='senate.Appointment')),
+                ('groups', models.ManyToManyField(help_text=b'Groups that people holding this position should be added to assign the correct permissions.', to='auth.Group', blank=True)),
+            ],
+            options={
+                'ordering': ['sort_order', 'title'],
+            },
+            bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='appointment',
+            name='position',
+            field=models.ForeignKey(to='senate.Position'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='appointment',
+            name='user',
+            field=models.ForeignKey(blank=True, to=settings.AUTH_USER_MODEL, null=True),
+            preserve_default=True,
+        ),
+    ]

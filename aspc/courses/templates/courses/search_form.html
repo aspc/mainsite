@@ -4,11 +4,11 @@
     <p>during the {{ form.term }} term</p>
 	<p>in the {{ form.department }} department</p>
 	<p>satisfying the {{ form.requirement_area }} requirement</p>
-	<p>meets {{ form.only_at_least }} on {{ form.m }} 
+	<p>meets {{ form.only_at_least }} on {{ form.m }}
 		Mon, {{ form.t }} Tues, {{ form.w }} Wed, {{ form.r }} Thurs, {{ form.f }} Fri</p>
-	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;after {{ form.start_range }}{% if form.start_range.errors %}<span class="error">X</span>{% endif %} 
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;after {{ form.start_range }}{% if form.start_range.errors %}<span class="error">X</span>{% endif %}
 		and before {{ form.end_range }}{% if form.end_range.errors %}<span class="error">X</span>{% endif %} <span class="helptext">(ex: 1:00pm)</span></p>
-	<p id="campus_icons">at 
+	<p id="campus_icons">at
 	  {{ form.c_po }} <span class="campus_icon campus_PO">PO</span>
 	  {{ form.c_sc }} <span class="campus_icon campus_SC">SC</span>
 		{{ form.c_cm }} <span class="campus_icon campus_CMC">CMC</span>
@@ -21,6 +21,6 @@
 	<p>taught by {{ form.instructor }} for {{ form.credit }} credit</p>
 	<p>with the keywords {{ form.keywords }}</p>
   <!--<p>including only courses with seats available {{ form.spots_left }}</p>-->
-	<input id="submit" type="submit" value="go">{% if context == "schedule" %}<a href="{% url "aspc.courses.views.schedule" %}" id="reset">clear search</a>{% else %}<a href="{% url "aspc.courses.views.search" %}" id="reset">start over</a>{% endif %}
+	<input id="submit" type="submit" value="go">{% if ctx == "schedule" %}<a href="{% url "aspc.courses.views.schedule" %}" id="reset">clear search</a>{% else %}<a href="{% url "aspc.courses.views.search" %}" id="reset">start over</a>{% endif %}
 </form>
 </div>

@@ -1,38 +1,28 @@
 # -*- coding: utf-8 -*-
-from south.utils import datetime_utils as datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'Menu'
-        db.create_table(u'menu_menu', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('dining_hall', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('meal', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('day', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('food_items', self.gf('django.db.models.fields.TextField')()),
-        ))
-        db.send_create_signal(u'menu', ['Menu'])
+    dependencies = [
+    ]
 
-
-    def backwards(self, orm):
-        # Deleting model 'Menu'
-        db.delete_table(u'menu_menu')
-
-
-    models = {
-        u'menu.menu': {
-            'Meta': {'ordering': "('day', 'dining_hall', 'meal')", 'object_name': 'Menu'},
-            'day': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'dining_hall': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'food_items': ('django.db.models.fields.TextField', [], {}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'meal': ('django.db.models.fields.CharField', [], {'max_length': '255'})
-        }
-    }
-
-    complete_apps = ['menu']
+    operations = [
+        migrations.CreateModel(
+            name='Menu',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('dining_hall', models.CharField(max_length=255, choices=[(b'frank', b'Frank'), (b'frary', b'Frary'), (b'oldenborg', b'Oldenborg'), (b'scripps', b'Scripps'), (b'mudd', b'Mudd'), (b'cmc', b'CMC'), (b'pitzer', b'Pitzer')])),
+                ('meal', models.CharField(max_length=255, choices=[(b'breakfast', b'Breakfast'), (b'lunch', b'Lunch'), (b'dinner', b'Dinner'), (b'brunch', b'Brunch')])),
+                ('day', models.CharField(max_length=255, choices=[(b'mon', b'Monday'), (b'tue', b'Tuesday'), (b'wed', b'Wednesday'), (b'thu', b'Thursday'), (b'fri', b'Friday'), (b'sat', b'Saturday'), (b'sun', b'Sunday')])),
+                ('food_items', models.TextField()),
+            ],
+            options={
+                'ordering': ('day', 'dining_hall', 'meal'),
+                'verbose_name_plural': 'Menus',
+            },
+            bases=(models.Model,),
+        ),
+    ]

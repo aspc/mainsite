@@ -109,8 +109,8 @@ class Section(models.Model):
     description = models.TextField(blank=True, null=True)
     note = models.TextField(blank=True, null=True)
     credit = models.FloatField()
-    requisites = models.BooleanField()
-    fee = models.BooleanField()
+    requisites = models.BooleanField(default=False)
+    fee = models.BooleanField(default=False)
 
     perms = models.IntegerField(null=True)
     spots = models.IntegerField(null=True)
@@ -161,11 +161,11 @@ class Section(models.Model):
 
 class Meeting(models.Model):
     section = models.ForeignKey(Section)
-    monday = models.BooleanField()
-    tuesday = models.BooleanField()
-    wednesday = models.BooleanField()
-    thursday = models.BooleanField()
-    friday = models.BooleanField()
+    monday = models.BooleanField(default=False)
+    tuesday = models.BooleanField(default=False)
+    wednesday = models.BooleanField(default=False)
+    thursday = models.BooleanField(default=False)
+    friday = models.BooleanField(default=False)
     begin = models.TimeField()
     end = models.TimeField()
     campus = models.SmallIntegerField(choices=CAMPUSES)

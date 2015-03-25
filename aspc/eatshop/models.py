@@ -5,27 +5,27 @@ from aspc.eatshop.config import COOP_FOUNTAIN_ID
 from django.core.cache import cache
 
 class BusinessManager(models.Manager):
-    def get_query_set(self):
-        qs = super(BusinessManager, self).get_query_set()
+    def get_queryset(self):
+        qs = super(BusinessManager, self).get_queryset()
         return qs.annotate(hours_count=models.Count('hours'))
 
     def off_campus(self, qs=None):
         """Off campus businesses of all types"""
-        qs = qs or self.get_query_set()
+        qs = qs or self.get_queryset()
         return qs.exclude(
             type=Business.TYPES_LOOKUP['On-Campus Restaurant']
         )
 
     def restaurants(self, qs=None):
         """Off-campus restaurants only"""
-        qs = qs or self.get_query_set()
+        qs = qs or self.get_queryset()
         return qs.filter(
             type=Business.TYPES_LOOKUP['Restaurant']
         )
 
     def non_food(self, qs=None):
         """Only businesses that aren't restaurants"""
-        qs = qs or self.get_query_set()
+        qs = qs or self.get_queryset()
         return qs.exclude(
             type__in=[
                 Business.TYPES_LOOKUP['Restaurant'],
@@ -35,7 +35,7 @@ class BusinessManager(models.Manager):
 
     def on_campus(self, qs=None):
         """Only on-campus restaurants"""
-        qs = qs or self.get_query_set()
+        qs = qs or self.get_queryset()
         return qs.filter(
             type=Business.TYPES_LOOKUP['On-Campus Restaurant']
         )
@@ -45,7 +45,7 @@ class BusinessManager(models.Manager):
         All businesses open now (aka is the current time within
         the hour range(s) for this weekday)?
         """
-        qs = qs or self.get_query_set()
+        qs = qs or self.get_queryset()
         weekday = datetime.date.today().strftime("%A").lower()
         query = {
             'hours__{0}'.format(weekday): True,
@@ -72,8 +72,8 @@ class Business(models.Model):
     address = models.TextField()
     phone = PhoneNumberField(null=True, blank=True)
     description = models.TextField(help_text="Brief description for this business")
-    claremont_cash = models.BooleanField()
-    flex = models.BooleanField()
+    claremont_cash = models.BooleanField(default=False)
+    flex = models.BooleanField(default=False)
     discount = models.TextField(null=True, blank=True, verbose_name="student discount")
     www = models.URLField(null=True, blank=True)
 
@@ -113,13 +113,13 @@ class Business(models.Model):
 class Hours(models.Model):
     CACHE_KEY_TEMPLATE = "aspc.eatshop.business:{id}.hours"
     business = models.ForeignKey(Business, related_name="hours")
-    monday = models.BooleanField()
-    tuesday = models.BooleanField()
-    wednesday = models.BooleanField()
-    thursday = models.BooleanField()
-    friday = models.BooleanField()
-    saturday = models.BooleanField()
-    sunday = models.BooleanField()
+    monday = models.BooleanField(default=False)
+    tuesday = models.BooleanField(default=False)
+    wednesday = models.BooleanField(default=False)
+    thursday = models.BooleanField(default=False)
+    friday = models.BooleanField(default=False)
+    saturday = models.BooleanField(default=False)
+    sunday = models.BooleanField(default=False)
     begin = models.TimeField()
     end = models.TimeField()
 

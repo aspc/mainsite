@@ -132,7 +132,6 @@ INSTALLED_APPS = (
     'django.contrib.redirects',
     'django.contrib.humanize',
     'gunicorn',
-    'south',
     'django_extensions',
     'debug_toolbar',
     'djcelery',
@@ -141,7 +140,7 @@ INSTALLED_APPS = (
     'aspc.folio',
     'aspc.senate',
     'aspc.blog',
-    'aspc.auth',
+    'aspc.auth1',
     'aspc.sagelist',
     'aspc.college',
     'aspc.housing',
@@ -204,6 +203,11 @@ LOGGING = {
     }
 }
 
+
+# Django 1.7 requires a default test runner
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
+
 LOGIN_REDIRECT_URL = '/'
 WSGI_APPLICATION = "aspc.wsgi.application"
 
@@ -212,7 +216,7 @@ WSGI_APPLICATION = "aspc.wsgi.application"
 # LDAP Authentication information
 
 AUTHENTICATION_BACKENDS = (
-    'aspc.auth.backends.SimpleLDAPBackend',
+    'aspc.auth1.backends.SimpleLDAPBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
