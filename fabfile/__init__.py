@@ -64,7 +64,6 @@ def _migrate():
         prefix("source /srv/www/{0}/env/bin/activate".format(env.site))
     ):
         sudo("./manage.py migrate", user=env.site)
-        sudo("./manage.py syncdb", user=env.site)
 
 # Refreshes the static assets that are served
 def _update_static():

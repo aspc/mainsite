@@ -33,7 +33,7 @@ The ASPC main site is an open-source project that welcomes contributions from th
 GUnicorn workers have `max_requests = 1` set in `vagrant/gunicorn.cfg.py`. This means that after at most one refresh, the worker will be running your code. If you need to force a reload, use `vagrant ssh -c "service gunicorn reload"`.
 
 ### Pull requests ###
- 
+
 When you have finished making changes on whatever branch in your forked repo, simply open a pull request against ASPC's `master` to signal that you'd like to merge them in. One of the ASPC developers will review the request, merge, and deploy it if it is appropriate. Feel free to contact [digitalmedia@aspc.pomona.edu](mailto:digitalmedia@aspc.pomona.edu) with any questions!
 
 
@@ -83,26 +83,25 @@ If you cannot use Vagrant for some reason, you can always get the main site runn
     mkvirtualenv aspc
     cd /path/to/your/mainsite/repo
     pip install -r requirements.txt # this will take a while
-    
+
     # to start the PostgreSQL server before starting work:
     postgres -D /usr/local/var/postgres
     # alternatively, set it to start at login...
     ln -sfv /usr/local/opt/postgresql/*.plist ~/Library/LaunchAgents
     # ...and launch it now
     launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
-    
+
     # create the db
     createdb
     psql -c "CREATE ROLE main LOGIN PASSWORD 'dev_password';"
     psql -c "CREATE DATABASE main_django WITH ENCODING = 'UTF-8' LC_CTYPE = 'en_US.UTF-8' LC_COLLATE = 'en_US.UTF-8' OWNER main TEMPLATE template0"
-    
+
     # create db tables and superuser
-    ./manage.py syncdb
     ./manage.py migrate
-    
+
     # load default data
     ./manage.py loaddata ./fixtures/*
-    
+
     # load housing data
     ./manage.py load_dorms
     ./manage.py load_maps

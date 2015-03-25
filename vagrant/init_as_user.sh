@@ -49,7 +49,6 @@ then
 fi
 
 # create tables / set up ASPC mainsite
-/vagrant/manage.py syncdb --noinput
 /vagrant/manage.py migrate --noinput
 /vagrant/manage.py collectstatic --noinput
 /vagrant/manage.py loaddata /vagrant/fixtures/*
