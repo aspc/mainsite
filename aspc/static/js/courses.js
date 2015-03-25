@@ -88,7 +88,7 @@ ASPC.courses = function () {
 				.fail(my.failedRequestCallback);
 		},
 		/**
-		 * Only ever invoked by toggleCourse(), either with a click on a search result on a click on the course label 'x'
+		 * Only ever invoked by toggleCourse(), either with a click on a search result or a click on the course label 'x'
 		 */
 		removeCourse: function (course_slug) {
 			my.loadingMessageElement.show();

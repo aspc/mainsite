@@ -8,18 +8,18 @@
 {% block "metadesc" %}List of courses for the {{ object.name }} department.{% endblock %}
 
 {% block "courses_breadcrumbs" %}
-<li><a href="{% url "department_list" %}">Departments</a></li>
-<li><a href="{{ object.get_absolute_url }}">{{ object.name }}</a></li>
+	<li><a href="{% url "department_list" %}">Departments</a></li>
+	<li><a href="{{ object.get_absolute_url }}">{{ object.name }}</a></li>
 {% endblock %}
 
 {% block "outer_content" %}
-<ol class="course_list content">
-	{% for x in object.primary_course_set.all %}
-    {% for c in x.sections.all %}
-	<li class="{% cycle 'odd' 'even' %}">
-	{% include "courses/course_list_item.html" %}
-	</li>
-    {% endfor %}
-	{% endfor %}
-</ol>
+	<ol class="course_list content">
+		{% for x in object.primary_course_set.all %}
+		{% for c in x.sections.all %}
+		<li class="{% cycle 'odd' 'even' %}">
+			{% include "includes/search_result.html" %}
+		</li>
+		{% endfor %}
+		{% endfor %}
+	</ol>
 {% endblock %}

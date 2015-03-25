@@ -61,7 +61,7 @@ def search(request):
                 except (EmptyPage, InvalidPage):
                     results = paginator.page(paginator.num_pages)
 
-                return render(request, 'courses/search.html', {
+                return render(request, 'search/search.html', {
                     'form': form,
                     'results': results,
                     'path': ''.join([request.path, '?', GET_data.urlencode()]),
@@ -69,14 +69,14 @@ def search(request):
                     'last_reg': last_reg
                 })
             else:
-                return render(request, 'courses/search.html', {
+                return render(request, 'search/search.html', {
                     'form': form,
                     'last_full': last_full,
                     'last_reg': last_reg
                 })
         else:
             form = SearchForm()
-            return render(request, 'courses/search.html', {
+            return render(request, 'search/search.html', {
                 'form': form,
                 'last_full': last_full,
                 'last_reg': last_reg
@@ -89,7 +89,7 @@ def schedule(request):
 
     if not request.method == "GET" or len(request.GET) == 0:
         form = SearchForm()
-        return render(request, 'courses/schedule.html', {
+        return render(request, 'schedule/schedule.html', {
             'form': form,
             'last_full': last_full,
             'last_reg': last_reg
@@ -118,7 +118,7 @@ def schedule(request):
                 if course.id in request.session.get('schedule_courses', []):
                     course.added = True
 
-            return render(request, 'courses/schedule.html', {
+            return render(request, 'schedule/schedule.html', {
                 'form': form,
                 'results': results,
                 'path': ''.join([request.path, '?', GET_data.urlencode()]),
@@ -126,7 +126,7 @@ def schedule(request):
                 'last_reg': last_reg
             })
         else:
-            return render(request, 'courses/schedule.html', {
+            return render(request, 'schedule/schedule.html', {
                 'form': form,
                 'last_full': last_full,
                 'last_reg': last_reg
@@ -163,9 +163,9 @@ def share_schedule(request):
             s.sections.add(course)
         s.save()
 
-        return render(request, 'courses/share_schedule.html', {'saved': True, 'schedule': s, 'schedule_courses': s.sections.all(),})
+        return render(request, 'schedule/schedule_share.html', {'saved': True, 'schedule': s, 'schedule_courses': s.sections.all(),})
     else:
-        return render(request, 'courses/share_schedule.html', {'schedule_courses': schedule_courses,})
+        return render(request, 'schedule/schedule_share.html', {'schedule_courses': schedule_courses,})
 
 def view_schedule(request, schedule_id):
     schedule = get_object_or_404(Schedule, pk=schedule_id)
@@ -173,11 +173,7 @@ def view_schedule(request, schedule_id):
         request.session['schedule_courses'] = set([c.id for c in schedule.sections.all()])
         return HttpResponseRedirect(reverse('aspc.courses.views.schedule'))
     else:
-        return render(request, 'courses/schedule_frozen.html',{'schedule': schedule,})
-
-def view_minimal_schedule(request, schedule_id):
-    schedule = get_object_or_404(Schedule, pk=schedule_id)
-    return render(request, 'courses/minimal_schedule_frozen.html', {'schedule': schedule,})
+        return render(request, 'schedule/schedule_frozen.html',{'schedule': schedule,})
 
 def ical_export(request, schedule_id=None):
     if schedule_id is not None:
@@ -193,7 +189,7 @@ def ical_export(request, schedule_id=None):
         if not form.is_valid():
             return render(
                 request,
-                'courses/ical_export.html',
+                'schedule/schedule_ical_export.html',
                 {'form': form, 'schedule_courses': schedule_courses}
             )
 
@@ -219,7 +215,7 @@ def ical_export(request, schedule_id=None):
         })
         return render(
             request,
-            'courses/ical_export.html',
+            'schedule/schedule_ical_export.html',
             {'form': form, 'schedule_courses': schedule_courses}
         )
 
