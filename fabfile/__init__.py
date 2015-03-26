@@ -31,6 +31,8 @@ def deploy():
     # Reloads the server, etc.
     _apply_changes()
 
+# Deploys a given branch to the ASPC staging environment
+# e.g. `fab stage:master`
 def stage(branch):
     env.site = "staging"
     env.branch = branch
