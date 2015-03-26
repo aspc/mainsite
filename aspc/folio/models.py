@@ -4,7 +4,7 @@ from django.conf import settings
 
 class Page(models.Model):
     """A glorified static page with Markdown content"""
-    
+
     title = models.CharField(max_length=255, help_text="The page's full title")
     short_title = models.CharField(
         blank=True,
@@ -35,8 +35,7 @@ class Page(models.Model):
         blank=True,
         null=True,
         max_length=255,
-        help_text="Path to an additional stylesheet for this page (relative"
-                  " to {0}css/pages/)".format(settings.STATIC_URL))
+        help_text="Path to an additional stylesheet for this page (relative to /static/css/pages/)")
     visible = models.BooleanField(
         default=True,
         help_text="Determines whether a top or second level page will be "
@@ -48,26 +47,26 @@ class Page(models.Model):
                   "deleted through normal means. (Don't change this unless "
                   "you know what you're doing!)"
     )
-    
+
     class Meta:
         ordering = ['sort_order', 'title',]
         verbose_name, verbose_name_plural = "page", "pages"
 
     def __unicode__(self):
         return self.title
-    
+
     def display_title(self):
         if self.short_title:
             return self.short_title
         else:
             return self.title
-    
+
     def get_siblings(self):
         if self.parent:
             return Page.objects.filter(parent=self.parent)
         else:
             return Page.objects.filter(parent__isnull=True)
-    
+
     def path(self):
         path = [self,]
         current = self
@@ -76,10 +75,10 @@ class Page(models.Model):
             current = current.parent
         path.reverse()
         return path
-    
+
     def slug_path(self):
         return '/'.join([page.slug for page in self.path()]) + '/'
-    
+
     def save(self, *args, **kwargs):
         self.slug = self.slug.lower()
         if not self.id:
@@ -97,7 +96,7 @@ class Page(models.Model):
             else:
                 self.sort_order = pages[0].sort_order + 1
         super(Page, self).save(*args, **kwargs)
-    
+
     @models.permalink
     def get_absolute_url(self):
         return ('aspc.folio.views.page_view',
