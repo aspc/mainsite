@@ -100,7 +100,7 @@ def _git_merge():
     # Merge `production` into `master`
     local("git checkout {0}".format(env.branch))
     local("git pull")
-    local("git merge master")
+    local("git merge master --no-ff")
 
     # Clean up
     local("git checkout master")
