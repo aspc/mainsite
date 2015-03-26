@@ -5,6 +5,7 @@ from xml.dom import minidom
 from xml.etree import ElementTree
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.core.exceptions import MultipleObjectsReturned
 from aspc.auth2.models import UserData
 from aspc.auth2.exceptions import CASTicketException
 
@@ -27,7 +28,13 @@ class CASBackend(object):
 			return None
 
 		# Store user data associated with authentication in the generic User model
-		user, is_new = User.objects.get_or_create(email__iexact=user_info['email'])
+		try:
+			user, is_new = User.objects.get_or_create(email__iexact=user_info['email'])
+		except MultipleObjectsReturned:
+			# Catch any errors related to duplicate emails already existing prior to the auth2 launch
+			user = User.objects.filter(email__iexact=user_info['email'])[0]
+			is_new = False
+
 		user.username = user.email = user_info['email']
 		user.first_name = user_info['first_name']
 		user.last_name = user_info['last_name']
