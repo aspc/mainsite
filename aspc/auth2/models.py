@@ -15,7 +15,7 @@ COLLEGES = (
 DEFAULT_COLLEGE = 'POM'
 
 EMAIL_SUFFIXES = {
-	'POM': 'mymail.pomona.edu',
+	'POM': 'pomona.edu',
 	'CMC': 'cmc.edu',
 	'SC': 'scrippscollege.edu',
 	'PZ': 'students.pitzer.edu',

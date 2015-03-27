@@ -23,8 +23,8 @@ class CASBackend(object):
 	def authenticate(self, ticket, service):
 		try:
 			user_info = _verify_cas(ticket, service)
-		except Exception as e:
-			logger.error('Failed to verify CAS authentication', e)
+		except CASTicketException as e:
+			logger.error('Failed to verify CAS authentication: %s' % str(e))
 			return None
 
 		# Store user data associated with authentication in the generic User model

@@ -229,7 +229,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 CAS_SETTINGS = {
-	'SERVER_URL': 'https://cas-dev.campus.pomona.edu/cas/',
+	'SERVER_URL': 'https://cas1.campus.pomona.edu/cas/',
 	'ADMIN_PREFIX': 'admin'
 }
 
