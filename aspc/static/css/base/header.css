@@ -82,3 +82,28 @@ header#aspc_main .loginstatus form {
 	background-repeat: no-repeat;
 	height: 6.5em;
 }
+
+#voting_banner {
+	position: fixed;
+	width: 100%;
+	z-index: 10;
+	padding: 8px;
+	background-color: rgb(227, 31, 31);
+	box-shadow: 0px 0px 6px #222;
+	-webkit-box-shadow: 0px 0px 6px #222;
+	text-align: center;
+}
+
+#voting_banner a {
+	color: white;
+	font-size: 16px;
+	text-decoration: none;
+}
+
+#voting_banner a:hover {
+	text-decoration: underline;
+}
+
+#voting_banner_placeholder {
+	height: 35px;
+}
