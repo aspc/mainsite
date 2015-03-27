@@ -26,4 +26,15 @@
 	header#aspc_main .loginstatus__form {
 		display: inline-block;
 	}
+
+	#voting_banner {
+		position: relative;
+		margin-bottom: 5px;
+		box-shadow: 0px 0px 2px #222;
+		-webkit-box-shadow: 0px 0px 2px #222;
+	}
+
+	#voting_banner_placeholder {
+		display: none;
+	}
 }
