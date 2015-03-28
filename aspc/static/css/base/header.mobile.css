@@ -10,12 +10,12 @@
 
 	header#aspc_main hgroup {
 		padding-top: 0.5em;
-		margin-bottom: 2.5em;
+		margin-bottom: 3.5em;
 	}
 
 	header#aspc_main .loginstatus {
 		position: absolute;
-		bottom: -2em;
+		bottom: -3.7em;
 		font-size: 0.9em;
 		left: auto;
 		right: auto;
@@ -23,13 +23,7 @@
 		width: 100%;
 	}
 
-	header#aspc_main .loginstatus form {
-		margin-bottom: -0.33em;
-		font-size: 0.9em;
+	header#aspc_main .loginstatus__form {
+		display: inline-block;
 	}
-
-	header#aspc_main .loginstatus form input[type="text"], header#aspc_main .loginstatus form input[type="password"] {
-		width: 8em;
-	}
-
 }

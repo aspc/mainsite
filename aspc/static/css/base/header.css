@@ -56,12 +56,18 @@ header#aspc_main .loginstatus a {
 	text-decoration: none;
 }
 
-header#aspc_main form input {
+header#aspc_main .loginstatus input {
 	background-color: #505761;
 	border: 1px solid #8c97a8;
 	color: #ccc;
 	font-size: 1em;
-	padding: 0.2em;
+	padding: 0.4em;
+}
+
+header#aspc_main .loginstatus form {
+	float: right;
+	padding-left: 0.4em;
+	padding-bottom: 0.4em;
 }
 
 #aspc_main #logo {

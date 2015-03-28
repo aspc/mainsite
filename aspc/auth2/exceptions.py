@@ -1,0 +1,2 @@
+class CASTicketException(Exception):
+	pass

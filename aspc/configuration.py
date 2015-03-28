@@ -4,7 +4,7 @@ DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
 
 ADMINS = (
-    ('Digital Media Group', 'digitalmedia@aspc.pomona.edu'),
+	('Digital Media Group', 'digitalmedia@aspc.pomona.edu'),
 )
 
 # Local time zone for this installation. Choices can be found here:
@@ -36,10 +36,10 @@ USE_L10N = True
 # submitting requests with a fake HTTP Host header, which is possible even
 # under many seemingly-safe web server configurations.
 ALLOWED_HOSTS = (
-    'aspc.pomona.edu',
-    'aspc.pomona.edu.',
-    '.aspc.pomona.edu',
-    '.aspc.pomona.edu.', # allow FQDN (with trailing dot)
+	'aspc.pomona.edu',
+	'aspc.pomona.edu.',
+	'.aspc.pomona.edu',
+	'.aspc.pomona.edu.', # allow FQDN (with trailing dot)
 )
 
 # List of finder classes that know how to find static files in
@@ -52,10 +52,10 @@ STATICFILES_FINDERS = (
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    os.path.join(PROJECT_ROOT, 'static'),
+	# Put strings here, like "/home/html/static" or "C:/www/django/static".
+	# Always use forward slashes, even on Windows.
+	# Don't forget to use absolute paths, not relative paths.
+	os.path.join(PROJECT_ROOT, 'static'),
 )
 
 # Boolean that decides if compression should also be done outside of the request/response loop -
@@ -80,8 +80,8 @@ COMPRESS_CSS_FILTERS = [
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
+	'django.template.loaders.filesystem.Loader',
+	'django.template.loaders.app_directories.Loader',
 #     'django.template.loaders.eggs.Loader',
 )
 
@@ -99,57 +99,59 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
+	'django.middleware.common.CommonMiddleware',
+	'django.contrib.sessions.middleware.SessionMiddleware',
+	'django.middleware.csrf.CsrfViewMiddleware',
+	'django.contrib.auth.middleware.AuthenticationMiddleware',
+	'aspc.auth2.middleware.CASMiddleware',
+	'debug_toolbar.middleware.DebugToolbarMiddleware',
+	'django.contrib.messages.middleware.MessageMiddleware',
+	'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
 )
 
 ROOT_URLCONF = 'aspc.urls'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    os.path.join(PROJECT_ROOT, 'templates'),
+	# Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+	# Always use forward slashes, even on Windows.
+	# Don't forget to use absolute paths, not relative paths.
+	os.path.join(PROJECT_ROOT, 'templates'),
 )
 
 INSTALLED_APPS = (
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'grappelli.dashboard', # Must be before grappelli
-    'grappelli', # Must be before django.contrib.admin
-    'filebrowser', # Must be before django.contrib.admin
-    'django.contrib.admin',
-    'django.contrib.admindocs',
-    'django.contrib.redirects',
-    'django.contrib.humanize',
-    'gunicorn',
-    'django_extensions',
-    'debug_toolbar',
-    'djcelery',
-    'stdimage',
-    'compressor',
-    'aspc.folio',
-    'aspc.senate',
-    'aspc.blog',
-    'aspc.auth1',
-    'aspc.sagelist',
-    'aspc.college',
-    'aspc.housing',
-    'aspc.minutes',
-    'aspc.eatshop',
-    'aspc.events',
-    'aspc.activityfeed',
-    'aspc.courses',
-    'aspc.menu'
+	'django.contrib.auth',
+	'django.contrib.contenttypes',
+	'django.contrib.sessions',
+	'django.contrib.sites',
+	'django.contrib.messages',
+	'django.contrib.staticfiles',
+	'grappelli.dashboard', # Must be before grappelli
+	'grappelli', # Must be before django.contrib.admin
+	'filebrowser', # Must be before django.contrib.admin
+	'django.contrib.admin',
+	'django.contrib.admindocs',
+	'django.contrib.redirects',
+	'django.contrib.humanize',
+	'gunicorn',
+	'django_extensions',
+	'debug_toolbar',
+	'djcelery',
+	'stdimage',
+	'compressor',
+	'aspc.folio',
+	'aspc.senate',
+	'aspc.blog',
+	'aspc.auth1',
+	'aspc.auth2',
+	'aspc.sagelist',
+	'aspc.college',
+	'aspc.housing',
+	'aspc.minutes',
+	'aspc.eatshop',
+	'aspc.events',
+	'aspc.activityfeed',
+	'aspc.courses',
+	'aspc.menu'
 )
 
 # Serializer to use for User sessions. Preferable not to use
@@ -163,44 +165,52 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
-        },
-        'simple': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(message)s'
-        },
-    },
-    'filters': {
-         'require_debug_false': {
-             '()': 'django.utils.log.RequireDebugFalse'
-         }
-     },
-    'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        },
-        'console':{
-            'level':'DEBUG',
-            'class':'logging.StreamHandler',
-            'formatter': 'simple'
-        },
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-        'aspc': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-        }
-    }
+	'version': 1,
+	'disable_existing_loggers': True,
+	'formatters': {
+		'verbose': {
+			'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+		},
+		'simple': {
+			'format': '%(levelname)s %(asctime)s %(module)s %(message)s'
+		},
+	},
+	'filters': {
+		 'require_debug_false': {
+			 '()': 'django.utils.log.RequireDebugFalse'
+		 }
+	 },
+	'handlers': {
+		'mail_admins': {
+			'level': 'ERROR',
+			'filters': ['require_debug_false'],
+			'class': 'django.utils.log.AdminEmailHandler'
+		},
+		'console':{
+			'level':'DEBUG',
+			'class':'logging.StreamHandler',
+			'formatter': 'simple'
+		},
+		'logfile': {
+			'level':'DEBUG',
+			'class':'logging.handlers.RotatingFileHandler',
+			'filename': PROJECT_ROOT + '/../log/django.log',
+			'maxBytes': 50000,
+			'backupCount': 2,
+			'formatter': 'verbose',
+		},
+	},
+	'loggers': {
+		'django.request': {
+			'handlers': ['mail_admins'],
+			'level': 'ERROR',
+			'propagate': True,
+		},
+		'aspc': {
+			'handlers': ['console', 'logfile'],
+			'level': 'DEBUG',
+		}
+	}
 }
 
 
@@ -211,74 +221,90 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 LOGIN_REDIRECT_URL = '/'
 WSGI_APPLICATION = "aspc.wsgi.application"
 
-#### ASPC Specific Configuration
-
-# LDAP Authentication information
-
+### Login Configuration
+# See auth2 module
 AUTHENTICATION_BACKENDS = (
-    'aspc.auth1.backends.SimpleLDAPBackend',
-    'django.contrib.auth.backends.ModelBackend',
+	'django.contrib.auth.backends.ModelBackend',
+	'aspc.auth2.backends.CASBackend', # Service to authenticate against the 5C CAS server
 )
 
-AUTH_LDAP = {
-    u'PO': {
-        'name': u"Pomona",
-        'server': u"ldap.pomona.edu",
-        'port': 389,
-        'bind_as': u'{0}@CAMPUS',
-        'filter': u'(cn={0})',
-        'base_dn': u"OU=Users and Computers,OU=ZHOME,DC=campus,DC=pomona,DC=edu",
-    },
-    # 'CMC': {
-    #     'name': "CMC",
-    #     'server': "ldap.pomona.edu",
-    #     'port': '389',
-    #     'bind_as': '{0}@CAMPUS',
-    #     'filter': '(cn={0})',
-    #     'base_dn': "OU=Student Accounts,OU=Users and Computers,OU=ZHOME,DC=campus,DC=pomona,DC=edu",
-    # },
+CAS_SETTINGS = {
+	'SERVER_URL': 'https://cas1.campus.pomona.edu/cas/',
+	'ADMIN_PREFIX': 'admin'
 }
 
-AUTH_LDAP_DEFAULT_COLLEGE = "PO"
+#### Old Login Configuration (LDAP)
+# See auth module
+#
+# LDAP Authentication information
+#
+#AUTHENTICATION_BACKENDS = (
+#    'aspc.auth.backends.SimpleLDAPBackend',
+#    'django.contrib.auth.backends.ModelBackend',
+#)
+#
+#AUTH_LDAP = {
+#    u'PO': {
+#        'name': u"Pomona",
+#        'server': u"ldap.pomona.edu",
+#       'port': 389,
+#        'bind_as': u'{0}@CAMPUS',
+#       'filter': u'(cn={0})',
+#        'base_dn': u"OU=Users and Computers,OU=ZHOME,DC=campus,DC=pomona,DC=edu",
+#    },
+#    # 'CMC': {
+#    #     'name': "CMC",
+#    #     'server': "ldap.pomona.edu",
+#    #     'port': '389',
+#    #     'bind_as': '{0}@CAMPUS',
+#    #     'filter': '(cn={0})',
+#    #     'base_dn': "OU=Student Accounts,OU=Users and Computers,OU=ZHOME,DC=campus,DC=pomona,DC=edu",
+#    # },
+#}
+#
+#AUTH_LDAP_DEFAULT_COLLEGE = "PO"
+#
+#AUTH_LDAP_COLLEGES = ((i[0], i[1]['name']) for i in AUTH_LDAP.items())
 
-AUTH_LDAP_COLLEGES = ((i[0], i[1]['name']) for i in AUTH_LDAP.items())
+
+
 
 # Initial Data for Housing
 
 DATA_ROOT = os.path.join(PROJECT_ROOT, '..', 'data')
 DATA_PATHS = {
-    'housing': {
-        'buildings': os.path.join(DATA_ROOT, 'housing', 'buildings.txt'),
-        'rooms': os.path.join(DATA_ROOT, 'housing', 'rooms.txt'),
-        'suites': os.path.join(DATA_ROOT, 'housing', 'suites.txt'),
-        'maps': os.path.join(DATA_ROOT, 'housing', 'maps.txt'),
-        'maps_dir': os.path.join(DATA_ROOT, 'housing', 'maps'),
-    },
+	'housing': {
+		'buildings': os.path.join(DATA_ROOT, 'housing', 'buildings.txt'),
+		'rooms': os.path.join(DATA_ROOT, 'housing', 'rooms.txt'),
+		'suites': os.path.join(DATA_ROOT, 'housing', 'suites.txt'),
+		'maps': os.path.join(DATA_ROOT, 'housing', 'maps.txt'),
+		'maps_dir': os.path.join(DATA_ROOT, 'housing', 'maps'),
+	},
 }
 
 # Connection information for ITS Microsoft SQL Server
 # (deployment-specific, overridden in settings.py)
 
 COURSE_DATA_DB = {
-    'HOST': '',
-    'NAME': '',
-    'USER': '',
-    'PASSWORD': '',
+	'HOST': '',
+	'NAME': '',
+	'USER': '',
+	'PASSWORD': '',
 }
 
 #### Debug Toolbar Configuration
 
 def show_toolbar(request):
-    if request.user.is_superuser:
-        return True
-    else:
-        return False
+	if request.user.is_superuser:
+		return True
+	else:
+		return False
 
 DEBUG_TOOLBAR_PATCH_SETTINGS = False
 
 DEBUG_TOOLBAR_CONFIG = {
-    'INTERCEPT_REDIRECTS': False,
-    'SHOW_TOOLBAR_CALLBACK': 'aspc.configuration.show_toolbar',
+	'INTERCEPT_REDIRECTS': False,
+	'SHOW_TOOLBAR_CALLBACK': 'aspc.configuration.show_toolbar',
 }
 
 # College Terms
