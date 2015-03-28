@@ -64,7 +64,7 @@ class Appointment(models.Model):
     name = models.CharField(max_length=40, help_text="The name to display "
         "on the Senate Positions page")
     login_id = models.CharField(max_length=50, blank=True,
-        null=True, verbose_name="Login ID")
+        null=True, verbose_name="Login ID", help_text="The user's email address.")
 
     user = models.ForeignKey(User, blank=True, null=True)
 
@@ -88,17 +88,17 @@ class Appointment(models.Model):
         if self.login_id and not self.user:
             # Login ID is set and user has not yet been set
             try:
-                self.user = User.objects.get(username=self.login_id)
+                self.user = User.objects.get(email__iexact=self.login_id)
             except User.DoesNotExist:
                 pass
-        elif self.user and not (self.login_id == self.user.username):
+        elif self.user and not (self.login_id == self.user.email):
             # The Login ID for an existing Appointment changed, so we need
             # to re-sync / remove permissions for the old account
             old_user = self.user
 
             # Get the new user, if possible
             try:
-                self.user = User.objects.get(username=self.login_id)
+                self.user = User.objects.get(email__iexact=self.login_id)
             except User.DoesNotExist:
                 self.user = None
 
@@ -112,8 +112,8 @@ class Appointment(models.Model):
                 # Sync permissions for the new user, if available
                 sync_permissions(self, self.user, None)
         elif self.user is not None:
-            # Ensure login_id and user.username are in sync
-            self.login_id = self.user.username
+            # Ensure login_id and user.email are in sync
+            self.login_id = self.user.email
         return super(Appointment, self).save(*args, **kwargs)
 
 # Watch for user logins to make sure they have the permissions their position
@@ -148,8 +148,8 @@ def sync_permissions(sender, user, request, **kwargs):
         end__isnull=True
     )
 
-    appts_active = appts.filter(login_id=user.username)
-    appts_active |= appts.filter(user__username=user.username)
+    appts_active = appts.filter(login_id=user.email)
+    appts_active |= appts.filter(user__email__iexact=user.email)
 
     for appt in appts_active:
         print appt, 'is active'
