@@ -64,6 +64,12 @@ header#aspc_main .loginstatus input {
 	padding: 0.4em;
 }
 
+header#aspc_main .loginstatus form {
+	float: right;
+	padding-left: 0.4em;
+	padding-bottom: 0.4em;
+}
+
 #aspc_main #logo {
 	display: inline-block;
 	width: 12em;

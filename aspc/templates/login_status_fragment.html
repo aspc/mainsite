@@ -6,7 +6,13 @@
 			&middot; <a href="{% url 'admin:index' %}">admin</a>
 		{% endif %}
 	{% else %}
-		<input type="button" value="Login (5C Students)" onclick="window.location = '{% url 'aspc.auth2.views.login' %}';">
-		<input type="button" value="Guest Login" onclick="window.location = '{% url 'aspc.auth2.views.guest_login' %}';">
+		<div class="loginstatus__form">
+			<form action="{% url 'aspc.auth2.views.guest_login' %}">
+				<input type="submit" value="Guest Login">
+			</form>
+			<form action="{% url 'aspc.auth2.views.login' %}">
+				<input type="submit" value="Login (Students)">
+			</form>
+		</div>
 	{% endif %}
 </div>
