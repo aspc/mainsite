@@ -35,7 +35,8 @@ class CASBackend(object):
 			user = User.objects.filter(email__iexact=user_info['email'])[0]
 			is_new = False
 
-		user.username = user.email = user_info['email']
+		user.email = user_info['email']
+		user.username = user.email[0:30] # Django requires that usernames be no longer than 30 chars, but this should still be unique
 		user.first_name = user_info['first_name']
 		user.last_name = user_info['last_name']
 		user.save()
