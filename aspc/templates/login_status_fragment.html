@@ -1,20 +1,18 @@
 <div class="loginstatus">
-{% if user.is_authenticated %}
-<span class="userinfo">{{ user.get_full_name }}</span>
-<span id="username">{{ user.username }}</span> &middot; <a href="{% url "logout" %}">log out?</a>{% if user.is_staff %} &middot; <a href="{% url "admin:index" %}">admin</a>{% endif %}
-{% else %}
- <form action="{% url 'django.contrib.auth.views.login' %}" method="POST">
-   {% csrf_token %}
-  <input type="text" name="username" placeholder="username">
-  <input type="password" name="password" placeholder="password">
-  <!-- <select name="college" id="college">
-    <option selected value="PO">Pomona</option>
-    <option value="CMC">CMC</option>
-    <option value="PZ">Pitzer</option>
-    <option value="HMC">Mudd</option>
-    <option value="SCR">Scripps</option>
-  </select> -->
-  <input type="submit" value="Log In">
-</form>
-{% endif %}
+	{% if user.is_authenticated %}
+		<span class="userinfo">{{ user.get_full_name }}</span>
+		<span id="username">{{ user.username }}</span> &middot; <a href="{% url 'logout' %}">log out?</a>
+		{% if user.is_staff %}
+			&middot; <a href="{% url 'admin:index' %}">admin</a>
+		{% endif %}
+	{% else %}
+		<div class="loginstatus__form">
+			<form action="{% url 'aspc.auth2.views.guest_login' %}">
+				<input type="submit" value="Guest Login">
+			</form>
+			<form action="{% url 'aspc.auth2.views.login' %}">
+				<input type="submit" value="Login (Students)">
+			</form>
+		</div>
+	{% endif %}
 </div>

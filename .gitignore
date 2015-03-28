@@ -17,3 +17,7 @@ vagrant/run/
 /static/
 .idea/
 tmp/
+
+# Django logging
+/log/
+!/log/.blank

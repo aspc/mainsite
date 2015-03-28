@@ -9,7 +9,7 @@ class ImproperlyConfigured(Exception):
 class SimpleLDAPBackend(object):
     """
     Authenticate against an LDAP directory server.
-    
+
     Set LDAP_SERVER = ('hostname', port) in your settings.
     """
     def authenticate(
@@ -32,9 +32,9 @@ class SimpleLDAPBackend(object):
             # most likely (but not definitely) because credentials were incorrect
             # return None because this is all we know.
             return None
-        
+
         # let LDAPError propagate
-        
+
         ldap_result_id = l.search(ldap_info['base_dn'], ldap.SCOPE_SUBTREE, ldap_info['filter'].format(username), None)
         result = None
         while not result:
@@ -44,17 +44,17 @@ class SimpleLDAPBackend(object):
             else:
                 if result_type == ldap.RES_SEARCH_ENTRY:
                     result = result_data
-        
+
         user_data = result[0][1]
         try:
             user = User.objects.get(username=user_data['cn'][0])
         except User.DoesNotExist:
-            
+
             # Some users are in ActiveDirectory without all their info. We don't
             # want to get an error email for each login attempt, but we don't
             # just want to log them in without info, so we just fail to
             # authenticate.
-            
+
             if not all((
                 user_data.get('cn', False),
                 user_data.get('givenName', False),
@@ -62,7 +62,7 @@ class SimpleLDAPBackend(object):
                 user_data.get('mail', False)
             )):
                 return None
-            
+
             user = User(
                 username=user_data['cn'][0],
                 first_name=user_data['givenName'][0],
