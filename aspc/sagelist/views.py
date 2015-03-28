@@ -147,7 +147,7 @@ class ListUserBookSalesView(ListView):
 
     def _get_user(self):
         if not self._user:
-            self._user = get_object_or_404(User, username=self.kwargs['username'])
+            self._user = get_object_or_404(User, email__iexact=self.kwargs['email'])
         return self._user
 
     def get_queryset(self):

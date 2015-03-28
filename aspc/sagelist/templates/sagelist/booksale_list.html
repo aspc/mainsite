@@ -7,7 +7,7 @@
 <ul class="actions">
   <li><a href="{% url "sagelist_create" %}">List a book for sale</a></li>
   {% if user.is_authenticated %}
-  <li><a href="{% url "sagelist_user_listings" username=user.username %}">View my listings</a></li>
+  <li><a href="{% url "sagelist_user_listings" email=user.email %}">View my listings</a></li>
   {% endif %}
 </ul>
 

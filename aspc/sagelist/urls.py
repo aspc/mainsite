@@ -8,5 +8,5 @@ urlpatterns = patterns('',
     url(r'^create/$', login_required(CreateBookSaleView.as_view()), name="sagelist_create"),
     url(r'^(?P<pk>\d+)/$', BookSaleDetailView.as_view(), name="sagelist_detail"),
     url(r'^(?P<pk>\d+)/delete/$', BookSaleDeleteView.as_view(), name="sagelist_delete"),
-    url(r'^(?P<username>[^/]+)/$', ListUserBookSalesView.as_view(), name="sagelist_user_listings"),
+    url(r'^(?P<email>[^/]+)/$', ListUserBookSalesView.as_view(), name="sagelist_user_listings"),
 )
