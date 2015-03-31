@@ -49,6 +49,11 @@
     {% endblock %}
   </head>
   <body class="{% block "content_class" %}{% endblock %}">
+
+    {% if voting_active %}
+      {% include "voting_banner_fragment.html" %}
+    {% endif %}
+
   <header id="aspc_main" class="container">
     <hgroup class="row">
       <h1><a href="{% url "home" %}">ASPC</a></h1>
