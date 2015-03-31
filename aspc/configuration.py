@@ -353,8 +353,3 @@ GRAPPELLI_ADMIN_TITLE = 'Associated Students of Pomona College'
 #### Twitter Activity Feed Sources
 
 TWITTER_FEEDS = ['pomonadining', 'SmithCampusCent', 'aspcsenate', 'pomonacollege']
-
-#### Election status
-# Set this to True to display a "vote now" banner on the site
-
-VOTING_ACTIVE = True
