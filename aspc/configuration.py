@@ -93,9 +93,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.core.context_processors.request",
     "django.contrib.messages.context_processors.messages",
-    "aspc.context_processors.is_mobile",
-    "aspc.context_processors.site",
-    "aspc.context_processors.absolute_uri",
+    "aspc.context_processors.request",
+    "aspc.context_processors.settings"
 )
 
 MIDDLEWARE_CLASSES = (

@@ -55,6 +55,9 @@ STATIC_URL = '/static/'
 # http://django-compressor.readthedocs.org/en/latest/settings/#django.conf.settings.COMPRESS_ENABLED
 COMPRESS_ENABLED = False
 
+# Set this to True to display a "vote now" banner on the site
+VOTING_ACTIVE = False
+
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'CHANGE_THIS_KEY'
 
