@@ -6,7 +6,7 @@ from django.conf import settings
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models import Count, Sum
-from aspc.courses.models import (Section, Department, Meeting, Schedule, Term,
+from aspc.courses.models import (Section, Department, Meeting, Schedule, Term, RefreshHistory,
     START_DATE, END_DATE)
 from aspc.courses.forms import SearchForm, ICalExportForm
 import re
@@ -17,7 +17,30 @@ import subprocess
 import vobject
 from dateutil import rrule
 
+def _get_refresh_history():
+    try:
+        last_full = RefreshHistory.objects.order_by(
+            '-last_refresh_date'
+        ).filter(
+            type=RefreshHistory.FULL
+        )[0]
+    except IndexError:
+        last_full = None
+
+    try:
+        last_reg = RefreshHistory.objects.order_by(
+            '-last_refresh_date'
+        ).filter(
+            type=RefreshHistory.REGISTRATION
+        )[0]
+    except IndexError:
+        last_reg = None
+
+    return last_full, last_reg
+
 def search(request):
+    last_full, last_reg = _get_refresh_history()
+
     if request.method == "GET":
         if len(request.GET) > 0:
             form = SearchForm(request.GET)
@@ -42,24 +65,34 @@ def search(request):
                     'form': form,
                     'results': results,
                     'path': ''.join([request.path, '?', GET_data.urlencode()]),
+                    'last_full': last_full,
+                    'last_reg': last_reg
                 })
             else:
                 return render(request, 'courses/search.html', {
                     'form': form,
+                    'last_full': last_full,
+                    'last_reg': last_reg
                 })
         else:
             form = SearchForm()
             return render(request, 'courses/search.html', {
                 'form': form,
+                'last_full': last_full,
+                'last_reg': last_reg
             })
     else:
         return HttpResponseNotAllowed(['GET'])
 
 def schedule(request):
+    last_full, last_reg = _get_refresh_history()
+
     if not request.method == "GET" or len(request.GET) == 0:
         form = SearchForm()
         return render(request, 'courses/schedule.html', {
             'form': form,
+            'last_full': last_full,
+            'last_reg': last_reg
         })
     else:
         form = SearchForm(request.GET)
@@ -88,10 +121,14 @@ def schedule(request):
                 'form': form,
                 'results': results,
                 'path': ''.join([request.path, '?', GET_data.urlencode()]),
+                'last_full': last_full,
+                'last_reg': last_reg
             })
         else:
             return render(request, 'courses/schedule.html', {
                 'form': form,
+                'last_full': last_full,
+                'last_reg': last_reg
             })
 
 def load_from_session(request):
