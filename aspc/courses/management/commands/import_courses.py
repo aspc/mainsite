@@ -1,9 +1,9 @@
 from django.core.management.base import BaseCommand
 from django.template.defaultfilters import slugify
 from django.conf import settings
-from aspc.courses.models import (Course, Meeting, CAMPUSES_LOOKUP, Term, Section, Department, Instructor, RequirementArea)
+from aspc.courses.models import (Course, Meeting, CAMPUSES_LOOKUP, Term, Section, Department, Instructor, RequirementArea, RefreshHistory)
 import simplejson, urllib, re
-from datetime import time
+from datetime import time, datetime
 from django.core.exceptions import MultipleObjectsReturned
 
 FEE_REGEX = re.compile(r'[Ff]ee:\s+\$([\d\.]+)')
@@ -247,3 +247,11 @@ class Command(BaseCommand):
 
         if stale:
             Section.objects.filter(code__in=stale).delete()
+
+        # Add a timestamp of refresh time (i.e. a new RefreshHistory record)
+        new_history = RefreshHistory(
+            last_refresh_date=datetime.now(),
+            term=term,
+            type=RefreshHistory.FULL
+        )
+        new_history.save()
