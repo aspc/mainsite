@@ -17,8 +17,8 @@ CAMPUSES_LOOKUP['CG'] = CAMPUSES_LOOKUP['CGU']
 SESSIONS = ((u'SP', u'Spring'), (u'FA', u'Fall'))
 SUBSESSIONS = ((u'P1', u'1'), (u'P2', u'2'))
 
-START_DATE = date(2014, 9, 2)
-END_DATE = date(2014, 12, 10)
+START_DATE = date(2015, 1, 20)
+END_DATE = date(2015, 5, 06)
 
 
 class Term(models.Model):
