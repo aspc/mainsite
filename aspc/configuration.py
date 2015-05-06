@@ -134,7 +134,7 @@ INSTALLED_APPS = (
 	'gunicorn',
 	'django_extensions',
 	'debug_toolbar',
-	'djcelery',
+	#'djcelery',
 	'stdimage',
 	'compressor',
 	'aspc.folio',
@@ -321,9 +321,10 @@ ACADEMIC_TERM_DEFAULTS = {
 }
 
 #### Celery Configuration
-CELERY_RESULT_BACKEND = 'amqp'
-CELERY_TASK_RESULT_EXPIRES = 18000 # 5 hours.
-CELERY_RESULT_PERSISTENT = True
+# FIXME: Removed for Django 1.8 upgrade
+#CELERY_RESULT_BACKEND = 'amqp'
+#CELERY_TASK_RESULT_EXPIRES = 18000 # 5 hours.
+#CELERY_RESULT_PERSISTENT = True
 
 # FIXME: Still need to convert management commands into tasks
 # from celery.schedules import crontab
