@@ -25,7 +25,7 @@ class ColumnCheckboxSelectMultiple(forms.CheckboxSelectMultiple):
         has_id = attrs and 'id' in attrs
         final_attrs = self.build_attrs(attrs, name=name)
         choices_enum = list(enumerate(chain(self.choices, choices)))
-        
+
         # This is the part that splits the choices into columns.
         # Slices vertically.  Could be changed to slice horizontally, etc.
         column_sizes = columnize(len(choices_enum), self.columns)
@@ -88,13 +88,13 @@ class RoomSelectionWidget(widgets.MultiWidget):
     def __init__(self, buildings=None, attrs=None):
         rswidgets = (widgets.Select(choices=buildings), widgets.TextInput)
         super(RoomSelectionWidget, self).__init__(rswidgets, attrs=attrs)
-    
+
     def decompress(self, value):
         if value:
             print value
         return [None, None]
 
-class RadioInputHTML(widgets.RadioInput):
+class RadioInputHTML(widgets.RadioChoiceInput):
     """
     subclassed for 1 character fix... no <input /> in valid html4
     """
@@ -118,13 +118,13 @@ class RatingRadioFieldRenderer(widgets.RadioFieldRenderer):
     def __getitem__(self, idx):
         choice = self.choices[idx] # Let the IndexError propogate
         return RadioInputHTML(self.name, self.value, self.attrs.copy(), choice, idx)
-    
+
     def render(self):
         """Outputs a <ul> for this set of radio fields."""
         input_tags = list(self)
         last = input_tags.pop()
         first = input_tags.pop(0)
-        
+
         output = u'<label class="low">{0}</label><label class="mobile_high">{1}</label> <span class="rating_control">{2}\n'.format(
             conditional_escape(force_unicode(first.choice_label)),
             conditional_escape(force_unicode(last.choice_label)),
