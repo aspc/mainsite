@@ -15,7 +15,7 @@ import debug_toolbar
 # home_kwargs = post_kwargs.copy()
 # home_kwargs.update({'template_name': 'home.html'})
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^$', HomeView.as_view(), name="home"),
     url(r'^admin/filebrowser/', include(site.urls)),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
@@ -34,11 +34,9 @@ urlpatterns = patterns('',
     url(r'^rideshare/', lambda request: HttpResponseRedirect('http://5crideshare.com')),
     url(r'(?P<slug_path>(?:[\w\-\d]+/)+)$', 'aspc.folio.views.page_view', name="folio_page"),
     url(r'^__debug__/', include(debug_toolbar.urls)),
-)
+]
 
 if settings.DEBUG:
-    urlpatterns += patterns('',
-        url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
-            'document_root': settings.MEDIA_ROOT,
-        }),
-   )
+    urlpatterns.append(
+        url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT})
+    )
