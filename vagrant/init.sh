@@ -75,10 +75,11 @@ rabbitmqctl set_permissions developer ".*" ".*" ".*"
 sudo -u vagrant bash /vagrant/vagrant/init_as_user.sh
 
 # Set up Celery upstart tasks
-cp /vagrant/vagrant/celeryworker.conf /etc/init/
-cp /vagrant/vagrant/celerybeat.conf /etc/init/
-service celeryworker restart && info "Started Celery worker"
-service celerybeat restart && info "Started Celery beat process"
+## FIXME: Removed for Django 1.8 upgrade
+# cp /vagrant/vagrant/celeryworker.conf /etc/init/
+# cp /vagrant/vagrant/celerybeat.conf /etc/init/
+# service celeryworker restart && info "Started Celery worker"
+# service celerybeat restart && info "Started Celery beat process"
 
 # If it's been set up, start a tunnel to Peninsula to reach the course data db
 if [ -f /vagrant/vagrant/ssh_config ];
