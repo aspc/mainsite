@@ -74,7 +74,7 @@ def calculate_map(matching_rooms):
 
         # determine zoom
         spread_factor = ((spread_latitude + spread_longitude) / 2.0) * 10000.0
-        
+
         if spread_factor > 30.0:
             zoom_level = 14
         elif spread_factor > 20.0:
@@ -83,14 +83,14 @@ def calculate_map(matching_rooms):
             zoom_level = 18
         else:
             zoom_level = 19
-        
+
         initial_json = mark_safe(json.dumps(most_rooms(matching_rooms)))
-    
+
     # serialize map data
 
     results_data = format_data(matching_rooms)
     results_data_json = mark_safe(json.dumps(results_data))
-    
+
     return {
         'results_data': results_data_json,
         'initial': initial_json,
@@ -104,23 +104,23 @@ def search(request):
     if len(request.GET.keys()) > 0:
         form = RefineForm(request.GET)
         if form.is_valid():
-            
+
             matching_rooms = Room.objects.all()
-            matching_rooms = matching_rooms.select_related('floor', 'floor__building', 'roomlocation')
-            
+            matching_rooms = matching_rooms.select_related('floor', 'floor__building', 'roomlocation_ptr')
+
             # build ordering clause
             on_fields = SEARCH_ORDERING[form.cleaned_data['prefer']][0]
             print on_fields
             ordering = []
             select_nulls = {}
-            
+
             for f in on_fields:
                 ordering.extend(['{0}_null'.format(f), '-{0}'.format(f)])
                 select_nulls['{0}_null'.format(f)] = '{0} is NULL'.format(f)
             print ordering
             print select_nulls
             matching_rooms = matching_rooms.extra(select=select_nulls, order_by=ordering)
-            
+
             if form.cleaned_data['buildings']:
                 matching_rooms = matching_rooms.filter(floor__building__in=form.cleaned_data['buildings'])
             if form.cleaned_data['occupancy']:
@@ -129,24 +129,24 @@ def search(request):
                 matching_rooms = matching_rooms.filter(size__gt=form.cleaned_data['size'])
             # if form.cleaned_data['suite']:
             #     matching_rooms = matching_rooms.filter(suite__isnull=False, suite__occupancy__in=form.cleaned_data['suite'])
-            
+
             print str(matching_rooms.query)
-            
+
             paginator = Paginator(matching_rooms, per_page=50, orphans=10)
             GET_data = request.GET.copy()
-            
+
             try:
                 page = int(request.GET.get('page', '1'))
                 if GET_data.get('page', False):
                     del GET_data['page']
             except ValueError:
                 page = 1
-            
+
             try:
                 results = paginator.page(page)
             except (EmptyPage, InvalidPage):
                 results = paginator.page(paginator.num_pages)
-            
+
             context.update(calculate_map(results.object_list))
             context.update({
                 'result_view': True,
@@ -165,27 +165,27 @@ class BrowseBuildings(ListView):
     template_name = "housing/building_list.html"
     model = Building
     context_object_name = "buildings"
-    
+
     def get_context_data(self, **kwargs):
         context = super(BrowseBuildings, self).get_context_data(**kwargs)
         context.update({'browse_active': True,})
         return context
-    
+
     def get_queryset(self):
         return self.model.objects.filter(type=Building.TYPES_LOOKUP['Dormitory'])
 
 class BrowseBuildingFloor(ListView):
     model = Room
     context_object_name = "rooms"
-    
+
     def get_queryset(self):
         building_shortname, floor_id = self.kwargs.get('building'), self.kwargs.get('floor')
-        
+
         try:
             self.building = Building.objects.get(shortname=building_shortname)
         except ObjectDoesNotExist:
             raise Http404(u"There is no building called {0}".format(building_shortname))
-        
+
         if floor_id is None:
             self.floor = self.building.floor_set.get(number=1)
         else:
@@ -193,14 +193,14 @@ class BrowseBuildingFloor(ListView):
                 self.floor = Floor.objects.get(building=self.building, number=int(floor_id))
             except ObjectDoesNotExist:
                 raise Http404(u"{0} has no floor #{1}".format(self.building, floor_id))
-        
+
         return self.model.objects.select_related().filter(floor=self.floor)
-    
+
     def get_context_data(self, **kwargs):
         context = super(BrowseBuildingFloor, self).get_context_data(**kwargs)
-        
-        context.update(calculate_map(self.get_queryset().select_related('room', 'floor')))
-        
+
+        context.update(calculate_map(self.get_queryset().select_related('roomlocation_ptr', 'floor')))
+
         context.update({
             'floor': self.floor,
             'all_floors': self.building.floor_set.all(),
@@ -211,11 +211,11 @@ class BrowseBuildingFloor(ListView):
 class RoomDetail(DetailView):
     model = Room
     context_object_name = "room"
-    
+
     def get_object(self, queryset=None):
         housing_set = queryset if queryset else self.get_queryset()
         building_shortname, floor, room_number = self.kwargs.get('building'), int(self.kwargs.get('floor', False)), self.kwargs.get('room', False)
-        
+
         room = housing_set.filter(floor__number=floor, floor__building__shortname=building_shortname, number=room_number)
         try:
             obj = room.get()
@@ -223,7 +223,7 @@ class RoomDetail(DetailView):
             raise Http404(u"No %(verbose_name)s found matching the query" %
                 {'verbose_name': housing_set.model._meta.verbose_name})
         return obj
-    
+
     def get_context_data(self, **kwargs):
         #map_data = self.object.floor.map.get_data()
         room_data = self.object.get_data()
@@ -237,7 +237,7 @@ class ReviewRoomWithChoice(CreateView):
     template_name = "housing/review_room_with_choice.html"
     model = Review
     form_class = NewReviewForm
-    
+
     def get_context_data(self, **kwargs):
         context_data = super(ReviewRoomWithChoice, self).get_context_data(**kwargs)
         context_data.update({
@@ -252,7 +252,7 @@ class ReviewRoomWithChoice(CreateView):
 class ReviewRoom(CreateView):
     form_class = ReviewRoomForm
     template_name = "housing/review_room.html"
-    
+
     def get_context_data(self, **kwargs):
         context_data = super(ReviewRoom, self).get_context_data(**kwargs)
         context_data.update({
@@ -260,26 +260,26 @@ class ReviewRoom(CreateView):
             'review_active': True,
         })
         return context_data
-    
+
     def get_form_kwargs(self):
         building_shortname, floor_id, room_number = self.kwargs.get('building'), int(self.kwargs.get('floor', False)), self.kwargs.get('room', False)
-        
+
         try:
             self.building = Building.objects.get(shortname=building_shortname)
         except ObjectDoesNotExist:
             raise Http404(u"There is no building called {0}".format(building_shortname))
-        
+
         try:
             self.floor = Floor.objects.get(building=self.building, number=int(floor_id))
         except:
             raise Http404(u"{0} has no floor #{1}".format(self.building))
-        
-        
+
+
         try:
             self.room = Room.objects.get(floor=self.floor, number=room_number)
         except ObjectDoesNotExist:
             raise Http404(u"{0} {1} has no room #{2}".format(self.building, self.floor, room_number))
-        
+
         kwargs = super(ReviewRoom, self).get_form_kwargs()
         new_review = Review(room=self.room)
         kwargs.update({'instance': new_review,})
