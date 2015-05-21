@@ -1,0 +1,65 @@
+[
+	{
+		"fields": {
+			"temperate": 2,
+			"cellphone": 4,
+			"room": 1,
+			"author": null,
+			"overall": 3,
+			"quiet": 1,
+			"comments": "The room feels like it's close to everything but still pretty quiet. The windows are elevated, so there is more privacy and safety than the rooms on the walker side of the suite. ",
+			"photo2": "",
+			"photo3": "",
+			"maintained": 4,
+			"photo1": "",
+			"worst": "There is no common space besides the hallway. ",
+			"spacious": 4,
+			"best": "The room has a vaulted ceiling and huge built-in storage. The cabinets are so big that if you find\/build a ladder, you can make them into a loft. ",
+			"create_ts": "2013-04-15T20:42:45.354"
+		},
+		"model": "housing.review",
+		"pk": 1
+	},
+	{
+		"fields": {
+			"temperate": 4,
+			"cellphone": 4,
+			"room": 1,
+			"author": null,
+			"overall": 3.4,
+			"quiet": 3,
+			"comments": "Despite what I said in the downsides box, it's a pretty sweet room overall. The double closet space is awesome, Big Bridges outside is pretty, and the location is neither super-remote nor super-busy. ",
+			"photo2": "",
+			"photo3": "",
+			"maintained": 2,
+			"photo1": "",
+			"worst": "If you like to keep your shades open at night while you sleep...there's a really inconvenient streetlamp outside that makes it pretty bright inside. You can put the bed in the back corner and half-close the shades, which helps, but it's still not great. Also, for this particular semester at least, the plumbing is a little funky, and has stayed that way despite a maintenance request... (\"funky\" = trying to flush the toilet more than once within a 10 minute time span doesn't always work.) ",
+			"spacious": 4,
+			"best": "Lots of space, and lots of light! Sort of awkward L-shape, but with a little improvisation you can make it comfortable. Never really needed to use overhead or desk lights during the day--enough natural light. Blue fuzzy pinboard on about half the wall space, which is also nice.",
+			"create_ts": "2013-04-15T20:43:22.001"
+		},
+		"model": "housing.review",
+		"pk": 2
+	},
+	{
+		"fields": {
+			"temperate": 4,
+			"cellphone": 2,
+			"room": 2,
+			"author": null,
+			"overall": 1.6,
+			"quiet": 0,
+			"comments": "The room has a nice view of rocks and a big tree. It's nicely shaded so the sunlight isn't bothersome in the morning. It's really convenient having the laundry room in the same hall.",
+			"photo2": "",
+			"photo3": "",
+			"maintained": 2,
+			"photo1": "",
+			"worst": "You can hear people peeing, flushing the toilet, and opening the stall in the gender neutral bathroom of B1B. The rooms are really small. It can be noisy  with all the people coming down the stairs to do laundry. The tennis courts are right behind here too and that can be noisy as well. ",
+			"spacious": 0,
+			"best": "It's a two-room double on South Campus which is pretty cool. There is a lounge that barely anyone uses next door so it's pretty much an extra room in which to do homework, hang out, whatever. The lounge also has a door to the outside which is really convenient. There is no card swiper on the door either so there isn't much traffic in and out of it. ",
+			"create_ts": "2013-04-15T20:52:10.970"
+		},
+		"model": "housing.review",
+		"pk": 3
+	}
+]

@@ -1,0 +1,31 @@
+[
+  {
+    "pk": 1,
+    "model": "senate.position",
+    "fields": {
+      "description": "",
+      "title": "Developer",
+      "sort_order": 1,
+      "groups": [
+
+      ],
+      "active": true,
+      "email": ""
+    }
+  },
+  {
+    "pk": 1,
+    "model": "senate.appointment",
+    "fields": {
+      "login_id": "developer",
+      "end": null,
+      "name": "Cecil Sagehen",
+      "bio": "",
+      "start": "2013-08-01",
+      "user": [
+        "developer"
+      ],
+      "position": 1
+    }
+  }
+]
