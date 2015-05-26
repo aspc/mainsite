@@ -270,14 +270,14 @@ CAS_SETTINGS = {
 
 # Initial Data for Housing
 
-DATA_ROOT = os.path.join(PROJECT_ROOT, '..', 'data')
+DATA_ROOT = os.path.join(PROJECT_ROOT, 'housing', 'data')
 DATA_PATHS = {
 	'housing': {
-		'buildings': os.path.join(DATA_ROOT, 'housing', 'buildings.txt'),
-		'rooms': os.path.join(DATA_ROOT, 'housing', 'rooms.txt'),
-		'suites': os.path.join(DATA_ROOT, 'housing', 'suites.txt'),
-		'maps': os.path.join(DATA_ROOT, 'housing', 'maps.txt'),
-		'maps_dir': os.path.join(DATA_ROOT, 'housing', 'maps'),
+		'buildings': os.path.join(DATA_ROOT, 'buildings.txt'),
+		'rooms': os.path.join(DATA_ROOT, 'rooms.txt'),
+		'suites': os.path.join(DATA_ROOT, 'suites.txt'),
+		'maps': os.path.join(DATA_ROOT, 'maps.txt'),
+		'maps_dir': os.path.join(DATA_ROOT, 'maps'),
 	},
 }
 
