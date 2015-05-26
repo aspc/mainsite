@@ -1,0 +1,36 @@
+[
+	{
+		"pk": 1,
+		"model": "sagelist.booksale",
+		"fields": {
+			"isbn": "038797606X",
+			"title": "Second Year Calculus",
+			"price": "15.00",
+			"seller": 1,
+			"edition": "",
+			"authors": "David M. Bressoud",
+			"buyer": null,
+			"condition": 2,
+			"is_recoop": true,
+			"recoop_id": 123,
+			"posted": "2011-09-19T02:30:41.281"
+		}
+	},
+	{
+		"pk": 2,
+		"model": "sagelist.booksale",
+		"fields": {
+			"isbn": "0324586213",
+			"title": "Macroeconomics: Principles & Policy",
+			"price": "20.00",
+			"seller": 1,
+			"edition": "",
+			"authors": "William J. Baumol and Alan S. Blinder",
+			"buyer": null,
+			"condition": 1,
+			"is_recoop": false,
+			"recoop_id": null,
+			"posted": "2011-09-19T02:32:01.799"
+		}
+	}
+]

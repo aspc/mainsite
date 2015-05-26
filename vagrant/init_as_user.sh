@@ -48,10 +48,28 @@ then
     cp /vagrant/aspc/settings.py.example /vagrant/aspc/settings.py
 fi
 
-# create tables / set up ASPC mainsite
+# create tables
 /vagrant/manage.py migrate --noinput
+
+# copy static files
 /vagrant/manage.py collectstatic --noinput
-/vagrant/manage.py loaddata /vagrant/fixtures/*
+
+# load fixtures (order is important)
+/vagrant/manage.py loaddata /vagrant/fixtures/sites.json
+/vagrant/manage.py loaddata /vagrant/fixtures/users.json
+/vagrant/manage.py loaddata /vagrant/fixtures/appointments.json
+/vagrant/manage.py loaddata /vagrant/fixtures/folio.json
+/vagrant/manage.py loaddata /vagrant/fixtures/blog.json
+/vagrant/manage.py loaddata /vagrant/fixtures/eatshop.json
+/vagrant/manage.py loaddata /vagrant/fixtures/sagelist.json
+
+# load housing data
 /vagrant/manage.py load_dorms
 /vagrant/manage.py load_maps
 /vagrant/manage.py load_dorm_rooms
+/vagrant/manage.py loaddata /vagrant/fixtures/housing.json
+
+# generate fake data for certain apps
+/vagrant/manage.py fakeevents
+/vagrant/manage.py scrape_twitter
+/vagrant/manage.py load_menus

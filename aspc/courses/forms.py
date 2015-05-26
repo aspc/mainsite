@@ -8,6 +8,7 @@ from itertools import groupby
 from django.forms.widgets import Widget, Select
 from django.forms.models import ModelChoiceIterator
 from django.utils.safestring import mark_safe
+from django.db.models import Q
 
 
 def requirement_area_label(campus_value):
@@ -228,12 +229,8 @@ class SearchForm(forms.Form):
 
         if self.cleaned_data.get('keywords'):
             keywords = [a.lower() for a in keyword_regex.findall(self.cleaned_data['keywords'])]
-            qs_descfilter = qs
-            qs_namefilter = qs
             for kw in keywords:
-                qs_descfilter = qs_descfilter.filter(description__icontains=kw)
-                qs_namefilter = qs_namefilter.filter(course__name__icontains=kw)
-            qs = (qs_descfilter | qs_namefilter)
+                qs = qs.filter(Q(description__icontains=kw) | Q(course__name__icontains=kw))
             qs = qs.distinct()
 
         qs = qs.distinct('code_slug').order_by('code_slug')
