@@ -1,4 +1,4 @@
-from urllib import urlencode
+from urllib import urlencode, quote_plus
 import urlparse
 from django.http import HttpResponseRedirect, HttpResponseNotAllowed
 from aspc import settings
@@ -63,16 +63,9 @@ def login(request, next_page=None):
 				# Ticket successfully validated and user data retrieved - perform login
 				auth.login(request, user)
 
-				# Call a PHP script to set PHP $_SESSION variables for seamless access to the PHP apps
-				import subprocess
-				subprocess.call(['php',
-					settings.PROJECT_ROOT + '/auth2/create_php_session.php',
-					user.username,
-					user.first_name,
-					user.last_name
-				])
-
-				return HttpResponseRedirect(next_page)
+				# Redirect to a PHP script to complete PHP session login on that side
+				# Afterwards, the PHP script will redirect to the ASPC index page or next_page if set
+				return HttpResponseRedirect('/php-auth/login.php?redirect=' + quote_plus(next_page))
 			else:
 				# Some error in the ticket validation - try the login again
 				return HttpResponseRedirect(_login_url(service_url))
