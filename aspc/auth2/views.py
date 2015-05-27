@@ -103,12 +103,7 @@ def logout(request, next_page=None):
 
 # Redirects to referring page, or to the homepage if no referrer is set
 def _next_page_url(request):
-	next_page = request.GET.get(REDIRECT_FIELD_NAME) or '/'
-	host = request.get_host()
-	prefix = (('http://', 'https://')[request.is_secure()] + host)
-	if next_page.startswith(prefix):
-		next_page = next[len(prefix):]
-	return next_page
+	return request.GET.get(REDIRECT_FIELD_NAME) or '/'
 
 # Builds CAS login URL
 def _login_url(service_url):
