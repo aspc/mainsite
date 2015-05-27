@@ -65,7 +65,7 @@ def login(request, next_page=None):
 
 				# Redirect to a PHP script to complete PHP session login on that side
 				# Afterwards, the PHP script will redirect to the ASPC index page or next_page if set
-				return HttpResponseRedirect('/php-auth/login.php?redirect=' + quote_plus(next_page))
+				return HttpResponseRedirect('https://aspc.pomona.edu/php-auth/login.php?redirect=' + quote_plus(next_page))
 			else:
 				# Some error in the ticket validation - try the login again
 				return HttpResponseRedirect(_login_url(service_url))
