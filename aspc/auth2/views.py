@@ -86,15 +86,18 @@ def logout(request, next_page=None):
 		next_page = next_page or _next_page_url(request)
 		is_guest = request.user.has_usable_password()
 
-		# First log the local Django user out
+		# If the user is not a guest user (i.e. is logged in via CAS), we will have to redirect to the
+		# CAS service to complete federated logout there
+		if not is_guest:
+			next_page = _logout_url()
+
+		# But first, log the local Django user out
 		logout(request)
 
-		# If the user is a guest (i.e. not backed by 5C CAS, but just in our local database) we're done
-		if is_guest:
-			return HttpResponseRedirect(next_page)
-		# Otherwise, then perform a redirection to the CAS server to complete logout there
-		else:
-			return HttpResponseRedirect(_logout_url())
+		# And then redirect to a PHP script to complete PHP session logout on that side
+		# Afterwards, the PHP script will redirect to next_page (either the CAS logout or the homepage, depending
+		# on the boolean fork above with is_guest)
+		return HttpResponseRedirect('https://aspc.pomona.edu/php-auth/logout.php?redirect=' + quote_plus(next_page))
 	else:
 		return HttpResponseNotAllowed(['GET'])
 
