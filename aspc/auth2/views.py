@@ -73,6 +73,10 @@ def login(request, next_page=None):
 # Performs user logout
 def logout(request, next_page=None):
 	if request.method == 'GET':
+		# Do nothing if someone who is already logged out tries to log out again
+		if request.user.is_anonymous():
+			return HttpResponseRedirect('/')
+
 		from django.contrib.auth import logout
 		next_page = next_page or _next_page_url(request)
 		is_guest = request.user.has_usable_password()
