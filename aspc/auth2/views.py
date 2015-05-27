@@ -1,4 +1,4 @@
-from urllib import urlencode
+from urllib import urlencode, quote_plus
 import urlparse
 from django.http import HttpResponseRedirect, HttpResponseNotAllowed
 from aspc import settings
@@ -12,11 +12,13 @@ __all__ = ['guest_login', 'login', 'logout']
 # Endpoint has two functions:
 # 1) On GET, renders a login form for guest accounts (i.e. users that are backed locally, not in the 5C CAS server)
 # 2) On POST, validates the login form, authenticates the user, and logs him in
-def guest_login(request):
+def guest_login(request, next_page=None):
 	if request.method == 'GET':
-		# If the user is already authenticated, simply redirect to the homepage
+		next_page = next_page or _next_page_url(request)
+
+		# If the user is already authenticated, simply redirect to the next_page
 		if request.user.is_authenticated():
-			return HttpResponseRedirect('/')
+			return HttpResponseRedirect(next_page)
 		else:
 			form = AuthenticationForm()
 			return render(request, 'auth2/guest_login.html', {'form': form})
@@ -29,7 +31,7 @@ def guest_login(request):
 
 			if user is not None:
 				auth.login(request, user)
-				return HttpResponseRedirect('/')
+				return HttpResponseRedirect(next_page)
 			else:
 				return render(request, 'auth2/guest_login.html', {'form': form})
 		else:
@@ -60,7 +62,10 @@ def login(request, next_page=None):
 			if user is not None:
 				# Ticket successfully validated and user data retrieved - perform login
 				auth.login(request, user)
-				return HttpResponseRedirect('/')
+
+				# Redirect to a PHP script to complete PHP session login on that side
+				# Afterwards, the PHP script will redirect to the ASPC index page or next_page if set
+				return HttpResponseRedirect('https://aspc.pomona.edu/php-auth/login.php?redirect=' + quote_plus(next_page))
 			else:
 				# Some error in the ticket validation - try the login again
 				return HttpResponseRedirect(_login_url(service_url))
@@ -81,21 +86,24 @@ def logout(request, next_page=None):
 		next_page = next_page or _next_page_url(request)
 		is_guest = request.user.has_usable_password()
 
-		# First log the local Django user out
+		# If the user is not a guest user (i.e. is logged in via CAS), we will have to redirect to the
+		# CAS service to complete federated logout there
+		if not is_guest:
+			next_page = _logout_url()
+
+		# But first, log the local Django user out
 		logout(request)
 
-		# If the user is a guest (i.e. not backed by 5C CAS, but just in our local database) we're done
-		if is_guest:
-			return HttpResponseRedirect('/')
-		# Otherwise, then perform a redirection to the CAS server to complete logout there
-		else:
-			return HttpResponseRedirect(_logout_url())
+		# And then redirect to a PHP script to complete PHP session logout on that side
+		# Afterwards, the PHP script will redirect to next_page (either the CAS logout or the homepage, depending
+		# on the boolean fork above with is_guest)
+		return HttpResponseRedirect('https://aspc.pomona.edu/php-auth/logout.php?redirect=' + quote_plus(next_page))
 	else:
 		return HttpResponseNotAllowed(['GET'])
 
 # Redirects to referring page, or to the homepage if no referrer is set
 def _next_page_url(request):
-	next_page = request.GET.get(REDIRECT_FIELD_NAME) or ''
+	next_page = request.GET.get(REDIRECT_FIELD_NAME) or '/'
 	host = request.get_host()
 	prefix = (('http://', 'https://')[request.is_secure()] + host)
 	if next_page.startswith(prefix):
