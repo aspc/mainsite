@@ -12,11 +12,13 @@ __all__ = ['guest_login', 'login', 'logout']
 # Endpoint has two functions:
 # 1) On GET, renders a login form for guest accounts (i.e. users that are backed locally, not in the 5C CAS server)
 # 2) On POST, validates the login form, authenticates the user, and logs him in
-def guest_login(request):
+def guest_login(request, next_page=None):
 	if request.method == 'GET':
-		# If the user is already authenticated, simply redirect to the homepage
+		next_page = next_page or _next_page_url(request)
+
+		# If the user is already authenticated, simply redirect to the next_page
 		if request.user.is_authenticated():
-			return HttpResponseRedirect('/')
+			return HttpResponseRedirect(next_page)
 		else:
 			form = AuthenticationForm()
 			return render(request, 'auth2/guest_login.html', {'form': form})
@@ -29,7 +31,7 @@ def guest_login(request):
 
 			if user is not None:
 				auth.login(request, user)
-				return HttpResponseRedirect('/')
+				return HttpResponseRedirect(next_page)
 			else:
 				return render(request, 'auth2/guest_login.html', {'form': form})
 		else:
@@ -60,7 +62,7 @@ def login(request, next_page=None):
 			if user is not None:
 				# Ticket successfully validated and user data retrieved - perform login
 				auth.login(request, user)
-				return HttpResponseRedirect('/')
+				return HttpResponseRedirect(next_page)
 			else:
 				# Some error in the ticket validation - try the login again
 				return HttpResponseRedirect(_login_url(service_url))
@@ -86,7 +88,7 @@ def logout(request, next_page=None):
 
 		# If the user is a guest (i.e. not backed by 5C CAS, but just in our local database) we're done
 		if is_guest:
-			return HttpResponseRedirect('/')
+			return HttpResponseRedirect(next_page)
 		# Otherwise, then perform a redirection to the CAS server to complete logout there
 		else:
 			return HttpResponseRedirect(_logout_url())
@@ -95,7 +97,7 @@ def logout(request, next_page=None):
 
 # Redirects to referring page, or to the homepage if no referrer is set
 def _next_page_url(request):
-	next_page = request.GET.get(REDIRECT_FIELD_NAME) or ''
+	next_page = request.GET.get(REDIRECT_FIELD_NAME) or '/'
 	host = request.get_host()
 	prefix = (('http://', 'https://')[request.is_secure()] + host)
 	if next_page.startswith(prefix):
