@@ -62,6 +62,16 @@ def login(request, next_page=None):
 			if user is not None:
 				# Ticket successfully validated and user data retrieved - perform login
 				auth.login(request, user)
+
+				# Call a PHP script to set PHP $_SESSION variables for seamless access to the PHP apps
+				import subprocess
+				subprocess.call(['php',
+					settings.PROJECT_ROOT + '/auth2/create_php_session.php',
+					user.username,
+					user.first_name,
+					user.last_name
+				])
+
 				return HttpResponseRedirect(next_page)
 			else:
 				# Some error in the ticket validation - try the login again
