@@ -52,7 +52,10 @@ def login(request, next_page=None):
 			return HttpResponseRedirect(next_page)
 
 		ticket = request.GET.get('ticket')
-		service_url = 'https://' + request.get_host() + request.path  # Required to authenticate over SSL
+
+		# Required to authenticate over SSL
+		# Also pass along the next_page reference so we can pick it up again on the ticket response
+		service_url = 'https://' + request.get_host() + request.path + '?next=' + quote_plus(next_page)
 
 		# If there is already a ticket, perform validation on it
 		if ticket:
