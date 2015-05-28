@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.contrib.auth.forms import AuthenticationForm
 
 __all__ = ['guest_login', 'login', 'logout']
+PHP_AUTH_URL = 'https://aspc.pomona.edu/php-auth'
 
 ## GUEST LOGIN - Uses django.contrib.auth.backends.ModelBackend for authentication
 # Endpoint has two functions:
@@ -49,7 +50,8 @@ def login(request, next_page=None):
 
 		# If the user is already authenticated, simply redirect to the next_page
 		if request.user.is_authenticated():
-			return HttpResponseRedirect(next_page)
+			# Redirect via the PHP login script though to ensure that the session hasn't expired there
+			return HttpResponseRedirect(PHP_AUTH_URL + '/login.php?redirect=' + quote_plus(next_page))
 
 		ticket = request.GET.get('ticket')
 
@@ -68,7 +70,7 @@ def login(request, next_page=None):
 
 				# Redirect to a PHP script to complete PHP session login on that side
 				# Afterwards, the PHP script will redirect to the ASPC index page or next_page if set
-				return HttpResponseRedirect('https://aspc.pomona.edu/php-auth/login.php?redirect=' + quote_plus(next_page))
+				return HttpResponseRedirect(PHP_AUTH_URL + '/login.php?redirect=' + quote_plus(next_page))
 			else:
 				# Some error in the ticket validation - try the login again
 				return HttpResponseRedirect(_login_url(service_url))
@@ -100,7 +102,7 @@ def logout(request, next_page=None):
 		# And then redirect to a PHP script to complete PHP session logout on that side
 		# Afterwards, the PHP script will redirect to next_page (either the CAS logout or the homepage, depending
 		# on the boolean fork above with is_guest)
-		return HttpResponseRedirect('https://aspc.pomona.edu/php-auth/logout.php?redirect=' + quote_plus(next_page))
+		return HttpResponseRedirect(PHP_AUTH_URL + '/logout.php?redirect=' + quote_plus(next_page))
 	else:
 		return HttpResponseNotAllowed(['GET'])
 
