@@ -105,7 +105,8 @@ class Command(BaseCommand):
                     # Get location
 
                     if mtg['Room'] and mtg['Building']:
-                        room_number = ROOM_REGEX.findall(mtg['MeetTime'])[0]
+                        room_number = ROOM_REGEX.findall(mtg['MeetTime']) # Returns a list
+                        room_number = room_number[0] if room_number else ''
                         location = "{0}, {1}".format(mtg['Building'], room_number)
                         # special case for Keck building / CU campus
                         if mtg['Building'] == u'Keck Science Center':
