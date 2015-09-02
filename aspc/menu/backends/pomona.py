@@ -289,12 +289,12 @@ class PomonaBackend(object):
 			return self._parse_frank_frary_cells(cells)
 
 	def frary_menu(self):
-		return self._get_menu('http://www.pomona.edu/administration/dining/menus/frary.aspx')
+		return self._get_menu('http://www.pomona.edu/administration/dining/menus/frary')
 
 	def frank_menu(self):
-		return self._get_menu('http://www.pomona.edu/administration/dining/menus/frank.aspx')
+		return self._get_menu('http://www.pomona.edu/administration/dining/menus/frank')
 
 	def oldenborg_menu(self):
 		global is_oldenborg
 		is_oldenborg = True;
-		return self._get_menu('http://www.pomona.edu/administration/dining/menus/oldenborg.aspx')
+		return self._get_menu('http://www.pomona.edu/administration/dining/menus/oldenborg')
