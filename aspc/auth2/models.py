@@ -31,6 +31,7 @@ class UserData(models.Model):
 	user = models.ForeignKey(User, null=False, blank=False, related_name='user')
 	full_name = models.CharField(max_length=255, null=True, blank=True)
 	college = models.CharField(max_length=255, null=False, blank=False, choices=COLLEGES, default=DEFAULT_COLLEGE)
+	is_faculty = models.BooleanField(default=False)
 	year = models.IntegerField(null=True, blank=True)
 	dorm = models.CharField(max_length=255, null=True, blank=True)
 

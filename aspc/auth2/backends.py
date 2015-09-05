@@ -45,6 +45,7 @@ class CASBackend(object):
 		user_data, is_new = UserData.objects.get_or_create(user=user)
 		user_data.full_name = user_info['full_name']
 		user_data.college = UserData.belongs_to_college(user)
+		user_data.is_faculty = '@pomona.edu' in user_info['email'] # Faculty account emails end in @pomona.edu not @MyMail.pomona.edu
 		user_data.year = None
 		user_data.dorm = None
 		user_data.save()
