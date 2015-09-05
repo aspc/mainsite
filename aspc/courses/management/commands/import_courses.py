@@ -162,6 +162,10 @@ class Command(BaseCommand):
                     sections = simplejson.load(urllib.urlopen(COURSES_URL % (t, department)))
                     if sections:
                         for section in sections:
+                            # Ensure that the existing variable contains sections added in previous iterations of the import
+                            # TODO: Make this more efficient (i.e. memoize the data so we don't have to reassign every loop)
+                            existing = set(Section.objects.filter(term=term).values_list('code', flat=True))
+
                             try:
                                 section_code = section['CourseCode']
                             except TypeError:
@@ -232,6 +236,9 @@ class Command(BaseCommand):
                                 section_object = Section.objects.get(code=code, term=term)
                                 section_object.course.requirement_areas.add(area_object)
                             except MultipleObjectsReturned:
+                                # FIXME: This should never happen at this stage! Multiple section errors should be caught
+                                # in the previous `for section in sections:` block above, otherwise some sections will not
+                                # have the area requirement data properly set.
                                 self.stdout.write('multiple sections of "%s" for term "%s"' % (section_code, term))
                                 continue
 
