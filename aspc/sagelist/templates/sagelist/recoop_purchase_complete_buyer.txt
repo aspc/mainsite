@@ -1,10 +1,14 @@
 Hi {{ buyer.get_full_name }}
 
-You have just purchased {{ booksale.title|safe }} from the Sustainability Office's ReCoop Sale for ${{ booksale.price }}. The listing has been removed from the main list, but you can still get to it here:
+Thank you for reserving a book at Walker ReCoop Book Room. If this is the first week of class for the semester, the Walker Book Room is open 7-9 pm M-F. Please come by to find and collect your book with cash or check to Pomona College. We will reserve this item for you for 24 hours. After that time, we will sell the book to other interested parties. Please let us know if you need to make other arrangements. If this is after the first week of classes, an EcoRep will contact you to set up a time to meet you at Walker Book Room.
 
-{{ protocol }}://{{ domain }}{{ booksale.get_absolute_url }}
+Reservation details:
 
-The Sustainability Office has set aside this book for you. You can go to the Walker EcoDesk in Walker Lounge to pick it up on Sunday through Wednesday from 8pm to 10pm. If you need to arrange a pickup outside of those times, please contact sustainability@pomona.edu.
+Book: {{ booksale.title|safe }}
+Price: ${{ booksale.price }}
+Listing URL: {{ protocol }}://{{ domain }}{{ booksale.get_absolute_url }}
+
+If you have any questions or problems, please contact sustainability@pomona.edu.
 
 SageBooks
 ASPC System
