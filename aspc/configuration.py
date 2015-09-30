@@ -134,6 +134,8 @@ INSTALLED_APPS = (
 	'gunicorn',
 	'django_extensions',
 	'debug_toolbar',
+    'rest_framework',
+    'rest_framework.authtoken',
 	#'djcelery',
 	'stdimage',
 	'compressor',
@@ -354,3 +356,21 @@ GRAPPELLI_ADMIN_TITLE = 'Associated Students of Pomona College'
 #### Twitter Activity Feed Sources
 
 TWITTER_FEEDS = ['pomonadining', 'SmithCampusCent', 'aspcsenate', 'pomonacollege']
+
+# Menu API Authentication
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_THROTTLE_CLASSES': (
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '100/day',
+        'user': '1000/day'
+    },
+}
