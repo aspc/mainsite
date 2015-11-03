@@ -91,7 +91,7 @@ class Appointment(models.Model):
                 self.user = User.objects.get(email__iexact=self.login_id)
             except User.DoesNotExist:
                 pass
-        elif self.user and not (self.login_id == self.user.email):
+        elif self.user and not (self.login_id.lower() == self.user.email.lower()):
             # The Login ID for an existing Appointment changed, so we need
             # to re-sync / remove permissions for the old account
             old_user = self.user
