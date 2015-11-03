@@ -198,6 +198,12 @@ ol.course_list li li.meeting {
 	margin: 0.5em 0;
 }
 
+ol.course_list li.notice {
+	background-color: #E7E7E7;
+	margin-bottom:20px;
+	padding:1em;
+}
+
 .stats {
 	text-align: center;
 	color: darkgray;
