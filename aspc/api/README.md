@@ -1,39 +1,23 @@
 # ASPC API
 
-A standardized way to access ASPC features. Currently there is only an API for the Menu. 
-In order to use the API, you must first obtain an access token using your 5C CAS credentials.
+A standardized way to access ASPC features. Currently there is only an API for the Menu.
 
-## Example
+## Authentication Token
 
-### 1) Retrieve auth token
+Your authentication token will be shown to you when you login and go to `https://aspc.pomona.edu/api/`.
 
-#### Request (application/json)
+Please use this authentication token to access all the endpoints below. You are limited to 1000 requests per day. Please contact the developers if you wish to raise the limit.
 
-```
-curl -d "username=admin&password=aspc" https://aspc.pomona.edu/api/auth/
-```
+## Example using cURL
 
-Note this will leave your password in the command line history: delete the above line from your `~/.bash_history` to remove.
+### Request (GET)
+ 
 
-#### Response 200 (application/json)
+    curl -H "Authorization: Token 83056d12c23f007d1d2ad7d2713b776d4644c21c" https://aspc.pomona.edu/api/menu/
 
-```
-{
-    "token":"83056d12c23f007d1d2ad7d2713b776d4644c21c"
-}
-```
+ 
+### Response 200 (application/json)
 
-### 2) Access menu endpoint
-
-#### Request (GET)
-
-```
-curl -H "Authorization: Token 83056d12c23f007d1d2ad7d2713b776d4644c21c" https://aspc.pomona.edu/api/menu/
-```
-
-#### Response 200 (application/json)
-
-```
     [
         {
             "day": "fri",
@@ -50,26 +34,8 @@ curl -H "Authorization: Token 83056d12c23f007d1d2ad7d2713b776d4644c21c" https://
             "meal": "dessert"
         }, ...
     ]
-```
 
-## Authorization [/api/auth/]
-
-#### Request (application/json)
-```
-    {
-        "username": "your_usernmae",
-        "password": "your_password"
-    }
-```
-    
-#### Response 200 (application/json)
-```
-    {
-        "token": "83456d12c23f007d1d2ad7d2713b776d4644c21c"
-    }
-```
-
-## Menu
+## Menu API
 
 ###  All Menus [/api/menu/]
 

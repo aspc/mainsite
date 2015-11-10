@@ -142,6 +142,7 @@ INSTALLED_APPS = (
 	'aspc.folio',
 	'aspc.senate',
 	'aspc.blog',
+    'aspc.api',
 	'aspc.auth1',
 	'aspc.auth2',
 	'aspc.sagelist',

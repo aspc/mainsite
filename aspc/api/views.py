@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from aspc.menu.models import Menu, MenuSerializer
 from django.http import Http404
 from rest_framework.views import APIView
@@ -6,6 +7,18 @@ from rest_framework import status
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.throttling import UserRateThrottle
+from rest_framework.authtoken.models import Token
+from django.views.decorators.cache import never_cache
+
+@never_cache
+def api_home(request):
+    current_user = request.user
+    token = None
+    if current_user.is_active:
+        token = Token.objects.get_or_create(user=current_user)[0].key
+    return render(request, 'api/landing.html', {
+        'token': token
+    })
 
 class MenuList(APIView):
     """
