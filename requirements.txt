@@ -24,3 +24,4 @@ lxml==3.3.3
 django_compressor==1.5
 python-memcached==1.53
 kombu==3.0.26
+djangorestframework==3.2.4
