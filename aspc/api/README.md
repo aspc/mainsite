@@ -6,7 +6,7 @@ A standardized way to access ASPC features. Currently there is only an API for t
 
 Your authentication token will be shown to you when you login and go to `https://aspc.pomona.edu/api/`.
 
-Please use this authentication token to access all the endpoints below. You are limited to 1000 requests per day. Please contact the developers if you wish to raise the limit.
+Please use this authentication token to access all the endpoints below. You are limited to 1000 requests per day. Please contact digitalmedia@aspc.pomona.edu if you wish to raise the limit.
 
 ## Example using cURL
 
