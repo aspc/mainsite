@@ -65,7 +65,7 @@ Lists all menus
         }, ...
     ]
 
-###  Menus By Dining Hall [/api/menu/dining_halls/{dining_hall}/]
+###  Menus By Dining Hall [/api/menu/dining_hall/{dining_hall}/]
 
 Lists all menus by a specific dining hall
 
