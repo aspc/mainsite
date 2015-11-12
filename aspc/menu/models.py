@@ -1,4 +1,5 @@
 from django.db import models
+from rest_framework import serializers
 
 class FrankManager(models.Manager):
     def get_queryset(self):
@@ -72,3 +73,8 @@ class Menu(models.Model):
     class Meta:
         ordering = ('day', 'dining_hall', 'meal')
         verbose_name_plural = 'Menus'
+
+class MenuSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Menu
+        fields = ('id', 'dining_hall', 'day', 'meal', 'food_items')

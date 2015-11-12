@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns, url, include
 from aspc.menu.views import home, weekend, weekday
 
 urlpatterns = [

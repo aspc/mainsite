@@ -4,6 +4,40 @@ The ASPC main site is developed and maintained by the [ASPC Digital Media and Pr
 
 The ASPC main site is deployed at [https://aspc.pomona.edu](https://aspc.pomona.edu).
 
+## Project layout ##
+
+Under the main `aspc` folder in this directory are several subfolders, most of
+which are Django "apps":
+
+- `activityfeed` - Feed of activity on Twitter, SageBooks, etc. (shown on homepage)
+- `api` - API for ASPC apps: please see the [API README](aspc/api/README.md) for more information
+- `auth2` - CAS auth backend for 5C accounts
+- `blog` - The senate blog (shown on homepage)
+- `courses` - Course search and schedule builder
+- `eatshop` - Local business and discount directory
+- `events` - 5C event calendar and scraper (shown on homepage)
+- `folio` - Simple CMS to add basic HTML pages to the site
+- `housing` - Housing directory and reviews
+- `menu` - 5C weekly dining hall menus (shown on homepage)
+- `minutes` - History of ASPC minutes and summaries
+- `sagelist` - Aka SageBooks, student-to-student textbook sales
+- `senate` - Senate positions, appointments, and documents
+
+Folders without an `__init__.py` are not apps, but contain supporting files:
+
+- `static` - Static assets (CSS/JavaScript/Images/Fonts) used in the site
+- `templates` - Certain site-wide templates that don't fit into a particular app
+
+And some apps are placeholders that have yet to be fleshed out or removed:
+
+- `auth1` - Legacy LDAP auth backend for Pomona College accounts
+- `college` - Contains assortment of generic college-based models and tasks that need to be refactored
+- `coursesearch` - Legacy course search and schedule builder
+
+## ASPC API ##
+
+We now have an API for the 5C Menu. Please see the [API README](aspc/api/README.md) for more details.
+
 ## Contributing ##
 
 The ASPC main site is an open-source project that welcomes contributions from the community. If you want to be paid for your work, you should apply for a job in the [ASPC Digital Media and Programming Group](https://aspc.pomona.edu/senate/digital-media-programming/)!
@@ -36,37 +70,7 @@ GUnicorn workers have `max_requests = 1` set in `vagrant/gunicorn.cfg.py`. This 
 
 When you have finished making changes on whatever branch in your forked repo, simply open a pull request against ASPC's `master` to signal that you'd like to merge them in. One of the ASPC developers will review the request, merge, and deploy it if it is appropriate. Feel free to contact [digitalmedia@aspc.pomona.edu](mailto:digitalmedia@aspc.pomona.edu) with any questions!
 
-
-## Project layout ##
-
-Under the main `aspc` folder in this directory are several subfolders, most of
-which are Django "apps":
-
-- `activityfeed` - Feed of activity on Twitter, SageBooks, etc. (shown on homepage)
-- `auth2` - CAS auth backend for 5C accounts
-- `blog` - The senate blog (shown on homepage)
-- `courses` - Course search and schedule builder
-- `eatshop` - Local business and discount directory
-- `events` - 5C event calendar and scraper (shown on homepage)
-- `folio` - Simple CMS to add basic HTML pages to the site
-- `housing` - Housing directory and reviews
-- `menu` - 5C weekly dining hall menus (shown on homepage)
-- `minutes` - History of ASPC minutes and summaries
-- `sagelist` - Aka SageBooks, student-to-student textbook sales
-- `senate` - Senate positions, appointments, and documents
-
-Folders without an `__init__.py` are not apps, but contain supporting files:
-
-- `static` - Static assets (CSS/JavaScript/Images/Fonts) used in the site
-- `templates` - Certain site-wide templates that don't fit into a particular app
-
-And some apps are placeholders that have yet to be fleshed out or removed:
-
-- `auth1` - Legacy LDAP auth backend for Pomona College accounts
-- `college` - Contains assortment of generic college-based models and tasks that need to be refactored
-- `coursesearch` - Legacy course search and schedule builder
-
-## Manually running locally ##
+### Manually running locally ###
 
 If you cannot use Vagrant for some reason, you can always get the main site running locally the old-fashioned way. To do this, you need Python >= 2.7 (<3.0), PostgreSQL, virtualenv, virtualenvwrapper, and some patience. These instructions assume you are using a Mac with [Homebrew](http://brew.sh/) installed.
 

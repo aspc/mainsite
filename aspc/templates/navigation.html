@@ -31,6 +31,7 @@
         {% for sub in pages %}
         <li><a href="{{ sub.get_absolute_url }}">{{ sub.display_title }}</a></li>
         {% endfor %}
+        <li><a href="{% url "api_home" %}">API (For Developers)</a></li>
       </ul>
     </li>
     {% endwith %}
