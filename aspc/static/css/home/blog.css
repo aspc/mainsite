@@ -10,6 +10,7 @@
 }
 
 .news ol.posts {
+	word-wrap: break-word;
 	list-style-type: none;
 	padding: 0;
 	margin: 0;
