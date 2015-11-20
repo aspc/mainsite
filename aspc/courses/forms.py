@@ -213,7 +213,17 @@ class SearchForm(forms.Form):
             qs = qs.filter(course__number__lte=self.cleaned_data.get('course_number_max'))
 
         if self.cleaned_data.get('instructor'):
-            qs = qs.filter(instructors__name__icontains=self.cleaned_data['instructor'])
+            # Split the instructor name into word tokens, use anything except hyphens as the delimiter
+            # E.g.
+            # "Hillary Rodham Clinton" -> ["Hillary", "Rodham", "Clinton"]
+            # "Hillary Rodham-Clinton" -> ["Hillary", "Rodham-Clinton"]
+            # "Clinton, Hillary Rodham" -> ["Clinton", "Hillary", "Rodham"]
+            instructor_tokens = re.split('(?!-)\W+', self.cleaned_data['instructor'])
+
+            # Progessively filter the instructor name field by each token
+            # Possible performance impact but names should only be at most three tokens long, so only three iterations
+            for t in instructor_tokens:
+                qs = qs.filter(instructors__name__icontains=t)
         if self.cleaned_data.get('credit'):
             if self.cleaned_data['credit'] == 'A':
                 pass
