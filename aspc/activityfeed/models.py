@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.dispatch import receiver
 from kombu import abstract
 from aspc.coursesearch.models import Schedule
@@ -45,7 +45,7 @@ class Activity(models.Model):
     category = models.CharField(max_length=100, choices=CATEGORY_CHOICES)
     content_type = models.ForeignKey(ContentType, null=True, blank=True)
     object_id = models.PositiveIntegerField(null=True, blank=True)
-    object = generic.GenericForeignKey()
+    object = GenericForeignKey()
 
     class Meta:
         ordering = ['-date']
