@@ -124,8 +124,6 @@ INSTALLED_APPS = (
 	'django.contrib.sites',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
-	'grappelli.dashboard', # Must be before grappelli
-	'grappelli', # Must be before django.contrib.admin
 	'filebrowser', # Must be before django.contrib.admin
 	'django.contrib.admin',
 	'django.contrib.admindocs',
@@ -348,11 +346,6 @@ ACADEMIC_TERM_DEFAULTS = {
 #         "schedule": crontab(hour="*", minute=20),
 #     },
 # }
-
-#### Grappelli Configuration
-
-GRAPPELLI_INDEX_DASHBOARD = 'aspc.dashboard.CustomIndexDashboard'
-GRAPPELLI_ADMIN_TITLE = 'Associated Students of Pomona College'
 
 #### Twitter Activity Feed Sources
 
