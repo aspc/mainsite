@@ -51,7 +51,10 @@ Vagrant.configure("2") do |config|
   # View the documentation for the provider you're using for more
   # information on available options.
 
+  # Use the default insecure private key for SSH (don't need security for this local box)
+  config.ssh.insert_key = false
+  config.ssh.private_key_path = '~/.vagrant.d/insecure_private_key'
+
   # Forward local SSH keys to Vagrant
   config.ssh.forward_agent = true
-  config.ssh.private_key_path = ['~/.ssh/id_rsa', '~/.vagrant.d/insecure_private_key']
 end
