@@ -3,7 +3,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.dispatch import receiver
 from kombu import abstract
-from aspc.coursesearch.models import Schedule
 from .signals import new_activity, delete_activity
 
 
