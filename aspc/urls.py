@@ -19,7 +19,7 @@ urlpatterns = [
     url(r'^$', HomeView.as_view(), name="home"),
     url(r'^admin/filebrowser/', include(site.urls)),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
     url(r'^api/', include('aspc.api.urls')),
     url(r'^news/', include('aspc.blog.urls')),
     url(r'^eatshop/', include('aspc.eatshop.urls')),
