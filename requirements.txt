@@ -1,4 +1,4 @@
-Django>=1.8,<1.9
+Django>=1.9,<1.10
 Fabric==1.8.1
 Markdown==2.3.1
 Pillow==2.4.0
