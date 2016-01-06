@@ -1,5 +1,4 @@
 from django.conf.urls import patterns, include, url
-from django.conf import settings
 from aspc.folio.models import Page
 from aspc.views import HomeView
 from aspc.blog.urls import post_kwargs
@@ -29,8 +28,3 @@ urlpatterns = [
     url(r'(?P<slug_path>(?:[\w\-\d]+/)+)$', 'aspc.folio.views.page_view', name="folio_page"),
     url(r'^__debug__/', include(debug_toolbar.urls)),
 ]
-
-if settings.DEBUG:
-    urlpatterns.append(
-        url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT})
-    )
