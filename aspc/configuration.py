@@ -62,7 +62,8 @@ STATICFILES_DIRS = (
 # independent from user requests. This allows to pre-compress CSS and JavaScript files and works
 # just like the automatic compression with the {% compress %} tag.
 # http://django-compressor.readthedocs.org/en/latest/settings/?highlight=cache#django.conf.settings.COMPRESS_OFFLINE
-COMPRESS_OFFLINE = True
+# TODO: Toggle this back to True once Django Compressor supports offline compression for Django 1.9
+COMPRESS_OFFLINE = False
 
 # Controls the directory inside COMPRESS_ROOT that compressed files will be written to.
 # http://django-compressor.readthedocs.org/en/latest/settings/#django.conf.settings.COMPRESS_OUTPUT_DIR
@@ -74,8 +75,10 @@ COMPRESS_JS_FILTERS = [
     'compressor.filters.jsmin.JSMinFilter'
 ]
 
+# Compression filters to apply to the concatenated CSS (e.g. minifications)
+# http://django-compressor.readthedocs.org/en/latest/settings/?highlight=cache#django.conf.settings.COMPRESS_CSS_FILTERS
 COMPRESS_CSS_FILTERS = [
-    'compressor.filters.cssmin.CSSMinFilter'
+    'compressor.filters.cssmin.rCSSMinFilter'
 ]
 
 # List of callables that know how to import templates from various sources.
