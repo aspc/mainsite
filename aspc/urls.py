@@ -4,12 +4,8 @@ from aspc.folio.models import Page
 from aspc.views import HomeView
 from aspc.blog.urls import post_kwargs
 from django.http import HttpResponseRedirect
-
 from django.contrib import admin
-admin.autodiscover()
-
 from filebrowser.sites import site
-
 import debug_toolbar
 
 # home_kwargs = post_kwargs.copy()
