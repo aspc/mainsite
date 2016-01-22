@@ -1,6 +1,6 @@
 Hi {{ buyer.get_full_name }}
 
-Thank you for reserving a book at Walker ReCoop Book Room. If this is the first week of class for the semester, the Walker Book Room is open 7-9 pm M-F. Please come by to find and collect your book with cash or check to Pomona College. We will reserve this item for you for 24 hours. After that time, we will sell the book to other interested parties. Please let us know if you need to make other arrangements. If this is after the first week of classes, an EcoRep will contact you to set up a time to meet you at Walker Book Room.
+Thank you for reserving a book at Walker ReCoop Book Room. If this is the first week of class for the semester, the Walker Book Room will be open Monday (January 25) through Thursday (January 25), 7 to 9pm. Please come by to find and collect your book with cash or check to Pomona College. We will reserve this item for you for 24 hours. After that time, we will sell the book to other interested parties. Please let us know if you need to make other arrangements. If this is after the first week of classes, an EcoRep will contact you to set up a time to meet you at Walker Book Room.
 
 Reservation details:
 
