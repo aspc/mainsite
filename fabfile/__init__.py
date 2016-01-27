@@ -71,8 +71,7 @@ def _update_static():
 		prefix('source /srv/www/{0}/env/bin/activate'.format(env.site))
 	):
 		sudo('./manage.py collectstatic', user=env.site)
-		# TODO: Reenable this once Django Compressor supports offline compression for Django 1.9
-		#sudo('./manage.py compress', user=env.site)
+		sudo('./manage.py compress', user=env.site)
 
 # Installs any new Python requirements in requirements.txt
 def _install_requirements():

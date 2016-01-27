@@ -62,8 +62,7 @@ STATICFILES_DIRS = (
 # independent from user requests. This allows to pre-compress CSS and JavaScript files and works
 # just like the automatic compression with the {% compress %} tag.
 # http://django-compressor.readthedocs.org/en/latest/settings/?highlight=cache#django.conf.settings.COMPRESS_OFFLINE
-# TODO: Toggle this back to True once Django Compressor supports offline compression for Django 1.9
-COMPRESS_OFFLINE = False
+COMPRESS_OFFLINE = True
 
 # Controls the directory inside COMPRESS_ROOT that compressed files will be written to.
 # http://django-compressor.readthedocs.org/en/latest/settings/#django.conf.settings.COMPRESS_OUTPUT_DIR
