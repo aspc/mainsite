@@ -19,7 +19,7 @@ python-twitter==1.1
 feedparser==5.1.3
 beautifulsoup4==4.3.2
 lxml==3.3.3
-django_compressor==2.0
+https://github.com/django-compressor/django-compressor/tarball/33aafe709a29988d1e5f9a377ef7fa1440358c19
 python-memcached==1.53
 kombu==3.0.26
 djangorestframework==3.2.4
