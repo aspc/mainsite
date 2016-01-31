@@ -48,15 +48,6 @@ class GroupedModelChoiceIterator(ModelChoiceIterator):
     def __iter__(self):
         if self.field.empty_label is not None:
             yield (u"", self.field.empty_label)
-        if self.field.cache_choices:
-            if self.field.choice_cache is None:
-                self.field.choice_cache = [
-                    (self.field.group_label(group), [self.choice(ch) for ch in choices])
-                    for group, choices in groupby(self.queryset.all(),
-                                                  key=lambda row: getattr(row, self.field.group_by_field))
-                ]
-            for choice in self.field.choice_cache:
-                yield choice
         else:
             for group, choices in groupby(self.queryset.all(),
                                           key=lambda row: getattr(row, self.field.group_by_field)):

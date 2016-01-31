@@ -10,7 +10,7 @@
 
 {% block "css" %}
   {{ block.super }}
-  <link rel="stylesheet" type="text/css" href="{% static "css/coursesearch/coursesearch.css" %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static "css/courses/courses.css" %}"/>
 {% endblock %}
 
 {% block "content_class" %}schedule{% endblock %}
@@ -18,7 +18,7 @@
 {% block "breadcrumbs" %}
 <ol class="breadcrumbs">
   <li>Services</li>
-  <li><a href="{% url "coursesearch_home" %}">Course Search</a></li>
+  <li><a href="{% url "courses_home" %}">Course Search</a></li>
   {% block "courses_breadcrumbs" %}{% endblock %}
 </ol>
 {% endblock %}

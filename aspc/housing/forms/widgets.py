@@ -1,7 +1,7 @@
 # adapted from http://djangosnippets.org/snippets/2236/
 import math
 from itertools import chain
-from django.forms.util import flatatt
+from django.forms.utils import flatatt
 
 from django import forms
 from django.forms import widgets

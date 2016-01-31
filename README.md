@@ -32,7 +32,6 @@ And some apps are placeholders that have yet to be fleshed out or removed:
 
 - `auth1` - Legacy LDAP auth backend for Pomona College accounts
 - `college` - Contains assortment of generic college-based models and tasks that need to be refactored
-- `coursesearch` - Legacy course search and schedule builder
 
 ## ASPC API ##
 

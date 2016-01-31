@@ -1,5 +1,6 @@
 from django import template
 from django.template.loader import render_to_string
+from django.utils.safestring import mark_safe
 
 register = template.Library()
 
@@ -50,4 +51,4 @@ def parse_tweet(tweet):
             tweet = tweet.replace(hash.group(0),
                 '<a href="https://twitter.com/search?q='+url_hash+'" title="'+hash.group(0)+'">'+hash.group(0)+'</a>');
 
-    return tweet
+    return mark_safe(tweet)

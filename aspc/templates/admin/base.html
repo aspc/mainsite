@@ -1,0 +1,25 @@
+{% extends "admin/base.html" %}
+
+{% load i18n %}
+
+{% block userlinks %}
+	<a href="/admin/housing/review/raffle">{% trans 'Housing reviews raffle' %}</a>
+
+	&nbsp;/&nbsp;
+
+	<a href="/admin/files">{% trans 'File uploads' %}</a>
+
+	&nbsp;/&nbsp;
+
+	<a href="mailto:digitalmedia@aspc.pomona.edu">{% trans 'Contact webmaster' %}</a>
+
+	&nbsp;/&nbsp;
+
+	{% if user.has_usable_password %}
+		<a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a>
+
+		&nbsp;/&nbsp;
+	{% endif %}
+
+	<a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
+{% endblock %}

@@ -1,4 +1,5 @@
-from django.contrib.sites.models import Site, RequestSite
+from django.contrib.sites.models import Site
+from django.contrib.sites.requests import RequestSite
 from django.conf import settings as aspc_settings
 import re
 
