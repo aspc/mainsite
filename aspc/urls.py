@@ -1,15 +1,9 @@
 from django.conf.urls import patterns, include, url
-from django.conf import settings
 from aspc.folio.models import Page
 from aspc.views import HomeView
 from aspc.blog.urls import post_kwargs
 from django.http import HttpResponseRedirect
-
 from django.contrib import admin
-admin.autodiscover()
-
-from filebrowser.sites import site
-
 import debug_toolbar
 
 # home_kwargs = post_kwargs.copy()
@@ -17,11 +11,9 @@ import debug_toolbar
 
 urlpatterns = [
     url(r'^$', HomeView.as_view(), name="home"),
-    url(r'^admin/filebrowser/', include(site.urls)),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
     url(r'^api/', include('aspc.api.urls')),
-    url(r'^grappelli/', include('grappelli.urls')),
     url(r'^news/', include('aspc.blog.urls')),
     url(r'^eatshop/', include('aspc.eatshop.urls')),
     url(r'^events/', include('aspc.events.urls')),
@@ -36,8 +28,3 @@ urlpatterns = [
     url(r'(?P<slug_path>(?:[\w\-\d]+/)+)$', 'aspc.folio.views.page_view', name="folio_page"),
     url(r'^__debug__/', include(debug_toolbar.urls)),
 ]
-
-if settings.DEBUG:
-    urlpatterns.append(
-        url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT})
-    )

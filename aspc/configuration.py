@@ -74,8 +74,10 @@ COMPRESS_JS_FILTERS = [
     'compressor.filters.jsmin.JSMinFilter'
 ]
 
+# Compression filters to apply to the concatenated CSS (e.g. minifications)
+# http://django-compressor.readthedocs.org/en/latest/settings/?highlight=cache#django.conf.settings.COMPRESS_CSS_FILTERS
 COMPRESS_CSS_FILTERS = [
-    'compressor.filters.cssmin.CSSMinFilter'
+    'compressor.filters.cssmin.rCSSMinFilter'
 ]
 
 # List of callables that know how to import templates from various sources.
@@ -124,9 +126,6 @@ INSTALLED_APPS = (
 	'django.contrib.sites',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
-	'grappelli.dashboard', # Must be before grappelli
-	'grappelli', # Must be before django.contrib.admin
-	'filebrowser', # Must be before django.contrib.admin
 	'django.contrib.admin',
 	'django.contrib.admindocs',
 	'django.contrib.redirects',
@@ -153,7 +152,8 @@ INSTALLED_APPS = (
 	'aspc.events',
 	'aspc.activityfeed',
 	'aspc.courses',
-	'aspc.menu'
+	'aspc.menu',
+	'aspc.files'
 )
 
 # Serializer to use for User sessions. Preferable not to use
@@ -203,7 +203,7 @@ LOGGING = {
 		},
 	},
 	'loggers': {
-		'django.request': {
+		'django': {
 			'handlers': ['mail_admins'],
 			'level': 'ERROR',
 			'propagate': True,
@@ -348,11 +348,6 @@ ACADEMIC_TERM_DEFAULTS = {
 #         "schedule": crontab(hour="*", minute=20),
 #     },
 # }
-
-#### Grappelli Configuration
-
-GRAPPELLI_INDEX_DASHBOARD = 'aspc.dashboard.CustomIndexDashboard'
-GRAPPELLI_ADMIN_TITLE = 'Associated Students of Pomona College'
 
 #### Twitter Activity Feed Sources
 
