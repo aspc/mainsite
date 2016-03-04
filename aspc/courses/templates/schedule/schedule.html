@@ -53,7 +53,6 @@
 	{% block side_panel %}
 		<div id="side_panel" class="panel">
 			<h2 class="header">search:</h2>
-			{% with "schedule" as context %}
 				<div id="schedule_warning_message">
 					<span style="color: blue;">There have been confirmed reports that some Spring 2015 course offerings are not being returned by this search.</span>
 					<br>
@@ -64,7 +63,6 @@
 				{% if results %}
 					{% include "includes/search_results.html" %}
 				{% endif %}
-			{% endwith %}
 		</div>
 	{% endblock %}
 {% endblock %}

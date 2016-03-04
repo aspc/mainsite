@@ -9,7 +9,6 @@ urlpatterns = [
     url(r'^schedule/(?P<course_code>[\w\d-]+)/add/$', 'aspc.courses.views.schedule_course_add', name="course_add"),
     url(r'^schedule/(?P<course_code>[\w\d-]+)/remove/$', 'aspc.courses.views.schedule_course_remove', name="course_remove"),
     url(r'^schedule/(?P<schedule_id>\d+)/$', 'aspc.courses.views.view_schedule'),
-    url(r'^schedule/(?P<schedule_id>\d+)/minimal/$', 'aspc.courses.views.view_minimal_schedule'),
     url(r'^schedule/(?P<schedule_id>\d+)/icalendar/$', 'aspc.courses.views.ical_export'),
     url(r'^schedule/icalendar/$', 'aspc.courses.views.ical_export'),
     url(r'^schedule/load/$', 'aspc.courses.views.load_from_session'),
