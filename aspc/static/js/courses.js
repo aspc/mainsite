@@ -174,8 +174,9 @@ ASPC.courses = function () {
 			return;
 		}
 
-		// Remove the loading message
+		// Remove the loading and error message
 		my.loadingMessageElement.hide();
+        my.errorMessageElement.hide();
 
 		// Init the calendar widget
 		my.initCalendar();
