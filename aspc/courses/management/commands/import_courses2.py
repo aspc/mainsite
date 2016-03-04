@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 from django.conf import settings
 from django.template.defaultfilters import slugify
 import simplejson, urllib, re
-from datetime import time
+from datetime import time, datetime
 import logging
 
 from aspc.courses.models import Course, Meeting, CAMPUSES_LOOKUP, Term, Section, Department, Instructor, RequirementArea, RefreshHistory
@@ -89,6 +89,8 @@ class Command(BaseCommand):
 			# Set the area requirement data for those sections that were just added
 			for area_code in self.area_codes:
 				self._load_area_requirements_for_sections(area_code=area_code, term_key=term_key)
+
+			self._set_last_updated_info()
 
 	def _load_courses_in_department(self, department_code, term_key):
 		department = DepartmentEndpoint(department_code=department_code, term_key=term_key)
@@ -252,3 +254,11 @@ class Command(BaseCommand):
 			'campus': campus,
 			'location': location
 		}
+
+	def _set_last_updated_info(self, current_term):
+		new_history = RefreshHistory(
+			last_refresh_date=datetime.now(),
+			term=current_term,
+			type=RefreshHistory.FULL
+		)
+		new_history.save()
