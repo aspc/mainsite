@@ -176,16 +176,8 @@ class Command(BaseCommand):
 
 		# For each course that is cataloged in that area...
 		for course in courses_in_area:
-			# It's possible but unlikely that this course will have a hitherto unseen course_code at this point
-			# This would only happen if the course is not listed under a department, but only under an area requirement
-			# If this is the case, don't bother to import it at this point
-			course_code = course['CourseCode']
-			section_objects = Section.objects.filter(code=course_code, term=self.current_term)
-
-			# For each Section of that course...
-			for section_object in section_objects:
-				# Append the relevant AreaRequirement object to that Section
-				section_object.course.requirement_areas.add(area_object)
+			# Set that course's requirement area data
+			course.requirement_areas.add(area_object)
 
 	def _parse_meeting_data(self, meeting):
 		# Parse weekdays
