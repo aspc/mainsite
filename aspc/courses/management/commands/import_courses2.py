@@ -97,80 +97,91 @@ class Command(BaseCommand):
 		department = DepartmentEndpoint(department_code=department_code, term_key=term_key)
 		if department.courses_this_term:
 			for section_data in department.courses_this_term:
-				section_code = section_data['CourseCode'] # This parameter is poorly named
-				course_code = section_code[:-3]
-				logger.info('currently importing course: ' + section_code)
+				if section_data['CourseCode']:
+					logger.info('currently importing course: ' + section_data['CourseCode'])
 
-				if course_code:
 					# Get or create the Course object for this course
-					course_object, was_created = Course.objects.get_or_create(
-						code=course_code,
-						code_slug=slugify(course_code).upper()
-					)
-					course_object.number = int(''.join([s for s in course_code if s.isdigit()]))
-					course_object.departments.add(Department.objects.get(code=department_code))
+					course_object = self._create_or_update_course(course_data=section_data, department_code=department_code)
 
-					primary_department_code = course_code[:4].strip() # Department codes are 3 or 4 characters long
-					try:
-						course_object.primary_department = Department.objects.get(code=primary_department_code)
-					except Department.DoesNotExist:
-						log_error('primary department {0} does not exist for course {1}'.format(primary_department_code, course_code))
-						course_object.primary_department = course_object.departments.all()[0] # Just set the primary department to the course's first department instead
+					# Get or create the Section object for this specific section of that course
+					self._create_or_update_section(section_data=section_data, course_object=course_object)
 
-					course_object.save()
+	def _create_or_update_course(self, course_data, department_code):
+		course_code = course_data['CourseCode'][:-3].strip() # E.g. 'ANTH088' instead of 'ANTH088 PZ-01'
 
-					if was_created:
-						log_added('course ' + course_code)
-					else:
-						log_updated('course ' + course_code)
+		course_object, was_created = Course.objects.get_or_create(
+			code=course_code,
+			code_slug=slugify(course_code).upper()
+		)
+		course_object.name = sanitize(course_data['Name'])
+		course_object.number = int(''.join([s for s in course_code if s.isdigit()]))
+		course_object.departments.add(Department.objects.get(code=department_code))
 
-					# Get or create the Section object for this section
-					section_object, was_created = Section.objects.get_or_create(
-						term=self.current_term,
-						course=course_object,
-						code=section_code,
-						code_slug=slugify(section_code).upper()
-					)
-					try:
-						section_object.description = sanitize(section_data['Description'])
-						section_object.note = BR_TAGS_REGEX.sub('\n', sanitize(section_data['Note'])).strip()
-						section_object.credit = float(section_data['Credits'])
-						section_object.requisites = section_data['Requisites'] == 'Y'
-						section_object.fee = FEE_REGEX.findall(unicode(section_data['Description']))
-						section_object.grading_style = sanitize(section_data['GradingStyle'])
-					except Exception as e:
-						log_error('{0} -- corrupted section_data for course {1}: {2}'.format(e.message, course_code, section_data))
+		primary_department_code = course_code[:4].strip() # Department codes are 3 or 4 characters long
+		try:
+			course_object.primary_department = Department.objects.get(code=primary_department_code)
+		except Department.DoesNotExist:
+			log_error('primary department {0} does not exist for course {1}'.format(primary_department_code, course_code))
+			course_object.primary_department = course_object.departments.all()[0] # Just set the primary department to the course's first department instead
 
-					if section_data['Instructors']:
-						for instructor in section_data['Instructors']:
-							instructor_object, _ = Instructor.objects.get_or_create(name=instructor['Name'])
-							section_object.instructors.add(instructor_object)
+		course_object.save()
 
-					section_object.save()
+		if was_created:
+			log_added('course ' + course_code)
+		else:
+			log_updated('course ' + course_code)
 
-					if section_data['Schedules']:
-						for meeting in section_data['Schedules']:
-							if meeting['Weekdays'] != '':
-								parsed_meeting_data = self._parse_meeting_data(meeting)
-								if parsed_meeting_data:
-									meeting_object = Meeting(
-										section=section_object,
-										monday=parsed_meeting_data['monday'],
-										tuesday=parsed_meeting_data['tuesday'],
-										wednesday=parsed_meeting_data['wednesday'],
-										thursday=parsed_meeting_data['thursday'],
-										friday=parsed_meeting_data['friday'],
-										begin=parsed_meeting_data['begin'],
-										end=parsed_meeting_data['end'],
-										campus=parsed_meeting_data['campus'],
-										location=parsed_meeting_data['location']
-									)
-									meeting_object.save()
+		return course_object
 
-					if was_created:
-						log_added('section ' + section_code)
-					else:
-						log_updated('section ' + section_code)
+	def _create_or_update_section(self, section_data, course_object):
+		section_code = section_data['CourseCode'] # E.g. 'ANTH088 PZ-01' not 'ANTH088'
+
+		section_object, was_created = Section.objects.get_or_create(
+			term=self.current_term,
+			course=course_object,
+			code=section_code,
+			code_slug=slugify(section_code).upper()
+		)
+		try:
+			section_object.description = sanitize(section_data['Description'])
+			section_object.note = BR_TAGS_REGEX.sub('\n', sanitize(section_data['Note'])).strip()
+			section_object.credit = float(section_data['Credits'])
+			section_object.requisites = section_data['Requisites'] == 'Y'
+			section_object.fee = FEE_REGEX.findall(unicode(section_data['Description']))
+			section_object.grading_style = sanitize(section_data['GradingStyle'])
+		except Exception as e:
+			log_error('{0} -- corrupted section_data for section {1}: {2}'.format(e.message, section_code, section_data))
+
+		if section_data['Instructors']:
+			for instructor in section_data['Instructors']:
+				instructor_object, _ = Instructor.objects.get_or_create(name=instructor['Name'])
+				section_object.instructors.add(instructor_object)
+
+		section_object.save()
+
+		if section_data['Schedules']:
+			for meeting in section_data['Schedules']:
+				if meeting['Weekdays'] != '':
+					parsed_meeting_data = self._parse_meeting_data(meeting)
+					if parsed_meeting_data:
+						meeting_object = Meeting(
+							section=section_object,
+							monday=parsed_meeting_data['monday'],
+							tuesday=parsed_meeting_data['tuesday'],
+							wednesday=parsed_meeting_data['wednesday'],
+							thursday=parsed_meeting_data['thursday'],
+							friday=parsed_meeting_data['friday'],
+							begin=parsed_meeting_data['begin'],
+							end=parsed_meeting_data['end'],
+							campus=parsed_meeting_data['campus'],
+							location=parsed_meeting_data['location']
+						)
+						meeting_object.save()
+
+		if was_created:
+			log_added('section ' + section_code)
+		else:
+			log_updated('section ' + section_code)
 
 	def _set_area_requirement_data_for_courses(self, area_code, term_key):
 		logger.info('currently loading data for area requirement: ' + area_code)
