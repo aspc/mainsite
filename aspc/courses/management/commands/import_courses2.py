@@ -86,11 +86,12 @@ class Command(BaseCommand):
 			for department_code in self.department_codes:
 				self._load_courses_in_department(department_code=department_code, term_key=term_key)
 
-			# Set the area requirement data for those sections that were just added
+			# Set the area requirement data for those courses that were just added
 			for area_code in self.area_codes:
-				self._load_area_requirements_for_sections(area_code=area_code, term_key=term_key)
+				self._set_area_requirement_data_for_courses(area_code=area_code, term_key=term_key)
 
-			self._set_last_updated_info()
+			# Keep a record of when the last import time was
+			self._set_last_updated_time()
 
 	def _load_courses_in_department(self, department_code, term_key):
 		department = DepartmentEndpoint(department_code=department_code, term_key=term_key)
@@ -130,17 +131,22 @@ class Command(BaseCommand):
 						code=section_code,
 						code_slug=slugify(section_code).upper()
 					)
-					section_object.description = sanitize(section_data['Description'])
-					section_object.note = BR_TAGS_REGEX.sub('\n', sanitize(section_data['Note'])).strip()
-					section_object.credit = float(section_data['Credits'])
-					section_object.requisites = section_data['Requisites'] == 'Y'
-					section_object.fee = FEE_REGEX.findall(unicode(section_data['Description']))
-					section_object.grading_style = sanitize(section_data['GradingStyle'])
+					try:
+						section_object.description = sanitize(section_data['Description'])
+						section_object.note = BR_TAGS_REGEX.sub('\n', sanitize(section_data['Note'])).strip()
+						section_object.credit = float(section_data['Credits'])
+						section_object.requisites = section_data['Requisites'] == 'Y'
+						section_object.fee = FEE_REGEX.findall(unicode(section_data['Description']))
+						section_object.grading_style = sanitize(section_data['GradingStyle'])
+					except Exception as e:
+						log_error('{0} -- corrupted section_data for course {1}: {2}'.format(e.message, course_code, section_data))
 
 					if section_data['Instructors']:
 						for instructor in section_data['Instructors']:
 							instructor_object, _ = Instructor.objects.get_or_create(name=instructor['Name'])
 							section_object.instructors.add(instructor_object)
+
+					section_object.save()
 
 					if section_data['Schedules']:
 						for meeting in section_data['Schedules']:
@@ -161,14 +167,12 @@ class Command(BaseCommand):
 									)
 									meeting_object.save()
 
-					section_object.save()
-
 					if was_created:
 						log_added('section ' + section_code)
 					else:
 						log_updated('section ' + section_code)
 
-	def _load_area_requirements_for_sections(self, area_code, term_key):
+	def _set_area_requirement_data_for_courses(self, area_code, term_key):
 		logger.info('currently loading data for area requirement: ' + area_code)
 
 		area_object = RequirementArea.objects.get(code=area_code)
@@ -177,7 +181,15 @@ class Command(BaseCommand):
 		# For each course that is cataloged in that area...
 		for course in courses_in_area:
 			# Set that course's requirement area data
-			course.requirement_areas.add(area_object)
+			try:
+				course_object = Course.objects.get(code=course['CourseCode'])
+				course_object.requirement_areas.add(area_object)
+			except Course.DoesNotExist:
+				# It's possible but unlikely that this course will have a hitherto unseen course_code at this point,
+				# and its corresponding course_object does not exist yet
+				# This would only happen if the course is not listed under a department, but only under an area requirement
+				# If this is the case, don't worry about it or bother to import it at this point - just continue the loop
+				continue
 
 	def _parse_meeting_data(self, meeting):
 		# Parse weekdays
@@ -247,10 +259,10 @@ class Command(BaseCommand):
 			'location': location
 		}
 
-	def _set_last_updated_info(self, current_term):
+	def _set_last_updated_time(self):
 		new_history = RefreshHistory(
 			last_refresh_date=datetime.now(),
-			term=current_term,
+			term=self.current_term,
 			type=RefreshHistory.FULL
 		)
 		new_history.save()
