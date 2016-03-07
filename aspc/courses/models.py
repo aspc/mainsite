@@ -110,7 +110,7 @@ class Section(models.Model):
     grading_style = models.CharField(max_length=100, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     note = models.TextField(blank=True, null=True)
-    credit = models.FloatField()
+    credit = models.FloatField(default=1.00)
     requisites = models.BooleanField(default=False)
     fee = models.BooleanField(default=False)
 
