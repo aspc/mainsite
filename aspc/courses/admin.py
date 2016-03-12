@@ -1,5 +1,5 @@
 from django.contrib import admin
-from aspc.courses.models import (Section, Course, Department, Meeting, RequirementArea, RefreshHistory)
+from aspc.courses.models import (Section, Course, Department, Meeting, RequirementArea, RefreshHistory, CourseReview)
 
 class DepartmentAdmin(admin.ModelAdmin):
 	list_display = ('code', 'name', 'course_count')
@@ -18,9 +18,13 @@ class SectionAdmin(admin.ModelAdmin):
 	list_display = ('code', 'course', 'term', 'description', 'credit', 'spots', 'filled', 'perms')
 	inlines = [MeetingInline]
 
+class CourseReviewAdmin(admin.ModelAdmin):
+	list_display = ('author', 'course', 'instructor', 'overall_rating')
+
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Department, DepartmentAdmin)
 admin.site.register(RequirementArea, DepartmentAdmin)
 admin.site.register(Meeting, MeetingAdmin)
 admin.site.register(Section, SectionAdmin)
+admin.site.register(CourseReview, CourseReviewAdmin)
 admin.site.register(RefreshHistory)

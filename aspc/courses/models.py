@@ -1,8 +1,11 @@
 from django.db import models
+from django.db.models import Avg
+from django.db.models.signals import post_save
 from django.conf import settings
 from datetime import date, datetime, timedelta
 import json
 from django.core.serializers.json import DjangoJSONEncoder
+from django.contrib.auth.models import User
 
 CAMPUSES = (
     (1, u'PO'), (2, u'SC'), (3, u'CMC'), (4, u'HM'), (5, u'PZ'), (6, u'CGU'), (7, u'CU'), (8, u'KS'), (-1, u'?'))
@@ -16,6 +19,10 @@ CAMPUSES_LOOKUP['CG'] = CAMPUSES_LOOKUP['CGU']
 
 SESSIONS = ((u'SP', u'Spring'), (u'FA', u'Fall'))
 SUBSESSIONS = ((u'P1', u'1'), (u'P2', u'2'))
+
+POSSIBLE_GRADES = (
+    (1, u'A'), (2, u'A-'), (3, u'B+'), (4, u'B'), (5, u'B-'), (6, u'C+'), (7, u'C'),
+    (8, u'C-'), (9, u'D+'), (10, u'D'), (11, u'D-'), (12, u'F'))
 
 # TODO: Make this robust for different semesters
 # (see the academic calendar at http://catalog.pomona.edu/content.php?catoid=14&navoid=2582)
@@ -37,6 +44,7 @@ class Term(models.Model):
 
 class Instructor(models.Model):
     name = models.CharField(max_length=100)
+    rating = models.FloatField(blank = True, null = True)
 
     def __unicode__(self):
         return self.name
@@ -84,8 +92,8 @@ class Course(models.Model):
     code_slug = models.CharField(max_length=20, unique=True, db_index=True)
 
     number = models.IntegerField(default=0)
-
     name = models.CharField(max_length=256)
+    rating = models.FloatField(blank=True, null=True)
 
     primary_department = models.ForeignKey(Department, related_name='primary_course_set', null=True)
     departments = models.ManyToManyField(Department, related_name='course_set')
@@ -279,3 +287,42 @@ class RefreshHistory(models.Model):
 
         class Meta:
             verbose_name_plural = 'refresh histories'
+
+class CourseReview(models.Model):
+    author = models.ForeignKey(User)
+    course = models.ForeignKey(Course)
+    instructor = models.ForeignKey(Instructor)
+    comments = models.TextField(blank=True, null=True)
+
+    overall_rating = models.FloatField()
+    grade = models.PositiveSmallIntegerField(blank=True, null=True, choices=POSSIBLE_GRADES)
+
+    work_per_week = models.PositiveSmallIntegerField(default=0)
+
+    def __unicode__(self):
+        return u"Review of {0} taught by {1}: {2}".format(unicode(self.course.code_slug), unicode(self.instructor.name), unicode(str(self.overall_rating)))
+
+    def get_average_course_instructor_rating(self):
+        courses = CourseReview.objects.filter(course=self.course, instructor=self.instructor)
+        return courses.aggregate(Avg("overall_rating"))["overall_rating__avg"]
+
+    def update_course_and_instructor_rating(self):
+        self.instructor.rating = CourseReview.objects.filter(instructor = self.instructor).aggregate(Avg("overall_rating"))["overall_rating__avg"]
+        self.instructor.save()
+
+        self.course.rating = CourseReview.objects.filter(course = self.course).aggregate(Avg("overall_rating"))["overall_rating__avg"]
+        self.course.save()
+
+    # update the instructor/course average on save/create
+    def create(self, *args, **kwargs):
+        self.update_course_and_instructor_rating()
+        super(CourseReview, self).create(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        self.update_course_and_instructor_rating()
+        super(CourseReview, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        self.overall_rating = 0.0
+        self.update_course_and_instructor_rating()
+        super(CourseReview, self).delete(*args, **kwargs)
