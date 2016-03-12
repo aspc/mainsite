@@ -305,3 +305,24 @@ class CourseReview(models.Model):
     def get_average_course_instructor_rating(self):
         courses = CourseReview.objects.filter(course=self.course, instructor=self.instructor)
         return courses.aggregate(Avg("overall_rating"))["overall_rating__avg"]
+
+    def update_course_and_instructor_rating(self):
+        self.instructor.rating = CourseReview.objects.filter(instructor = self.instructor).aggregate(Avg("overall_rating"))["overall_rating__avg"]
+        self.instructor.save()
+
+        self.course.rating = CourseReview.objects.filter(course = self.course).aggregate(Avg("overall_rating"))["overall_rating__avg"]
+        self.course.save()
+
+    # update the instructor/course average on save/create
+    def create(self, *args, **kwargs):
+        self.update_course_and_instructor_rating()
+        super(CourseReview, self).create(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        self.update_course_and_instructor_rating()
+        super(CourseReview, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        self.overall_rating = 0.0
+        self.update_course_and_instructor_rating()
+        super(CourseReview, self).delete(*args, **kwargs)
