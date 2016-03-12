@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import Avg
+from django.db.models.signals import post_save
 from django.conf import settings
 from datetime import date, datetime, timedelta
 import json
@@ -18,6 +19,10 @@ CAMPUSES_LOOKUP['CG'] = CAMPUSES_LOOKUP['CGU']
 
 SESSIONS = ((u'SP', u'Spring'), (u'FA', u'Fall'))
 SUBSESSIONS = ((u'P1', u'1'), (u'P2', u'2'))
+
+POSSIBLE_GRADES = (
+    (1, u'A'), (2, u'A-'), (3, u'B+'), (4, u'B'), (5, u'B-'), (6, u'C+'), (7, u'C'),
+    (8, u'C-'), (9, u'D+'), (10, u'D'), (11, u'D-'), (12, u'F'))
 
 # TODO: Make this robust for different semesters
 # (see the academic calendar at http://catalog.pomona.edu/content.php?catoid=14&navoid=2582)
@@ -290,13 +295,7 @@ class CourseReview(models.Model):
     comments = models.TextField(blank=True, null=True)
 
     overall_rating = models.FloatField()
-    useful_rating = models.FloatField()
-    difficulty_rating = models.FloatField()
-
-    professor_competency_rating = models.FloatField()
-    professor_lecturing_style_rating = models.FloatField()
-    professor_enthusiasm_rating = models.FloatField()
-    professor_approachable_rating = models.FloatField()
+    grade = models.PositiveSmallIntegerField(blank=True, null=True, choices=POSSIBLE_GRADES)
 
     work_per_week = models.PositiveSmallIntegerField(default=0)
 
