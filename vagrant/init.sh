@@ -81,16 +81,6 @@ sudo -u vagrant bash /vagrant/vagrant/init_as_user.sh
 # service celeryworker restart && info "Started Celery worker"
 # service celerybeat restart && info "Started Celery beat process"
 
-# If it's been set up, start a tunnel to Peninsula to reach the course data db
-if [ -f /vagrant/vagrant/ssh_config ];
-then
-    cp /vagrant/vagrant/peninsulatunnel.conf /etc/init/
-    service peninsulatunnel restart && info "Started tunnel to Peninsula"
-else
-    err "You need to configure SSH for the Peninsula tunnel for course data!"
-    err "Instructions are in vagrant/ssh_config.example."
-fi
-
 # Set up public-facing nginx
 rm -f /etc/nginx/sites-enabled/default
 cp /vagrant/vagrant/frontend_nginx.conf /etc/nginx/sites-enabled/
