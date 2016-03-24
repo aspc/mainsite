@@ -38,52 +38,6 @@ def _get_refresh_history():
 
     return last_full, last_reg
 
-def search(request):
-    last_full, last_reg = _get_refresh_history()
-
-    if request.method == "GET":
-        if len(request.GET) > 0:
-            form = SearchForm(request.GET)
-            if form.is_valid():
-                results_set = form.build_queryset()
-                paginator = Paginator(results_set, per_page=20, orphans=10)
-                GET_data = request.GET.copy()
-
-                try:
-                    page = int(request.GET.get('page', '1'))
-                    if GET_data.get('page', False):
-                        del GET_data['page']
-                except ValueError:
-                    page = 1
-
-                try:
-                    results = paginator.page(page)
-                except (EmptyPage, InvalidPage):
-                    results = paginator.page(paginator.num_pages)
-
-                return render(request, 'courses/search.html', {
-                    'form': form,
-                    'results': results,
-                    'path': ''.join([request.path, '?', GET_data.urlencode()]),
-                    'last_full': last_full,
-                    'last_reg': last_reg
-                })
-            else:
-                return render(request, 'courses/search.html', {
-                    'form': form,
-                    'last_full': last_full,
-                    'last_reg': last_reg
-                })
-        else:
-            form = SearchForm()
-            return render(request, 'courses/search.html', {
-                'form': form,
-                'last_full': last_full,
-                'last_reg': last_reg
-            })
-    else:
-        return HttpResponseNotAllowed(['GET'])
-
 def schedule(request):
     last_full, last_reg = _get_refresh_history()
 
@@ -97,7 +51,8 @@ def schedule(request):
     else:
         form = SearchForm(request.GET)
         if form.is_valid():
-            results_set = form.build_queryset()
+            results_set, term = form.build_queryset_and_term()
+            request.session['term'] = term
             paginator = Paginator(results_set, per_page=10, orphans=5)
             GET_data = request.GET.copy()
 
@@ -280,10 +235,7 @@ class CourseDetailView(generic.DetailView):
             raise Http404
 
 def schedule_course_add(request, course_code):
-    try:
-        course = Section.objects.filter(code_slug=course_code)[0]
-    except IndexError:
-        raise Http404
+    course = build_course(course_code, request)
     if request.session.get('schedule_courses'):
         if not (course.id in request.session['schedule_courses']):
             request.session['schedule_courses'].add(course.id)
@@ -292,13 +244,9 @@ def schedule_course_add(request, course_code):
         request.session['schedule_courses'] = set([course.id,])
     return HttpResponse(content=json.dumps(course.json(), cls=DjangoJSONEncoder), content_type='application/json')
 
-
 def schedule_course_remove(request, course_code):
     removed_ids = []
-    try:
-        course = Section.objects.filter(code_slug=course_code)[0]
-    except IndexError:
-        raise Http404
+    course = build_course(course_code, request)
     if request.session.get('schedule_courses'):
         if (course.id in request.session['schedule_courses']):
             request.session['schedule_courses'].remove(course.id)
@@ -307,8 +255,67 @@ def schedule_course_remove(request, course_code):
             course_data = course.json()
             for e in course_data['events']:
                 removed_ids.append(e['id'])
-
     return HttpResponse(content=json.dumps(removed_ids, cls=DjangoJSONEncoder), content_type='application/json')
+
+def build_course(course_code, request):
+    try:
+        course = build_course_from_code_and_term(course_code, request.session['term'])
+    except IndexError:
+        raise Http404
+    return course
+
+def build_course_from_code_and_term(course_code, term):
+    courses_without_term = Section.objects.filter(code_slug=course_code)
+    course = courses_without_term.filter(term=term)[0] if term else courses_without_term[0]
+    return course
+
+# TODO: Remove below with new courses app
+def search(request):
+    last_full, last_reg = _get_refresh_history()
+
+    if request.method == "GET":
+        if len(request.GET) > 0:
+            form = SearchForm(request.GET)
+            if form.is_valid():
+                results_set, term = form.build_queryset_and_term()
+                request.session['term'] = term
+                paginator = Paginator(results_set, per_page=20, orphans=10)
+                GET_data = request.GET.copy()
+
+                try:
+                    page = int(request.GET.get('page', '1'))
+                    if GET_data.get('page', False):
+                        del GET_data['page']
+                except ValueError:
+                    page = 1
+
+                try:
+                    results = paginator.page(page)
+                except (EmptyPage, InvalidPage):
+                    results = paginator.page(paginator.num_pages)
+
+                return render(request, 'search/search.html', {
+                    'form': form,
+                    'results': results,
+                    'path': ''.join([request.path, '?', GET_data.urlencode()]),
+                    'last_full': last_full,
+                    'last_reg': last_reg
+                })
+            else:
+                return render(request, 'search/search.html', {
+                    'form': form,
+                    'last_full': last_full,
+                    'last_reg': last_reg
+                })
+        else:
+            form = SearchForm()
+            return render(request, 'search/search.html', {
+                'form': form,
+                'last_full': last_full,
+                'last_reg': last_reg
+            })
+    else:
+        return HttpResponseNotAllowed(['GET'])
 
 class DepartmentListView(generic.ListView):
     queryset = (Department.objects
