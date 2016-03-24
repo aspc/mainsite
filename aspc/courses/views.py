@@ -2,18 +2,13 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404, HttpRespons
 from django.core.urlresolvers import reverse
 from django.views import generic
 from django.shortcuts import get_object_or_404, render
-from django.conf import settings
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.serializers.json import DjangoJSONEncoder
-from django.db.models import Count, Sum
-from aspc.courses.models import (Section, Department, Meeting, Schedule, Term, RefreshHistory,
-    START_DATE, END_DATE)
+from django.db.models import Count
+from aspc.courses.models import (Section, Department, Schedule, RefreshHistory, START_DATE, END_DATE)
 from aspc.courses.forms import SearchForm, ICalExportForm
-import re
 import json
 import datetime
-import shlex
-import subprocess
 import vobject
 from dateutil import rrule
 
@@ -263,19 +258,6 @@ def _ical_from_courses(courses, start_date, end_date):
 
     return cal
 
-class CourseDetailView(generic.DetailView):
-    model = Section
-    slug_field = 'code_slug'
-    slug_url_kwarg = 'course_code'
-    def get_queryset(self):
-        dept = get_object_or_404(Department, code=self.kwargs['dept'])
-        return Section.objects.filter(course__primary_department=dept)
-    def get_object(self):
-        try:
-            return Section.objects.filter(code_slug=self.kwargs['course_code'])[0]
-        except IndexError:
-            raise Http404
-
 def schedule_course_add(request, course_code):
     course = build_course(course_code, request)
     if request.session.get('schedule_courses'):
@@ -318,7 +300,24 @@ class DepartmentListView(generic.ListView):
                     .distinct()
                     .order_by('code')
                 )
+    template_name = "browse/department_list.html"
 
 class DepartmentCoursesView(generic.DetailView):
     model = Department
     slug_field = 'code'
+    template_name = "browse/department_detail.html"
+
+class CourseDetailView(generic.DetailView):
+    model = Section
+    slug_field = 'code_slug'
+    slug_url_kwarg = 'course_code'
+    template_name = "browse/section_detail.html"
+
+    def get_queryset(self):
+        dept = get_object_or_404(Department, code=self.kwargs['dept'])
+        return Section.objects.filter(course__primary_department=dept)
+    def get_object(self):
+        try:
+            return Section.objects.filter(code_slug=self.kwargs['course_code'])[0]
+        except IndexError:
+            raise Http404
