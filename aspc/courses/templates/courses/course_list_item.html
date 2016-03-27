@@ -1,5 +1,14 @@
+{% load stars %}
 <h3 {% if ctx == "schedule" %}id="course_{{ c.code_slug }}" data-code="{{ c.code_slug }}" data-added="{{ c.added }}"{% endif %}><a href="{{ c.get_absolute_url }}">{{ c.code }} &mdash; {{ c.course.name }}</a></h3>
-<h4>{{ c.instructors.all|join:", " }} &mdash; credit: {{ c.credit }} <!-- &mdash; {% if c.filled %}{{ c.filled }} filled of {% endif %}{{ c.spots }} seats --></h4>
+<h4>{{ c.instructors.all|join:", " }} &mdash; credit: {{ c.credit }}
+    <!-- &mdash; {% if c.filled %}{{ c.filled }} filled of {% endif %}{{ c.spots }} seats --></h4>
+<div class="rating-div">
+    {% if c.get_average_rating %}
+         Average Rating: <a href="{{ c.get_absolute_url }}">{{ c.get_average_rating |star }}</a>
+    {% else %}
+        <a href="{{ c.get_absolute_url }}#add-review"> No reviews yet. Add your own! </a>
+    {% endif %}
+</div>
 {% if c.description %}<p>{{ c.description }}</p>{% endif %}
 <ul>
 	{% for mtg in c.meeting_set.all %}
