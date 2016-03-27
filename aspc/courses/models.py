@@ -158,7 +158,9 @@ class Section(models.Model):
         return {'events': event_list, 'info': {'course_code': self.code, 'course_code_slug': self.code_slug,
                                                'detail_url': self.get_absolute_url(),
                                                'campus_code': self.get_campus(), }}
-
+    def get_average_rating(self):
+        reviews = CourseReview.objects.filter(course=self.course, instructor__in=self.instructors.all())
+        return reviews.aggregate(Avg("overall_rating"))["overall_rating__avg"]
 
     @models.permalink
     def get_absolute_url(self):
@@ -301,10 +303,6 @@ class CourseReview(models.Model):
 
     def __unicode__(self):
         return u"Review of {0} taught by {1}: {2}".format(unicode(self.course.code_slug), unicode(self.instructor.name), unicode(str(self.overall_rating)))
-
-    def get_average_course_instructor_rating(self):
-        courses = CourseReview.objects.filter(course=self.course, instructor=self.instructor)
-        return courses.aggregate(Avg("overall_rating"))["overall_rating__avg"]
 
     def update_course_and_instructor_rating(self):
         self.instructor.rating = CourseReview.objects.filter(instructor = self.instructor).aggregate(Avg("overall_rating"))["overall_rating__avg"]
