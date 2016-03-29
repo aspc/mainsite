@@ -135,7 +135,7 @@ ASPC.courses = function () {
 					.on('click', function (event) {
 						// If the course to be removed is currently visible as a search result too,
 						// we need to call toggleCourse() too to take care of updating that
-						if ($("div[data-course_slug='" + info.course_code_slug + "']")) {
+						if ($("div[data-course_slug='" + info.course_code_slug + "']").length) {
 							my.self.toggleCourse(info.course_code_slug);
 						}
 						// Otherwise, only remove the course itself without worrying about updating
