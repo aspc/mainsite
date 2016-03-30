@@ -182,8 +182,8 @@ ASPC.courses = function () {
 		my.initCalendar();
 
 		// If we're on a saved calendar page, load the saved calendar data in the DOM into the calendar
-		if (my.CURRENT_PAGE.match(/\/courses\/schedule\/\d+(\/)?/) && my.saved_calendar_data) {
-			my.loadSavedCalendar(my.saved_calendar_data);
+		if (my.CURRENT_PAGE.match(/\/courses\/schedule\/\d+(\/)?/) && ASPC.saved_calendar_data) {
+			my.loadSavedCalendar(ASPC.saved_calendar_data);
 		}
 		else {
 			// Otherwise, just load a blank calendar like normal

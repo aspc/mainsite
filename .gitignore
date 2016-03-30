@@ -21,3 +21,5 @@ tmp/
 # Django logging
 /log/
 !/log/.blank
+htmlcov
+.coverage

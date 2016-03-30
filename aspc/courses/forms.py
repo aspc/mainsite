@@ -235,7 +235,7 @@ class SearchForm(forms.Form):
                 qs = qs.filter(Q(description__icontains=kw) | Q(course__name__icontains=kw))
             qs = qs.distinct()
 
-        qs = qs.distinct('code_slug').order_by('code_slug'), term
+        qs = qs.order_by('code_slug'), term
         return qs
 
 class ScheduleForm(forms.Form):
