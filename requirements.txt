@@ -23,3 +23,5 @@ https://github.com/django-compressor/django-compressor/tarball/33aafe709a29988d1
 python-memcached==1.53
 kombu==3.0.26
 djangorestframework==3.2.4
+django-webtest==1.7.8
+coverage==4.1b2

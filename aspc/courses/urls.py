@@ -2,12 +2,11 @@ from django.conf.urls import *
 
 from django.views.generic.base import TemplateView
 from aspc.courses.views import CourseDetailView, DepartmentListView, DepartmentCoursesView
-
 urlpatterns = [
-    url(r'^schedule/$', 'aspc.courses.views.schedule'),
+    url(r'^schedule/$', 'aspc.courses.views.schedule', name="schedule"),
     url(r'^schedule/(?P<course_code>[\w\d-]+)/add/$', 'aspc.courses.views.schedule_course_add', name="course_add"),
     url(r'^schedule/(?P<course_code>[\w\d-]+)/remove/$', 'aspc.courses.views.schedule_course_remove', name="course_remove"),
-    url(r'^schedule/(?P<schedule_id>\d+)/$', 'aspc.courses.views.view_schedule'),
+    url(r'^schedule/(?P<schedule_id>\d+)/$', 'aspc.courses.views.view_schedule', name="view_schedule"),
     url(r'^schedule/(?P<schedule_id>\d+)/icalendar/$', 'aspc.courses.views.ical_export'),
     url(r'^schedule/icalendar/$', 'aspc.courses.views.ical_export'),
     url(r'^schedule/load/$', 'aspc.courses.views.load_from_session'),

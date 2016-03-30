@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models import Count
-from aspc.courses.models import (Section, Department, Schedule, RefreshHistory, START_DATE, END_DATE)
+from aspc.courses.models import (Section, Department, Schedule, RefreshHistory, START_DATE, END_DATE, Term)
 from aspc.courses.forms import SearchForm, ICalExportForm
 import json
 import datetime
