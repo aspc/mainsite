@@ -159,7 +159,7 @@ class Section(models.Model):
                                                'detail_url': self.get_absolute_url(),
                                                'campus_code': self.get_campus(), }}
     def get_average_rating(self):
-        reviews = CourseReview.objects.filter(course=self.course, instructor__in=self.instructors.all())
+        reviews = CourseReview.objects.filter(section__course=self.course, section__instructors__in=self.instructors.all())
         return reviews.aggregate(Avg("overall_rating"))["overall_rating__avg"]
 
     @models.permalink
@@ -292,8 +292,7 @@ class RefreshHistory(models.Model):
 
 class CourseReview(models.Model):
     author = models.ForeignKey(User)
-    course = models.ForeignKey(Course)
-    instructor = models.ForeignKey(Instructor)
+    section = models.ForeignKey(Section)
     comments = models.TextField(blank=True, null=True)
 
     overall_rating = models.FloatField()
@@ -302,25 +301,27 @@ class CourseReview(models.Model):
     work_per_week = models.PositiveSmallIntegerField(default=0)
 
     def __unicode__(self):
-        return u"Review of {0} taught by {1}: {2}".format(unicode(self.course.code_slug), unicode(self.instructor.name), unicode(str(self.overall_rating)))
+        instructors = ",".join((unicode(i) for i in self.section.instructors.all()))
+        return u"Review of {0} taught by {1}: {2}".format(unicode(self.section.course.code_slug), unicode(instructors), unicode(str(self.overall_rating)))
 
-    def update_course_and_instructor_rating(self):
-        self.instructor.rating = CourseReview.objects.filter(instructor = self.instructor).aggregate(Avg("overall_rating"))["overall_rating__avg"]
-        self.instructor.save()
+    def update_course_and_instructor_rating(self, section):
+        for instructor in section.instructors.all():
+            instructor.rating = CourseReview.objects.filter(section__instructors__in = [instructor]).aggregate(Avg("overall_rating"))["overall_rating__avg"]
+            instructor.save()
 
-        self.course.rating = CourseReview.objects.filter(course = self.course).aggregate(Avg("overall_rating"))["overall_rating__avg"]
-        self.course.save()
+        section.course.rating = CourseReview.objects.filter(section__course = self.section.course).aggregate(Avg("overall_rating"))["overall_rating__avg"]
+        section.course.save()
 
     # update the instructor/course average on save/create
     def create(self, *args, **kwargs):
-        self.update_course_and_instructor_rating()
+        self.update_course_and_instructor_rating(self.section)
         super(CourseReview, self).create(*args, **kwargs)
 
     def save(self, *args, **kwargs):
-        self.update_course_and_instructor_rating()
+        self.update_course_and_instructor_rating(self.section)
         super(CourseReview, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        self.overall_rating = 0.0
-        self.update_course_and_instructor_rating()
+        saved_section = self.section
         super(CourseReview, self).delete(*args, **kwargs)
+        self.update_course_and_instructor_rating(saved_section)
