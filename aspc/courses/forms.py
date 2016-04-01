@@ -129,8 +129,9 @@ class SearchForm(forms.Form):
             raise forms.ValidationError("You must specify at least one constraint.")
         return cleaned_data
 
-    def build_queryset(self):
-        qs = Section.objects.filter(term=self.cleaned_data['term'])
+    def build_queryset_and_term(self):
+        term = self.cleaned_data['term']
+        qs = Section.objects.filter(term=term)
         if self.cleaned_data.get('department'):
             qs = qs.filter(course__departments=self.cleaned_data['department'])
 
@@ -234,9 +235,8 @@ class SearchForm(forms.Form):
                 qs = qs.filter(Q(description__icontains=kw) | Q(course__name__icontains=kw))
             qs = qs.distinct()
 
-        qs = qs.distinct('code_slug').order_by('code_slug')
+        qs = qs.distinct('code_slug').order_by('code_slug'), term
         return qs
-
 
 class ScheduleForm(forms.Form):
     key = forms.CharField(max_length=100)
