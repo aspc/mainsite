@@ -592,3 +592,9 @@ ul#landing li a:hover {
 	text-decoration: none;
 }
 }
+
+#review-list {
+	list-style-type:none;
+	margin-right: 3em;
+	text-align: justify;
+}

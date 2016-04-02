@@ -1,0 +1,9 @@
+{% load stars %}
+<li class="review-item">
+    <p>
+        <small>Posted on {{ review.created_date }} about section taught by {{ review.instructor}}
+        <br> Rating: {{ review.overall_rating | star}} ({{ review.overall_rating}})</small>
+    </p>
+    <p>{{ review.comments }}</p>
+    <hr>
+</li>

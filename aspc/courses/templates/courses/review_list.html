@@ -1,0 +1,10 @@
+<div id="review-div">
+    {% if object.get_reviews %}
+        <h4>reviews ({{ object.get_reviews.count }}):</h4>
+        <ul id="review-list">
+        {% for review in object.get_reviews %}
+            {% include 'courses/review_list_item.html' %}
+        {% endfor %}
+        </ul>
+    {% endif %}
+</div>
