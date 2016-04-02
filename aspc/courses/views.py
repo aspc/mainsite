@@ -45,7 +45,7 @@ def search(request):
         if len(request.GET) > 0:
             form = SearchForm(request.GET)
             if form.is_valid():
-                results_set = form.build_queryset()
+                results_set, term = form.build_queryset_and_term()
                 paginator = Paginator(results_set, per_page=20, orphans=10)
                 GET_data = request.GET.copy()
 
@@ -97,7 +97,8 @@ def schedule(request):
     else:
         form = SearchForm(request.GET)
         if form.is_valid():
-            results_set = form.build_queryset()
+            results_set, term = form.build_queryset_and_term()
+            request.session['term'] = term
             paginator = Paginator(results_set, per_page=10, orphans=5)
             GET_data = request.GET.copy()
 
@@ -280,10 +281,7 @@ class CourseDetailView(generic.DetailView):
             raise Http404
 
 def schedule_course_add(request, course_code):
-    try:
-        course = Section.objects.filter(code_slug=course_code)[0]
-    except IndexError:
-        raise Http404
+    course = build_course(course_code, request)
     if request.session.get('schedule_courses'):
         if not (course.id in request.session['schedule_courses']):
             request.session['schedule_courses'].add(course.id)
@@ -292,13 +290,9 @@ def schedule_course_add(request, course_code):
         request.session['schedule_courses'] = set([course.id,])
     return HttpResponse(content=json.dumps(course.json(), cls=DjangoJSONEncoder), content_type='application/json')
 
-
 def schedule_course_remove(request, course_code):
     removed_ids = []
-    try:
-        course = Section.objects.filter(code_slug=course_code)[0]
-    except IndexError:
-        raise Http404
+    course = build_course(course_code, request)
     if request.session.get('schedule_courses'):
         if (course.id in request.session['schedule_courses']):
             request.session['schedule_courses'].remove(course.id)
@@ -307,8 +301,19 @@ def schedule_course_remove(request, course_code):
             course_data = course.json()
             for e in course_data['events']:
                 removed_ids.append(e['id'])
-
     return HttpResponse(content=json.dumps(removed_ids, cls=DjangoJSONEncoder), content_type='application/json')
+
+def build_course(course_code, request):
+    try:
+        course = build_course_from_code_and_term(course_code, request.session.get('term'))
+    except IndexError:
+        raise Http404
+    return course
+
+def build_course_from_code_and_term(course_code, term):
+    courses_without_term = Section.objects.filter(code_slug=course_code)
+    course = courses_without_term.filter(term=term)[0] if term else courses_without_term[0]
+    return course
 
 class DepartmentListView(generic.ListView):
     queryset = (Department.objects
