@@ -98,7 +98,7 @@ def schedule(request):
         form = SearchForm(request.GET)
         if form.is_valid():
             results_set, term = form.build_queryset_and_term()
-            request.session['term'] = term
+            request.session['term_key'] = term.key
             paginator = Paginator(results_set, per_page=10, orphans=5)
             GET_data = request.GET.copy()
 
@@ -305,14 +305,14 @@ def schedule_course_remove(request, course_code):
 
 def build_course(course_code, request):
     try:
-        course = build_course_from_code_and_term(course_code, request.session.get('term'))
+        course = build_course_from_code_and_term(course_code, request.session.get('term_key'))
     except IndexError:
         raise Http404
     return course
 
-def build_course_from_code_and_term(course_code, term):
+def build_course_from_code_and_term(course_code, term_key):
     courses_without_term = Section.objects.filter(code_slug=course_code)
-    course = courses_without_term.filter(term=term)[0] if term else courses_without_term[0]
+    course = courses_without_term.filter(term=Term.objects.get(key=term_key))[0] if term_key else courses_without_term[0]
     return course
 
 class DepartmentListView(generic.ListView):
