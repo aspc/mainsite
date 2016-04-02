@@ -1,10 +1,20 @@
+{% load stars %}
 <div id="review-div">
     {% if object.get_reviews %}
-        <h4>reviews ({{ object.get_reviews.count }}):</h4>
-        <ul id="review-list">
+        <h4>student reviews:</h4>
+            <strong>average rating: </strong>{{ object.get_average_rating | star}} {{ object.get_reviews.count}}
+            <br> {{ object.get_average_rating }} out of five starsgit
+
+        <div id="barplot"><canvas id="myChart" width="200" height="200"></canvas></div>
+        <div id="new-review-div">
+            Share your thoughts with other students.
+            <br><button>Write a new review</button>
+        </div>
+
+        <div id="review-list">
         {% for review in object.get_reviews %}
             {% include 'courses/review_list_item.html' %}
         {% endfor %}
-        </ul>
+        </div>
     {% endif %}
 </div>
