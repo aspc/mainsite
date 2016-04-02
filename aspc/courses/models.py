@@ -162,6 +162,10 @@ class Section(models.Model):
         reviews = CourseReview.objects.filter(course=self.course, instructor__in=self.instructors.all())
         return reviews.aggregate(Avg("overall_rating"))["overall_rating__avg"]
 
+    def get_reviews(self):
+        reviews = CourseReview.objects.filter(course=self.course, instructor__in=self.instructors.all())
+        return reviews
+
     @models.permalink
     def get_absolute_url(self):
         if not self.course.primary_department: print self.course
@@ -294,6 +298,7 @@ class CourseReview(models.Model):
     author = models.ForeignKey(User)
     course = models.ForeignKey(Course)
     instructor = models.ForeignKey(Instructor)
+    created_date = models.DateTimeField(default=datetime.now)
     comments = models.TextField(blank=True, null=True)
 
     overall_rating = models.FloatField()
