@@ -50,8 +50,8 @@
   </head>
   <body class="{% block "content_class" %}{% endblock %}">
 
-    {% if voting_active %}
-      {% include "voting_banner_fragment.html" %}
+    {% if is_announcement_banner_visible %}
+      {% include "announcement_banner_fragment.html" %}
     {% endif %}
 
   <header id="aspc_main" class="container">

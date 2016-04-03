@@ -83,7 +83,7 @@ header#aspc_main .loginstatus form {
 	height: 6.5em;
 }
 
-#voting_banner {
+#announcement_banner {
 	position: fixed;
 	width: 100%;
 	z-index: 10;
@@ -94,16 +94,16 @@ header#aspc_main .loginstatus form {
 	text-align: center;
 }
 
-#voting_banner a {
+#announcement_banner a {
 	color: white;
 	font-size: 16px;
 	text-decoration: none;
 }
 
-#voting_banner a:hover {
+#announcement_banner a:hover {
 	text-decoration: underline;
 }
 
-#voting_banner_placeholder {
+#announcement_banner_placeholder {
 	height: 35px;
 }
