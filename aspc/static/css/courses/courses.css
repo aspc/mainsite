@@ -591,9 +591,6 @@ ol.course_list a.add_course:hover {
     }
 }
 
-#share-thoughts-text {
-    margin-bottom: 10px;
-}
 
 #barplot {
 	float: left;
@@ -603,6 +600,7 @@ ol.course_list a.add_course:hover {
  #new-review-div {
 	float: left;
 	width: 49%;
+	 margin-bottom: 10px;
 }
 
 #review-list {

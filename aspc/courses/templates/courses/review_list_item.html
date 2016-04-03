@@ -4,6 +4,6 @@
         <small>Posted on {{ review.created_date }} about section taught by {{ review.instructor}}
         <br> Rating: {{ review.overall_rating | star}} (<span class="rating-score">{{ review.overall_rating}}</span>)</small>
     </p>
-    <p>{{ review.comments }}</p>
+    <p>{{ review.comments|linebreaksbr  }}</p>
     <hr>
 </div>
