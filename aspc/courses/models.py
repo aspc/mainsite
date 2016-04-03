@@ -163,7 +163,7 @@ class Section(models.Model):
         return reviews.aggregate(Avg("overall_rating"))["overall_rating__avg"]
 
     def get_reviews(self):
-        reviews = CourseReview.objects.filter(course=self.course, instructor__in=self.instructors.all())
+        reviews = CourseReview.objects.filter(course=self.course, instructor__in=self.instructors.all()).order_by('-created_date')
         return reviews
 
     @models.permalink
