@@ -9,5 +9,6 @@ BEGIN
 
       CREATE ROLE main LOGIN PASSWORD 'dev_password';
    END IF;
+   ALTER USER main CREATEDB;
 END
 $body$
