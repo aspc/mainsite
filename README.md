@@ -61,7 +61,8 @@ The ASPC main site is an open-source project that welcomes contributions from th
 		vagrant$ ./manage.py
 	```
 
-7. When you're done working, free up system resources with a `vagrant halt`. If you want to start from scratch, `vagrant destroy` and then `vagrant up` anew. Applying future changes to the Vagrant setup will be done automatically when you `vagrant up`, but you can also run `vagrant provision` yourself.
+7. If you're working on the courses app, run the tests with `coverage run manage.py test; coverage html --include=/vagrant/aspc/courses/*`. Open up `htmlcov/index.html` to view coverage.
+8. When you're done working, free up system resources with a `vagrant halt`. If you want to start from scratch, `vagrant destroy` and then `vagrant up` anew. Applying future changes to the Vagrant setup will be done automatically when you `vagrant up`, but you can also run `vagrant provision` yourself.
 
 GUnicorn workers have `max_requests = 1` set in `vagrant/gunicorn.cfg.py`. This means that after at most one refresh, the worker will be running your code. If you need to force a reload, run `vagrant ssh -c "/vagrant/vagrant/gunicorn.sh reload"`.
 
