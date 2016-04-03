@@ -25,5 +25,6 @@ def request(request):
 # settings.py data to pass to templates
 def settings(request):
 	return {
-		'voting_active': aspc_settings.VOTING_ACTIVE
+		'is_announcement_banner_visible': aspc_settings.ANNOUNCEMENT_BANNER_ACTIVE,
+		'announcement_banner_content': aspc_settings.ANNOUNCEMENT_BANNER_CONTENT
 	}

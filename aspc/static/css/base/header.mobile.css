@@ -27,14 +27,15 @@
 		display: inline-block;
 	}
 
-	#voting_banner {
+	#announcement_banner {
 		position: relative;
+		width: auto;
 		margin-bottom: 5px;
 		box-shadow: 0px 0px 2px #222;
 		-webkit-box-shadow: 0px 0px 2px #222;
 	}
 
-	#voting_banner_placeholder {
+	#announcement_banner_placeholder {
 		display: none;
 	}
 }
