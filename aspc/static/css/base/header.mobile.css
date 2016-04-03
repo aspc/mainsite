@@ -29,6 +29,7 @@
 
 	#announcement_banner {
 		position: relative;
+		width: auto;
 		margin-bottom: 5px;
 		box-shadow: 0px 0px 2px #222;
 		-webkit-box-shadow: 0px 0px 2px #222;
