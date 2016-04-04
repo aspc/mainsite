@@ -3,8 +3,9 @@
         <h4>Student Reviews</h4>
         {% with reviews=object.get_reviews %}
         {% if reviews %}
-            <strong>average rating: </strong>{{ object.get_average_rating | star}} {{ reviews.count}}
-            <br> {{ object.get_average_rating }} out of five stars
+            {% with rating=object.get_average_rating %}
+            <strong>average rating: </strong>{{ rating | star}} ({{ rating | floatformat:2}})
+            {% endwith %}
         {% endif %}
         <div id="review-head">
             {% if reviews %}
