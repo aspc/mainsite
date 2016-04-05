@@ -307,7 +307,7 @@ class DepartmentCoursesView(generic.DetailView):
     slug_field = 'code'
     template_name = "browse/department_detail.html"
 
-class CourseDetailView(generic.DetailView):
+class SectionDetailView(generic.DetailView):
     model = Section
     slug_field = 'code_slug'
     slug_url_kwarg = 'course_code'
