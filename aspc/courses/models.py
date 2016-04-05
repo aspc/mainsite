@@ -173,7 +173,7 @@ class Section(models.Model):
     @models.permalink
     def get_absolute_url(self):
         if not self.course.primary_department: print self.course
-        return ('course_detail', (),
+        return ('section_detail', (),
                 {'course_code': self.code_slug, 'instructor': self.instructors.all()[0].slug() })
 
     class Meta:
