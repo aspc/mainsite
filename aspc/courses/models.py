@@ -6,6 +6,7 @@ from datetime import date, datetime, timedelta
 import json
 from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
 
 CAMPUSES = (
     (1, u'PO'), (2, u'SC'), (3, u'CMC'), (4, u'HM'), (5, u'PZ'), (6, u'CGU'), (7, u'CU'), (8, u'KS'), (-1, u'?'))
@@ -48,6 +49,9 @@ class Instructor(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def slug(self):
+        return slugify(self.name)
 
 
 class Department(models.Model):
@@ -169,7 +173,8 @@ class Section(models.Model):
     @models.permalink
     def get_absolute_url(self):
         if not self.course.primary_department: print self.course
-        return ('course_detail', (), {'course_code': self.code_slug, 'dept': self.course.primary_department.code, })
+        return ('course_detail', (),
+                {'course_code': self.code_slug, 'instructor': self.instructors.all()[0].slug() })
 
     class Meta:
         ordering = ('code',)
