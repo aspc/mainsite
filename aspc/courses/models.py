@@ -109,6 +109,15 @@ class Course(models.Model):
     class Meta:
         ordering = ('code',)
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ('course_detail', (),
+                {'course_code': self.code_slug})
+
+    def get_reviews(self):
+        reviews = self.coursereview_set.order_by('-created_date')
+        return reviews
+
 
 class Section(models.Model):
     term = models.ForeignKey(Term, related_name='sections')
@@ -317,7 +326,6 @@ class CourseReview(models.Model):
     def update_course_and_instructor_rating(self):
         self.instructor.rating = CourseReview.objects.filter(instructor = self.instructor).aggregate(Avg("overall_rating"))["overall_rating__avg"]
         self.instructor.save()
-
         self.course.rating = CourseReview.objects.filter(course = self.course).aggregate(Avg("overall_rating"))["overall_rating__avg"]
         self.course.save()
 
@@ -327,8 +335,8 @@ class CourseReview(models.Model):
         super(CourseReview, self).create(*args, **kwargs)
 
     def save(self, *args, **kwargs):
-        self.update_course_and_instructor_rating()
         super(CourseReview, self).save(*args, **kwargs)
+        self.update_course_and_instructor_rating()
 
     def delete(self, *args, **kwargs):
         self.overall_rating = 0.0

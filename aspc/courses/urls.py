@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^search/$', 'aspc.courses.views.search'),
     url(r'^browse/$', DepartmentListView.as_view(), name="department_list"),
     url(r'^browse/(?P<slug>[A-Z]+)/$', DepartmentCoursesView.as_view(), name="department_detail"),
+    url(r'^browse/course/(?P<course_code>[\w\d-]+)/$', SectionDetailView.as_view(is_course=True), name="course_detail"),
     url(r'^browse/instructor/(?P<instructor>[\w\d-]+)/course/(?P<course_code>[\w\d-]+)/$', SectionDetailView.as_view(), name="section_detail"),
     url(r'^$', TemplateView.as_view(template_name='courses/landing.html'), name="courses_home"),
 ]

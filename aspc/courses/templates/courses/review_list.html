@@ -1,11 +1,9 @@
 {% load stars %}
 <div id="review-div">
         <h4>Student Reviews</h4>
-        {% with reviews=object.get_reviews %}
         {% if reviews %}
-            {% with rating=object.get_average_rating %}
-            <strong>average rating: </strong>{{ rating | star}} ({{ rating | floatformat:2}})
-            {% endwith %}
+            <strong>average rating: </strong>
+                {{ rating | star}} ({{ rating | floatformat:2}})
         {% endif %}
         <div id="review-head">
             {% if reviews %}
@@ -18,10 +16,9 @@
         </div>
         {% if reviews %}
             <div id="review-list">
-            {% for review in object.get_reviews %}
+            {% for review in reviews %}
                 {% include 'courses/review_list_item.html' %}
             {% endfor %}
             </div>
         {% endif %}
-        {% endwith %}
 </div>
