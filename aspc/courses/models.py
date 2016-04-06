@@ -6,6 +6,7 @@ from datetime import date, datetime, timedelta
 import json
 from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
 
 CAMPUSES = (
     (1, u'PO'), (2, u'SC'), (3, u'CMC'), (4, u'HM'), (5, u'PZ'), (6, u'CGU'), (7, u'CU'), (8, u'KS'), (-1, u'?'))
@@ -48,6 +49,9 @@ class Instructor(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def slug(self):
+        return slugify(self.name)
 
 
 class Department(models.Model):
@@ -104,6 +108,15 @@ class Course(models.Model):
 
     class Meta:
         ordering = ('code',)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('course_detail', (),
+                {'course_code': self.code_slug})
+
+    def get_reviews(self):
+        reviews = self.coursereview_set.order_by('-created_date')
+        return reviews
 
 
 class Section(models.Model):
@@ -162,10 +175,15 @@ class Section(models.Model):
         reviews = CourseReview.objects.filter(course=self.course, instructor__in=self.instructors.all())
         return reviews.aggregate(Avg("overall_rating"))["overall_rating__avg"]
 
+    def get_reviews(self):
+        reviews = CourseReview.objects.filter(course=self.course, instructor__in=self.instructors.all()).order_by('-created_date')
+        return reviews
+
     @models.permalink
     def get_absolute_url(self):
         if not self.course.primary_department: print self.course
-        return ('course_detail', (), {'course_code': self.code_slug, 'dept': self.course.primary_department.code, })
+        return ('section_detail', (),
+                {'course_code': self.code_slug, 'instructor': self.instructors.all()[0].slug() })
 
     class Meta:
         ordering = ('code',)
@@ -294,6 +312,7 @@ class CourseReview(models.Model):
     author = models.ForeignKey(User)
     course = models.ForeignKey(Course)
     instructor = models.ForeignKey(Instructor)
+    created_date = models.DateTimeField(default=datetime.now)
     comments = models.TextField(blank=True, null=True)
 
     overall_rating = models.FloatField()
@@ -307,7 +326,6 @@ class CourseReview(models.Model):
     def update_course_and_instructor_rating(self):
         self.instructor.rating = CourseReview.objects.filter(instructor = self.instructor).aggregate(Avg("overall_rating"))["overall_rating__avg"]
         self.instructor.save()
-
         self.course.rating = CourseReview.objects.filter(course = self.course).aggregate(Avg("overall_rating"))["overall_rating__avg"]
         self.course.save()
 
@@ -317,8 +335,8 @@ class CourseReview(models.Model):
         super(CourseReview, self).create(*args, **kwargs)
 
     def save(self, *args, **kwargs):
-        self.update_course_and_instructor_rating()
         super(CourseReview, self).save(*args, **kwargs)
+        self.update_course_and_instructor_rating()
 
     def delete(self, *args, **kwargs):
         self.overall_rating = 0.0

@@ -449,10 +449,14 @@ h4#share_clear {
 }
 
 
-h2#message {
+h2#loading_message, h2#error_message {
 	padding: 0.3em;
 	color: #ccc;
 	text-align: center;
+}
+
+h2#error_message {
+	display: none;
 }
 
 a#share_schedule, a#clear_schedule {
@@ -539,52 +543,70 @@ ol.course_list a.add_course:hover {
 /* @end */
 
 @media handheld, only screen and (max-width: 767px) {
-	#schedule_panel, #side_panel {
-	background-color: white;
-	float: none;
-	width: 100%;
-}
-	.wc-day-column-header {
-	overflow: hidden;
-}
-	#calendar {
-	max-height: 25em;
-	overflow-y: scroll;
-}
-	#side_panel {
-		max-height: 100%;
+    #schedule_panel, #side_panel {
+        background-color: white;
+        float: none;
+        width: 100%;
+    }
+
+    .wc-day-column-header {
+        overflow: hidden;
+    }
+
+    #calendar {
+        max-height: 25em;
+        overflow-y: scroll;
+    }
+
+    #side_panel {
+        max-height: 100%;
+    }
+
+    ol#dept_list li span.dept_count {
+        display: none;
+    }
+
+    .wide.schedule .primary h2 {
+        margin: 0.5em 0;
+        font-size: 0.85em;
+        padding: 0.33em 0.5em 0.33em 0.5em;
+        background-color: #4f7098;
+    }
+
+    ul#landing {
+        list-style-type: none;
+        padding: 0;
+        text-align: center;
+        font-size: 1em;
+        margin: 0;
+    }
+
+    ul#landing li {
+        display: block;
+        margin: 0;
+    }
+
+    ul#landing li a {
+        text-decoration: none;
+    }
+
+    ul#landing li a:hover {
+        text-decoration: none;
+    }
 }
 
-ol#dept_list li span.dept_count {
-	display: none;
+
+#barplot {
+	float: left;
+	width: 39%;
 }
 
-.wide.schedule .primary h2 {
-	margin: 0.5em 0;
-	font-size: 0.85em;
-	padding: 0.33em 0.5em 0.33em 0.5em;
-	background-color: #4f7098;
+ #new-review-div {
+	float: left;
+	width: 49%;
+	 margin-bottom: 10px;
 }
 
-ul#landing {
-	list-style-type: none;
-	padding: 0;
-	text-align: center;
-	font-size: 1em;
-	margin: 0;
-}
-
-
-ul#landing li {
-	display: block;
-	margin: 0;
-}
-
-ul#landing li a {
-	text-decoration: none;
-}
-
-ul#landing li a:hover {
-	text-decoration: none;
-}
+#review-list {
+	clear: left;
 }

@@ -89,15 +89,15 @@
     <p>Directory and course information provided by and copyright Pomona College.</p>
     <p>Created by the <a href="http://aspc.pomona.edu/senate/digital-media-programming/">ASPC Digital Media Group</a><br>Joseph Long &rsquo;14, Matt Dahl  &rsquo;17, Dima Smirnov  &rsquo;17, Aloke Desai  &rsquo;16.</p>
 
+    {% block "nocompress_js" %}
+      {% include "settings.js.html" %}
+    {% endblock %}
+
     {% compress js %}
       {% block "js" %}
         {% include "analytics_code.html" %}
       {% endblock %}
     {% endcompress %}
-
-    {% block "nocompress_js" %}
-      {% include "settings.js.html" %}
-    {% endblock %}
   </footer>
   </div>
   </body>
