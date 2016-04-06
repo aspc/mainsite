@@ -28,7 +28,10 @@
 
 {% block "content" %}
 	<p class="info_line">
-		{{ object.instructors.all|join:", " }} &mdash; <strong>credit:</strong> {{ object.credit }} <!-- &mdash; {% if object.filled %}{{ object.filled }} filled of {% endif %}{{ object.spots }} spots -->
+        {% if not is_course %}
+		{{ object.instructors.all|join:", " }} &mdash;
+        {% endif %}
+         <strong>credit:</strong> {{ object.credit }} <!-- &mdash; {% if object.filled %}{{ object.filled }} filled of {% endif %}{{ object.spots }} spots -->
 	</p>
 	<p class="info_line">
 		<strong>department{% if object.course.departments.count > 1 %}s{% endif %}:</strong>
@@ -46,25 +49,32 @@
 	{% if object.description %}
 		<p>{{ object.description|linebreaksbr }}</p>
 	{% endif %}
+    {% if not is_course %}
+        <h4>meetings:</h4>
+        <ul>
+            {% for mtg in object.meeting_set.all %}
+                <li class="meeting">
+                    <span class="campus_icon campus_{{ mtg.get_campus }}">{{ mtg.get_campus }}</span>
+                    &mdash;
 
-	<h4>meetings:</h4>
-	<ul>
-		{% for mtg in object.meeting_set.all %}
-			<li class="meeting">
-				<span class="campus_icon campus_{{ mtg.get_campus }}">{{ mtg.get_campus }}</span>
-				&mdash;
+                    {% for day in mtg.gen_days %}
+                        <span class="day_{{day}}">{{ day }}</span>
+                    {% endfor %}
 
-				{% for day in mtg.gen_days %}
-					<span class="day_{{day}}">{{ day }}</span>
-				{% endfor %}
-
-				&mdash;
-				{{ mtg.begin }}
-				&ndash;
-				{{ mtg.end }}
-				&mdash;
-				{{ mtg.location }}
-			</li>
-		{% endfor %}
-	</ul>
+                    &mdash;
+                    {{ mtg.begin }}
+                    &ndash;
+                    {{ mtg.end }}
+                    &mdash;
+                    {{ mtg.location }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if is_course %}
+        {% include 'courses/review_list.html' with reviews=object.course.get_reviews rating=object.course.rating %}
+    {% else %}
+        <p><a href="{{ object.course.get_absolute_url }}">{{ object.course.name }} by other instructors</a></p>
+        {% include 'courses/review_list.html' with reviews=object.get_reviews rating=object.get_average_rating%}
+    {% endif %}
 {% endblock %}
