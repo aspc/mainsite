@@ -12,11 +12,11 @@
 {% block "page_title" %}Course Search{% endblock %}
 
 {% block "content" %}
-<nav>
-<ul id="landing" class="listview">
-	<li><a href="{% url "aspc.courses.views.search" %}">Search</a></li>
-	<li><a href="{% url "department_list" %}">Browse</a></li>
-	<li><a href="{% url "aspc.courses.views.schedule" %}">Design Your Schedule</a></li>
-</ul>
-</nav>
+	<nav>
+	<ul id="landing" class="listview">
+		<li><a href="{% url "aspc.courses.views.search" %}">Search</a></li>
+		<li><a href="{% url "department_list" %}">Browse</a></li>
+		<li><a href="{% url "aspc.courses.views.schedule" %}">Design Your Schedule</a></li>
+	</ul>
+	</nav>
 {% endblock %}
