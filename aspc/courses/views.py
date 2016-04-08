@@ -311,22 +311,33 @@ class SectionDetailView(generic.DetailView):
     model = Section
     slug_field = 'code_slug'
     slug_url_kwarg = 'course_code'
-    template_name = "browse/section_detail.html"
-    is_course= False
+    template_name = "browse/section_or_course_detail.html"
 
     def get_queryset(self):
         dept = get_object_or_404(Department, code=self.kwargs['dept'])
         return Section.objects.filter(course__primary_department=dept)
     def get_object(self):
         try:
-            if self.is_course:
-                course = Course.objects.get(code_slug=self.kwargs['course_code'])
-                return course.sections.all()[0]
-            else:
-                return Section.objects.get(code_slug=self.kwargs['course_code']) # "course" code here is actually section code
+            return Section.objects.get(code_slug=self.kwargs['course_code']) # "course" code here is actually section code
         except IndexError:
             raise Http404
     def get_context_data(self, **kwargs):
         context = super(SectionDetailView, self).get_context_data(**kwargs)
-        context['is_course'] = self.is_course
+        context['is_section'] = True
         return context
+
+class CourseDetailView(generic.DetailView):
+    model = Section
+    slug_field = 'code_slug'
+    slug_url_kwarg = 'course_code'
+    template_name = "browse/section_or_course_detail.html"
+
+    def get_queryset(self):
+        dept = get_object_or_404(Department, code=self.kwargs['dept'])
+        return Section.objects.filter(course__primary_department=dept)
+    def get_object(self):
+        try:
+            course = Course.objects.get(code_slug=self.kwargs['course_code'])
+            return course.sections.all()[0]
+        except IndexError:
+            raise Http404

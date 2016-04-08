@@ -28,7 +28,7 @@
 
 {% block "content" %}
 	<p class="info_line">
-        {% if not is_course %}
+        {% if is_section %}
 		{{ object.instructors.all|join:", " }} &mdash;
         {% endif %}
          <strong>credit:</strong> {{ object.credit }} <!-- &mdash; {% if object.filled %}{{ object.filled }} filled of {% endif %}{{ object.spots }} spots -->
@@ -49,7 +49,7 @@
 	{% if object.description %}
 		<p>{{ object.description|linebreaksbr }}</p>
 	{% endif %}
-    {% if not is_course %}
+    {% if is_section %}
         <h4>meetings:</h4>
         <ul>
             {% for mtg in object.meeting_set.all %}
@@ -71,10 +71,10 @@
             {% endfor %}
         </ul>
     {% endif %}
-    {% if is_course %}
-        {% include 'courses/review_list.html' with reviews=object.course.get_reviews rating=object.course.rating %}
+    {% if is_section %}
+         <p><a href="{{ object.course.get_absolute_url }}">{{ object.course.name }} by other instructors</a></p>
+         {% include 'courses/review_list.html' with reviews=object.get_reviews rating=object.get_average_rating %}
     {% else %}
-        <p><a href="{{ object.course.get_absolute_url }}">{{ object.course.name }} by other instructors</a></p>
-        {% include 'courses/review_list.html' with reviews=object.get_reviews rating=object.get_average_rating%}
+        {% include 'courses/review_list.html' with reviews=object.course.get_reviews rating=object.course.rating %}
     {% endif %}
 {% endblock %}
