@@ -1,4 +1,5 @@
 {% extends "courses/base.html" %}
+{% load static %}
 
 {% block "title" %}{{ object.code }} &mdash; {{ object.course.name }}{% endblock %}
 {% block "ogtitle" %}{{ object.code }} &mdash; {{ object.course.name }}{% endblock %}
@@ -24,6 +25,12 @@
 	<li><a href="{% url "department_list" %}">Departments</a></li>
 	<li><a href="{{ object.course.primary_department.get_absolute_url }}">{{ object.course.primary_department.name }}</a></li>
 	<li>{{ object.code }}</li>
+{% endblock %}
+
+{% block "js" %}
+	{{ block.super }}
+		<script type="text/javascript" src="{% static "js/lib/Chart.js" %}"></script>
+		<script type="text/javascript" src="{% static "js/barplot.js" %}"></script>
 {% endblock %}
 
 {% block "content" %}
