@@ -331,14 +331,13 @@ class CourseReview(models.Model):
 
     # update the instructor/course average on save/create
     def create(self, *args, **kwargs):
-        self.update_course_and_instructor_rating()
         super(CourseReview, self).create(*args, **kwargs)
+        self.update_course_and_instructor_rating()
 
     def save(self, *args, **kwargs):
         super(CourseReview, self).save(*args, **kwargs)
         self.update_course_and_instructor_rating()
 
     def delete(self, *args, **kwargs):
-        self.overall_rating = 0.0
-        self.update_course_and_instructor_rating()
         super(CourseReview, self).delete(*args, **kwargs)
+        self.update_course_and_instructor_rating()
