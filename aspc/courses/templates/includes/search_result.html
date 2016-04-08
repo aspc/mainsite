@@ -1,19 +1,46 @@
 {% load stars %}
-<h3 {% if ctx == "schedule" %}id="course_{{ c.code_slug }}" data-code="{{ c.code_slug }}" data-added="{{ c.added }}"{% endif %}><a href="{{ c.get_absolute_url }}">{{ c.code }} &mdash; {{ c.course.name }}</a></h3>
-<h4>{{ c.instructors.all|join:", " }} &mdash; credit: {{ c.credit }}
-    <!-- &mdash; {% if c.filled %}{{ c.filled }} filled of {% endif %}{{ c.spots }} seats --></h4>
-<div class="rating-div">
-    {% if c.get_average_rating %}
-         Average Rating: <a href="{{ c.get_absolute_url }}">{{ c.get_average_rating |star }}</a>
-    {% else %}
-        <a href="{{ c.get_absolute_url }}#add-review"> No reviews yet. Add your own! </a>
-    {% endif %}
+<div class="search_result" data-course_slug="{{ c.code_slug }}" data-is_added="{{ c.added }}">
+	<a class="add_course" id="indicator2_{{ c.code_slug }}" onclick="ASPC.Courses.toggleCourse('{{ c.code_slug }}')">
+		{% if c.added %}
+		- remove from schedule
+		{% else %}
+		+ add to schedule
+		{% endif %}
+	</a>
+
+	<h3>
+		<a href="{{ c.get_absolute_url }}">{{ c.code }} &mdash; {{ c.course.name }}</a>
+	</h3>
+
+	<h4>
+		{{ c.instructors.all|join:", " }} &mdash; credit: {{ c.credit }} <!-- &mdash; {% if c.filled %}{{ c.filled }} filled of {% endif %}{{ c.spots }} seats -->
+	</h4>
+
+	<div class="rating-div">
+		{% if c.get_average_rating %}
+			Average Rating: <a href="{{ c.get_absolute_url }}">{{ c.get_average_rating |star }}</a>
+		{% else %}
+			<a href="{{ c.get_absolute_url }}#add-review"> No reviews yet. Add your own! </a>
+		{% endif %}
+	</div>
+
+	{% if c.description %}
+	<p>
+		{{ c.description }}
+	</p>
+	{% endif %}
+
+	<ul>
+		{% for mtg in c.meeting_set.all %}
+		<li class="meeting">
+			<span class="campus_icon campus_{{ mtg.get_campus }}">{{ mtg.get_campus }}</span>
+			&mdash;
+			{% for day in mtg.gen_days %}
+			<span class="day_{{day}}">{{ day }}</span>
+			{% endfor %}
+			&mdash;
+			{{ mtg.begin }}&ndash;{{ mtg.end }} &mdash; {{ mtg.location }}
+		</li>
+		{% endfor %}
+	</ul>
 </div>
-{% if c.description %}<p>{{ c.description }}</p>{% endif %}
-<ul>
-	{% for mtg in c.meeting_set.all %}
-	<li class="meeting"><span class="campus_icon campus_{{ mtg.get_campus }}">{{ mtg.get_campus }}</span> &mdash; {% for day in mtg.gen_days %}<span class="day_{{day}}">{{ day }}</span>{% endfor %}
-		&mdash; {{ mtg.begin }}&ndash;{{ mtg.end }} &mdash; {{ mtg.location }}
-	</li>
-	{% endfor %}
-</ul>
