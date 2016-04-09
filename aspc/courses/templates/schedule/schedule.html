@@ -59,9 +59,9 @@
 					<br>
 					<span style="color: red;">Be sure to review the schedule on My.Pomona to make sure you have seen all options for your spring course schedule.</span>
 				</div>
-				{% include "includes/search_form.html" %}
+				{% include "schedule/search/search_form.html" %}
 				{% if results %}
-					{% include "includes/search_results.html" %}
+					{% include "schedule/search/search_results.html" %}
 				{% endif %}
 		</div>
 	{% endblock %}

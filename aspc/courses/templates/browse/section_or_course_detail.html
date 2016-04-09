@@ -78,8 +78,8 @@
     {% endif %}
     {% if is_section %}
          <p><a href="{{ object.course.get_absolute_url }}">{{ object.course.name }} by other instructors</a></p>
-         {% include 'courses/review_list.html' with reviews=object.get_reviews rating=object.get_average_rating %}
+         {% include "reviews/review_list.html" with reviews=object.get_reviews rating=object.get_average_rating %}
     {% else %}
-        {% include 'courses/review_list.html' with reviews=object.course.get_reviews rating=object.course.rating %}
+        {% include "reviews/review_list.html" with reviews=object.course.get_reviews rating=object.course.rating %}
     {% endif %}
 {% endblock %}

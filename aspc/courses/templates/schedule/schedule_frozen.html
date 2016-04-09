@@ -33,7 +33,7 @@
 	<ol class="course_list">
 		{% for c in schedule.sections.all %}
 			<li class="{% cycle 'odd' 'even' %}">
-				{% include "includes/search_result.html" %}
+				{% include "schedule/search/search_result.html" %}
 			</li>
 		{% endfor %}
 	</ol>
