@@ -283,13 +283,12 @@ div.content_main {
 	margin: 0 auto;
 }
 
-#course_details h3 {
-	text-align: center;
+.course_or_section_page h4 {
+	display: inline;
 }
 
-#course_details p.info_line {
-	padding-left: 3em;
-	text-indent: -3em;
+#course_details h3 {
+	text-align: center;
 }
 
 li.meeting {
@@ -297,57 +296,7 @@ li.meeting {
 	line-height: 2em;
 }
 
-p.note {
-	font-size: 0.9em;
-	color: #444;
-}
-
 /* @end */
-
-/* @group departments */
-
-ol#dept_list li.dept_list_headers span {
-	font-weight: bold;
-	margin-bottom: 1em;
-}
-
-ol#dept_list li {
-	margin-bottom: 0.5em;
-}
-
-ol#dept_list li span {
-	display: inline-block;
-}
-
-ol#dept_list li a {
-	text-decoration: none;
-	color: #1860cc;
-}
-
-ol#dept_list li span.dept_code {
-	width: 4em;
-	padding-left: 1em;
-}
-
-ol#dept_list li span.dept_count {
-	font-style: italic;
-	color: #999;
-	margin-left: 1em;
-}
-
-ol#dept_list li span.dept_name {
-	padding-left: 1em;
-}
-
-/* @end */
-
-ol#dept_list {
-	margin: 0 auto;
-	padding: 1em 0;
-	list-style-type: none;
-
-}
-
 
 
 /* @end */
@@ -518,6 +467,77 @@ ol.course_list a.add_course:hover {
 
 /* @end */
 
+/* @group reviews */
+
+#reviews_barplot {
+	margin: 0 auto;
+}
+
+#reviews_list {
+	clear: left;
+}
+
+ul#reviews_header {
+	list-style-type: none;
+	padding: 0;
+	width: 100%;
+}
+
+.reviews_header-section {
+	width: 33.3%;
+	height: 150px;
+	display: inline-block;
+	text-align: center;
+	float: left;
+}
+
+.reviews_header-section:nth-child(1) {
+	padding-top: 2em;
+}
+
+ul#reviews_header .big {
+	font-size: 3em;
+}
+
+.reviews_header-section button {
+	border: 1px solid rgba(0, 0, 0, 0);
+	background-color: #0071a6;
+	color: white;
+	font-size: 1.5em;
+	font-family: "Hammersmith One", Verdana, "Lucida Grande", Lucida, sans-serif;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	margin-top: 10px;
+}
+
+.reviews_header-section button:hover {
+	cursor: pointer;
+}
+
+#reviews_list-header p {
+	background-color: #e7e7e7;
+	padding: 1em;
+}
+
+#reviews_list a {
+	background-image: url(../../images/external_link_icon.png);
+	background-position: right;
+	background-repeat: no-repeat;
+	padding-right: 13px;
+}
+
+.reviews_list-item {
+	padding: 0.5em;
+}
+
+.reviews_list-item:nth-child(even) {
+	background-color: #f7f7f7;
+}
+
+/* @end */
+
 @media handheld, only screen and (max-width: 767px) {
     #schedule_panel, #search_panel {
         background-color: white;
@@ -569,20 +589,4 @@ ol.course_list a.add_course:hover {
     ul#home li a:hover {
         text-decoration: none;
     }
-}
-
-
-#barplot {
-	float: left;
-	width: 39%;
-}
-
- #new-review-div {
-	float: left;
-	width: 49%;
-	 margin-bottom: 10px;
-}
-
-#review-list {
-	clear: left;
 }

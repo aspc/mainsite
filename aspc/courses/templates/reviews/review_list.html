@@ -1,24 +1,47 @@
+{% load static %}
 {% load stars %}
-<div id="review-div">
-        <h4>Student Reviews</h4>
-        {% if reviews %}
-            <strong>average rating: </strong>
-                {{ rating | star}} ({{ rating | floatformat:2}})
-        {% endif %}
-        <div id="review-head">
-            {% if reviews %}
-                <div id="barplot"><canvas id="myChart" width="200" height="200"></canvas></div>
-            {% endif %}
-            <div id="new-review-div">
-                Share your thoughts with other students.<br>
-                <button class="btn btn-default btn-primary" id="new-review-button">Write a new review</button>
-            </div>
-        </div>
-        {% if reviews %}
-            <div id="review-list">
-            {% for review in reviews %}
-                {% include "reviews/review_list_item.html" %}
-            {% endfor %}
-            </div>
-        {% endif %}
+<div>
+	<p>
+		<h4>Student Reviews:</h4>
+	</p>
+
+	<ul id="reviews_header">
+		<li class="reviews_header-section">
+			{% if reviews %}
+				<span class="big">{{ rating | floatformat:2}}</span>
+				<br>
+				<strong>average rating</strong>
+			{% endif %}
+		</li>
+		<li class="reviews_header-section">
+			{% if reviews %}
+				<canvas id="reviews_barplot" width="200" height="150"></canvas>
+			{% endif %}
+		</li>
+		<li class="reviews_header-section">
+			<img src="{% static "images/housing/write_review.png" %}" width="60px" />
+			<br />
+			<button>Write review</button>
+		</li>
+	</ul>
+
+	{% if reviews %}
+		<div id="reviews_list">
+			<div id="reviews_list-header">
+				{% if is_section %}
+					<p>Showing reviews for all sections of {{ object.course.name }} ever taught by <em>{{ object.instructors.all|join:", " }}</em>.</p>
+					<p>
+						<a href="{{ object.course.get_absolute_url }}">See reviews for sections of {{ object.course.name }} taught by other instructors...</a>
+					</p>
+				{% else %}
+					<p>Showing reviews for all sections of {{ object.course.name }} taught by all instructors.</p>
+				{% endif %}
+			</div>
+			<div id="reviews_list-content">
+				{% for review in reviews %}
+					{% include "reviews/review_list_item.html" %}
+				{% endfor %}
+			</div>
+		</div>
+	{% endif %}
 </div>

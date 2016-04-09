@@ -9,7 +9,7 @@
 	</a>
 
 	<h3>
-		<a href="{{ c.get_absolute_url }}">{{ c.code }} &mdash; {{ c.course.name }}</a>
+		<a href="{{ c.get_url_to_section_page }}">{{ c.code }} &mdash; {{ c.course.name }}</a>
 	</h3>
 
 	<h4>
@@ -19,9 +19,9 @@
 	<div class="rating-div">
 		<h4>Rating: </h4>
 		{% if c.get_average_rating %}
-			{{ c.get_average_rating|star }} <a href="{{ c.get_absolute_url }}">Read reviews!</a>
+			{{ c.get_average_rating|star }} <a href="{{ c.get_url_to_section_page}}">Read reviews!</a>
 		{% else %}
-			<a href="{{ c.get_absolute_url }}#add-review"> No reviews yet. Add your own! </a>
+			<a href="#"> No reviews yet. Add your own! </a>
 		{% endif %}
 	</div>
 

@@ -1,0 +1,63 @@
+{% extends "courses/base.html" %}
+{% load static %}
+
+{% block "title" %}{{ object.course.code }} &mdash; {{ object.course.name }}{% endblock %}
+{% block "ogtitle" %}{{ object.course.code }} &mdash; {{ object.course.name }}{% endblock %}
+{% block "page_title" %}{{ object.course.code }} &mdash; {{ object.course.name }}{% endblock %}
+
+{% block "ogdesc" %}
+	{% if object.description %}
+		{{ object.description }}
+	{% else %}
+		{{ object.course.name }}
+	{% endif %}
+{% endblock %}
+
+{% block "metadesc" %}
+	{% if object.description %}
+		{{ object.description }}
+	{% else %}
+		{{ object.course.code }} &mdash; {{ object.course.name }}
+	{% endif %}
+{% endblock %}
+
+{% block "courses_breadcrumbs" %}
+	<li>{{ object.course.code }}</li>
+{% endblock %}
+
+{% block "js" %}
+	{{ block.super }}
+	<script type="text/javascript" src="{% static "js/lib/Chart.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/barplot.js" %}"></script>
+{% endblock %}
+
+{% block "page_class" %}course_or_section_page{% endblock %}
+
+{% block "content" %}
+	<p>
+		<h4>Credit:</h4> {{ object.credit }}
+	</p>
+
+	<p>
+		<h4>Department{% if object.course.departments.count > 1 %}s{% endif %}:</h4>
+		{% for d in object.course.departments.all %}
+			{{ d.non_breaking_name|safe }}{% if forloop.revcounter0 != 0 %},{% endif %}
+		{% endfor %}
+	</p>
+
+	<p>
+		<h4>Grading style:</h4> {{ object.grading_style }}
+	</p>
+
+	{% if object.note %}
+		<p>
+			<h4>Note:</h4> {{ object.note|safe|linebreaksbr }}
+		</p>
+	{% endif %}
+
+	{% if object.description %}
+		<h4>Course description:</h4> <p>{{ object.description|linebreaksbr }}</p>
+	{% endif %}
+
+	{% include "reviews/review_list.html" with reviews=object.course.get_reviews rating=object.course.rating %}
+{% endblock %}
