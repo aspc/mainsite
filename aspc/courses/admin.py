@@ -19,7 +19,7 @@ class SectionAdmin(admin.ModelAdmin):
 	inlines = [MeetingInline]
 
 class CourseReviewAdmin(admin.ModelAdmin):
-	list_display = ('author', 'course', 'instructor', 'overall_rating')
+	list_display = ('author', 'section', 'overall_rating')
 
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Department, DepartmentAdmin)
