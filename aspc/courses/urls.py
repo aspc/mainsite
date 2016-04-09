@@ -8,8 +8,8 @@ urlpatterns = [
 
 	# Planner: /courses/schedule
     url(r'^schedule/$', 'aspc.courses.views.schedule', name="course_planner"),
-    url(r'^schedule/(?P<course_code>[\w\d-]+)/add/$', 'aspc.courses.views.schedule_course_add', name="course_add"),
-    url(r'^schedule/(?P<course_code>[\w\d-]+)/remove/$', 'aspc.courses.views.schedule_course_remove', name="course_remove"),
+    url(r'^schedule/(?P<section_code_slug>[\w\d-]+)/add/$', 'aspc.courses.views.schedule_course_add', name="course_add"),
+    url(r'^schedule/(?P<section_code_slug>[\w\d-]+)/remove/$', 'aspc.courses.views.schedule_course_remove', name="course_remove"),
     url(r'^schedule/(?P<schedule_id>\d+)/$', 'aspc.courses.views.view_schedule', name="view_schedule"),
     url(r'^schedule/(?P<schedule_id>\d+)/icalendar/$', 'aspc.courses.views.ical_export'),
     url(r'^schedule/icalendar/$', 'aspc.courses.views.ical_export'),

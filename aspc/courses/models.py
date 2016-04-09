@@ -169,7 +169,7 @@ class Section(models.Model):
                 })
 
         return {'events': event_list, 'info': {'course_code': self.code, 'course_code_slug': self.code_slug,
-                                               'detail_url': self.get_absolute_url(),
+                                               'detail_url': self.get_url_to_section_page(),
                                                'campus_code': self.get_campus(), }}
     def get_average_rating(self):
         reviews = CourseReview.objects.filter(course=self.course, instructor__in=self.instructors.all())

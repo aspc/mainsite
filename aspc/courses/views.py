@@ -258,40 +258,38 @@ def _ical_from_courses(courses, start_date, end_date):
 
     return cal
 
-def schedule_course_add(request, course_code):
-    course = build_course(course_code, request)
+def schedule_course_add(request, section_code_slug):
+    section = _get_section_for_term(section_code_slug=section_code_slug, term_key=request.session.get('term_key'))
     if request.session.get('schedule_courses'):
-        if not (course.id in request.session['schedule_courses']):
-            request.session['schedule_courses'].add(course.id)
+        if not (section.id in request.session['schedule_courses']):
+            request.session['schedule_courses'].add(section.id)
             request.session.modified = True
     else:
-        request.session['schedule_courses'] = set([course.id,])
-    return HttpResponse(content=json.dumps(course.json(), cls=DjangoJSONEncoder), content_type='application/json')
+        request.session['schedule_courses'] = set([section.id,])
+    return HttpResponse(content=json.dumps(section.json(), cls=DjangoJSONEncoder), content_type='application/json')
 
-def schedule_course_remove(request, course_code):
+def schedule_course_remove(request, section_code_slug):
     removed_ids = []
-    course = build_course(course_code, request)
+    section = _get_section_for_term(section_code_slug=section_code_slug, term_key=request.session.get('term_key'))
     if request.session.get('schedule_courses'):
-        if (course.id in request.session['schedule_courses']):
-            request.session['schedule_courses'].remove(course.id)
+        if (section.id in request.session['schedule_courses']):
+            request.session['schedule_courses'].remove(section.id)
             request.session.modified = True
 
-            course_data = course.json()
-            for e in course_data['events']:
+            section_data = section.json()
+            for e in section_data['events']:
                 removed_ids.append(e['id'])
     return HttpResponse(content=json.dumps(removed_ids, cls=DjangoJSONEncoder), content_type='application/json')
 
-def build_course(course_code, request):
-    try:
-        course = build_course_from_code_and_term(course_code, request.session.get('term_key'))
-    except IndexError:
-        raise Http404
-    return course
+def _get_section_for_term(section_code_slug, term_key):
+	all_sections = Section.objects.filter(code_slug=section_code_slug)
 
-def build_course_from_code_and_term(course_code, term_key):
-    courses_without_term = Section.objects.filter(code_slug=course_code)
-    course = courses_without_term.filter(term=Term.objects.get(key=term_key))[0] if term_key else courses_without_term[0]
-    return course
+	try:
+		section = all_sections.filter(term=Term.objects.get(key=term_key))[0] if term_key else all_sections[0]
+	except IndexError:
+		raise Http404
+
+	return section
 
 class SectionDetailView(generic.DetailView):
     model = Section
