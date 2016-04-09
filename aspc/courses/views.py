@@ -293,20 +293,6 @@ def build_course_from_code_and_term(course_code, term_key):
     course = courses_without_term.filter(term=Term.objects.get(key=term_key))[0] if term_key else courses_without_term[0]
     return course
 
-class DepartmentListView(generic.ListView):
-    queryset = (Department.objects
-                    .annotate(num_courses=Count('primary_course_set__sections'))
-                    .filter(num_courses__gt=0)
-                    .distinct()
-                    .order_by('code')
-                )
-    template_name = "browse/department_list.html"
-
-class DepartmentCoursesView(generic.DetailView):
-    model = Department
-    slug_field = 'code'
-    template_name = "browse/department_detail.html"
-
 class SectionDetailView(generic.DetailView):
     model = Section
     slug_field = 'code_slug'

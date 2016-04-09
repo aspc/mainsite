@@ -67,10 +67,6 @@ class Department(models.Model):
     def __unicode__(self):
         return u'[%s] %s' % (self.code, self.name)
 
-    @models.permalink
-    def get_absolute_url(self):
-        return ('department_detail', (), {'slug': self.code, })
-
 
 class RequirementArea(models.Model):
     code = models.CharField(max_length=20, unique=True, db_index=True)
