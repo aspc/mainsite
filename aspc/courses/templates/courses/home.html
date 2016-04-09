@@ -1,0 +1,21 @@
+{% extends "base_page.html" %}
+
+{% load staticfiles %}
+
+{% block "css" %}
+	{{ block.super }}
+	<link rel="stylesheet" type="text/css" href="{% static "css/courses/courses.css" %}"/>
+{% endblock %}
+
+{% block "title" %}Courses{% endblock %}
+
+{% block "page_title" %}Courses{% endblock %}
+
+{% block "content" %}
+	<nav>
+		<ul id="home" class="listview">
+			<li><a href="{% url "aspc.courses.views.schedule" %}">Plan Your Schedule</a></li>
+			<li><a href="#">Browse Course Reviews</a></li>
+		</ul>
+	</nav>
+{% endblock %}

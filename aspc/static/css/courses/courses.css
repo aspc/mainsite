@@ -3,9 +3,9 @@
 	http://127.0.0.1:8000/static/css/courses.css
 */
 
-/* @group landing */
+/* @group home */
 
-ul#landing {
+ul#home {
 	list-style-type: none;
 	padding: 0;
 	text-align: center;
@@ -13,16 +13,16 @@ ul#landing {
 	margin: 1em auto;
 }
 
-ul#landing li {
+ul#home li {
 	display: inline-block;
 	margin-right: 1em;
 }
 
-ul#landing li a {
+ul#home li a {
 	text-decoration: none;
 }
 
-ul#landing li a:hover {
+ul#home li a:hover {
 	text-decoration: underline;
 }
 
@@ -573,7 +573,7 @@ ol.course_list a.add_course:hover {
         background-color: #4f7098;
     }
 
-    ul#landing {
+    ul#home {
         list-style-type: none;
         padding: 0;
         text-align: center;
@@ -581,16 +581,16 @@ ol.course_list a.add_course:hover {
         margin: 0;
     }
 
-    ul#landing li {
+    ul#home li {
         display: block;
         margin: 0;
     }
 
-    ul#landing li a {
+    ul#home li a {
         text-decoration: none;
     }
 
-    ul#landing li a:hover {
+    ul#home li a:hover {
         text-decoration: none;
     }
 }
