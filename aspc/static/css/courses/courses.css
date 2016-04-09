@@ -499,7 +499,7 @@ ul#reviews_header .big {
 	font-size: 3em;
 }
 
-.reviews_header-section button {
+#reviews_header button {
 	border: 1px solid rgba(0, 0, 0, 0);
 	background-color: #0071a6;
 	color: white;
@@ -512,7 +512,7 @@ ul#reviews_header .big {
 	margin-top: 10px;
 }
 
-.reviews_header-section button:hover {
+#reviews_header button:hover {
 	cursor: pointer;
 }
 

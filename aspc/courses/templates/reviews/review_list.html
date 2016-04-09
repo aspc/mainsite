@@ -6,23 +6,32 @@
 	</p>
 
 	<ul id="reviews_header">
-		<li class="reviews_header-section">
-			{% if reviews %}
+		{% if reviews %}
+			<li class="reviews_header-section">
 				<span class="big">{{ rating | floatformat:2}}</span>
 				<br>
 				<strong>average rating</strong>
-			{% endif %}
-		</li>
-		<li class="reviews_header-section">
-			{% if reviews %}
+			</li>
+			<li class="reviews_header-section">
 				<canvas id="reviews_barplot" width="200" height="150"></canvas>
+			</li>
+			<li class="reviews_header-section">
+				<img src="{% static "images/housing/write_review.png" %}" width="60px" />
+				<br />
+				<button>Write review</button>
+			</li>
+		{% else %}
+			{% if is_section %}
+				<li>There are no reviews for this section yet! You can be the first:&nbsp;&nbsp; <button>Write review</button></li>
+				<br />
+				<br />
+				<li>
+					Or, <a href="{{ object.course.get_absolute_url }}">see reviews for sections of {{ object.course.name }} taught by other instructors...</a>
+				</li>
+			{% else %}
+				<li>There are no reviews at all for this course yet! You can be the first:&nbsp;&nbsp; <button>Write review</button></li>
 			{% endif %}
-		</li>
-		<li class="reviews_header-section">
-			<img src="{% static "images/housing/write_review.png" %}" width="60px" />
-			<br />
-			<button>Write review</button>
-		</li>
+		{% endif %}
 	</ul>
 
 	{% if reviews %}
