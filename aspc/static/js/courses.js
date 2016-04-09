@@ -79,7 +79,7 @@ ASPC.courses = function () {
 		addCourse: function (course_slug) {
 			my.loadingMessageElement.show();
 
-			$.get(my.CURRENT_PAGE + course_slug + '/add/')
+			return $.get(my.CURRENT_PAGE + course_slug + '/add/')
 				.done(function (event_data) {
 					my.loadingMessageElement.hide();
 
@@ -93,7 +93,7 @@ ASPC.courses = function () {
 		removeCourse: function (course_slug) {
 			my.loadingMessageElement.show();
 
-			$.get(my.CURRENT_PAGE + course_slug + '/remove/')
+			return $.get(my.CURRENT_PAGE + course_slug + '/remove/')
 				.done(function (event_ids) {
 					my.loadingMessageElement.hide();
 
@@ -158,6 +158,7 @@ ASPC.courses = function () {
 			}
 		},
 		failedRequestCallback: function () {
+			my.loadingMessageElement.hide();
 			my.errorMessageElement.show();
 			window.setTimeout(function () {
 				my.errorMessageElement.hide();
@@ -176,7 +177,7 @@ ASPC.courses = function () {
 
 		// Remove the loading and error message
 		my.loadingMessageElement.hide();
-        my.errorMessageElement.hide();
+		my.errorMessageElement.hide();
 
 		// Init the calendar widget
 		my.initCalendar();
@@ -201,7 +202,13 @@ ASPC.courses = function () {
 		// If the toggled course has already been added...
 		if (search_result_div.data('is_added')) {
 			// Then remove the course
-			my.removeCourse(course_slug);
+			var promise = my.removeCourse(course_slug);
+
+			// In case of failure, attach an async handler to undo the DOM changes that happen next
+			promise.fail(function () {
+				search_result_div.find('a.add_course').text(my.REMOVE_FROM);
+				search_result_div.data('is_added', true);
+			});
 
 			// Toggle the display text back to ADD_TO
 			search_result_div.find('a.add_course').text(my.ADD_TO);
@@ -211,7 +218,13 @@ ASPC.courses = function () {
 		}
 		else {
 			// Otherwise add the course
-			my.addCourse(course_slug);
+			var promise = my.addCourse(course_slug);
+
+			// In case of failure, attach an async handler to undo the DOM changes that happen next
+			promise.fail(function () {
+				search_result_div.find('a.add_course').text(my.ADD_TO);
+				search_result_div.data('is_added', false);
+			});
 
 			// Toggle the display text to REMOVE_FROM
 			search_result_div.find('a.add_course').text(my.REMOVE_FROM);
