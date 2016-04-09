@@ -17,8 +17,9 @@
 	</h4>
 
 	<div class="rating-div">
+		<h4>Rating: </h4>
 		{% if c.get_average_rating %}
-			Average Rating: <a href="{{ c.get_absolute_url }}">{{ c.get_average_rating |star }}</a>
+			{{ c.get_average_rating|star }} <a href="{{ c.get_absolute_url }}">Read reviews!</a>
 		{% else %}
 			<a href="{{ c.get_absolute_url }}#add-review"> No reviews yet. Add your own! </a>
 		{% endif %}

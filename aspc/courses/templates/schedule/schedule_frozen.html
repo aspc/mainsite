@@ -15,7 +15,11 @@
 	</script>
 {% endblock %}
 
-{% block side_panel %}
+{% block "outer_content" %}
+	<div id="schedule_panel" class="panel {% block schedule_panel_class %}{% endblock %}">
+		{% include "schedule/schedule_panel.html" %}
+	</div>
+
 	<div id="side_panel"><div class="content">
 	<h3>your schedule:</h3>
 	<p>created on {{ schedule.create_ts|date:"M n, Y"}} at {{ schedule.create_ts|date:"P" }}</p>

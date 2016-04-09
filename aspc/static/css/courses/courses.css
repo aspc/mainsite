@@ -46,8 +46,6 @@ ul#home li a:hover {
 	/*color: white;*/
 }
 
-
-
 /* @end */
 
 /* @group search */
@@ -97,50 +95,31 @@ div#search_form p {
 	width: 15em;
 }
 
-#search_form #update_info {
-	background-color: #eee;
+#update_info {
 	padding: 1em;
+	padding-left: 3%;
 	font-size: 0.9em;
 	margin-bottom: 1em;
-}
-
-#search_form #update_info dl {
-	margin-top: 0;
-	margin-bottom: 0.5em;
-}
-
-#search_form #update_info dl:after {
-	display: block;
-	content: "";
-	clear: both;
-}
-
-#search_form #update_info dd {
-	float: left;
-	margin-left: 1em;
-}
-
-#search_form #update_info dt {
-	float: left;
-	clear: both;
-	font-weight: bold;
-}
-#search_form #update_info dt:after {
-	content: ":";
-}
-
-#search_form #update_info p {
 	line-height: 1.33em;
 	clear: both;
 }
 
 #submit {
 	float: left;
+	border: 1px solid rgba(0, 0, 0, 0);
+	background-color: #0071a6;
+	color: white;
+	font-size: 1.5em;
+	font-family: "Hammersmith One", Verdana, "Lucida Grande", Lucida, sans-serif;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	margin-top: 10px;
 }
 
-#reset {
-	float: right;
-	color: white;
+#submit:hover {
+	cursor: pointer;
 }
 
 div#top_container a {
@@ -228,6 +207,17 @@ ol.course_list li.notice {
 	letter-spacing: 0.2em;
 	text-align: center;
 	color: white;
+}
+
+.rating-div h4 {
+	display: inline;
+}
+
+.rating-div a {
+	background-image: url(../../images/external_link_icon.png);
+	background-position: right;
+	background-repeat: no-repeat;
+	padding-right: 13px;
 }
 
 
@@ -367,11 +357,11 @@ ol#dept_list {
 .wide.schedule .primary h2 {
 	margin: 0;
 	font-size: 1.2em;
-	padding: 0.75em 2%;
+	padding: 1em 2%;
 }
 
 #schedule_panel {
-	width: 55%;
+	width: 52%;
 	margin: 0;
 	padding: 0;
 	float: left;
@@ -391,20 +381,24 @@ ol#dept_list {
 	width: 100%;
 }
 
-#side_panel {
-	width: 45%;
+#search_panel_label {
+	padding-left: 3%;
+}
+
+#search_panel {
+	width: 48%;
 	padding: 0;
-	float: right;
+	float: left;
 	margin: 0;
 	max-height: 55em;
 	overflow-y: scroll;
 
 }
 
-#side_panel form, #side_panel .course_list, h4#share_clear {
-	padding: 0 2%;
+#search_panel form, #search_panel .course_list, h4#share_clear {
+	padding: 0 3%;
 }
-#side_panel form, #side_panel .course_list {
+#search_panel form, #search_panel .course_list {
 	font-size: 0.85em;
 }
 
@@ -414,7 +408,7 @@ ol#dept_list {
 
 }
 
-#side_panel.hidden {
+#search_panel.hidden {
 	display: none;
 }
 
@@ -447,22 +441,16 @@ h2#error_message {
 	display: none;
 }
 
-a#share_schedule, a#clear_schedule {
+a#share_schedule, a#download_ical, a#clear_schedule {
 	color: #0071a6;
 	text-decoration: none;
-	display: block;
-	padding: 0.25em ;
-}
-
-a#share_schedule {
-	float: left;
-}
-
-a#clear_schedule {
+	padding: 0.25em;
+	margin-left: 40px;
 	float: right;
+	height: 1.5em;
 }
 
-a#share_schedule:hover, a#clear_schedule:hover {
+a#share_schedule:hover, a#download_ical:hover, a#clear_schedule:hover {
 	background-color: #0071a6;
 	color: white;
 }
@@ -531,7 +519,7 @@ ol.course_list a.add_course:hover {
 /* @end */
 
 @media handheld, only screen and (max-width: 767px) {
-    #schedule_panel, #side_panel {
+    #schedule_panel, #search_panel {
         background-color: white;
         float: none;
         width: 100%;
@@ -546,7 +534,7 @@ ol.course_list a.add_course:hover {
         overflow-y: scroll;
     }
 
-    #side_panel {
+    #search_panel {
         max-height: 100%;
     }
 

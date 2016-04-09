@@ -34,29 +34,14 @@
 {% endblock %}
 
 {% block "outer_content" %}
-	<div id="schedule_panel" class="panel {% block schedule_panel_class %}{% endblock %}">
-		<h2 id="schedule_course_label" class="header">your courses:</h2>
-		<ol id="schedule_courses">
-		</ol>
-		{% block share_clear %}
-			<h4 id="share_clear">
-				<a id="share_schedule" href="{% url "aspc.courses.views.share_schedule" %}">&#x2191; share</a>
-				<a id="download_ical" href="{% url "aspc.courses.views.ical_export" %}">export to calendar</a>
-				<a id="clear_schedule" onclick="ASPC.Courses.clearCalendar()">&#x2326; clear</a>
-			</h4>
-		{% endblock %}
-		<div id="calendar">
-			<h2 id="loading_message">Loading...</h2>
-			<h2 id="error_message">Error saving calendar data!</h2>
-		</div>
+	<div id="search_panel" class="panel">
+		{% include "schedule/search/search_form.html" %}
+		{% if results %}
+			{% include "schedule/search/search_results.html" %}
+		{% endif %}
+		<p id="update_info">Course data was last updated {% if last_full %}on {{ last_full.last_refresh_date }}{% else %}never{% endif %}</p>
 	</div>
-	{% block side_panel %}
-		<div id="side_panel" class="panel">
-			<h2 class="header">search:</h2>
-				{% include "schedule/search/search_form.html" %}
-				{% if results %}
-					{% include "schedule/search/search_results.html" %}
-				{% endif %}
-		</div>
-	{% endblock %}
+	<div id="schedule_panel" class="panel {% block schedule_panel_class %}{% endblock %}">
+		{% include "schedule/schedule_panel.html" %}
+	</div>
 {% endblock %}

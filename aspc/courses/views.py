@@ -94,7 +94,7 @@ def schedule(request):
         if form.is_valid():
             results_set, term = form.build_queryset_and_term()
             request.session['term_key'] = term.key
-            paginator = Paginator(results_set, per_page=10, orphans=5)
+            paginator = Paginator(results_set, per_page=20, orphans=5)
             GET_data = request.GET.copy()
 
             try:
