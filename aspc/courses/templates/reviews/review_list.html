@@ -5,52 +5,57 @@
 		<h4>Student Reviews:</h4>
 	</p>
 
-	<ul id="reviews_header">
-		{% if reviews %}
-			<li class="reviews_header-section">
-				<span class="big">{{ average_rating | floatformat:2}}</span>
-				<br>
-				<strong>average rating</strong>
-			</li>
-			<li class="reviews_header-section">
-				<canvas id="reviews_barplot" width="200" height="150"></canvas>
-			</li>
-			<li class="reviews_header-section">
-				<img src="{% static "images/housing/write_review.png" %}" width="60px" />
-				<br />
-				<a href="{% url "write_review" object.course.code_slug %}"><button>Write review</button></a>
-			</li>
-		{% else %}
-			{% if is_section %}
-				<li>There are no reviews for this section yet! You can be the first:&nbsp;&nbsp; <a href="{% url "write_review" object.course.code_slug %}"><button>Write review</button></a></li>
-				<br />
-				<br />
-				<li>
-					Or, <a href="{{ object.course.get_absolute_url }}">see reviews for sections of {{ object.course.name }} taught by other instructors...</a>
+	{% if user.is_authenticated %}
+		<ul id="reviews_header">
+			{% if reviews %}
+				<li class="reviews_header-section">
+					<span class="big">{{ average_rating | floatformat:2}}</span>
+					<br>
+					<strong>average rating</strong>
+				</li>
+				<li class="reviews_header-section">
+					<canvas id="reviews_barplot" width="200" height="150"></canvas>
+				</li>
+				<li class="reviews_header-section">
+					<img src="{% static "images/housing/write_review.png" %}" width="60px" />
+					<br />
+					<a href="{% url "write_review" object.course.code_slug %}"><button>Write review</button></a>
 				</li>
 			{% else %}
-				<li>There are no reviews at all for this course yet! You can be the first:&nbsp;&nbsp; <button>Write review</button></li>
-			{% endif %}
-		{% endif %}
-	</ul>
-
-	{% if reviews %}
-		<div id="reviews_list">
-			<div id="reviews_list-header">
 				{% if is_section %}
-					<p>Showing reviews for all sections of {{ object.course.name }} ever taught by <em>{{ professor }}</em>.</p>
-					<p>
-						<a href="{{ object.course.get_absolute_url }}">See reviews for sections of {{ object.course.name }} taught by other instructors...</a>
-					</p>
+					<li>There are no reviews for this section yet! You can be the first:&nbsp;&nbsp; <a href="{% url "write_review" object.course.code_slug %}"><button>Write review</button></a></li>
+					<br />
+					<br />
+					<li>
+						Or, <a href="{{ object.course.get_absolute_url }}">see reviews for sections of {{ object.course.name }} taught by other instructors...</a>
+					</li>
 				{% else %}
-					<p>Showing reviews for all sections of {{ object.course.name }} taught by all instructors.</p>
+					<li>There are no reviews at all for this course yet! You can be the first:&nbsp;&nbsp; <a href="{% url "write_review" object.course.code_slug %}"><button>Write review</button></a></li>
 				{% endif %}
+			{% endif %}
+		</ul>
+
+		{% if reviews %}
+			<div id="reviews_list">
+				<div id="reviews_list-header">
+					{% if is_section %}
+						<p>Showing reviews for all sections of {{ object.course.name }} ever taught by <em>{{ professor }}</em>.</p>
+						<p>
+							<a href="{{ object.course.get_absolute_url }}">See reviews for sections of {{ object.course.name }} taught by other instructors...</a>
+						</p>
+					{% else %}
+						<p>Showing reviews for all sections of {{ object.course.name }} taught by all instructors.</p>
+					{% endif %}
+				</div>
+				<div id="reviews_list-content">
+					{% for review in reviews %}
+						{% include "reviews/review_list_item.html" %}
+					{% endfor %}
+				</div>
 			</div>
-			<div id="reviews_list-content">
-				{% for review in reviews %}
-					{% include "reviews/review_list_item.html" %}
-				{% endfor %}
-			</div>
-		</div>
+		{% endif %}
+	{% else %}
+		<p>Pomona students, <a href="{% url 'aspc.auth2.views.login' %}?next={{ absolute_uri|urlencode:"" }}">log in</a> to see the 10,000+ reviews we have for this class and many more.</p>
+		<p>5C students, we want you to be able to use this app too, but your ITS departments won't let us grant you access. <a href="http://itattcc.claremont.edu/project/team/">Submit a complaint on this page</a> if you're angry!</p>
 	{% endif %}
 </div>
