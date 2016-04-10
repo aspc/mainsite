@@ -310,6 +310,7 @@ class SectionDetailView(generic.DetailView):
         context = super(SectionDetailView, self).get_context_data(**kwargs)
         context['is_section'] = True
         context['professor'] = Instructor.objects.get(id=self.kwargs['instructor_id'])
+        context['current_term'] = Term.objects.all()[0]
         return context
 
 class CourseDetailView(generic.DetailView):
