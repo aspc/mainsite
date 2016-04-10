@@ -114,10 +114,6 @@ class Course(models.Model):
         return ('course_detail', (),
                 {'course_code': self.code_slug})
 
-    def get_reviews(self):
-        reviews = self.coursereview_set.order_by('-created_date')
-        return reviews
-
 
 class Section(models.Model):
     term = models.ForeignKey(Term, related_name='sections')
@@ -175,10 +171,6 @@ class Section(models.Model):
         reviews = CourseReview.objects.filter(course=self.course, instructor__in=self.instructors.all())
         return reviews.aggregate(Avg("overall_rating"))["overall_rating__avg"]
 
-    def get_reviews(self):
-        reviews = CourseReview.objects.filter(course=self.course, instructor__in=self.instructors.all()).order_by('-created_date')
-        return reviews
-
     @models.permalink
     def get_absolute_url(self):
         if not self.course.primary_department: print self.course
@@ -188,7 +180,15 @@ class Section(models.Model):
     def get_url_to_section_page(self):
         # It doesn't really matter which instructor we choose here, since from the section page the user will be able
         # to find information about the other instructors that teach this class too (if there are multiple)
-        return '/courses/browse/instructor/{0}/course/{1}/'.format(self.instructors.all()[0].id, self.course.code_slug)
+        # But never return the "staff" instructor if possible!
+        staff_instructor_object = Instructor.objects.get(name='Staff')
+        possible_instructors = self.instructors.all()
+        instructor = possible_instructors[0]
+
+        if instructor == staff_instructor_object and len(possible_instructors) > 1:
+            instructor = possible_instructors[1]
+
+        return '/courses/browse/instructor/{0}/course/{1}/'.format(instructor.id, self.course.code_slug)
 
     class Meta:
         ordering = ('code',)

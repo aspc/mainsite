@@ -89,5 +89,5 @@
 			<h4>Note:</h4> This section taught by {{ professor }} isn't being offered during the {{ current_term }} term.
 		{% endif %}
 	</p>
-	{% include "reviews/review_list.html" with reviews=object.get_reviews rating=object.get_average_rating %}
+	{% include "reviews/review_list.html" %}
 {% endblock %}

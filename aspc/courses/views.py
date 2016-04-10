@@ -4,8 +4,8 @@ from django.views import generic
 from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.serializers.json import DjangoJSONEncoder
-from django.db.models import Count
-from aspc.courses.models import (Section, Department, Schedule, RefreshHistory, START_DATE, END_DATE, Term, Course, Instructor)
+from django.db.models import Count, Avg
+from aspc.courses.models import (Section, Department, Schedule, RefreshHistory, START_DATE, END_DATE, Term, Course, Instructor, CourseReview)
 from aspc.courses.forms import SearchForm, ICalExportForm
 import json
 import datetime
@@ -308,9 +308,15 @@ class SectionDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(SectionDetailView, self).get_context_data(**kwargs)
+        instructor_object = Instructor.objects.get(id=self.kwargs['instructor_id'])
+        course_object = Course.objects.get(code_slug=self.kwargs['course_code'])
+
         context['is_section'] = True
-        context['professor'] = Instructor.objects.get(id=self.kwargs['instructor_id'])
+        context['professor'] = instructor_object
         context['current_term'] = Term.objects.all()[0]
+        context['reviews'] = CourseReview.objects.filter(course=course_object, instructor=instructor_object).order_by('-created_date')
+        context['average_rating'] = context['reviews'].aggregate(Avg("overall_rating"))["overall_rating__avg"]
+
         return context
 
 class CourseDetailView(generic.DetailView):
@@ -321,7 +327,18 @@ class CourseDetailView(generic.DetailView):
 
     def get_object(self):
         try:
+            # It doesn't really matter which Section object we return if there are multiple that fit the
+            # <Course> identifier, but we ought to return the most recent one so the section data
+            # that we display is as up-to-date as possible
             course = Course.objects.get(code_slug=self.kwargs['course_code'])
             return course.sections.all().order_by('term')[0]
         except IndexError:
             raise Http404
+
+    def get_context_data(self, **kwargs):
+        context = super(CourseDetailView, self).get_context_data(**kwargs)
+        course_object = Course.objects.get(code_slug=self.kwargs['course_code'])
+
+        context['reviews'] = CourseReview.objects.filter(course=course_object).order_by('-created_date')
+        context['average_rating'] = context['reviews'].aggregate(Avg("overall_rating"))["overall_rating__avg"]
+        return context
