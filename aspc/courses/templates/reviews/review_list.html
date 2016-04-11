@@ -18,11 +18,11 @@
 			<li class="reviews_header-section">
 				<img src="{% static "images/housing/write_review.png" %}" width="60px" />
 				<br />
-				<button>Write review</button>
+				<a href="{% url "write_review" object.course.code_slug %}"><button>Write review</button></a>
 			</li>
 		{% else %}
 			{% if is_section %}
-				<li>There are no reviews for this section yet! You can be the first:&nbsp;&nbsp; <button>Write review</button></li>
+				<li>There are no reviews for this section yet! You can be the first:&nbsp;&nbsp; <a href="{% url "write_review" object.course.code_slug %}"><button>Write review</button></a></li>
 				<br />
 				<br />
 				<li>
