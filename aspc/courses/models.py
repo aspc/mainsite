@@ -183,7 +183,7 @@ class Section(models.Model):
         # But never return the "staff" instructor if possible!
         staff_instructor_object = Instructor.objects.get(name='Staff')
         possible_instructors = self.instructors.all()
-        instructor = possible_instructors[0]
+        instructor = possible_instructors[0] if possible_instructors else staff_instructor_object
 
         if instructor == staff_instructor_object and len(possible_instructors) > 1:
             instructor = possible_instructors[1]
