@@ -1,10 +1,13 @@
+from django import forms
+from django.forms import Form
 from django.http import HttpResponse, HttpResponseRedirect, Http404, HttpResponseNotAllowed
 from django.core.urlresolvers import reverse
 from django.views import generic
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models import Count, Avg
+from django.views.generic import View
 from aspc.courses.models import (Section, Department, Schedule, RefreshHistory, START_DATE, END_DATE, Term, Course, Instructor, CourseReview)
 from aspc.courses.forms import SearchForm, ICalExportForm
 import json
@@ -342,3 +345,38 @@ class CourseDetailView(generic.DetailView):
         context['reviews'] = CourseReview.objects.filter(course=course_object).order_by('-created_date')
         context['average_rating'] = context['reviews'].aggregate(Avg("overall_rating"))["overall_rating__avg"]
         return context
+
+class ReviewForm(Form):
+    overall_rating = forms.IntegerField(max_value=5)
+    work_per_week = forms.IntegerField(max_value=5)
+    comments = forms.CharField(widget=forms.Textarea)
+
+    def __init__(self, course_code, *args, **kwargs):
+      super(ReviewForm, self).__init__(*args, **kwargs)
+      self.course = Course.objects.get(code_slug=course_code)
+      instructors = self.course.get_instructors_from_all_sections()
+      self.fields['professor'] = forms.ModelChoiceField(queryset=Instructor.objects.filter(pk__in=map(lambda u: u.id, instructors)))
+
+    def course(self):
+      return self.course
+
+class ReviewView(View):
+    def get(self, request, course_code):
+        form = ReviewForm(course_code)
+        return render(request, 'reviews/review_new.html', {'form': form})
+
+    def post(self, request, course_code):
+        form = ReviewForm(course_code, request.POST)
+        if form.is_valid():
+            instructor = form.cleaned_data["professor"]
+            overall_rating = form.cleaned_data["overall_rating"]
+            work_per_week = form.cleaned_data["work_per_week"]
+            comments = form.cleaned_data["comments"]
+            review, created = CourseReview.objects.get_or_create(author=request.user, course=form.course, instructor=instructor)
+            review.overall_rating = overall_rating
+            review.work_per_week = work_per_week
+            review.comments = comments
+            review.save()
+            return redirect(reverse('section_detail', kwargs={"instructor_id": instructor.id, "course_code": course_code}))
+        else:
+            return render(request, 'reviews/review_new.html', {'form': form})
