@@ -390,25 +390,58 @@ h2#error_message {
 	display: none;
 }
 
-a#share_schedule, a#download_ical, a#clear_schedule {
+#share_clear_download {
+	overflow: auto;
+	margin-bottom: 1%;
+}
+
+#share_clear_download a {
 	color: #0071a6;
 	text-decoration: none;
 	padding: 0.25em;
-	margin-left: 40px;
-	float: right;
-	height: 1.5em;
+	font-family: "Hammersmith One", Verdana, "Lucida Grande", Lucida, sans-serif;
+	font-size: 14px;
 }
 
-a#share_schedule:hover, a#download_ical:hover, a#clear_schedule:hover {
+#share_clear_download a:hover {
 	background-color: #0071a6;
 	color: white;
 }
 
+#share_schedule, #download_ical, #clear_schedule {
+	width: 32%;
+	float: left;
+}
+
+#share_schedule {
+	margin-left: 2%;
+}
+
+#share_schedule a {
+	float: left;
+}
+
+#download_ical {
+	text-align: center;
+}
+
+#clear_schedule {
+	margin-right: 2%;
+}
+
+#clear_schedule a {
+	float: right;
+}
+
 /* @end */
 ol#schedule_courses {
-	padding: 0 2%;
+	padding: 0 2% 1% 2%;
 	margin: 0;
 	list-style-type: none;
+}
+
+ol#schedule_courses:empty {
+	display: none;
 }
 
 ol#schedule_courses:after {
