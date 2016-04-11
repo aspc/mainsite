@@ -500,6 +500,24 @@ ol.course_list a.add_course:hover {
 
 /* @end */
 
+/* @group frozen */
+
+#frozen_side_panel {
+	float: left;
+	width: 48%;
+	margin-top: 2%;
+}
+
+#frozen_side_panel h4, #frozen_side_panel form {
+	display: inline;
+}
+
+#frozen_side_panel .course_list {
+	font-size: 0.85em;
+}
+
+/* @end */
+
 /* @group reviews */
 
 #reviews_barplot {

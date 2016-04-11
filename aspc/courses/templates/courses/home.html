@@ -1,15 +1,4 @@
-{% extends "base_page.html" %}
-
-{% load staticfiles %}
-
-{% block "css" %}
-	{{ block.super }}
-	<link rel="stylesheet" type="text/css" href="{% static "css/courses/courses.css" %}"/>
-{% endblock %}
-
-{% block "title" %}Courses{% endblock %}
-
-{% block "page_title" %}Courses{% endblock %}
+{% extends "courses/base.html" %}
 
 {% block "content" %}
 	<nav>
