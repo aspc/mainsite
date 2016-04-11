@@ -114,6 +114,12 @@ class Course(models.Model):
         return ('course_detail', (),
                 {'course_code': self.code_slug})
 
+    # TODO: Merge instructors who taught this class previously
+    def get_instructors_from_all_sections(self):
+      instructors = []
+      for section in self.sections.all():
+        instructors += section.instructors.all()
+      return instructors
 
 class Section(models.Model):
     term = models.ForeignKey(Term, related_name='sections')
@@ -324,6 +330,9 @@ class CourseReview(models.Model):
     grade = models.PositiveSmallIntegerField(blank=True, null=True, choices=POSSIBLE_GRADES)
 
     work_per_week = models.PositiveSmallIntegerField(default=0)
+
+    class Meta:
+      unique_together = ('author', 'course', 'instructor')
 
     def __unicode__(self):
         return u"Review of {0} taught by {1}: {2}".format(unicode(self.course.code_slug), unicode(self.instructor.name), unicode(str(self.overall_rating)))
