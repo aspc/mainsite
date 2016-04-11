@@ -1,12 +1,15 @@
 {% load stars %}
 <div class="search_result" data-course_slug="{{ c.code_slug }}" data-is_added="{{ c.added }}">
-	<a class="add_course" id="indicator2_{{ c.code_slug }}" onclick="ASPC.Courses.toggleCourse('{{ c.code_slug }}')">
-		{% if c.added %}
-		- remove from schedule
-		{% else %}
-		+ add to schedule
-		{% endif %}
-	</a>
+
+	{% if not schedule %}
+		<a class="add_course" id="indicator2_{{ c.code_slug }}" onclick="ASPC.Courses.toggleCourse('{{ c.code_slug }}')">
+			{% if c.added %}
+			- remove from schedule
+			{% else %}
+			+ add to schedule
+			{% endif %}
+		</a>
+	{% endif %}
 
 	<h3>
 		<a href="{{ c.get_url_to_section_page }}">{{ c.code }} &mdash; {{ c.course.name }}</a>
