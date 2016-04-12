@@ -4,8 +4,8 @@ from django.views import generic
 from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.serializers.json import DjangoJSONEncoder
-from django.db.models import Count
-from aspc.courses.models import (Section, Department, Schedule, RefreshHistory, START_DATE, END_DATE, Term, Course)
+from django.db.models import Count, Avg
+from aspc.courses.models import (Section, Department, Schedule, RefreshHistory, START_DATE, END_DATE, Term, Course, Instructor, CourseReview)
 from aspc.courses.forms import SearchForm, ICalExportForm
 import json
 import datetime
@@ -94,7 +94,7 @@ def schedule(request):
         if form.is_valid():
             results_set, term = form.build_queryset_and_term()
             request.session['term_key'] = term.key
-            paginator = Paginator(results_set, per_page=10, orphans=5)
+            paginator = Paginator(results_set, per_page=20, orphans=5)
             GET_data = request.GET.copy()
 
             try:
@@ -258,86 +258,87 @@ def _ical_from_courses(courses, start_date, end_date):
 
     return cal
 
-def schedule_course_add(request, course_code):
-    course = build_course(course_code, request)
+def schedule_course_add(request, section_code_slug):
+    section = _get_section_for_term(section_code_slug=section_code_slug, term_key=request.session.get('term_key'))
     if request.session.get('schedule_courses'):
-        if not (course.id in request.session['schedule_courses']):
-            request.session['schedule_courses'].add(course.id)
+        if not (section.id in request.session['schedule_courses']):
+            request.session['schedule_courses'].add(section.id)
             request.session.modified = True
     else:
-        request.session['schedule_courses'] = set([course.id,])
-    return HttpResponse(content=json.dumps(course.json(), cls=DjangoJSONEncoder), content_type='application/json')
+        request.session['schedule_courses'] = set([section.id,])
+    return HttpResponse(content=json.dumps(section.json(), cls=DjangoJSONEncoder), content_type='application/json')
 
-def schedule_course_remove(request, course_code):
+def schedule_course_remove(request, section_code_slug):
     removed_ids = []
-    course = build_course(course_code, request)
+    section = _get_section_for_term(section_code_slug=section_code_slug, term_key=request.session.get('term_key'))
     if request.session.get('schedule_courses'):
-        if (course.id in request.session['schedule_courses']):
-            request.session['schedule_courses'].remove(course.id)
+        if (section.id in request.session['schedule_courses']):
+            request.session['schedule_courses'].remove(section.id)
             request.session.modified = True
 
-            course_data = course.json()
-            for e in course_data['events']:
+            section_data = section.json()
+            for e in section_data['events']:
                 removed_ids.append(e['id'])
     return HttpResponse(content=json.dumps(removed_ids, cls=DjangoJSONEncoder), content_type='application/json')
 
-def build_course(course_code, request):
-    try:
-        course = build_course_from_code_and_term(course_code, request.session.get('term_key'))
-    except IndexError:
-        raise Http404
-    return course
+def _get_section_for_term(section_code_slug, term_key):
+	all_sections = Section.objects.filter(code_slug=section_code_slug)
 
-def build_course_from_code_and_term(course_code, term_key):
-    courses_without_term = Section.objects.filter(code_slug=course_code)
-    course = courses_without_term.filter(term=Term.objects.get(key=term_key))[0] if term_key else courses_without_term[0]
-    return course
+	try:
+		section = all_sections.filter(term=Term.objects.get(key=term_key))[0] if term_key else all_sections[0]
+	except IndexError:
+		raise Http404
 
-class DepartmentListView(generic.ListView):
-    queryset = (Department.objects
-                    .annotate(num_courses=Count('primary_course_set__sections'))
-                    .filter(num_courses__gt=0)
-                    .distinct()
-                    .order_by('code')
-                )
-    template_name = "browse/department_list.html"
-
-class DepartmentCoursesView(generic.DetailView):
-    model = Department
-    slug_field = 'code'
-    template_name = "browse/department_detail.html"
+	return section
 
 class SectionDetailView(generic.DetailView):
     model = Section
     slug_field = 'code_slug'
     slug_url_kwarg = 'course_code'
-    template_name = "browse/section_or_course_detail.html"
+    template_name = "browse/section_detail.html"
 
-    def get_queryset(self):
-        dept = get_object_or_404(Department, code=self.kwargs['dept'])
-        return Section.objects.filter(course__primary_department=dept)
     def get_object(self):
         try:
-            return Section.objects.get(code_slug=self.kwargs['course_code']) # "course" code here is actually section code
+            # It doesn't really matter which Section object we return if there are multiple that fit the
+            # <Instructor, Course> identifier, but we ought to return the most recent one so the section data
+            # that we display is as up-to-date as possible
+            return Section.objects.filter(instructors__id__exact=self.kwargs['instructor_id'], course__code_slug=self.kwargs['course_code']).order_by('term')[0]
         except IndexError:
             raise Http404
+
     def get_context_data(self, **kwargs):
         context = super(SectionDetailView, self).get_context_data(**kwargs)
+        instructor_object = Instructor.objects.get(id=self.kwargs['instructor_id'])
+        course_object = Course.objects.get(code_slug=self.kwargs['course_code'])
+
         context['is_section'] = True
+        context['professor'] = instructor_object
+        context['current_term'] = Term.objects.all()[0]
+        context['reviews'] = CourseReview.objects.filter(course=course_object, instructor=instructor_object).order_by('-created_date')
+        context['average_rating'] = context['reviews'].aggregate(Avg("overall_rating"))["overall_rating__avg"]
+
         return context
 
 class CourseDetailView(generic.DetailView):
     model = Section
     slug_field = 'code_slug'
     slug_url_kwarg = 'course_code'
-    template_name = "browse/section_or_course_detail.html"
+    template_name = "browse/course_detail.html"
 
-    def get_queryset(self):
-        dept = get_object_or_404(Department, code=self.kwargs['dept'])
-        return Section.objects.filter(course__primary_department=dept)
     def get_object(self):
         try:
+            # It doesn't really matter which Section object we return if there are multiple that fit the
+            # <Course> identifier, but we ought to return the most recent one so the section data
+            # that we display is as up-to-date as possible
             course = Course.objects.get(code_slug=self.kwargs['course_code'])
-            return course.sections.all()[0]
+            return course.sections.all().order_by('term')[0]
         except IndexError:
             raise Http404
+
+    def get_context_data(self, **kwargs):
+        context = super(CourseDetailView, self).get_context_data(**kwargs)
+        course_object = Course.objects.get(code_slug=self.kwargs['course_code'])
+
+        context['reviews'] = CourseReview.objects.filter(course=course_object).order_by('-created_date')
+        context['average_rating'] = context['reviews'].aggregate(Avg("overall_rating"))["overall_rating__avg"]
+        return context

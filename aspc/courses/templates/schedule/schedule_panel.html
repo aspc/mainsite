@@ -1,0 +1,17 @@
+<h2 id="schedule_course_label" class="header">Current schedule:</h2>
+
+<ol id="schedule_courses">
+</ol>
+
+{% if not schedule %}
+	<div id="share_clear_download">
+		<div id="share_schedule"><a href="{% url "aspc.courses.views.share_schedule" %}">&#x2191; share schedule</a>	</div>
+		<div id="download_ical"><a href="{% url "aspc.courses.views.ical_export" %}">&#11057; export as .ics</a></div>
+		<div id="clear_schedule"><a onclick="ASPC.Courses.clearCalendar()">&#x2326; clear schedule</a></div>
+	</div>
+{% endif %}
+
+<div id="calendar">
+	<h2 id="loading_message">Loading...</h2>
+	<h2 id="error_message">Error saving calendar data!</h2>
+</div>

@@ -36,6 +36,10 @@ class Term(models.Model):
     year = models.PositiveSmallIntegerField()
     session = models.CharField(max_length=2, choices=SESSIONS)
 
+    def is_current_term(self):
+        current_term = Term.objects.all()[0]
+        return self == current_term
+
     def __unicode__(self):
         return u'%s %s' % (self.session, self.year)
 
@@ -66,10 +70,6 @@ class Department(models.Model):
 
     def __unicode__(self):
         return u'[%s] %s' % (self.code, self.name)
-
-    @models.permalink
-    def get_absolute_url(self):
-        return ('department_detail', (), {'slug': self.code, })
 
 
 class RequirementArea(models.Model):
@@ -113,10 +113,6 @@ class Course(models.Model):
     def get_absolute_url(self):
         return ('course_detail', (),
                 {'course_code': self.code_slug})
-
-    def get_reviews(self):
-        reviews = self.coursereview_set.order_by('-created_date')
-        return reviews
 
 
 class Section(models.Model):
@@ -169,21 +165,30 @@ class Section(models.Model):
                 })
 
         return {'events': event_list, 'info': {'course_code': self.code, 'course_code_slug': self.code_slug,
-                                               'detail_url': self.get_absolute_url(),
+                                               'detail_url': self.get_url_to_section_page(),
                                                'campus_code': self.get_campus(), }}
     def get_average_rating(self):
         reviews = CourseReview.objects.filter(course=self.course, instructor__in=self.instructors.all())
         return reviews.aggregate(Avg("overall_rating"))["overall_rating__avg"]
-
-    def get_reviews(self):
-        reviews = CourseReview.objects.filter(course=self.course, instructor__in=self.instructors.all()).order_by('-created_date')
-        return reviews
 
     @models.permalink
     def get_absolute_url(self):
         if not self.course.primary_department: print self.course
         return ('section_detail', (),
                 {'course_code': self.code_slug, 'instructor': self.instructors.all()[0].slug() })
+
+    def get_url_to_section_page(self):
+        # It doesn't really matter which instructor we choose here, since from the section page the user will be able
+        # to find information about the other instructors that teach this class too (if there are multiple)
+        # But never return the "staff" instructor if possible!
+        staff_instructor_object = Instructor.objects.get(name='Staff')
+        possible_instructors = self.instructors.all()
+        instructor = possible_instructors[0] if possible_instructors else staff_instructor_object
+
+        if instructor == staff_instructor_object and len(possible_instructors) > 1:
+            instructor = possible_instructors[1]
+
+        return '/courses/browse/instructor/{0}/course/{1}/'.format(instructor.id, self.course.code_slug)
 
     class Meta:
         ordering = ('code',)
@@ -322,6 +327,9 @@ class CourseReview(models.Model):
 
     def __unicode__(self):
         return u"Review of {0} taught by {1}: {2}".format(unicode(self.course.code_slug), unicode(self.instructor.name), unicode(str(self.overall_rating)))
+
+    def get_url_to_section_page(self):
+        return '/courses/browse/instructor/{0}/course/{1}/'.format(self.instructor.id, self.course.code_slug)
 
     def update_course_and_instructor_rating(self):
         self.instructor.rating = CourseReview.objects.filter(instructor = self.instructor).aggregate(Avg("overall_rating"))["overall_rating__avg"]

@@ -1,13 +1,13 @@
 <ol class="course_list">
 	<li class="stats">found {{ results.paginator.count }} courses</li>
 
-	{% include "includes/search_results_pagination.html" %}
+	{% include "schedule/search/search_results_pagination.html" %}
 
 	{% for c in results.object_list %}
 		<li class="{% cycle 'odd' 'even' %}">
-			{% include "includes/search_result.html" %}
+			{% include "schedule/search/search_result.html" %}
 		</li>
 	{% endfor %}
 
-	{% include "includes/search_results_pagination.html" %}
+	{% include "schedule/search/search_results_pagination.html" %}
 </ol>
