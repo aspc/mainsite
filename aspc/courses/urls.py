@@ -21,7 +21,7 @@ urlpatterns = [
 	url(r'^browse/course/(?P<course_code>[\w\d-]+)/$', CourseDetailView.as_view(), name="course_detail"),
 	url(r'^browse/instructor/(?P<instructor_id>\d+)/course/(?P<course_code>[\w\d-]+)/$', SectionDetailView.as_view(), name="section_detail"),
 
-	# TODO: Reviews: /courses/reviews
-    url(r'^reviews/$', ReviewSearchView.as_view(), name="search_reviews"),
+	# Reviews: /courses/reviews
+	url(r'^reviews/$', ReviewSearchView.as_view(), name="search_reviews"),
 	url(r'^reviews/(?P<course_code>[\w\d-]+)/$', ReviewView.as_view(), name="write_review"),
 ]
