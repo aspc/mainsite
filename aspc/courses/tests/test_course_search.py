@@ -13,17 +13,17 @@ class CourseSearchTests(WebTest):
     # Clicking 'Course Search' navigation tab should bring up page with title Course Search
     def testCourseSearchLink(self):
         index = self.app.get('/', user='sustainability@pomona.edu')
-        course_search_index = index.click('Course Search')
-        assert 'Course Search' in course_search_index
+        course_search_index = index.click('Course Planner')
+        assert 'Course Planner' in course_search_index
 
     def testSharingEmptySchedule(self):
-        url = reverse("schedule")
+        url = reverse("course_planner")
         schedule_page = self.app.get(url, user='sustainability@pomona.edu')
         share_page_with_warning = schedule_page.click('share')
         assert 'There don\'t seem to be any courses in your schedule.' in share_page_with_warning
 
     def testSearchingForCourses(self):
-        url = reverse("schedule")
+        url = reverse("course_planner")
         schedule_page = self.app.get(url, user='sustainability@pomona.edu')
         schedule_page.form['department'] = '1' # AISS department
         schedule_page_with_results = schedule_page.form.submit() # Go button
@@ -39,5 +39,5 @@ class CourseSearchTests(WebTest):
         url = reverse("view_schedule", kwargs={'schedule_id': 1})
         frozen_schedule = self.app.get(url, user='sustainability@pomona.edu')
         unfrozen_schedule = frozen_schedule.form.submit().follow() # Load for editing button
-        assert 'export to calendar' in unfrozen_schedule
+        assert 'export as .ics' in unfrozen_schedule
         assert 'clear' in unfrozen_schedule
