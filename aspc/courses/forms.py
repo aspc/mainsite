@@ -255,3 +255,6 @@ class ICalExportForm(forms.Form):
         else:
             raise forms.ValidationError("The last day of the semester "
                                         "must be after the first day of classes.")
+
+class ReviewSearchForm(forms.Form):
+    query = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'size': '40'}))

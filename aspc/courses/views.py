@@ -6,13 +6,14 @@ from django.views import generic
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.serializers.json import DjangoJSONEncoder
-from django.db.models import Count, Avg
-from django.views.generic import View
+from django.db.models import Count, Avg, Q
+from django.views.generic import View, ListView
 from aspc.courses.models import (Section, Department, Schedule, RefreshHistory, START_DATE, END_DATE, Term, Course, Instructor, CourseReview)
-from aspc.courses.forms import SearchForm, ICalExportForm
+from aspc.courses.forms import SearchForm, ICalExportForm, ReviewSearchForm
 import json
 import datetime
 import vobject
+import operator
 from dateutil import rrule
 
 def _get_refresh_history():
@@ -47,12 +48,8 @@ def search(request):
                 paginator = Paginator(results_set, per_page=20, orphans=10)
                 GET_data = request.GET.copy()
 
-                try:
-                    page = int(request.GET.get('page', '1'))
-                    if GET_data.get('page', False):
-                        del GET_data['page']
-                except ValueError:
-                    page = 1
+                page = int(request.GET.get('page', '1'))
+                GET_data.pop('page', None)
 
                 try:
                     results = paginator.page(page)
@@ -380,3 +377,39 @@ class ReviewView(View):
             return redirect(reverse('section_detail', kwargs={"instructor_id": instructor.id, "course_code": course_code}))
         else:
             return render(request, 'reviews/review_new.html', {'form': form})
+
+
+class ReviewSearchView(View):
+    def get(self, request):
+        form = ReviewSearchForm(request.GET)
+        if form.is_valid():
+            kws = form.cleaned_data['query'].split()
+            results_set = Course.objects.filter(
+                reduce(
+                    operator.and_,
+                    ((Q(code__icontains=kw) |
+                      Q(name__icontains=kw) |
+                      Q(departments__name__icontains=kw))
+                     for kw in kws)
+                )
+            )
+            paginator = Paginator(results_set, per_page=20, orphans=10)
+            GET_data = request.GET.copy()
+
+            page = int(request.GET.get('page', '1'))
+            GET_data.pop('page', None)
+
+            try:
+                results = paginator.page(page)
+            except (EmptyPage, InvalidPage):
+                results = paginator.page(paginator.num_pages)
+
+            return render(request, 'reviews/search.html', {
+                'form': form,
+                'results': results,
+                'path': ''.join([request.path, '?', GET_data.urlencode()]),
+            })
+        else:
+            return render(request, 'reviews/search.html', {
+                'form': form,
+            })
