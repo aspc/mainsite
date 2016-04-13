@@ -39,7 +39,7 @@
 			<div id="reviews_list">
 				<div id="reviews_list-header">
 					{% if is_section %}
-						<p>Showing reviews for all sections of {{ object.course.name }} ever taught by <em>{{ professor }}</em>.</p>
+						<p>Showing reviews for all sections of <em>{{ object.course.name }}</em> ever taught by <em>{{ professor }}</em>.</p>
 						<p>
 							<a href="{{ object.course.get_absolute_url }}">See reviews for sections of {{ object.course.name }} taught by other instructors...</a>
 						</p>

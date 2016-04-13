@@ -588,6 +588,21 @@ ul#reviews_header .big {
 	background-color: #f7f7f7;
 }
 
+.reviews_list-edit_review a {
+	background-image: none !important;
+}
+
+.reviews_list-edit_review button {
+	border: 1px solid rgba(0, 0, 0, 0);
+	background-color: #0071a6;
+	color: white;
+	font-family: "Hammersmith One", Verdana, "Lucida Grande", Lucida, sans-serif;
+	font-size: 1em;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	margin-top: 10px;
+}
+
 /* @end */
 
 /* @group add reviews */
