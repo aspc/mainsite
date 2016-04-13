@@ -1,3 +1,5 @@
+from django import forms
+from django.forms import Form
 from django.http import HttpResponse, HttpResponseRedirect, Http404, HttpResponseNotAllowed
 from django.core.urlresolvers import reverse
 from django.views import generic
@@ -353,7 +355,8 @@ class ReviewView(View):
             overall_rating = form.cleaned_data["overall_rating"]
             work_per_week = form.cleaned_data["work_per_week"]
             comments = form.cleaned_data["comments"]
-            review, created = CourseReview.objects.get_or_create(author=request.user, course=form.course, instructor=instructor, overall_rating=overall_rating)
+            review, created = CourseReview.objects.get_or_create(author=request.user, course=form.course, instructor=instructor)
+            review.overall_rating = int(overall_rating)
             review.work_per_week = work_per_week
             review.comments = comments
             review.save()
