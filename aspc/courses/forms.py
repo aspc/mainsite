@@ -1,5 +1,5 @@
 from django import forms
-from aspc.courses.models import (Department, Section, Meeting, Term,
+from aspc.courses.models import (Department, Section, Meeting, Term, Course, Instructor,
                                  RequirementArea, CAMPUSES, CAMPUSES_FULL_NAMES, CAMPUSES_LOOKUP)
 from django.db.models import Count, F
 
@@ -258,3 +258,17 @@ class ICalExportForm(forms.Form):
 
 class ReviewSearchForm(forms.Form):
     query = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'size': '40'}))
+
+class ReviewForm(forms.Form):
+    overall_rating = forms.IntegerField(max_value=5)
+    work_per_week = forms.IntegerField(max_value=5)
+    comments = forms.CharField(widget=forms.Textarea)
+
+    def __init__(self, course_code, *args, **kwargs):
+      super(ReviewForm, self).__init__(*args, **kwargs)
+      self.course = Course.objects.get(code_slug=course_code)
+      instructors = self.course.get_instructors_from_all_sections()
+      self.fields['professor'] = forms.ModelChoiceField(queryset=Instructor.objects.filter(pk__in=map(lambda u: u.id, instructors)))
+
+    def course(self):
+      return self.course
