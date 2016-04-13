@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block "title" %}Add a New Review{% endblock %}
-{% block "page_title" %}Add a New Review{% endblock %}
+{% block "page_title" %}Add a New Review for {{ form.course }}{% endblock %}
 
 {% block "courses_breadcrumbs" %}
 	<li>
@@ -18,11 +18,13 @@
 {% endblock %}
 
 {% block "outer_content" %}
-<form action="{{ action }}" method="POST">
-	{% csrf_token %}
-	<ul>
-		{{ form.as_ul }}
-	</ul>
-	<input type="submit" value="Save" />
-</form>
+<div id="new_review_form">
+	<form action="{{ action }}" method="POST">
+		{% csrf_token %}
+		<ul>
+			{{ form.as_ul }}
+		</ul>
+		<input id="submit" type="submit" value="Submit review &rarr;" />
+	</form>
+</div>
 {% endblock %}

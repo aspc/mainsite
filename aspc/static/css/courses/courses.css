@@ -623,7 +623,26 @@ ul#reviews_header .big {
 	padding-right: 10px;
 	padding-top: 5px;
 	padding-bottom: 5px;
-	position: relative;
+}
+
+#new_review_form label {
+	width: 20em;
+	vertical-align: top;
+}
+
+#new_review_form input#submit {
+	cursor: pointer;
+	margin: 1em;
+}
+
+#new_review_form input[type="submit"]:hover {
+	cursor: pointer;
+}
+
+#new_review_form ul.errorlist {
+	list-style: none;
+	padding: 0;
+	color: red;
 }
 
 /* @end */
