@@ -392,6 +392,7 @@ class ReviewSearchView(View):
 
             return render(request, 'reviews/review_search.html', {
                 'form': form,
+                'did_perform_search': True,
                 'results': results,
                 'path': ''.join([request.path, '?', GET_data.urlencode()]),
             })
