@@ -15,56 +15,63 @@
 {% endblock %}
 
 {% block "content" %}
-<div id="review_search_form">
-  <form action="" method="get">
-    {{ form.non_field_errors }}
-    <h4>I want to add a new review for a course that I took!</h4>
-	<p>Its name, number, or department is&hellip; {{ form.query }}</p>
-    <input id="submit" type="submit" value="Search">
-  </form>
-</div>
+	{% if user.is_authenticated %}
+		<div id="review_search_form">
+		  <form action="" method="get">
+		    {{ form.non_field_errors }}
+		    <h4>I want to add a new review for a course that I took!</h4>
+			<p>Its name, number, or department is&hellip; {{ form.query }}</p>
+		    <input id="submit" type="submit" value="Search">
+		  </form>
+		</div>
 
-{% if results %}
-  <ol class="course_list">
-  	<li class="stats">found {{ results.paginator.count }} courses</li>
+		{% if results %}
+		  <ol class="course_list">
+		  	<li class="stats">found {{ results.paginator.count }} courses</li>
 
-  	{% include "schedule/search/search_results_pagination.html" %}
+		  	{% include "schedule/search/search_results_pagination.html" %}
 
-  	{% for course in results.object_list %}
-  		<li class="{% cycle 'odd' 'even' %}">
-        {% load stars %}
-        <div class="search_result">
-			<div class="search_result-left_panel">
-				<h3>
-					<span class="campus_icon campus_{{ course.get_most_recent_section.get_campus }}">{{ course.get_most_recent_section.get_campus }}</span>
-	        		<a href="{{ course.get_absolute_url }}">{{ course.code }} &mdash; {{ course.name }}</a>
-	        	</h3>
+		  	{% for course in results.object_list %}
+		  		<li class="{% cycle 'odd' 'even' %}">
+		        {% load stars %}
+		        <div class="search_result">
+					<div class="search_result-left_panel">
+						<h3>
+							<span class="campus_icon campus_{{ course.get_most_recent_section.get_campus }}">{{ course.get_most_recent_section.get_campus }}</span>
+			        		<a href="{{ course.get_absolute_url }}">{{ course.code }} &mdash; {{ course.name }}</a>
+			        	</h3>
 
-	        	<div class="rating-div">
-	        		<h4>Rating: </h4>
-	        		{% if course.get_average_rating %}
-	        			{{ course.get_average_rating|star }} <a href="{{ course.get_absolute_url }}">Read reviews!</a>
-	        		{% else %}
-	        			<a href="{% url "write_review" course.code_slug %}"> No reviews yet. Add your own! </a>
-	        		{% endif %}
-	        	</div>
+			        	<div class="rating-div">
+			        		<h4>Rating: </h4>
+			        		{% if course.get_average_rating %}
+			        			{{ course.get_average_rating|star }} <a href="{{ course.get_absolute_url }}">Read reviews!</a>
+			        		{% else %}
+			        			<a href="{% url "write_review" course.code_slug %}"> No reviews yet. Add your own! </a>
+			        		{% endif %}
+			        	</div>
 
-	        	{% if course.get_most_recent_section.description %}
-	        	<p>
-	        		{{ course.get_most_recent_section.description }}
-	        	</p>
-	        	{% endif %}
-			</div>
-			<div class="search_result-right_panel">
-				<a class="write_review_button" href="{% url "write_review" course.code_slug %}">Review course &rarr;</a>
-			</div>
-        </div>
-  		</li>
-  	{% endfor %}
+			        	{% if course.get_most_recent_section.description %}
+			        	<p>
+			        		{{ course.get_most_recent_section.description }}
+			        	</p>
+			        	{% endif %}
+					</div>
+					<div class="search_result-right_panel">
+						<a class="write_review_button" href="{% url "write_review" course.code_slug %}">Review course &rarr;</a>
+					</div>
+		        </div>
+		  		</li>
+		  	{% endfor %}
 
-  	{% include "schedule/search/search_results_pagination.html" %}
-  </ol>
-{% elif did_perform_search %}
-	<p>Sorry, no results. Try again using a broader search term.</p>
-{% endif %}
+		  	{% include "schedule/search/search_results_pagination.html" %}
+
+		  </ol>
+		{% elif did_perform_search %}
+			<p>Sorry, no results. Try again using a broader search term.</p>
+		{% endif %}
+		
+	{% else %}
+		<p>Pomona students, <a href="{% url 'aspc.auth2.views.login' %}?next={{ absolute_uri|urlencode:"" }}">log in</a> to submit a review for a course that you've taken.</p>
+		<p>5C students, we want you to be able to use this app too, but your ITS departments won't let us grant you access. <a href="http://itattcc.claremont.edu/project/team/">Submit a complaint on this page</a> if you're angry!</p>
+	{% endif %}
 {% endblock %}

@@ -8,6 +8,8 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models import Count, Avg, Q
 from django.views.generic import View, ListView
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 from aspc.courses.models import (Section, Department, Schedule, RefreshHistory, START_DATE, END_DATE, Term, Course, Instructor, CourseReview)
 from aspc.courses.forms import SearchForm, ICalExportForm, ReviewSearchForm, ReviewForm
 import json
@@ -344,6 +346,7 @@ class CourseDetailView(generic.DetailView):
         return context
 
 class ReviewView(View):
+    @method_decorator(login_required)
     def get(self, request, course_code, instructor_id=None):
         if instructor_id:
           course = Course.objects.get(code_slug=course_code)
@@ -354,6 +357,7 @@ class ReviewView(View):
           form = ReviewForm(course_code)
         return render(request, 'reviews/review_new.html', {'form': form})
 
+    @method_decorator(login_required)
     def post(self, request, course_code, instructor_id=None):
         form = ReviewForm(course_code, None, request.POST)
         if form.is_valid():
