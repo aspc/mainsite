@@ -1,6 +1,4 @@
-{% extends "base_page.html" %}
-
-{% load staticfiles %}
+{% extends "courses/base.html" %}
 
 {% block "metadesc" %}
 	Read and write reviews for courses that you've taken.
@@ -12,13 +10,11 @@
 {% block "title" %}Review Courses{% endblock %}
 {% block "page_title" %}Review Courses{% endblock %}
 
-
-{% block "css" %}
-	{{ block.super }}
-  <link rel="stylesheet" type="text/css" href="{% static "css/courses/courses.css" %}"/>
+{% block "courses_breadcrumbs" %}
+	<li>Review Course</li>
 {% endblock %}
 
-{% block "content" %}
+{% block "outer_content" %}
 <div id="search_form">
   <form action="" method="get">
     {{ form.non_field_errors }}
@@ -64,12 +60,4 @@
   	{% include "schedule/search/search_results_pagination.html" %}
   </ol>
 {% endif %}
-{% endblock %}
-
-{% block "breadcrumbs" %}
-	<ol class="breadcrumbs">
-		<li>Services</li>
-		<li><a href="{% url "search_reviews" %}">Review Courses</a></li>
-		{% block "courses_breadcrumbs" %}{% endblock %}
-	</ol>
 {% endblock %}

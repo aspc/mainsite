@@ -1,7 +1,28 @@
+{% extends "courses/base.html" %}
+
+{% block "metadesc" %}
+	Read and write reviews for courses that you've taken.
+{% endblock %}
+{% block "ogdesc" %}
+	Read and write reviews for courses that you've taken.
+{% endblock %}
+
+{% block "title" %}Add a New Review{% endblock %}
+{% block "page_title" %}Add a New Review{% endblock %}
+
+{% block "courses_breadcrumbs" %}
+	<li>
+		<a href="{% url "search_reviews" %}">Review Courses</a>
+	</li>
+	<li>Add a New Review</li>
+{% endblock %}
+
+{% block "outer_content" %}
 <form action="{{ action }}" method="POST">
-  {% csrf_token %}
-  <ul>
-    {{ form.as_ul }}
-  </ul>
-  <input type="submit" value="Save" />
+	{% csrf_token %}
+	<ul>
+		{{ form.as_ul }}
+	</ul>
+	<input type="submit" value="Save" />
 </form>
+{% endblock %}

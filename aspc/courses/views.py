@@ -404,12 +404,12 @@ class ReviewSearchView(View):
             except (EmptyPage, InvalidPage):
                 results = paginator.page(paginator.num_pages)
 
-            return render(request, 'reviews/search.html', {
+            return render(request, 'reviews/review_search.html', {
                 'form': form,
                 'results': results,
                 'path': ''.join([request.path, '?', GET_data.urlencode()]),
             })
         else:
-            return render(request, 'reviews/search.html', {
+            return render(request, 'reviews/review_search.html', {
                 'form': form,
             })
