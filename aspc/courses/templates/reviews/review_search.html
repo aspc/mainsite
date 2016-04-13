@@ -7,11 +7,11 @@
 	Read and write reviews for courses that you've taken.
 {% endblock %}
 
-{% block "title" %}Review Courses{% endblock %}
-{% block "page_title" %}Review Courses{% endblock %}
+{% block "title" %}Browse and Add Course Reviews{% endblock %}
+{% block "page_title" %}Browse and Add Course Reviews{% endblock %}
 
 {% block "courses_breadcrumbs" %}
-	<li>Review Course</li>
+	<li>Browse and Add Course Reviews</li>
 {% endblock %}
 
 {% block "content" %}
@@ -19,8 +19,9 @@
 		<div id="review_search_form">
 		  <form action="" method="get">
 		    {{ form.non_field_errors }}
-		    <h4>I want to add a new review for a course that I took!</h4>
-			<p>Its name, number, or department is&hellip; {{ form.query }}</p>
+			<h4>Search for reviews:</h4>
+			<p>Enter the name, number, or department of the course that you're looking for.</p>
+			{{ form.query }}
 		    <input id="submit" type="submit" value="Search">
 		  </form>
 		</div>

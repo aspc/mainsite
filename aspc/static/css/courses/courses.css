@@ -615,9 +615,18 @@ ul#reviews_header .big {
 	overflow: auto;
 }
 
+#review_search_form #submit {
+	float: none !important;
+	margin-left: 2%;
+}
+
 .search_result-left_panel {
 	width: 75%;
 	float: left;
+}
+
+.search_result-left_panel a {
+	line-height: 1.8em;
 }
 
 .search_result-right_panel {
@@ -735,9 +744,5 @@ ul#reviews_header .big {
 	.review_search-course_list .search_result-right_panel {
 		padding-top: 20px;
 		padding-bottom: 5%;
-	}
-
-	.review_search-course_list .campus_icon {
-		display: none;
 	}
 }
