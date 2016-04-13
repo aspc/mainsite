@@ -331,7 +331,7 @@ class CourseDetailView(generic.DetailView):
             # <Course> identifier, but we ought to return the most recent one so the section data
             # that we display is as up-to-date as possible
             course = Course.objects.get(code_slug=self.kwargs['course_code'])
-            return course.sections.all().order_by('term')[0]
+            return course.get_most_recent_section()
         except IndexError:
             raise Http404
 
@@ -340,7 +340,7 @@ class CourseDetailView(generic.DetailView):
         course_object = Course.objects.get(code_slug=self.kwargs['course_code'])
 
         context['reviews'] = CourseReview.objects.filter(course=course_object).order_by('-created_date')
-        context['average_rating'] = context['reviews'].aggregate(Avg("overall_rating"))["overall_rating__avg"]
+        context['average_rating'] = course_object.get_average_rating()
         return context
 
 class ReviewView(View):
