@@ -116,10 +116,17 @@ class Course(models.Model):
 
     # TODO: Merge instructors who taught this class previously
     def get_instructors_from_all_sections(self):
-      instructors = []
-      for section in self.sections.all():
-        instructors += section.instructors.all()
-      return instructors
+        instructors = []
+        for section in self.sections.all():
+            instructors += section.instructors.all
+        return instructors
+
+    def get_average_rating(self):
+        reviews = CourseReview.objects.filter(course=self)
+        return reviews.aggregate(Avg("overall_rating"))["overall_rating__avg"]
+
+    def get_most_recent_section(self):
+        return self.sections.all().order_by('term')[0]
 
 class Section(models.Model):
     term = models.ForeignKey(Term, related_name='sections')

@@ -1,0 +1,75 @@
+{% extends "base_page.html" %}
+
+{% load staticfiles %}
+
+{% block "metadesc" %}
+	Read and write reviews for courses that you've taken.
+{% endblock %}
+{% block "ogdesc" %}
+	Read and write reviews for courses that you've taken.
+{% endblock %}
+
+{% block "title" %}Review Courses{% endblock %}
+{% block "page_title" %}Review Courses{% endblock %}
+
+
+{% block "css" %}
+	{{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static "css/courses/courses.css" %}"/>
+{% endblock %}
+
+{% block "content" %}
+<div id="search_form">
+  <form action="" method="get">
+    {{ form.non_field_errors }}
+    <p>I want to a review a course with name/code {{ form.query }}</p>
+    <input id="submit" type="submit" value="Search">
+  </form>
+</div>
+
+{% if results %}
+  <ol class="course_list">
+  	<li class="stats">found {{ results.paginator.count }} courses</li>
+
+  	{% include "schedule/search/search_results_pagination.html" %}
+
+  	{% for course in results.object_list %}
+  		<li class="{% cycle 'odd' 'even' %}">
+        {% load stars %}
+        <div class="search_result">
+        	<h3>
+        		<a href="{{ course.get_absolute_url }}">{{ course.code }} &mdash; {{ course.name }}</a>
+        	</h3>
+
+        	<div class="rating-div">
+        		<h4>Rating: </h4>
+        		{% if course.get_average_rating %}
+        			{{ course.get_average_rating|star }} <a href="{{ course.get_absolute_url }}">Read reviews!</a>
+        		{% else %}
+        			<a href="{% url "write_review" course.code_slug %}"> No reviews yet. Add your own! </a>
+        		{% endif %}
+        	</div>
+
+        	{% if course.get_most_recent_section.description %}
+        	<p>
+        		{{ course.get_most_recent_section.description }}
+        	</p>
+        	{% endif %}
+
+          <strong><a class="review_course" href="{% url "write_review" course.code_slug %}">Add a review!</a></strong>
+        </div>
+  		</li>
+  	{% endfor %}
+
+  	{% include "schedule/search/search_results_pagination.html" %}
+  </ol>
+{% endif %}
+{% endblock %}
+
+{% block "breadcrumbs" %}
+	<ol class="breadcrumbs">
+		<li>Services</li>
+		<li><a href="{% url "search_reviews" %}">Review Courses</a></li>
+		{% block "courses_breadcrumbs" %}{% endblock %}
+	</ol>
+{% endblock %}
