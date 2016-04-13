@@ -344,12 +344,18 @@ class CourseDetailView(generic.DetailView):
         return context
 
 class ReviewView(View):
-    def get(self, request, course_code):
-        form = ReviewForm(course_code)
+    def get(self, request, course_code, instructor_id=None):
+        if instructor_id:
+          course = Course.objects.get(code_slug=course_code)
+          instructor = Instructor.objects.get(id=instructor_id)
+          review = CourseReview.objects.get(author=request.user, course=course, instructor=instructor)
+          form = ReviewForm(course_code, review)
+        else:
+          form = ReviewForm(course_code)
         return render(request, 'reviews/review_new.html', {'form': form})
 
-    def post(self, request, course_code):
-        form = ReviewForm(course_code, request.POST)
+    def post(self, request, course_code, instructor_id=None):
+        form = ReviewForm(course_code, None, request.POST)
         if form.is_valid():
             instructor = form.cleaned_data["professor"]
             overall_rating = form.cleaned_data["overall_rating"]
