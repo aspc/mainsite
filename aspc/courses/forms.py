@@ -261,9 +261,9 @@ class ReviewSearchForm(forms.Form):
 
 class ReviewForm(forms.Form):
     CHOICES = [(i,i) for i in range(1,6)]
-    overall_rating = forms.ChoiceField(choices=CHOICES)
-    work_per_week = forms.IntegerField(max_value=25)
-    comments = forms.CharField(widget=forms.Textarea)
+    overall_rating = forms.ChoiceField(choices=CHOICES, label='How many stars do you give this course? (Out of 5)')
+    work_per_week = forms.IntegerField(max_value=25, label='How many hours of homework did you have each week?')
+    comments = forms.CharField(widget=forms.Textarea(attrs={'cols': '70', 'rows': '15'}), label='General comments:')
 
     def __init__(self, course_code, *args, **kwargs):
       super(ReviewForm, self).__init__(*args, **kwargs)
