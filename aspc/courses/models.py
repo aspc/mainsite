@@ -333,7 +333,7 @@ class CourseReview(models.Model):
     created_date = models.DateTimeField(default=datetime.now)
     comments = models.TextField(blank=True, null=True)
 
-    overall_rating = models.FloatField()
+    overall_rating = models.FloatField(blank=True, null=True)
     grade = models.PositiveSmallIntegerField(blank=True, null=True, choices=POSSIBLE_GRADES)
 
     work_per_week = models.PositiveSmallIntegerField(default=0)
