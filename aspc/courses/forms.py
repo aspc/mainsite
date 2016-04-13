@@ -265,11 +265,16 @@ class ReviewForm(forms.Form):
     work_per_week = forms.IntegerField(max_value=25, label='How many hours of homework did you have each week?')
     comments = forms.CharField(widget=forms.Textarea(attrs={'cols': '70', 'rows': '15'}), label='General comments:')
 
-    def __init__(self, course_code, *args, **kwargs):
+    def __init__(self, course_code, review=None, *args, **kwargs):
       super(ReviewForm, self).__init__(*args, **kwargs)
       self.course = Course.objects.get(code_slug=course_code)
       instructors = self.course.get_instructors_from_all_sections()
       self.fields['professor'] = forms.ModelChoiceField(queryset=Instructor.objects.filter(pk__in=map(lambda u: u.id, instructors)))
+      if review:
+        self.initial['professor'] = review.instructor
+        self.initial['overall_rating'] = review.overall_rating
+        self.initial['work_per_week'] = review.work_per_week
+        self.initial['comments'] = review.comments
 
     def course(self):
       return self.course

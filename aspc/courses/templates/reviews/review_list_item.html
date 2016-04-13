@@ -15,4 +15,7 @@
 	{% if not is_section %}
 		<small><a href="{{ review.get_url_to_section_page }}">Only see reviews for {{ review.instructor }}...</a></small>
 	{% endif %}
+  {% if review.author == request.user %}
+			<a href="{% url "write_review" object.course.code_slug review.instructor.id %}"><button>Edit Your Review</button></a>
+  {% endif %}
 </div>

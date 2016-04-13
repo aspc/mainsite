@@ -41,3 +41,24 @@ class CourseSearchTests(WebTest):
         unfrozen_schedule = frozen_schedule.form.submit().follow() # Load for editing button
         assert 'export as .ics' in unfrozen_schedule
         assert 'clear' in unfrozen_schedule
+
+    def testSearchAndAddReview(self):
+        url = reverse("search_reviews")
+        review_courses_page = self.app.get(url, user='sustainability@pomona.edu')
+        review_courses_page.form['query'] = 'astronomy'
+        review_courses_page_with_results = review_courses_page.form.submit()
+        add_review_page = review_courses_page_with_results.click('Add a review!', index=1)
+        assert 'Add a New Review' in add_review_page
+
+    def testSearchAndAddReview(self):
+        url = reverse("write_review",  kwargs={'course_code': 'ASTR051-PO'})
+        add_new_review_page = self.app.get(url, user='sustainability@pomona.edu')
+        add_new_review_page.form['overall_rating'] = 3
+        add_new_review_page.form['work_per_week'] = 20
+        add_new_review_page.form['comments'] = "This is a comment!"
+        add_new_review_page.form['professor'].select(text="Choi, Philip I.")
+        astro_51_detail_page = add_new_review_page.form.submit().follow()
+        assert 'Advanced Introductory Astronomy' in astro_51_detail_page
+        assert '3.00' in astro_51_detail_page
+        assert 'average rating' in astro_51_detail_page
+        assert 'This is a comment!' in astro_51_detail_page
