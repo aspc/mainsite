@@ -260,8 +260,8 @@ class ReviewSearchForm(forms.Form):
     query = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'size': '40'}))
 
 class ReviewForm(forms.Form):
-    overall_rating = forms.IntegerField(max_value=5)
-    work_per_week = forms.IntegerField(max_value=5)
+    overall_rating = forms.ChoiceField(choices=[(str(x), x) for x in range(1, 6)])
+    work_per_week = forms.IntegerField(max_value=25)
     comments = forms.CharField(widget=forms.Textarea)
 
     def __init__(self, course_code, *args, **kwargs):
