@@ -148,6 +148,7 @@ ol.course_list h3 a:hover { text-decoration: underline; }
 
 ol.course_list li {
 	padding: 0.5em 1em;
+	overflow: auto;
 }
 
 ol.course_list li ul {
@@ -518,7 +519,7 @@ ol.course_list a.add_course:hover {
 
 /* @end */
 
-/* @group reviews */
+/* @group display reviews */
 
 #reviews_barplot {
 	margin: 0 auto;
@@ -585,6 +586,44 @@ ul#reviews_header .big {
 
 .reviews_list-item:nth-child(even) {
 	background-color: #f7f7f7;
+}
+
+/* @end */
+
+/* @group add reviews */
+
+#review_search_form {
+	padding-bottom: 2%;
+}
+
+#review_search_form form {
+	overflow: auto;
+}
+
+.search_result-left_panel {
+	width: 75%;
+	float: left;
+}
+
+.search_result-right_panel {
+	width: 25%;
+	float: left;
+	text-align: center;
+	padding-top: 1%;
+}
+
+.write_review_button {
+	text-decoration: none;
+	border: 1px solid rgba(0, 0, 0, 0);
+	background-color: #0071a6;
+	color: white;
+	font-size: 1.5em;
+	font-family: "Hammersmith One", Verdana, "Lucida Grande", Lucida, sans-serif;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	position: relative;
 }
 
 /* @end */
