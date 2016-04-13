@@ -64,5 +64,7 @@
 
   	{% include "schedule/search/search_results_pagination.html" %}
   </ol>
+{% elif did_perform_search %}
+	<p>Sorry, no results. Try again using a broader search term.</p>
 {% endif %}
 {% endblock %}
