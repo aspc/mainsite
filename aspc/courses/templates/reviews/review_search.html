@@ -14,11 +14,12 @@
 	<li>Review Course</li>
 {% endblock %}
 
-{% block "outer_content" %}
-<div id="search_form">
+{% block "content" %}
+<div id="review_search_form">
   <form action="" method="get">
     {{ form.non_field_errors }}
-    <p>I want to a review a course with name/code {{ form.query }}</p>
+    <h4>I want to add a new review for a course that I took!</h4>
+	<p>Its name, number, or department is&hellip; {{ form.query }}</p>
     <input id="submit" type="submit" value="Search">
   </form>
 </div>
@@ -33,26 +34,30 @@
   		<li class="{% cycle 'odd' 'even' %}">
         {% load stars %}
         <div class="search_result">
-        	<h3>
-        		<a href="{{ course.get_absolute_url }}">{{ course.code }} &mdash; {{ course.name }}</a>
-        	</h3>
+			<div class="search_result-left_panel">
+				<h3>
+					<span class="campus_icon campus_{{ course.get_most_recent_section.get_campus }}">{{ course.get_most_recent_section.get_campus }}</span>
+	        		<a href="{{ course.get_absolute_url }}">{{ course.code }} &mdash; {{ course.name }}</a>
+	        	</h3>
 
-        	<div class="rating-div">
-        		<h4>Rating: </h4>
-        		{% if course.get_average_rating %}
-        			{{ course.get_average_rating|star }} <a href="{{ course.get_absolute_url }}">Read reviews!</a>
-        		{% else %}
-        			<a href="{% url "write_review" course.code_slug %}"> No reviews yet. Add your own! </a>
-        		{% endif %}
-        	</div>
+	        	<div class="rating-div">
+	        		<h4>Rating: </h4>
+	        		{% if course.get_average_rating %}
+	        			{{ course.get_average_rating|star }} <a href="{{ course.get_absolute_url }}">Read reviews!</a>
+	        		{% else %}
+	        			<a href="{% url "write_review" course.code_slug %}"> No reviews yet. Add your own! </a>
+	        		{% endif %}
+	        	</div>
 
-        	{% if course.get_most_recent_section.description %}
-        	<p>
-        		{{ course.get_most_recent_section.description }}
-        	</p>
-        	{% endif %}
-
-          <strong><a class="review_course" href="{% url "write_review" course.code_slug %}">Add a review!</a></strong>
+	        	{% if course.get_most_recent_section.description %}
+	        	<p>
+	        		{{ course.get_most_recent_section.description }}
+	        	</p>
+	        	{% endif %}
+			</div>
+			<div class="search_result-right_panel">
+				<a class="write_review_button" href="{% url "write_review" course.code_slug %}">Review course &rarr;</a>
+			</div>
         </div>
   		</li>
   	{% endfor %}
