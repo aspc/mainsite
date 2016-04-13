@@ -713,4 +713,31 @@ ul#reviews_header .big {
     ul#home li a:hover {
         text-decoration: none;
     }
+
+	.reviews_header-section {
+		width: 100%;
+		float: none;
+		height: 120px;
+	}
+
+	.reviews_header-section:nth-last-child(2) {
+		display: none;
+	}
+
+	#new_review_form textarea {
+		width: 100%;
+	}
+
+	.review_search-course_list .search_result-left_panel, .review_search-course_list .search_result-right_panel {
+		width: 100%;
+	}
+
+	.review_search-course_list .search_result-right_panel {
+		padding-top: 20px;
+		padding-bottom: 5%;
+	}
+
+	.review_search-course_list .campus_icon {
+		display: none;
+	}
 }

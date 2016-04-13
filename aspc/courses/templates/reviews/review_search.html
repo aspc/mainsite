@@ -26,7 +26,7 @@
 		</div>
 
 		{% if results %}
-		  <ol class="course_list">
+		  <ol class="review_search-course_list course_list">
 		  	<li class="stats">found {{ results.paginator.count }} courses</li>
 
 		  	{% include "schedule/search/search_results_pagination.html" %}
@@ -69,7 +69,7 @@
 		{% elif did_perform_search %}
 			<p>Sorry, no results. Try again using a broader search term.</p>
 		{% endif %}
-		
+
 	{% else %}
 		<p>Pomona students, <a href="{% url 'aspc.auth2.views.login' %}?next={{ absolute_uri|urlencode:"" }}">log in</a> to submit a review for a course that you've taken.</p>
 		<p>5C students, we want you to be able to use this app too, but your ITS departments won't let us grant you access. <a href="http://itattcc.claremont.edu/project/team/">Submit a complaint on this page</a> if you're angry!</p>

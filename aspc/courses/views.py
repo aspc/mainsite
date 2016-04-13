@@ -388,7 +388,7 @@ class ReviewSearchView(View):
                       Q(departments__name__icontains=kw))
                      for kw in kws)
                 )
-            )
+            ).distinct()
             paginator = Paginator(results_set, per_page=20, orphans=10)
             GET_data = request.GET.copy()
 
