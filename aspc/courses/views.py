@@ -1,15 +1,19 @@
+from django import forms
+from django.forms import Form
 from django.http import HttpResponse, HttpResponseRedirect, Http404, HttpResponseNotAllowed
 from django.core.urlresolvers import reverse
 from django.views import generic
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.serializers.json import DjangoJSONEncoder
-from django.db.models import Count, Avg
+from django.db.models import Count, Avg, Q
+from django.views.generic import View, ListView
 from aspc.courses.models import (Section, Department, Schedule, RefreshHistory, START_DATE, END_DATE, Term, Course, Instructor, CourseReview)
-from aspc.courses.forms import SearchForm, ICalExportForm
+from aspc.courses.forms import SearchForm, ICalExportForm, ReviewSearchForm, ReviewForm
 import json
 import datetime
 import vobject
+import operator
 from dateutil import rrule
 
 def _get_refresh_history():
@@ -44,12 +48,8 @@ def search(request):
                 paginator = Paginator(results_set, per_page=20, orphans=10)
                 GET_data = request.GET.copy()
 
-                try:
-                    page = int(request.GET.get('page', '1'))
-                    if GET_data.get('page', False):
-                        del GET_data['page']
-                except ValueError:
-                    page = 1
+                page = int(request.GET.get('page', '1'))
+                GET_data.pop('page', None)
 
                 try:
                     results = paginator.page(page)
@@ -331,7 +331,7 @@ class CourseDetailView(generic.DetailView):
             # <Course> identifier, but we ought to return the most recent one so the section data
             # that we display is as up-to-date as possible
             course = Course.objects.get(code_slug=self.kwargs['course_code'])
-            return course.sections.all().order_by('term')[0]
+            return course.get_most_recent_section()
         except IndexError:
             raise Http404
 
@@ -340,5 +340,69 @@ class CourseDetailView(generic.DetailView):
         course_object = Course.objects.get(code_slug=self.kwargs['course_code'])
 
         context['reviews'] = CourseReview.objects.filter(course=course_object).order_by('-created_date')
-        context['average_rating'] = context['reviews'].aggregate(Avg("overall_rating"))["overall_rating__avg"]
+        context['average_rating'] = course_object.get_average_rating()
         return context
+
+class ReviewView(View):
+    def get(self, request, course_code, instructor_id=None):
+        if instructor_id:
+          course = Course.objects.get(code_slug=course_code)
+          instructor = Instructor.objects.get(id=instructor_id)
+          review = CourseReview.objects.get(author=request.user, course=course, instructor=instructor)
+          form = ReviewForm(course_code, review)
+        else:
+          form = ReviewForm(course_code)
+        return render(request, 'reviews/review_new.html', {'form': form})
+
+    def post(self, request, course_code, instructor_id=None):
+        form = ReviewForm(course_code, None, request.POST)
+        if form.is_valid():
+            instructor = form.cleaned_data["professor"]
+            overall_rating = form.cleaned_data["overall_rating"]
+            work_per_week = form.cleaned_data["work_per_week"]
+            comments = form.cleaned_data["comments"]
+            review, created = CourseReview.objects.get_or_create(author=request.user, course=form.course, instructor=instructor)
+            review.overall_rating = int(overall_rating)
+            review.work_per_week = work_per_week
+            review.comments = comments
+            review.save()
+            return redirect(reverse('section_detail', kwargs={"instructor_id": instructor.id, "course_code": course_code}))
+        else:
+            return render(request, 'reviews/review_new.html', {'form': form})
+
+
+class ReviewSearchView(View):
+    def get(self, request):
+        form = ReviewSearchForm(request.GET)
+        if form.is_valid():
+            kws = form.cleaned_data['query'].split()
+            results_set = Course.objects.filter(
+                reduce(
+                    operator.and_,
+                    ((Q(code__icontains=kw) |
+                      Q(name__icontains=kw) |
+                      Q(departments__name__icontains=kw))
+                     for kw in kws)
+                )
+            )
+            paginator = Paginator(results_set, per_page=20, orphans=10)
+            GET_data = request.GET.copy()
+
+            page = int(request.GET.get('page', '1'))
+            GET_data.pop('page', None)
+
+            try:
+                results = paginator.page(page)
+            except (EmptyPage, InvalidPage):
+                results = paginator.page(paginator.num_pages)
+
+            return render(request, 'reviews/review_search.html', {
+                'form': form,
+                'did_perform_search': True,
+                'results': results,
+                'path': ''.join([request.path, '?', GET_data.urlencode()]),
+            })
+        else:
+            return render(request, 'reviews/review_search.html', {
+                'form': form,
+            })
