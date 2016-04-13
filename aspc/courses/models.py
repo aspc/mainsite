@@ -118,7 +118,7 @@ class Course(models.Model):
     def get_instructors_from_all_sections(self):
         instructors = []
         for section in self.sections.all():
-            instructors += section.instructors.all
+            instructors += section.instructors.all()
         return instructors
 
     def get_average_rating(self):
