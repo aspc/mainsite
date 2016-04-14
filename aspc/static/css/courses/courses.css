@@ -506,7 +506,10 @@ ol.course_list a.add_course:hover {
 #frozen_side_panel {
 	float: left;
 	width: 48%;
-	margin-top: 2%;
+}
+
+#frozen_side_panel h2 {
+	padding: 1em 0;
 }
 
 #frozen_side_panel h4, #frozen_side_panel form {
@@ -760,5 +763,19 @@ ul#reviews_header .big {
 	.review_search-course_list .search_result-right_panel {
 		padding-top: 20px;
 		padding-bottom: 5%;
+	}
+
+	#frozen_side_panel {
+		float: none;
+		width: 100%;
+		background-color: white;
+	}
+
+	#frozen_side_panel h2 {
+		padding: 0.33em 0.5em 0.33em 0.5em;
+	}
+
+	#frozen_side_panel h4 {
+		padding: 0.5em;
 	}
 }
