@@ -1,5 +1,7 @@
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django_webtest import WebTest
+from aspc.courses.models import Instructor, CourseReview, Course
 
 class CourseSearchTests(WebTest):
 
@@ -62,3 +64,18 @@ class CourseSearchTests(WebTest):
         assert '3.00' in astro_51_detail_page
         assert 'average rating' in astro_51_detail_page
         assert 'This is a comment!' in astro_51_detail_page
+
+    def testEditReview(self):
+        course = Course.objects.get(code_slug='ASTR051-PO')
+        instructor = Instructor.objects.get(name="Choi, Philip I.")
+        user = User.objects.get(username='sustainability@pomona.edu')
+        review = CourseReview.objects.create(author=user, course=course, instructor=instructor)
+        review.overall_rating = 3
+        review.work_per_week = 20
+        review.comments = "This is a comment!"
+        review.save()
+        url = reverse("write_review",  kwargs={'course_code': course.code_slug, 'instructor_id': instructor.id})
+        edit_review_page = self.app.get(url, user=user.username)
+        assert '3' in edit_review_page.form.get('overall_rating').value
+        assert '20' in edit_review_page.form.get('work_per_week').value
+        assert 'This is a comment!' in edit_review_page
