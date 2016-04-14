@@ -636,7 +636,6 @@ ul#reviews_header .big {
 
 #review_search_form #submit {
 	float: none !important;
-	margin-left: 2%;
 }
 
 .search_result-left_panel {
@@ -686,6 +685,10 @@ ul#reviews_header .big {
 	list-style: none;
 	padding: 0;
 	color: red;
+}
+
+.hidden {
+	display: none;
 }
 
 /* @end */

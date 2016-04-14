@@ -382,16 +382,7 @@ class ReviewSearchView(View):
     def get(self, request):
         form = ReviewSearchForm(request.GET)
         if form.is_valid():
-            kws = form.cleaned_data['query'].split()
-            results_set = Course.objects.filter(
-                reduce(
-                    operator.and_,
-                    ((Q(code__icontains=kw) |
-                      Q(name__icontains=kw) |
-                      Q(departments__name__icontains=kw))
-                     for kw in kws)
-                )
-            ).distinct()
+            results_set, search_type = form.build_queryset()
             paginator = Paginator(results_set, per_page=20, orphans=10)
             GET_data = request.GET.copy()
 
@@ -407,6 +398,7 @@ class ReviewSearchView(View):
                 'form': form,
                 'did_perform_search': True,
                 'results': results,
+                'search_type': search_type,
                 'path': ''.join([request.path, '?', GET_data.urlencode()]),
             })
         else:

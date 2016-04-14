@@ -1,5 +1,7 @@
 {% extends "courses/base.html" %}
 
+{% load static %}
+
 {% block "metadesc" %}
 	Read and write reviews for courses that you've taken.
 {% endblock %}
@@ -10,6 +12,12 @@
 {% block "title" %}Browse and Add Course Reviews{% endblock %}
 {% block "page_title" %}Browse and Add Course Reviews{% endblock %}
 
+{% block "js" %}
+	{{ block.super }}
+	<script type="text/javascript" src="{% static "js/lib/jquery-2.0.3.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/reviews_search.js" %}"></script>
+{% endblock %}
+
 {% block "courses_breadcrumbs" %}
 	<li>Browse and Add Course Reviews</li>
 {% endblock %}
@@ -19,14 +27,18 @@
 		<div id="review_search_form">
 		  <form action="" method="get">
 		    {{ form.non_field_errors }}
-			<h4>Search for reviews:</h4>
-			<p>Enter the name, number, or department of the course that you're looking for.</p>
-			{{ form.query }}
+			<h4>Search for reviews and add your own:</h4>
+			<p>I'm looking for {{ form.object_type }}</p>
+			<p>&hellip;&nbsp;in the {{ form.department }} department</p>
+			<p id="review_search_form-campus">&hellip;&nbsp;at {{ form.campus }}</p>
+			<p id="review_search_form-coursename">&hellip;&nbsp;whose name or number is {{ form.course_name_or_number }}</p>
+			<p id="review_search_form-professorname" class="hidden">&hellip;&nbsp;whose name is {{ form.professor_name }}</p>
 		    <input id="submit" type="submit" value="Search">
 		  </form>
 		</div>
 
 		{% if results %}
+		  {% if search_type == 'course' %}
 		  <ol class="review_search-course_list course_list">
 		  	<li class="stats">found {{ results.paginator.count }} courses</li>
 
@@ -67,6 +79,23 @@
 		  	{% include "schedule/search/search_results_pagination.html" %}
 
 		  </ol>
+		  {% elif search_type = 'instructor' %}
+		  <ol class="review_search-instructor_list">
+			  <li class="stats">found {{ results.paginator.count }} courses</li>
+
+			  {% include "schedule/search/search_results_pagination.html" %}
+
+			  {% for instructor in results.object_list %}
+			  	<li class="{% cycle 'odd' 'even' %}">
+				  	<div class="search_result">
+				  	 {{ instructor }}
+				  	</div>
+			  	</li>
+			  {% endfor %}
+
+			  {% include "schedule/search/search_results_pagination.html" %}
+		  </ol>
+		  {% endif %}
 		{% elif did_perform_search %}
 			<p>Sorry, no results. Try again using a broader search term.</p>
 		{% endif %}

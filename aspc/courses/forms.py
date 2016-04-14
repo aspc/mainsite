@@ -10,7 +10,6 @@ from django.forms.models import ModelChoiceIterator
 from django.utils.safestring import mark_safe
 from django.db.models import Q
 
-
 def requirement_area_label(campus_value):
     return CAMPUSES_FULL_NAMES[campus_value]
 
@@ -257,7 +256,59 @@ class ICalExportForm(forms.Form):
                                         "must be after the first day of classes.")
 
 class ReviewSearchForm(forms.Form):
-    query = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'size': '40', 'placeholder': 'e.g. "spanish" or "POLI001"'}))
+	object_type = forms.ChoiceField(
+		required=False,
+		choices=[('course', 'courses'), ('professor', 'professors')],
+		widget=forms.Select(attrs={'id': 'object_type_dropdown'})
+	)
+	department = DeptModelChoice(
+		required=False,
+		queryset=Department.objects.annotate(num_courses=Count('course_set')).filter(num_courses__gt=0).distinct().order_by('code'),
+		empty_label="(any)"
+	)
+	campus = forms.ChoiceField(
+		required=False,
+		choices=[('PO', 'Pomona'), ('CM', 'Claremont McKenna'), ('HM', 'Harvey Mudd'), ('PZ', 'Pitzer'), ('SC', 'Scripps')]
+	)
+	course_name_or_number = forms.CharField(
+		required=False,
+		max_length=100,
+		widget=forms.TextInput(attrs={'size': '40', 'placeholder': 'e.g. "Intro Biology" or "001A"'})
+	)
+	professor_name = forms.CharField(
+		required=False,
+		max_length=100,
+		widget=forms.TextInput(attrs={'size': '40', 'placeholder': 'e.g. "David Oxtoby"'})
+	)
+
+	def build_queryset(self):
+		if self.cleaned_data['object_type'] == 'course':
+			qs = Course.objects.filter(code_slug__contains='-' + self.cleaned_data.get('campus'))
+
+			if self.cleaned_data.get('department'):
+				qs = qs.filter(departments=self.cleaned_data['department'])
+
+			if self.cleaned_data.get('course_name_or_number'):
+				keyword_tokens = self.cleaned_data['course_name_or_number'].split()
+				for k in keyword_tokens:
+					qs = qs.filter(Q(name__icontains=k) | Q(code__icontains=k))
+
+			return qs.distinct(), 'course'
+		elif self.cleaned_data['object_type'] == 'professor':
+			qs = Instructor.objects.all()
+
+			# TODO
+			if self.cleaned_data.get('department'):
+				pass
+
+			if self.cleaned_data.get('professor_name'):
+				instructor_tokens = re.split('(?!-)\W+', self.cleaned_data['professor_name'])
+				for t in instructor_tokens:
+					qs = qs.filter(name__icontains=t)
+
+			return qs.distinct(), 'instructor'
+		else:
+			return [], ''
 
 class ReviewForm(forms.Form):
     CHOICES = [(i,i) for i in range(1,6)]
