@@ -580,6 +580,22 @@ ul#reviews_header .big {
 	padding-right: 13px;
 }
 
+#reviews_list-instructor_list {
+	overflow: auto;
+}
+
+#reviews_list-instructor_list p {
+	width: 45%;
+	float: left;
+	padding: 2%;
+	margin-top: 1%;
+	margin-bottom: 1%;
+}
+
+#reviews_list-instructor_list p:nth-child(even) {
+	margin-left: 2%;
+}
+
 .reviews_list-item {
 	padding: 0.5em;
 }

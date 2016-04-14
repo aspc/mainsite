@@ -340,9 +340,12 @@ class CourseDetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super(CourseDetailView, self).get_context_data(**kwargs)
         course_object = Course.objects.get(code_slug=self.kwargs['course_code'])
+        course_instructor_list = course_object.get_instructors_from_all_sections()
+        course_instructor_list = list(set(course_instructor_list)) # Remove duplicates
 
         context['reviews'] = CourseReview.objects.filter(course=course_object).order_by('-created_date')
         context['average_rating'] = course_object.get_average_rating()
+        context['course_instructor_list'] = course_instructor_list
         return context
 
 class ReviewView(View):

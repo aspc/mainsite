@@ -45,6 +45,13 @@
 						</p>
 					{% else %}
 						<p>Showing reviews for all sections of <em>{{ object.course.name }}</em> taught by all instructors.</p>
+						<div id="reviews_list-instructor_list">
+							{% for instructor in course_instructor_list %}
+								<p>
+									<a href="/courses/browse/instructor/{{ instructor.id }}/course/{{ object.course.code_slug }}/">Reviews for <em>{{ instructor }}</em> only...</a>
+								</p>
+							{% endfor %}
+						</div>
 					{% endif %}
 				</div>
 				<div id="reviews_list-content">
