@@ -34,7 +34,7 @@ function init() {
             else {
                 return calendar.weekCalendar('formatTime', calEvent.start, options.timeFormat) + options.timeSeparator + calendar.weekCalendar('formatTime', calEvent.end, options.timeFormat);
             }
-            
+
         },
         eventAfterRender: function(calEvent, $event) {
             $event.addClass('campus_' + calEvent.campus);

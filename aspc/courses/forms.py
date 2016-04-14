@@ -1,5 +1,5 @@
 from django import forms
-from aspc.courses.models import (Department, Section, Meeting, Term,
+from aspc.courses.models import (Department, Section, Meeting, Term, Course, Instructor,
                                  RequirementArea, CAMPUSES, CAMPUSES_FULL_NAMES, CAMPUSES_LOOKUP)
 from django.db.models import Count, F
 
@@ -235,7 +235,7 @@ class SearchForm(forms.Form):
                 qs = qs.filter(Q(description__icontains=kw) | Q(course__name__icontains=kw))
             qs = qs.distinct()
 
-        qs = qs.distinct('code_slug').order_by('code_slug'), term
+        qs = qs.order_by('code_slug'), term
         return qs
 
 class ScheduleForm(forms.Form):
@@ -255,3 +255,26 @@ class ICalExportForm(forms.Form):
         else:
             raise forms.ValidationError("The last day of the semester "
                                         "must be after the first day of classes.")
+
+class ReviewSearchForm(forms.Form):
+    query = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'size': '40', 'placeholder': 'e.g. "spanish" or "POLI001"'}))
+
+class ReviewForm(forms.Form):
+    CHOICES = [(i,i) for i in range(1,6)]
+    overall_rating = forms.ChoiceField(choices=CHOICES, label='How many stars do you give this course? (Out of 5)')
+    work_per_week = forms.IntegerField(max_value=25, label='How many hours of homework did you have each week?')
+    comments = forms.CharField(widget=forms.Textarea(attrs={'cols': '70', 'rows': '15'}), label='General comments:')
+
+    def __init__(self, course_code, review=None, *args, **kwargs):
+      super(ReviewForm, self).__init__(*args, **kwargs)
+      self.course = Course.objects.get(code_slug=course_code)
+      instructors = self.course.get_instructors_from_all_sections()
+      self.fields['professor'] = forms.ModelChoiceField(queryset=Instructor.objects.filter(pk__in=map(lambda u: u.id, instructors)))
+      if review:
+        self.initial['professor'] = review.instructor
+        self.initial['overall_rating'] = review.overall_rating
+        self.initial['work_per_week'] = review.work_per_week
+        self.initial['comments'] = review.comments
+
+    def course(self):
+      return self.course

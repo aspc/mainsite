@@ -3,9 +3,9 @@
 	http://127.0.0.1:8000/static/css/courses.css
 */
 
-/* @group landing */
+/* @group home */
 
-ul#landing {
+ul#home {
 	list-style-type: none;
 	padding: 0;
 	text-align: center;
@@ -13,16 +13,16 @@ ul#landing {
 	margin: 1em auto;
 }
 
-ul#landing li {
+ul#home li {
 	display: inline-block;
 	margin-right: 1em;
 }
 
-ul#landing li a {
+ul#home li a {
 	text-decoration: none;
 }
 
-ul#landing li a:hover {
+ul#home li a:hover {
 	text-decoration: underline;
 }
 
@@ -45,8 +45,6 @@ ul#landing li a:hover {
 	/*background-color: #0c5b7f;*/
 	/*color: white;*/
 }
-
-
 
 /* @end */
 
@@ -77,18 +75,6 @@ div#search_form_container {
 	box-sizing: border-box;
 }
 
-div#search_warning_message {
-	width: 40%;
-	padding: 30px;
-	font-size: 16px;
-	float: left;
-	box-sizing: border-box;
-}
-
-div#schedule_warning_message {
-	padding: 10px;
-}
-
 div#search_form:after {
 	content: "";
 	display: block;
@@ -109,50 +95,31 @@ div#search_form p {
 	width: 15em;
 }
 
-#search_form #update_info {
-	background-color: #eee;
+#update_info {
 	padding: 1em;
+	padding-left: 3%;
 	font-size: 0.9em;
 	margin-bottom: 1em;
-}
-
-#search_form #update_info dl {
-	margin-top: 0;
-	margin-bottom: 0.5em;
-}
-
-#search_form #update_info dl:after {
-	display: block;
-	content: "";
-	clear: both;
-}
-
-#search_form #update_info dd {
-	float: left;
-	margin-left: 1em;
-}
-
-#search_form #update_info dt {
-	float: left;
-	clear: both;
-	font-weight: bold;
-}
-#search_form #update_info dt:after {
-	content: ":";
-}
-
-#search_form #update_info p {
 	line-height: 1.33em;
 	clear: both;
 }
 
 #submit {
 	float: left;
+	border: 1px solid rgba(0, 0, 0, 0);
+	background-color: #0071a6;
+	color: white;
+	font-size: 1.5em;
+	font-family: "Hammersmith One", Verdana, "Lucida Grande", Lucida, sans-serif;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	margin-top: 10px;
 }
 
-#reset {
-	float: right;
-	color: white;
+#submit:hover {
+	cursor: pointer;
 }
 
 div#top_container a {
@@ -181,6 +148,7 @@ ol.course_list h3 a:hover { text-decoration: underline; }
 
 ol.course_list li {
 	padding: 0.5em 1em;
+	overflow: auto;
 }
 
 ol.course_list li ul {
@@ -240,6 +208,17 @@ ol.course_list li.notice {
 	letter-spacing: 0.2em;
 	text-align: center;
 	color: white;
+}
+
+.rating-div h4 {
+	display: inline;
+}
+
+.rating-div a {
+	background-image: url(../../images/external_link_icon.png);
+	background-position: right;
+	background-repeat: no-repeat;
+	padding-right: 13px;
 }
 
 
@@ -305,13 +284,12 @@ div.content_main {
 	margin: 0 auto;
 }
 
-#course_details h3 {
-	text-align: center;
+.course_or_section_page h4 {
+	display: inline;
 }
 
-#course_details p.info_line {
-	padding-left: 3em;
-	text-indent: -3em;
+#course_details h3 {
+	text-align: center;
 }
 
 li.meeting {
@@ -319,57 +297,7 @@ li.meeting {
 	line-height: 2em;
 }
 
-p.note {
-	font-size: 0.9em;
-	color: #444;
-}
-
 /* @end */
-
-/* @group departments */
-
-ol#dept_list li.dept_list_headers span {
-	font-weight: bold;
-	margin-bottom: 1em;
-}
-
-ol#dept_list li {
-	margin-bottom: 0.5em;
-}
-
-ol#dept_list li span {
-	display: inline-block;
-}
-
-ol#dept_list li a {
-	text-decoration: none;
-	color: #1860cc;
-}
-
-ol#dept_list li span.dept_code {
-	width: 4em;
-	padding-left: 1em;
-}
-
-ol#dept_list li span.dept_count {
-	font-style: italic;
-	color: #999;
-	margin-left: 1em;
-}
-
-ol#dept_list li span.dept_name {
-	padding-left: 1em;
-}
-
-/* @end */
-
-ol#dept_list {
-	margin: 0 auto;
-	padding: 1em 0;
-	list-style-type: none;
-
-}
-
 
 
 /* @end */
@@ -379,11 +307,11 @@ ol#dept_list {
 .wide.schedule .primary h2 {
 	margin: 0;
 	font-size: 1.2em;
-	padding: 0.75em 2%;
+	padding: 1em 2%;
 }
 
 #schedule_panel {
-	width: 55%;
+	width: 52%;
 	margin: 0;
 	padding: 0;
 	float: left;
@@ -403,20 +331,24 @@ ol#dept_list {
 	width: 100%;
 }
 
-#side_panel {
-	width: 45%;
+#search_panel_label {
+	padding-left: 3%;
+}
+
+#search_panel {
+	width: 48%;
 	padding: 0;
-	float: right;
+	float: left;
 	margin: 0;
 	max-height: 55em;
 	overflow-y: scroll;
 
 }
 
-#side_panel form, #side_panel .course_list, h4#share_clear {
-	padding: 0 2%;
+#search_panel form, #search_panel .course_list, h4#share_clear {
+	padding: 0 3%;
 }
-#side_panel form, #side_panel .course_list {
+#search_panel form, #search_panel .course_list {
 	font-size: 0.85em;
 }
 
@@ -426,7 +358,7 @@ ol#dept_list {
 
 }
 
-#side_panel.hidden {
+#search_panel.hidden {
 	display: none;
 }
 
@@ -449,37 +381,68 @@ h4#share_clear {
 }
 
 
-h2#message {
+h2#loading_message, h2#error_message {
 	padding: 0.3em;
 	color: #ccc;
 	text-align: center;
 }
 
-a#share_schedule, a#clear_schedule {
+h2#error_message {
+	display: none;
+}
+
+#share_clear_download {
+	overflow: auto;
+	margin-bottom: 1%;
+}
+
+#share_clear_download a {
 	color: #0071a6;
 	text-decoration: none;
-	display: block;
-	padding: 0.25em ;
+	padding: 0.25em;
+	font-family: "Hammersmith One", Verdana, "Lucida Grande", Lucida, sans-serif;
+	font-size: 14px;
 }
 
-a#share_schedule {
-	float: left;
-}
-
-a#clear_schedule {
-	float: right;
-}
-
-a#share_schedule:hover, a#clear_schedule:hover {
+#share_clear_download a:hover {
 	background-color: #0071a6;
 	color: white;
 }
 
+#share_schedule, #download_ical, #clear_schedule {
+	width: 32%;
+	float: left;
+}
+
+#share_schedule {
+	margin-left: 2%;
+}
+
+#share_schedule a {
+	float: left;
+}
+
+#download_ical {
+	text-align: center;
+}
+
+#clear_schedule {
+	margin-right: 2%;
+}
+
+#clear_schedule a {
+	float: right;
+}
+
 /* @end */
 ol#schedule_courses {
-	padding: 0 2%;
+	padding: 0 2% 1% 2%;
 	margin: 0;
 	list-style-type: none;
+}
+
+ol#schedule_courses:empty {
+	display: none;
 }
 
 ol#schedule_courses:after {
@@ -538,53 +501,248 @@ ol.course_list a.add_course:hover {
 
 /* @end */
 
-@media handheld, only screen and (max-width: 767px) {
-	#schedule_panel, #side_panel {
-	background-color: white;
-	float: none;
-	width: 100%;
-}
-	.wc-day-column-header {
-	overflow: hidden;
-}
-	#calendar {
-	max-height: 25em;
-	overflow-y: scroll;
-}
-	#side_panel {
-		max-height: 100%;
+/* @group frozen */
+
+#frozen_side_panel {
+	float: left;
+	width: 48%;
+	margin-top: 2%;
 }
 
-ol#dept_list li span.dept_count {
-	display: none;
+#frozen_side_panel h4, #frozen_side_panel form {
+	display: inline;
 }
 
-.wide.schedule .primary h2 {
-	margin: 0.5em 0;
+#frozen_side_panel .course_list {
 	font-size: 0.85em;
-	padding: 0.33em 0.5em 0.33em 0.5em;
-	background-color: #4f7098;
 }
 
-ul#landing {
+/* @end */
+
+/* @group display reviews */
+
+#reviews_barplot {
+	margin: 0 auto;
+}
+
+#reviews_list {
+	clear: left;
+}
+
+ul#reviews_header {
 	list-style-type: none;
 	padding: 0;
+	width: 100%;
+}
+
+.reviews_header-section {
+	width: 33.3%;
+	height: 150px;
+	display: inline-block;
 	text-align: center;
+	float: left;
+}
+
+.reviews_header-section:nth-child(1) {
+	padding-top: 2em;
+}
+
+ul#reviews_header .big {
+	font-size: 3em;
+}
+
+#reviews_header button {
+	border: 1px solid rgba(0, 0, 0, 0);
+	background-color: #0071a6;
+	color: white;
+	font-size: 1.5em;
+	font-family: "Hammersmith One", Verdana, "Lucida Grande", Lucida, sans-serif;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	margin-top: 10px;
+}
+
+#reviews_header button:hover {
+	cursor: pointer;
+}
+
+#reviews_list-header p {
+	background-color: #e7e7e7;
+	padding: 1em;
+}
+
+#reviews_list a {
+	background-image: url(../../images/external_link_icon.png);
+	background-position: right;
+	background-repeat: no-repeat;
+	padding-right: 13px;
+}
+
+.reviews_list-item {
+	padding: 0.5em;
+}
+
+.reviews_list-item:nth-child(even) {
+	background-color: #f7f7f7;
+}
+
+.reviews_list-edit_review a {
+	background-image: none !important;
+}
+
+.reviews_list-edit_review button {
+	border: 1px solid rgba(0, 0, 0, 0);
+	background-color: #0071a6;
+	color: white;
+	font-family: "Hammersmith One", Verdana, "Lucida Grande", Lucida, sans-serif;
 	font-size: 1em;
-	margin: 0;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	margin-top: 10px;
 }
 
+/* @end */
 
-ul#landing li {
-	display: block;
-	margin: 0;
+/* @group add reviews */
+
+#review_search_form {
+	padding-bottom: 2%;
 }
 
-ul#landing li a {
+#review_search_form form {
+	overflow: auto;
+}
+
+#review_search_form #submit {
+	float: none !important;
+	margin-left: 2%;
+}
+
+.search_result-left_panel {
+	width: 75%;
+	float: left;
+}
+
+.search_result-left_panel a {
+	line-height: 1.8em;
+}
+
+.search_result-right_panel {
+	width: 25%;
+	float: left;
+	text-align: center;
+	padding-top: 1%;
+}
+
+.write_review_button {
 	text-decoration: none;
+	border: 1px solid rgba(0, 0, 0, 0);
+	background-color: #0071a6;
+	color: white;
+	font-size: 1.5em;
+	font-family: "Hammersmith One", Verdana, "Lucida Grande", Lucida, sans-serif;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
-ul#landing li a:hover {
-	text-decoration: none;
+#new_review_form label {
+	width: 20em;
+	vertical-align: top;
 }
+
+#new_review_form input#submit {
+	cursor: pointer;
+	margin: 1em;
+}
+
+#new_review_form input[type="submit"]:hover {
+	cursor: pointer;
+}
+
+#new_review_form ul.errorlist {
+	list-style: none;
+	padding: 0;
+	color: red;
+}
+
+/* @end */
+
+@media handheld, only screen and (max-width: 767px) {
+    #schedule_panel, #search_panel {
+        background-color: white;
+        float: none;
+        width: 100%;
+    }
+
+    .wc-day-column-header {
+        overflow: hidden;
+    }
+
+    #calendar {
+        max-height: 25em;
+        overflow-y: scroll;
+    }
+
+    #search_panel {
+        max-height: 100%;
+    }
+
+    ol#dept_list li span.dept_count {
+        display: none;
+    }
+
+    .wide.schedule .primary h2 {
+        margin: 0.5em 0;
+        font-size: 0.85em;
+        padding: 0.33em 0.5em 0.33em 0.5em;
+        background-color: #4f7098;
+    }
+
+    ul#home {
+        list-style-type: none;
+        padding: 0;
+        text-align: center;
+        font-size: 1em;
+        margin: 0;
+    }
+
+    ul#home li {
+        display: block;
+        margin: 0;
+    }
+
+    ul#home li a {
+        text-decoration: none;
+    }
+
+    ul#home li a:hover {
+        text-decoration: none;
+    }
+
+	.reviews_header-section {
+		width: 100%;
+		float: none;
+		height: 120px;
+	}
+
+	.reviews_header-section:nth-last-child(2) {
+		display: none;
+	}
+
+	#new_review_form textarea {
+		width: 100%;
+	}
+
+	.review_search-course_list .search_result-left_panel, .review_search-course_list .search_result-right_panel {
+		width: 100%;
+	}
+
+	.review_search-course_list .search_result-right_panel {
+		padding-top: 20px;
+		padding-bottom: 5%;
+	}
 }
