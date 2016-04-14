@@ -1,0 +1,47 @@
+{% extends "courses/base.html" %}
+
+{% load staticfiles %}
+
+{% block "title" %}Course Planner{% endblock %}
+{% block "page_title" %}Course Planner{% endblock %}
+{% block "og_url" %}http://aspc.pomona.edu/courses/schedule/{% endblock %}
+
+{% block "css" %}
+	{{ block.super }}
+	<link rel="stylesheet" type="text/css" href="{% static "css/courses/smoothness/jquery-ui.css" %}"/>
+	<link rel="stylesheet" type="text/css" href="{% static "css/courses/jquery.weekcalendar.css" %}"/>
+	<link rel="stylesheet" type="text/css" href="{% static "css/courses/calendar.css" %}"/>
+{% endblock %}
+
+{% block "js" %}
+	{{ block.super }}
+	<script type="text/javascript" src="{% static "js/lib/jquery-1.7.1.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/lib/jquery-ui-1.8.18.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/lib/date.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/lib/jquery.weekcalendar.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/courses.js" %}"></script>
+{% endblock %}
+
+{% block "content_class" %}
+	{{ block.super }}
+	wide
+{% endblock %}
+
+{% block "courses_breadcrumbs" %}
+	<li>
+		<a href="{% url "aspc.courses.views.schedule" %}">Course Planner</a>
+	</li>
+{% endblock %}
+
+{% block "outer_content" %}
+	<div id="search_panel" class="panel">
+		{% include "schedule/search/search_form.html" %}
+		{% if results %}
+			{% include "schedule/search/search_results.html" %}
+		{% endif %}
+		<p id="update_info">Course data was last updated {% if last_full %}on {{ last_full.last_refresh_date }}{% else %}never{% endif %}</p>
+	</div>
+	<div id="schedule_panel" class="panel {% block schedule_panel_class %}{% endblock %}">
+		{% include "schedule/schedule_panel.html" %}
+	</div>
+{% endblock %}

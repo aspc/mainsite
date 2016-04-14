@@ -8,10 +8,12 @@
 	{% else %}
 		<div class="loginstatus__form">
 			<form action="{% url 'aspc.auth2.views.guest_login' %}">
+				<input type="hidden" name="next" value="{{ absolute_uri|urlencode:"" }}" />
 				<input type="submit" value="Guest Login">
 			</form>
 			<form action="{% url 'aspc.auth2.views.login' %}">
-				<input type="submit" value="Login (Students)">
+				<input type="hidden" name="next" value="{{ absolute_uri|urlencode:"" }}" />
+				<input type="submit" value="Login (Pomona Students)">
 			</form>
 		</div>
 	{% endif %}

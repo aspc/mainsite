@@ -1,0 +1,23 @@
+{% load stars %}
+<div class="reviews_list-item">
+    <p>
+        <small>
+			<strong>Reviewed on:</strong> {{ review.created_date|date:"F d, Y" }}
+			<br />
+			{% if not is_section %}
+			<strong>Professor:</strong> {{ review.instructor }}
+			<br />
+			{% endif %}
+			<strong>Rating:</strong> {{ review.overall_rating | star}} (<span class="reviews_list-rating_score">{{ review.overall_rating}}</span>)
+		</small>
+    </p>
+    <p>{{ review.comments|linebreaksbr  }}</p>
+	{% if not is_section %}
+		<small><a href="{{ review.get_url_to_section_page }}">Only see reviews for {{ review.instructor }}...</a></small>
+	{% endif %}
+	<div class="reviews_list-edit_review">
+		{% if review.author == request.user %}
+			<a href="{% url "write_review" object.course.code_slug review.instructor.id %}"><button>This is your own review! Click to edit.</button></a>
+		{% endif %}
+	</div>
+</div>

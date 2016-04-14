@@ -1,4 +1,4 @@
-from urllib import urlencode, quote_plus
+from urllib import urlencode, quote_plus, unquote
 import urlparse
 from django.http import HttpResponseRedirect, HttpResponseNotAllowed
 from aspc import settings
@@ -14,15 +14,15 @@ PHP_AUTH_URL = 'https://aspc.pomona.edu/php-auth'
 # 1) On GET, renders a login form for guest accounts (i.e. users that are backed locally, not in the 5C CAS server)
 # 2) On POST, validates the login form, authenticates the user, and logs him in
 def guest_login(request, next_page=None):
-	if request.method == 'GET':
-		next_page = next_page or _next_page_url(request)
+	next_page = next_page or _next_page_url(request)
 
+	if request.method == 'GET':
 		# If the user is already authenticated, simply redirect to the next_page
 		if request.user.is_authenticated():
-			return HttpResponseRedirect(next_page)
+			return HttpResponseRedirect(unquote(next_page))
 		else:
 			form = AuthenticationForm()
-			return render(request, 'auth2/guest_login.html', {'form': form})
+			return render(request, 'auth2/guest_login.html', {'form': form, 'next': next_page})
 	elif request.method == 'POST':
 		from django.contrib import auth
 		form = AuthenticationForm(data=request.POST)
@@ -32,7 +32,7 @@ def guest_login(request, next_page=None):
 
 			if user is not None:
 				auth.login(request, user)
-				return HttpResponseRedirect(next_page)
+				return HttpResponseRedirect(unquote(next_page))
 			else:
 				return render(request, 'auth2/guest_login.html', {'form': form})
 		else:
@@ -108,7 +108,14 @@ def logout(request, next_page=None):
 
 # Redirects to referring page, or to the homepage if no referrer is set
 def _next_page_url(request):
-	return request.GET.get(REDIRECT_FIELD_NAME) or '/'
+	next_page = '/'
+
+	if request.method == 'GET':
+		return request.GET.get(REDIRECT_FIELD_NAME) or next_page
+	elif request.method == 'POST':
+		return request.POST.get(REDIRECT_FIELD_NAME) or next_page
+	else:
+		return next_page
 
 # Builds CAS login URL
 def _login_url(service_url):

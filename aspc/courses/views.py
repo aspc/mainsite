@@ -1,20 +1,21 @@
+from django import forms
+from django.forms import Form
 from django.http import HttpResponse, HttpResponseRedirect, Http404, HttpResponseNotAllowed
 from django.core.urlresolvers import reverse
 from django.views import generic
-from django.shortcuts import get_object_or_404, render
-from django.conf import settings
+from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.serializers.json import DjangoJSONEncoder
-from django.db.models import Count, Sum
-from aspc.courses.models import (Section, Department, Meeting, Schedule, Term, RefreshHistory,
-    START_DATE, END_DATE)
-from aspc.courses.forms import SearchForm, ICalExportForm
-import re
+from django.db.models import Count, Avg, Q
+from django.views.generic import View, ListView
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
+from aspc.courses.models import (Section, Department, Schedule, RefreshHistory, START_DATE, END_DATE, Term, Course, Instructor, CourseReview)
+from aspc.courses.forms import SearchForm, ICalExportForm, ReviewSearchForm, ReviewForm
 import json
 import datetime
-import shlex
-import subprocess
 import vobject
+import operator
 from dateutil import rrule
 
 def _get_refresh_history():
@@ -49,19 +50,15 @@ def search(request):
                 paginator = Paginator(results_set, per_page=20, orphans=10)
                 GET_data = request.GET.copy()
 
-                try:
-                    page = int(request.GET.get('page', '1'))
-                    if GET_data.get('page', False):
-                        del GET_data['page']
-                except ValueError:
-                    page = 1
+                page = int(request.GET.get('page', '1'))
+                GET_data.pop('page', None)
 
                 try:
                     results = paginator.page(page)
                 except (EmptyPage, InvalidPage):
                     results = paginator.page(paginator.num_pages)
 
-                return render(request, 'courses/search.html', {
+                return render(request, 'search/search.html', {
                     'form': form,
                     'results': results,
                     'path': ''.join([request.path, '?', GET_data.urlencode()]),
@@ -69,14 +66,14 @@ def search(request):
                     'last_reg': last_reg
                 })
             else:
-                return render(request, 'courses/search.html', {
+                return render(request, 'search/search.html', {
                     'form': form,
                     'last_full': last_full,
                     'last_reg': last_reg
                 })
         else:
             form = SearchForm()
-            return render(request, 'courses/search.html', {
+            return render(request, 'search/search.html', {
                 'form': form,
                 'last_full': last_full,
                 'last_reg': last_reg
@@ -89,7 +86,7 @@ def schedule(request):
 
     if not request.method == "GET" or len(request.GET) == 0:
         form = SearchForm()
-        return render(request, 'courses/schedule.html', {
+        return render(request, 'schedule/schedule.html', {
             'form': form,
             'last_full': last_full,
             'last_reg': last_reg
@@ -99,7 +96,7 @@ def schedule(request):
         if form.is_valid():
             results_set, term = form.build_queryset_and_term()
             request.session['term_key'] = term.key
-            paginator = Paginator(results_set, per_page=10, orphans=5)
+            paginator = Paginator(results_set, per_page=20, orphans=5)
             GET_data = request.GET.copy()
 
             try:
@@ -118,7 +115,7 @@ def schedule(request):
                 if course.id in request.session.get('schedule_courses', []):
                     course.added = True
 
-            return render(request, 'courses/schedule.html', {
+            return render(request, 'schedule/schedule.html', {
                 'form': form,
                 'results': results,
                 'path': ''.join([request.path, '?', GET_data.urlencode()]),
@@ -126,7 +123,7 @@ def schedule(request):
                 'last_reg': last_reg
             })
         else:
-            return render(request, 'courses/schedule.html', {
+            return render(request, 'schedule/schedule.html', {
                 'form': form,
                 'last_full': last_full,
                 'last_reg': last_reg
@@ -163,9 +160,9 @@ def share_schedule(request):
             s.sections.add(course)
         s.save()
 
-        return render(request, 'courses/share_schedule.html', {'saved': True, 'schedule': s, 'schedule_courses': s.sections.all(),})
+        return render(request, 'schedule/schedule_share.html', {'saved': True, 'schedule': s, 'schedule_courses': s.sections.all(),})
     else:
-        return render(request, 'courses/share_schedule.html', {'schedule_courses': schedule_courses,})
+        return render(request, 'schedule/schedule_share.html', {'schedule_courses': schedule_courses,})
 
 def view_schedule(request, schedule_id):
     schedule = get_object_or_404(Schedule, pk=schedule_id)
@@ -173,11 +170,7 @@ def view_schedule(request, schedule_id):
         request.session['schedule_courses'] = set([c.id for c in schedule.sections.all()])
         return HttpResponseRedirect(reverse('aspc.courses.views.schedule'))
     else:
-        return render(request, 'courses/schedule_frozen.html',{'schedule': schedule,})
-
-def view_minimal_schedule(request, schedule_id):
-    schedule = get_object_or_404(Schedule, pk=schedule_id)
-    return render(request, 'courses/minimal_schedule_frozen.html', {'schedule': schedule,})
+        return render(request, 'schedule/schedule_frozen.html',{'schedule': schedule,})
 
 def ical_export(request, schedule_id=None):
     if schedule_id is not None:
@@ -193,7 +186,7 @@ def ical_export(request, schedule_id=None):
         if not form.is_valid():
             return render(
                 request,
-                'courses/ical_export.html',
+                'schedule/schedule_ical_export.html',
                 {'form': form, 'schedule_courses': schedule_courses}
             )
 
@@ -219,7 +212,7 @@ def ical_export(request, schedule_id=None):
         })
         return render(
             request,
-            'courses/ical_export.html',
+            'schedule/schedule_ical_export.html',
             {'form': form, 'schedule_courses': schedule_courses}
         )
 
@@ -267,62 +260,156 @@ def _ical_from_courses(courses, start_date, end_date):
 
     return cal
 
+def schedule_course_add(request, section_code_slug):
+    section = _get_section_for_term(section_code_slug=section_code_slug, term_key=request.session.get('term_key'))
+    if request.session.get('schedule_courses'):
+        if not (section.id in request.session['schedule_courses']):
+            request.session['schedule_courses'].add(section.id)
+            request.session.modified = True
+    else:
+        request.session['schedule_courses'] = set([section.id,])
+    return HttpResponse(content=json.dumps(section.json(), cls=DjangoJSONEncoder), content_type='application/json')
+
+def schedule_course_remove(request, section_code_slug):
+    removed_ids = []
+    section = _get_section_for_term(section_code_slug=section_code_slug, term_key=request.session.get('term_key'))
+    if request.session.get('schedule_courses'):
+        if (section.id in request.session['schedule_courses']):
+            request.session['schedule_courses'].remove(section.id)
+            request.session.modified = True
+
+            section_data = section.json()
+            for e in section_data['events']:
+                removed_ids.append(e['id'])
+    return HttpResponse(content=json.dumps(removed_ids, cls=DjangoJSONEncoder), content_type='application/json')
+
+def _get_section_for_term(section_code_slug, term_key):
+	all_sections = Section.objects.filter(code_slug=section_code_slug)
+
+	try:
+		section = all_sections.filter(term=Term.objects.get(key=term_key))[0] if term_key else all_sections[0]
+	except IndexError:
+		raise Http404
+
+	return section
+
+class SectionDetailView(generic.DetailView):
+    model = Section
+    slug_field = 'code_slug'
+    slug_url_kwarg = 'course_code'
+    template_name = "browse/section_detail.html"
+
+    def get_object(self):
+        try:
+            # It doesn't really matter which Section object we return if there are multiple that fit the
+            # <Instructor, Course> identifier, but we ought to return the most recent one so the section data
+            # that we display is as up-to-date as possible
+            return Section.objects.filter(instructors__id__exact=self.kwargs['instructor_id'], course__code_slug=self.kwargs['course_code']).order_by('term')[0]
+        except IndexError:
+            raise Http404
+
+    def get_context_data(self, **kwargs):
+        context = super(SectionDetailView, self).get_context_data(**kwargs)
+        instructor_object = Instructor.objects.get(id=self.kwargs['instructor_id'])
+        course_object = Course.objects.get(code_slug=self.kwargs['course_code'])
+
+        context['is_section'] = True
+        context['professor'] = instructor_object
+        context['current_term'] = Term.objects.all()[0]
+        context['reviews'] = CourseReview.objects.filter(course=course_object, instructor=instructor_object).order_by('-created_date')
+        context['average_rating'] = context['reviews'].aggregate(Avg("overall_rating"))["overall_rating__avg"]
+
+        return context
+
 class CourseDetailView(generic.DetailView):
     model = Section
     slug_field = 'code_slug'
     slug_url_kwarg = 'course_code'
-    def get_queryset(self):
-        dept = get_object_or_404(Department, code=self.kwargs['dept'])
-        return Section.objects.filter(course__primary_department=dept)
+    template_name = "browse/course_detail.html"
+
     def get_object(self):
         try:
-            return Section.objects.filter(code_slug=self.kwargs['course_code'])[0]
+            # It doesn't really matter which Section object we return if there are multiple that fit the
+            # <Course> identifier, but we ought to return the most recent one so the section data
+            # that we display is as up-to-date as possible
+            course = Course.objects.get(code_slug=self.kwargs['course_code'])
+            return course.get_most_recent_section()
         except IndexError:
             raise Http404
 
-def schedule_course_add(request, course_code):
-    course = build_course(course_code, request)
-    if request.session.get('schedule_courses'):
-        if not (course.id in request.session['schedule_courses']):
-            request.session['schedule_courses'].add(course.id)
-            request.session.modified = True
-    else:
-        request.session['schedule_courses'] = set([course.id,])
-    return HttpResponse(content=json.dumps(course.json(), cls=DjangoJSONEncoder), content_type='application/json')
+    def get_context_data(self, **kwargs):
+        context = super(CourseDetailView, self).get_context_data(**kwargs)
+        course_object = Course.objects.get(code_slug=self.kwargs['course_code'])
+        course_instructor_list = course_object.get_instructors_from_all_sections()
+        course_instructor_list = list(set(course_instructor_list)) # Remove duplicates
 
-def schedule_course_remove(request, course_code):
-    removed_ids = []
-    course = build_course(course_code, request)
-    if request.session.get('schedule_courses'):
-        if (course.id in request.session['schedule_courses']):
-            request.session['schedule_courses'].remove(course.id)
-            request.session.modified = True
+        context['reviews'] = CourseReview.objects.filter(course=course_object).order_by('-created_date')
+        context['average_rating'] = course_object.get_average_rating()
+        context['course_instructor_list'] = course_instructor_list
+        return context
 
-            course_data = course.json()
-            for e in course_data['events']:
-                removed_ids.append(e['id'])
-    return HttpResponse(content=json.dumps(removed_ids, cls=DjangoJSONEncoder), content_type='application/json')
+class ReviewView(View):
+    @method_decorator(login_required)
+    def get(self, request, course_code, instructor_id=None):
+        if instructor_id:
+          course = Course.objects.get(code_slug=course_code)
+          instructor = Instructor.objects.get(id=instructor_id)
+          review = CourseReview.objects.get(author=request.user, course=course, instructor=instructor)
+          form = ReviewForm(course_code, review)
+        else:
+          form = ReviewForm(course_code)
+        return render(request, 'reviews/review_new.html', {'form': form})
 
-def build_course(course_code, request):
-    try:
-        course = build_course_from_code_and_term(course_code, request.session.get('term_key'))
-    except IndexError:
-        raise Http404
-    return course
+    @method_decorator(login_required)
+    def post(self, request, course_code, instructor_id=None):
+        form = ReviewForm(course_code, None, request.POST)
+        if form.is_valid():
+            instructor = form.cleaned_data["professor"]
+            overall_rating = form.cleaned_data["overall_rating"]
+            work_per_week = form.cleaned_data["work_per_week"]
+            comments = form.cleaned_data["comments"]
+            review, created = CourseReview.objects.get_or_create(author=request.user, course=form.course, instructor=instructor)
+            review.overall_rating = int(overall_rating)
+            review.work_per_week = work_per_week
+            review.comments = comments
+            review.save()
+            return redirect(reverse('section_detail', kwargs={"instructor_id": instructor.id, "course_code": course_code}))
+        else:
+            return render(request, 'reviews/review_new.html', {'form': form})
 
-def build_course_from_code_and_term(course_code, term_key):
-    courses_without_term = Section.objects.filter(code_slug=course_code)
-    course = courses_without_term.filter(term=Term.objects.get(key=term_key))[0] if term_key else courses_without_term[0]
-    return course
 
-class DepartmentListView(generic.ListView):
-    queryset = (Department.objects
-                    .annotate(num_courses=Count('primary_course_set__sections'))
-                    .filter(num_courses__gt=0)
-                    .distinct()
-                    .order_by('code')
+class ReviewSearchView(View):
+    def get(self, request):
+        form = ReviewSearchForm(request.GET)
+        if form.is_valid():
+            kws = form.cleaned_data['query'].split()
+            results_set = Course.objects.filter(
+                reduce(
+                    operator.and_,
+                    ((Q(code__icontains=kw) |
+                      Q(name__icontains=kw) |
+                      Q(departments__name__icontains=kw))
+                     for kw in kws)
                 )
+            ).distinct()
+            paginator = Paginator(results_set, per_page=20, orphans=10)
+            GET_data = request.GET.copy()
 
-class DepartmentCoursesView(generic.DetailView):
-    model = Department
-    slug_field = 'code'
+            page = int(request.GET.get('page', '1'))
+            GET_data.pop('page', None)
+
+            try:
+                results = paginator.page(page)
+            except (EmptyPage, InvalidPage):
+                results = paginator.page(paginator.num_pages)
+
+            return render(request, 'reviews/review_search.html', {
+                'form': form,
+                'did_perform_search': True,
+                'results': results,
+                'path': ''.join([request.path, '?', GET_data.urlencode()]),
+            })
+        else:
+            return render(request, 'reviews/review_search.html', {
+                'form': form,
+            })
