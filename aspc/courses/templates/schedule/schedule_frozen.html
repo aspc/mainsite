@@ -25,31 +25,30 @@
 	</div>
 
 	<div id="frozen_side_panel">
-		<div class="content">
-			<h4>Date created:</h4> {{ schedule.create_ts|date:"M n, Y"}} at {{ schedule.create_ts|date:"P" }}
-			<br />
-			<br />
-			<h4>Load these courses for editing:</h4>
-				<form action="" method="POST">
-					{% csrf_token %}
-					<input type="submit" value="load for editing">
-				</form>
-			<br />
-			<br />
-			<h4>Export as .ics for Apple or Google Calendar:</h4>
-				<button onClick="window.location = '{% url "aspc.courses.views.ical_export" schedule_id=schedule.id %}';">export this schedule</button>
-			<br />
-			<br />
-			<h4>Course list:</h4>
-			<br />
-			<br />
-			<ol class="course_list">
-				{% for c in schedule.sections.all %}
-					<li class="{% cycle 'odd' 'even' %}">
-						{% include "schedule/search/search_result.html" %}
-					</li>
-				{% endfor %}
-			</ol>
-		</div>
+		<h2 class="header">Schedule information:</h2>
+		<h4>Date created:</h4> {{ schedule.create_ts|date:"M n, Y"}} at {{ schedule.create_ts|date:"P" }}
+		<br />
+		<br />
+		<h4>Load these courses for editing:</h4>
+			<form action="" method="POST">
+				{% csrf_token %}
+				<input type="submit" value="load for editing">
+			</form>
+		<br />
+		<br />
+		<h4>Export as .ics for Apple or Google Calendar:</h4>
+			<button onClick="window.location = '{% url "aspc.courses.views.ical_export" schedule_id=schedule.id %}';">export this schedule</button>
+		<br />
+		<br />
+		<h4>Course list:</h4>
+		<br />
+		<br />
+		<ol class="course_list">
+			{% for c in schedule.sections.all %}
+				<li class="{% cycle 'odd' 'even' %}">
+					{% include "schedule/search/search_result.html" %}
+				</li>
+			{% endfor %}
+		</ol>
 	</div>
 {% endblock %}
