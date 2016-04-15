@@ -405,26 +405,31 @@ class ReviewView(View):
 class ReviewSearchView(View):
     def get(self, request):
         form = ReviewSearchForm(request.GET)
-        if form.is_valid():
-            results_set, search_type = form.build_queryset()
-            paginator = Paginator(results_set, per_page=20, orphans=10)
-            GET_data = request.GET.copy()
+        if len(request.GET) > 0:
+            if form.is_valid():
+                results_set, search_type = form.build_queryset()
+                paginator = Paginator(results_set, per_page=20, orphans=10)
+                GET_data = request.GET.copy()
 
-            page = int(request.GET.get('page', '1'))
-            GET_data.pop('page', None)
+                page = int(request.GET.get('page', '1'))
+                GET_data.pop('page', None)
 
-            try:
-                results = paginator.page(page)
-            except (EmptyPage, InvalidPage):
-                results = paginator.page(paginator.num_pages)
+                try:
+                    results = paginator.page(page)
+                except (EmptyPage, InvalidPage):
+                    results = paginator.page(paginator.num_pages)
 
-            return render(request, 'reviews/review_search.html', {
-                'form': form,
-                'did_perform_search': True,
-                'results': results,
-                'search_type': search_type,
-                'path': ''.join([request.path, '?', GET_data.urlencode()]),
-            })
+                return render(request, 'reviews/review_search.html', {
+                    'form': form,
+                    'did_perform_search': True,
+                    'results': results,
+                    'search_type': search_type,
+                    'path': ''.join([request.path, '?', GET_data.urlencode()]),
+                })
+            else:
+                return render(request, 'reviews/review_search.html', {
+                    'form': form,
+                })
         else:
             return render(request, 'reviews/review_search.html', {
                 'form': form,
