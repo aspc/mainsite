@@ -17,7 +17,7 @@
 	{% endif %}
 	<div class="reviews_list-edit_review">
 		{% if review.author == request.user %}
-			<a href="{% url "write_review" object.course.code_slug review.instructor.id %}"><button>This is your own review! Click to edit.</button></a>
+			<a href="{% url "write_review" review.course.code_slug review.instructor.id %}"><button>This is your own review! Click to edit.</button></a>
 		{% endif %}
 	</div>
 </div>

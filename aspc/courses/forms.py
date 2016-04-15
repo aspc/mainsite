@@ -272,7 +272,7 @@ class ReviewForm(forms.Form):
       self.fields['professor'] = forms.ModelChoiceField(queryset=Instructor.objects.filter(pk__in=map(lambda u: u.id, instructors)))
       if review:
         self.initial['professor'] = review.instructor
-        self.initial['overall_rating'] = review.overall_rating
+        self.initial['overall_rating'] = int(review.overall_rating)
         self.initial['work_per_week'] = review.work_per_week
         self.initial['comments'] = review.comments
 
