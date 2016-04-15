@@ -321,8 +321,9 @@ class ReviewSearchForm(forms.Form):
 			elif filtered_instructors:
 				to_return = filtered_instructors
 			else:
-				to_return = Instructor.objects.all().distinct()
+				to_return = list(Instructor.objects.all().distinct())
 
+			to_return.sort(key=operator.attrgetter('name'))
 			return to_return, 'instructor'
 		else:
 			return [], ''
