@@ -266,10 +266,6 @@ class ReviewSearchForm(forms.Form):
 		queryset=Department.objects.annotate(num_courses=Count('course_set')).filter(num_courses__gt=0).distinct().order_by('code'),
 		empty_label="(any)"
 	)
-	campus = forms.ChoiceField(
-		required=False,
-		choices=[('PO', 'Pomona'), ('CM', 'Claremont McKenna'), ('HM', 'Harvey Mudd'), ('PZ', 'Pitzer'), ('SC', 'Scripps')]
-	)
 	course_name_or_number = forms.CharField(
 		required=False,
 		max_length=100,
@@ -283,7 +279,7 @@ class ReviewSearchForm(forms.Form):
 
 	def build_queryset(self):
 		if self.cleaned_data['object_type'] == 'course':
-			qs = Course.objects.filter(code_slug__contains='-' + self.cleaned_data.get('campus'))
+			qs = Course.objects.all()
 
 			if self.cleaned_data.get('department'):
 				qs = qs.filter(departments=self.cleaned_data['department'])
