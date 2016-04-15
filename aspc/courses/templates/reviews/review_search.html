@@ -37,6 +37,7 @@
 		</div>
 
 		{% if results %}
+		  {% load stars %}
 		  {% if search_type == 'course' %}
 		  <ol class="review_search-course_list course_list">
 		  	<li class="stats">found {{ results.paginator.count }} courses</li>
@@ -45,7 +46,6 @@
 
 		  	{% for course in results.object_list %}
 		  		<li class="{% cycle 'odd' 'even' %}">
-		        {% load stars %}
 		        <div class="search_result">
 					<div class="search_result-left_panel">
 						<h3>
@@ -79,15 +79,22 @@
 
 		  </ol>
 		  {% elif search_type = 'instructor' %}
-		  <ol class="review_search-instructor_list">
-			  <li class="stats">found {{ results.paginator.count }} courses</li>
+		  <ol class="review_search-instructor_list course_list">
+			  <li class="stats">found {{ results.paginator.count }} instructors</li>
 
 			  {% include "schedule/search/search_results_pagination.html" %}
 
 			  {% for instructor in results.object_list %}
 			  	<li class="{% cycle 'odd' 'even' %}">
 				  	<div class="search_result">
-				  	 {{ instructor }}
+				  	 <h4 class="instructor_list-name">Name: <a href="/courses/browse/instructor/{{ instructor.id }}">{{ instructor }}</a></h4>
+					 <h4 class="instructor_list-average_rating">
+						{% if instructor.rating %}
+							Average rating: {{ instructor.rating|star }}
+						{% else %}
+							<span style="font-weight: normal">No reviews yet!</span>
+						{% endif %}
+					</h4>
 				  	</div>
 			  	</li>
 			  {% endfor %}
