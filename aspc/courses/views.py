@@ -348,6 +348,30 @@ class CourseDetailView(generic.DetailView):
         context['course_instructor_list'] = course_instructor_list
         return context
 
+class InstructorDetailView(generic.DetailView):
+	model = Instructor
+	template_name = 'browse/instructor_detail.html'
+
+	def get_object(self):
+		try:
+			return Instructor.objects.get(id=self.kwargs['instructor_id'])
+		except IndexError:
+			raise Http404
+
+	def get_context_data(self, **kwargs):
+		context = super(InstructorDetailView, self).get_context_data(**kwargs)
+
+		instructor_object = Instructor.objects.get(id=self.kwargs['instructor_id'])
+		sections_taught = Section.objects.filter(instructors=instructor_object)
+		courses_taught = []
+		for s in sections_taught:
+			courses_taught.append(s.course)
+
+		context['courses_taught'] = list(set(courses_taught))
+		context['reviews'] = CourseReview.objects.filter(course__in=context['courses_taught'], instructor=instructor_object).order_by('-created_date')
+
+		return context
+
 class ReviewView(View):
     @method_decorator(login_required)
     def get(self, request, course_code, instructor_id=None):

@@ -1,0 +1,64 @@
+{% extends "courses/base.html" %}
+{% load static %}
+{% load stars %}
+
+{% block "title" %}Professor &mdash; {{ object.name }}{% endblock %}
+{% block "ogtitle" %}Professor &mdash; {{ object.name }}{% endblock %}
+{% block "page_title" %}Professor &mdash; {{ object.name }}{% endblock %}
+
+{% block "courses_breadcrumbs" %}
+	<li>Professor &mdash; {{ object.name }}</li>
+{% endblock %}
+
+{% block "js" %}
+	{{ block.super }}
+	<script type="text/javascript" src="{% static "js/lib/Chart.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/barplot.js" %}"></script>
+{% endblock %}
+
+{% block "page_class" %}course_or_section_page{% endblock %}
+
+{% block "content" %}
+	<p>
+		<h4>Professor:</h4> {{ object.name }}
+	</p>
+
+	<p>
+		<h4>Average rating:</h4>
+		{% if object.rating %}
+			{{ object.rating|star }} ({{ object.rating|floatformat:2 }})
+		{% else %}
+			<span style="font-weight: normal">No reviews yet!</span>
+		{% endif %}
+	</p>
+
+	<p>
+		<h4>Courses taught:</h4>
+
+		{% if courses_taught %}
+			<ul>
+				{% for c in courses_taught %}
+					<li>{{ c.code}} &mdash; {{ c.name }} (<a href="/courses/browse/instructor/{{ object.id }}/course/{{ c.code_slug }}/">See only these reviews</a>)</li>
+				{% endfor %}
+			</ul>
+		{% else %}
+			No courses listed for this professor.
+		{% endif %}
+	</p>
+
+	<p>
+		<h4>Reviews of this professor:</h4>
+		<br />
+
+		{% if reviews %}
+			{% for review in reviews %}
+				{% include "reviews/review_list_item.html" with is_instructor_view=True %}
+			{% endfor %}
+		{% else %}
+			<br />
+			No reviews yet for this professor. You can be the first! Click on one of the classes above and then click "Write review".
+		{% endif %}
+	</p>
+
+
+{% endblock %}

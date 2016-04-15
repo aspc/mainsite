@@ -2,6 +2,10 @@
 <div class="reviews_list-item">
     <p>
         <small>
+			{% if is_instructor_view %}
+			<strong>Course:</strong> {{ review.course }}
+			<br />
+			{% endif %}
 			<strong>Reviewed on:</strong> {{ review.created_date|date:"F d, Y" }}
 			<br />
 			{% if not is_section %}
@@ -12,7 +16,7 @@
 		</small>
     </p>
     <p>{{ review.comments|linebreaksbr  }}</p>
-	{% if not is_section %}
+	{% if not is_section and not is_instructor_view %}
 		<small><a href="{{ review.get_url_to_section_page }}">Only see reviews for {{ review.instructor }}...</a></small>
 	{% endif %}
 	<div class="reviews_list-edit_review">
