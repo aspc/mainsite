@@ -48,6 +48,18 @@ STATIC_ROOT = os.path.abspath(os.path.join(PROJECT_ROOT, '..', 'static'))
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
 
+# Specify a URL regex for which to enable the sending of CORS headers;
+CORS_URLS_REGEX = r'^/api/.*$'
+
+# Allow cross-origin resource sharing (via the API) for all origins
+CORS_ORIGIN_ALLOW_ALL = True
+
+# The allowed HTTP methods that can be used when making the actual request
+CORS_ALLOW_METHODS = ('GET')
+
+# Replace the HTTP_REFERER header if CORS checks pass so that CSRF django middleware checks will work with https
+CORS_REPLACE_HTTPS_REFERER = True
+
 # Boolean that decides if compression will happen. To test compression when DEBUG
 # is True COMPRESS_ENABLED must also be set to True.
 # Set this to True only if you want to test compression locally. Otherwise, it's always
