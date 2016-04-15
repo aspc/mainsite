@@ -3,13 +3,13 @@
     <p>
         <small>
 			{% if is_instructor_view %}
-			<strong>Course:</strong> {{ review.course }}
+			<strong>Course:</strong> <a style="background-image: none" href="/courses/browse/course/{{ review.course.code_slug }}/">{{ review.course }}</a>
 			<br />
 			{% endif %}
 			<strong>Reviewed on:</strong> {{ review.created_date|date:"F d, Y" }}
 			<br />
 			{% if not is_section %}
-			<strong>Professor:</strong> {{ review.instructor }}
+			<strong>Professor:</strong> <a style="background-image: none" href="/courses/browse/instructor/{{ review.instructor.id }}/">{{ review.instructor }}</a>
 			<br />
 			{% endif %}
 			<strong>Rating:</strong> {{ review.overall_rating | star}} (<span class="reviews_list-rating_score">{{ review.overall_rating}}</span>)

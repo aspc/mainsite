@@ -18,12 +18,6 @@
 	<li>Professor &mdash; {{ object.name }}</li>
 {% endblock %}
 
-{% block "js" %}
-	{{ block.super }}
-	<script type="text/javascript" src="{% static "js/lib/Chart.js" %}"></script>
-	<script type="text/javascript" src="{% static "js/barplot.js" %}"></script>
-{% endblock %}
-
 {% block "page_class" %}course_or_section_page{% endblock %}
 
 {% block "content" %}
