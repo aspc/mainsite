@@ -636,7 +636,18 @@ ul#reviews_header .big {
 
 #review_search_form #submit {
 	float: none !important;
-	margin-left: 2%;
+}
+
+.review_search-instructor_list h4 {
+	display: inline;
+}
+
+.instructor_list-name {
+	float: left;
+}
+
+.instructor_list-average_rating {
+	float: right;
 }
 
 .search_result-left_panel {
@@ -686,6 +697,10 @@ ul#reviews_header .big {
 	list-style: none;
 	padding: 0;
 	color: red;
+}
+
+.hidden {
+	display: none;
 }
 
 /* @end */
