@@ -1,6 +1,6 @@
 from django.conf.urls import *
 from django.views.generic.base import TemplateView
-from aspc.courses.views import SectionDetailView, CourseDetailView, ReviewView, ReviewSearchView
+from aspc.courses.views import SectionDetailView, CourseDetailView, InstructorDetailView, ReviewView, ReviewSearchView
 
 urlpatterns = [
 	# Home: /courses
@@ -19,6 +19,7 @@ urlpatterns = [
 
 	# Browse: /courses/browse
 	url(r'^browse/course/(?P<course_code>[\w\d-]+)/$', CourseDetailView.as_view(), name="course_detail"),
+	url(r'^browse/instructor/(?P<instructor_id>[\d-]+)/$', InstructorDetailView.as_view(), name="course_detail"),
 	url(r'^browse/instructor/(?P<instructor_id>\d+)/course/(?P<course_code>[\w\d-]+)/$', SectionDetailView.as_view(), name="section_detail"),
 
 	# Reviews: /courses/reviews

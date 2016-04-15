@@ -9,7 +9,7 @@ from django.forms.widgets import Widget, Select
 from django.forms.models import ModelChoiceIterator
 from django.utils.safestring import mark_safe
 from django.db.models import Q
-
+import operator
 
 def requirement_area_label(campus_value):
     return CAMPUSES_FULL_NAMES[campus_value]
@@ -257,7 +257,76 @@ class ICalExportForm(forms.Form):
                                         "must be after the first day of classes.")
 
 class ReviewSearchForm(forms.Form):
-    query = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'size': '40', 'placeholder': 'e.g. "spanish" or "POLI001"'}))
+	object_type = forms.ChoiceField(
+		required=False,
+		choices=[('course', 'courses'), ('professor', 'professors')],
+		widget=forms.Select(attrs={'id': 'object_type_dropdown'})
+	)
+	department = DeptModelChoice(
+		required=False,
+		queryset=Department.objects.annotate(num_courses=Count('course_set')).filter(num_courses__gt=0).distinct().order_by('code'),
+		empty_label="(any)"
+	)
+	course_name_or_number = forms.CharField(
+		required=False,
+		max_length=100,
+		widget=forms.TextInput(attrs={'size': '40', 'placeholder': 'e.g. "Intro Biology" or "001A"'})
+	)
+	professor_name = forms.CharField(
+		required=False,
+		max_length=100,
+		widget=forms.TextInput(attrs={'size': '40', 'placeholder': 'e.g. "David Oxtoby"'})
+	)
+
+	def build_queryset(self):
+		if self.cleaned_data['object_type'] == 'course':
+			qs = Course.objects.all()
+
+			if self.cleaned_data.get('department'):
+				qs = qs.filter(departments=self.cleaned_data['department'])
+
+			if self.cleaned_data.get('course_name_or_number'):
+				keyword_tokens = self.cleaned_data['course_name_or_number'].split()
+				for k in keyword_tokens:
+					qs = qs.filter(Q(name__icontains=k) | Q(code__icontains=k))
+
+			return qs.distinct(), 'course'
+		elif self.cleaned_data['object_type'] == 'professor':
+			department_instructors = []
+			filtered_instructors = []
+
+			if self.cleaned_data.get('department'):
+				section_objects = Section.objects.filter(course__departments=self.cleaned_data['department'])
+				for s in section_objects:
+					for i in s.instructors.all():
+						department_instructors.append(i)
+				department_instructors = list(set(department_instructors))
+
+			if self.cleaned_data.get('professor_name'):
+				name_tokens = re.split('(?!-)\W+', self.cleaned_data['professor_name'])
+				filtered_instructors = list(Instructor.objects.filter(
+					reduce(
+						operator.and_,
+						(Q(name__icontains=nt) for nt in name_tokens)
+					)
+				).distinct())
+
+			to_return = None
+
+			if department_instructors and filtered_instructors:
+				# Return the intersection of both lists
+				to_return = list(set(department_instructors) & set(filtered_instructors))
+			elif department_instructors:
+				to_return = department_instructors
+			elif filtered_instructors:
+				to_return = filtered_instructors
+			else:
+				to_return = list(Instructor.objects.all().distinct())
+
+			to_return.sort(key=operator.attrgetter('name'))
+			return to_return, 'instructor'
+		else:
+			return [], ''
 
 class ReviewForm(forms.Form):
     CHOICES = [(i,i) for i in range(1,6)]
@@ -272,7 +341,7 @@ class ReviewForm(forms.Form):
       self.fields['professor'] = forms.ModelChoiceField(queryset=Instructor.objects.filter(pk__in=map(lambda u: u.id, instructors)))
       if review:
         self.initial['professor'] = review.instructor
-        self.initial['overall_rating'] = review.overall_rating
+        self.initial['overall_rating'] = int(review.overall_rating)
         self.initial['work_per_week'] = review.work_per_week
         self.initial['comments'] = review.comments
 

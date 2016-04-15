@@ -348,6 +348,30 @@ class CourseDetailView(generic.DetailView):
         context['course_instructor_list'] = course_instructor_list
         return context
 
+class InstructorDetailView(generic.DetailView):
+	model = Instructor
+	template_name = 'browse/instructor_detail.html'
+
+	def get_object(self):
+		try:
+			return Instructor.objects.get(id=self.kwargs['instructor_id'])
+		except IndexError:
+			raise Http404
+
+	def get_context_data(self, **kwargs):
+		context = super(InstructorDetailView, self).get_context_data(**kwargs)
+
+		instructor_object = Instructor.objects.get(id=self.kwargs['instructor_id'])
+		sections_taught = Section.objects.filter(instructors=instructor_object)
+		courses_taught = []
+		for s in sections_taught:
+			courses_taught.append(s.course)
+
+		context['courses_taught'] = list(set(courses_taught))
+		context['reviews'] = CourseReview.objects.filter(course__in=context['courses_taught'], instructor=instructor_object).order_by('-created_date')
+
+		return context
+
 class ReviewView(View):
     @method_decorator(login_required)
     def get(self, request, course_code, instructor_id=None):
@@ -381,34 +405,31 @@ class ReviewView(View):
 class ReviewSearchView(View):
     def get(self, request):
         form = ReviewSearchForm(request.GET)
-        if form.is_valid():
-            kws = form.cleaned_data['query'].split()
-            results_set = Course.objects.filter(
-                reduce(
-                    operator.and_,
-                    ((Q(code__icontains=kw) |
-                      Q(name__icontains=kw) |
-                      Q(departments__name__icontains=kw))
-                     for kw in kws)
-                )
-            ).distinct()
-            paginator = Paginator(results_set, per_page=20, orphans=10)
-            GET_data = request.GET.copy()
+        if len(request.GET) > 0:
+            if form.is_valid():
+                results_set, search_type = form.build_queryset()
+                paginator = Paginator(results_set, per_page=20, orphans=10)
+                GET_data = request.GET.copy()
 
-            page = int(request.GET.get('page', '1'))
-            GET_data.pop('page', None)
+                page = int(request.GET.get('page', '1'))
+                GET_data.pop('page', None)
 
-            try:
-                results = paginator.page(page)
-            except (EmptyPage, InvalidPage):
-                results = paginator.page(paginator.num_pages)
+                try:
+                    results = paginator.page(page)
+                except (EmptyPage, InvalidPage):
+                    results = paginator.page(paginator.num_pages)
 
-            return render(request, 'reviews/review_search.html', {
-                'form': form,
-                'did_perform_search': True,
-                'results': results,
-                'path': ''.join([request.path, '?', GET_data.urlencode()]),
-            })
+                return render(request, 'reviews/review_search.html', {
+                    'form': form,
+                    'did_perform_search': True,
+                    'results': results,
+                    'search_type': search_type,
+                    'path': ''.join([request.path, '?', GET_data.urlencode()]),
+                })
+            else:
+                return render(request, 'reviews/review_search.html', {
+                    'form': form,
+                })
         else:
             return render(request, 'reviews/review_search.html', {
                 'form': form,

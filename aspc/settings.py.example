@@ -79,3 +79,6 @@ TWITTER_ACCESS_TOKEN_SECRET = ''
 # Set these values to make Facebook API calls (e.g. for the events app)
 FACEBOOK_APP_ID = ''
 FACEBOOK_APP_SECRET = ''
+
+ANNOUNCEMENT_BANNER_ACTIVE = False
+ANNOUNCEMENT_BANNER_CONTENT = ''
