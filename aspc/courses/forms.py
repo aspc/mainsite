@@ -9,6 +9,7 @@ from django.forms.widgets import Widget, Select
 from django.forms.models import ModelChoiceIterator
 from django.utils.safestring import mark_safe
 from django.db.models import Q
+import operator
 
 def requirement_area_label(campus_value):
     return CAMPUSES_FULL_NAMES[campus_value]
@@ -291,18 +292,38 @@ class ReviewSearchForm(forms.Form):
 
 			return qs.distinct(), 'course'
 		elif self.cleaned_data['object_type'] == 'professor':
-			qs = Instructor.objects.all()
+			department_instructors = []
+			filtered_instructors = []
 
-			# TODO
 			if self.cleaned_data.get('department'):
-				pass
+				section_objects = Section.objects.filter(course__departments=self.cleaned_data['department'])
+				for s in section_objects:
+					for i in s.instructors.all():
+						department_instructors.append(i)
+				department_instructors = list(set(department_instructors))
 
 			if self.cleaned_data.get('professor_name'):
-				instructor_tokens = re.split('(?!-)\W+', self.cleaned_data['professor_name'])
-				for t in instructor_tokens:
-					qs = qs.filter(name__icontains=t)
+				name_tokens = re.split('(?!-)\W+', self.cleaned_data['professor_name'])
+				filtered_instructors = list(Instructor.objects.filter(
+					reduce(
+						operator.and_,
+						(Q(name__icontains=nt) for nt in name_tokens)
+					)
+				).distinct())
 
-			return qs.distinct(), 'instructor'
+			to_return = None
+
+			if department_instructors and filtered_instructors:
+				# Return the intersection of both lists
+				to_return = list(set(department_instructors) & set(filtered_instructors))
+			elif department_instructors:
+				to_return = department_instructors
+			elif filtered_instructors:
+				to_return = filtered_instructors
+			else:
+				to_return = Instructor.objects.all().distinct()
+
+			return to_return, 'instructor'
 		else:
 			return [], ''
 
