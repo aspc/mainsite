@@ -25,3 +25,4 @@ kombu==3.0.26
 djangorestframework==3.2.4
 django-webtest==1.7.8
 coverage==4.1b2
+django-cors-headers

@@ -100,9 +100,11 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 MIDDLEWARE_CLASSES = (
+	'corsheaders.middleware.CorsMiddleware',
 	'django.middleware.common.CommonMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',
 	'django.middleware.csrf.CsrfViewMiddleware',
+	'corsheaders.middleware.CorsPostCsrfMiddleware',
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'aspc.auth2.middleware.CASMiddleware',
 	'debug_toolbar.middleware.DebugToolbarMiddleware',
@@ -135,6 +137,7 @@ INSTALLED_APPS = (
 	'debug_toolbar',
     'rest_framework',
     'rest_framework.authtoken',
+	'corsheaders',
 	#'djcelery',
 	'stdimage',
 	'compressor',

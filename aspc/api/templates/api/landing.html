@@ -23,45 +23,58 @@
 <p>You must login to obtain your authentication token.</p>
 {% endif %}
 <h2 id="example-using-curl">Example using cURL</h2>
-<h3 id="request-get-">Request (GET)</h3>
-{% if token %}
-<pre><code>curl -H &quot;Authorization: Token {{ token }}&quot; https://aspc.pomona.edu/api/menu/
-</code></pre>
-{% else %}
-<pre><code>curl -H &quot;Authorization: Token 83056d12c23f007d1d2ad7d2713b776d46&quot; https://aspc.pomona.edu/api/menu/
-</code></pre>
-{% endif %}
-<h3 id="response-200-application-json-">Response 200 (application/json)</h3>
-<pre><code>[
-    {
-        &quot;day&quot;: &quot;fri&quot;,
-        &quot;dining_hall&quot;: &quot;cmc&quot;,
-        &quot;food_items&quot;: &quot;[\&quot;Breakfast Selections\&quot;, \&quot;Scrambled Eggs\\nCheese &amp; Bacon Eggs\\nTurkey Bacon &amp; Sausage Patties\\nChorizo &amp; Cheese Quesadilla\&quot;, \&quot;Oatmeal &amp; Grits\\nWaffles\\nHash Browns \\nCranberry &amp; Apple Cinnamon Muffins\&quot;, \&quot;Make Your Own Waffle Station\&quot;]&quot;,
-        &quot;id&quot;: 11,
-        &quot;meal&quot;: &quot;breakfast&quot;
-    },
-    {
-        &quot;day&quot;: &quot;fri&quot;,
-        &quot;dining_hall&quot;: &quot;cmc&quot;,
-        &quot;food_items&quot;: &quot;[\&quot;Chocolate Chip Cookies\\nCinnamon Roll Cheesecake Cookies\\nPina Colada Bar\\nLemon Blueberry Pound Cake\&quot;, \&quot;Red Velvet Cake\\nVegan Banana Cream Pie\\nMade Without Gluten Rochers\&quot;]&quot;,
-        &quot;id&quot;: 13,
-        &quot;meal&quot;: &quot;dessert&quot;
-    }, ...
-]
-</code></pre><h2 id="menu-api">Menu API</h2>
+<pre>
+	<code>
+curl -H &quot;Authorization: Token {% if token %}{{ token }}{% else %}YOUR_TOKEN{% endif %}&quot; {{ absolute_uri }}menu/
+	</code>
+	<strong>OR</strong>
+	<code>
+curl &quot;{{ absolute_uri }}menu/?auth_token={% if token %}{{ token }}{% else %}YOUR_TOKEN{% endif %}&quot;
+	</code>
+</pre>
+<h2 id="example-using-javascript">Example using JavaScript</h2>
+	<pre>
+		<code>
+var auth_token = '{% if token %}{{ token }}{% else %}YOUR_TOKEN{% endif %}',
+	api_endpoint = '{{ absolute_uri }}menu/',
+	response = null;
+
+// Requires jQuery
+$.ajax({
+	url: api_endpoint,
+	data: {auth_token: auth_token}
+}).done(function (data) {
+	response = data;
+});
+		</code>
+	</pre>
+<h2 id="example-using-python">Example using Python</h2>
+	<pre>
+		<code>
+import requests
+import json
+
+response = requests.get(
+	'{{ absolute_uri }}menu/',
+	params = {
+		'auth_token': '{% if token %}{{ token }}{% else %}YOUR_TOKEN{% endif %}'
+	}
+)
+
+data = json.loads(response.text)
+		</code>
+	</pre>
+<h2 id="menu-api">Menu Endpoints</h2>
 <h3 id="all-menus-api-menu-">All Menus [/api/menu/]</h3>
 <p>Lists all menus</p>
-<h4 id="request-get-">Request (GET)</h4>
-{% if token %}
-<pre><code>+ Headers
-    Authorization: Token {{ token }}
-</code></pre>
-{% else %}
-<pre><code>+ Headers
-    Authorization: Token 83456d12c23f007d1d2ad7d2713b776d4644c21c
-</code></pre>
-{% endif %}
-<h4 id="response-200-application-json-">Response 200 (application/json)</h4>
+<h4 id="request-get-">Example request (GET)</h4>
+<pre>
+	<code>
+curl &quot;{{ absolute_uri }}menu/?auth_token={% if token %}{{ token }}{% else %}YOUR_TOKEN{% endif %}&quot;
+	</code>
+</pre>
+
+<h4 id="response-200-application-json-">Example response 200 (application/json)</h4>
 <pre><code>[
     {
         &quot;day&quot;: &quot;fri&quot;,
@@ -97,17 +110,14 @@
 </ul>
 </li>
 </ul>
-<h4 id="request-get-">Request (GET)</h4>
-{% if token %}
-<pre><code>+ Headers
-    Authorization: Token {{ token }}
-</code></pre>
-{% else %}
-<pre><code>+ Headers
-    Authorization: Token 83456d12c23f007d1d2ad7d2713b776d4644c21c
-</code></pre>
-{% endif %}
-<h4 id="response-200-application-json-">Response 200 (application/json)</h4>
+<h4 id="request-get-">Example request (GET)</h4>
+<pre>
+	<code>
+curl &quot;{{ absolute_uri }}menu/dining_hall/cmc?auth_token={% if token %}{{ token }}{% else %}YOUR_TOKEN{% endif %}&quot;
+	</code>
+</pre>
+
+<h4 id="response-200-application-json-">Example response 200 (application/json)</h4>
 <pre><code>[
     {
         &quot;day&quot;: &quot;fri&quot;,
@@ -144,17 +154,14 @@
 </ul>
 </li>
 </ul>
-<h4 id="request-get-">Request (GET)</h4>
-{% if token %}
-<pre><code>+ Headers
-    Authorization: Token {{ token }}
-</code></pre>
-{% else %}
-<pre><code>+ Headers
-    Authorization: Token 83456d12c23f007d1d2ad7d2713b776d4644c21c
-</code></pre>
-{% endif %}
-<h4 id="response-200-application-json-">Response 200 (application/json)</h4>
+<h4 id="request-get-">Example request (GET)</h4>
+<pre>
+	<code>
+curl &quot;{{ absolute_uri }}menu/day/fri?auth_token={% if token %}{{ token }}{% else %}YOUR_TOKEN{% endif %}&quot;
+	</code>
+</pre>
+
+<h4 id="response-200-application-json-">Example response 200 (application/json)</h4>
 <pre><code>[
     {
         &quot;day&quot;: &quot;fri&quot;,
@@ -205,17 +212,14 @@
 </ul>
 </li>
 </ul>
-<h4 id="request-get-">Request (GET)</h4>
-{% if token %}
-<pre><code>+ Headers
-    Authorization: Token {{ token }}
-</code></pre>
-{% else %}
-<pre><code>+ Headers
-    Authorization: Token 83456d12c23f007d1d2ad7d2713b776d4644c21c
-</code></pre>
-{% endif %}
-<h4 id="response-200-application-json-">Response 200 (application/json)</h4>
+<h4 id="request-get-">Example request (GET)</h4>
+<pre>
+	<code>
+curl &quot;{{ absolute_uri }}menu/dining_hall/cmc/day/fri?auth_token={% if token %}{{ token }}{% else %}YOUR_TOKEN{% endif %}&quot;
+	</code>
+</pre>
+
+<h4 id="response-200-application-json-">Example response 200 (application/json)</h4>
 <pre><code>[
     {
         &quot;day&quot;: &quot;fri&quot;,
@@ -277,17 +281,14 @@
 </ul>
 </li>
 </ul>
-<h4 id="request-get-">Request (GET)</h4>
-{% if token %}
-<pre><code>+ Headers
-    Authorization: Token {{ token }}
-</code></pre>
-{% else %}
-<pre><code>+ Headers
-    Authorization: Token 83456d12c23f007d1d2ad7d2713b776d4644c21c
-</code></pre>
-{% endif %}
-<h4 id="response-200-application-json-">Response 200 (application/json)</h4>
+<h4 id="request-get-">Example request (GET)</h4>
+<pre>
+	<code>
+curl &quot;{{ absolute_uri }}menu/dining_hall/cmc/day/fri/meal/breakfast?auth_token={% if token %}{{ token }}{% else %}YOUR_TOKEN{% endif %}&quot;
+	</code>
+</pre>
+
+<h4 id="response-200-application-json-">Example response 200 (application/json)</h4>
 <pre><code>{
     &quot;day&quot;: &quot;fri&quot;,
     &quot;dining_hall&quot;: &quot;cmc&quot;,

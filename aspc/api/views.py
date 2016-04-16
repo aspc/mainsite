@@ -10,6 +10,14 @@ from rest_framework.throttling import UserRateThrottle
 from rest_framework.authtoken.models import Token
 from django.views.decorators.cache import never_cache
 
+class TokenAuthenticationWithQueryString(TokenAuthentication):
+	def authenticate(self, request):
+		auth_token = request.query_params.get('auth_token')
+		if auth_token:
+			return self.authenticate_credentials(auth_token.strip())
+		else:
+			return super(TokenAuthenticationWithQueryString, self).authenticate(request)
+
 @never_cache
 def api_home(request):
     current_user = request.user
@@ -24,7 +32,7 @@ class MenuList(APIView):
     """
     List all menus
     """
-    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthenticationWithQueryString)
     permission_classes = (IsAuthenticated,)
     throttle_classes = (UserRateThrottle,)
 
@@ -37,7 +45,7 @@ class MenuDiningHallDetail(APIView):
     """
     Retrieve a list of menus by their dining hall
     """
-    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthenticationWithQueryString)
     permission_classes = (IsAuthenticated,)
     throttle_classes = (UserRateThrottle,)
 
@@ -56,7 +64,7 @@ class MenuDayDetail(APIView):
     """
     Retrieve a list of menus by their day
     """
-    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthenticationWithQueryString)
     permission_classes = (IsAuthenticated,)
     throttle_classes = (UserRateThrottle,)
 
@@ -75,7 +83,7 @@ class MenuDiningHallDayDetail(APIView):
     """
     Retrieve a list of menus by their dining hall and day
     """
-    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthenticationWithQueryString)
     permission_classes = (IsAuthenticated,)
     throttle_classes = (UserRateThrottle,)
 
@@ -94,7 +102,7 @@ class MenuDiningHallDayMealDetail(APIView):
     """
     Retrieve a menu by its dining hall, day, and meal
     """
-    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthenticationWithQueryString)
     permission_classes = (IsAuthenticated,)
     throttle_classes = (UserRateThrottle,)
 
