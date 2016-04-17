@@ -680,7 +680,7 @@ ul#reviews_header .big {
 }
 
 #new_review_form label {
-	width: 20em;
+	width: 28em;
 	vertical-align: top;
 }
 
@@ -697,6 +697,10 @@ ul#reviews_header .big {
 	list-style: none;
 	padding: 0;
 	color: red;
+}
+
+#new_review_form .helptext {
+	display: block;
 }
 
 .hidden {
