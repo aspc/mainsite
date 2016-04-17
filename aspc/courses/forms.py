@@ -332,6 +332,7 @@ class ReviewForm(forms.Form):
     CHOICES = [(i,i) for i in range(1,6)]
     overall_rating = forms.ChoiceField(choices=CHOICES, label='How many stars do you give this course? (Out of 5)')
     useful_rating = forms.ChoiceField(choices=CHOICES, label='How useful is this course?')
+    engagement_rating = forms.ChoiceField(choices=CHOICES, label='How engaging was this course?')
     difficulty_rating = forms.ChoiceField(choices=CHOICES, label='How difficult is the class?')
     competency_rating = forms.ChoiceField(choices=CHOICES, label='How competent is the instructor on this subject?')
     lecturing_rating = forms.ChoiceField(choices=CHOICES, label='How good are the lectures?')
@@ -350,6 +351,7 @@ class ReviewForm(forms.Form):
         self.initial['overall_rating'] = int(review.overall_rating)
         self.initial['work_per_week'] = review.work_per_week
         self.initial['useful_rating'] = int(review.useful_rating)
+        self.initial['engagement_rating'] = int(review.engagement_rating)
         self.initial['difficulty_rating'] = int(review.difficulty_rating)
         self.initial['competency_rating'] = int(review.competency_rating)
         self.initial['lecturing_rating'] = int(review.lecturing_rating)

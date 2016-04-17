@@ -396,6 +396,7 @@ class ReviewView(View):
             comments = form.cleaned_data["comments"]
 
             useful_rating = form.cleaned_data["useful_rating"]
+            engagement_rating = form.cleaned_data["engagement_rating"]
             difficulty_rating = form.cleaned_data["difficulty_rating"]
             competency_rating = form.cleaned_data["competency_rating"]
             lecturing_rating = form.cleaned_data["lecturing_rating"]
@@ -407,6 +408,7 @@ class ReviewView(View):
             review.work_per_week = work_per_week
 
             review.useful_rating = int(useful_rating)
+            review.engagement_rating = int(difficulty_rating)
             review.difficulty_rating = int(difficulty_rating)
             review.competency_rating = int(competency_rating)
             review.lecturing_rating = int(lecturing_rating)
