@@ -16,6 +16,9 @@
 				<li class="reviews_header-section">
 					<canvas id="reviews_barplot" width="200" height="150"></canvas>
 				</li>
+                <li class="reviews_header-section">
+					<canvas id="reviews_radar" width="200" height="150"></canvas>
+				</li>
 				<li class="reviews_header-section">
 					<img src="{% static "images/housing/write_review.png" %}" width="60px" />
 					<br />
@@ -34,8 +37,8 @@
 				{% endif %}
 			{% endif %}
 		</ul>
-
 		{% if reviews %}
+            <input type="hidden" id="miscellaneous_ratings" value="{{ miscellaneous_ratings|join:","  }}">
 			<div id="reviews_list">
 				<div id="reviews_list-header">
 					{% if is_section %}
