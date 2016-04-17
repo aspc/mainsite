@@ -233,9 +233,8 @@ class SearchForm(forms.Form):
             keywords = [a.lower() for a in keyword_regex.findall(self.cleaned_data['keywords'])]
             for kw in keywords:
                 qs = qs.filter(Q(description__icontains=kw) | Q(course__name__icontains=kw))
-            qs = qs.distinct()
 
-        qs = qs.order_by('code_slug'), term
+        qs = qs.distinct().order_by('code_slug'), term
         return qs
 
 class ScheduleForm(forms.Form):
