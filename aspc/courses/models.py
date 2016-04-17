@@ -65,7 +65,7 @@ class Instructor(models.Model):
         return slugify(self.name)
 
     def get_miscellaneous_ratings(self):
-        return [self.useful_rating, self.engagement_rating, self.difficulty_rating, self.competency_rating, self.lecturing_rating, self.enthusiasm_rating, self.approachable_rating]
+        return [self.useful_rating or 0, self.engagement_rating or 0, self.difficulty_rating or 0, self.competency_rating or 0, self.lecturing_rating or 0, self.enthusiasm_rating or 0, self.approachable_rating or 0]
 
 
 class Department(models.Model):
@@ -132,7 +132,7 @@ class Course(models.Model):
                 {'course_code': self.code_slug})
 
     def get_miscellaneous_ratings(self):
-        return [self.useful_rating, self.engagement_rating, self.difficulty_rating, self.competency_rating, self.lecturing_rating, self.enthusiasm_rating, self.approachable_rating]
+        return [self.useful_rating or 0, self.engagement_rating or 0, self.difficulty_rating or 0, self.competency_rating or 0, self.lecturing_rating or 0, self.enthusiasm_rating or 0, self.approachable_rating or 0]
 
     # TODO: Merge instructors who taught this class previously
     def get_instructors_from_all_sections(self):
