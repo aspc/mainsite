@@ -346,17 +346,22 @@ class ReviewForm(forms.Form):
       self.course = Course.objects.get(code_slug=course_code)
       instructors = self.course.get_instructors_from_all_sections()
       self.fields['professor'] = forms.ModelChoiceField(queryset=Instructor.objects.filter(pk__in=map(lambda u: u.id, instructors)))
+      def smart_int(rating):
+          if rating:
+              return int(rating)
+          else:
+              return 1
       if review:
         self.initial['professor'] = review.instructor
         self.initial['overall_rating'] = int(review.overall_rating)
         self.initial['work_per_week'] = review.work_per_week
-        self.initial['useful_rating'] = int(review.useful_rating)
-        self.initial['engagement_rating'] = int(review.engagement_rating)
-        self.initial['difficulty_rating'] = int(review.difficulty_rating)
-        self.initial['competency_rating'] = int(review.competency_rating)
-        self.initial['lecturing_rating'] = int(review.lecturing_rating)
-        self.initial['approachable_rating'] = int(review.approachable_rating)
-        self.initial['enthusiasm_rating'] = int(review.enthusiasm_rating)
+        self.initial['useful_rating'] = smart_int(review.useful_rating)
+        self.initial['engagement_rating'] = smart_int(review.engagement_rating)
+        self.initial['difficulty_rating'] = smart_int(review.difficulty_rating)
+        self.initial['competency_rating'] = smart_int(review.competency_rating)
+        self.initial['lecturing_rating'] = smart_int(review.lecturing_rating)
+        self.initial['approachable_rating'] = smart_int(review.approachable_rating)
+        self.initial['enthusiasm_rating'] = smart_int(review.enthusiasm_rating)
         self.initial['comments'] = review.comments
     def course(self):
       return self.course
