@@ -55,8 +55,8 @@
 
 			        	<div class="rating-div">
 			        		<h4>Rating: </h4>
-			        		{% if course.get_average_rating %}
-			        			{{ course.get_average_rating|star }} <a href="{{ course.get_absolute_url }}">Read reviews!</a>
+			        		{% if course.rating %}
+			        			{{ course.rating|star }} <a href="{{ course.get_absolute_url }}">Read reviews!</a>
 			        		{% else %}
 			        			<a href="{% url "write_review" course.code_slug %}"> No reviews yet. Add your own! </a>
 			        		{% endif %}

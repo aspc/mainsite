@@ -141,10 +141,6 @@ class Course(models.Model):
             instructors += section.instructors.all()
         return instructors
 
-    def get_average_rating(self):
-        reviews = CourseReview.objects.filter(course=self)
-        return reviews.aggregate(Avg("overall_rating"))["overall_rating__avg"]
-
     def get_most_recent_section(self):
         return self.sections.all().order_by('term')[0]
 
@@ -200,9 +196,6 @@ class Section(models.Model):
         return {'events': event_list, 'info': {'course_code': self.code, 'course_code_slug': self.code_slug,
                                                'detail_url': self.get_url_to_section_page(),
                                                'campus_code': self.get_campus(), }}
-    def get_average_rating(self):
-        reviews = CourseReview.objects.filter(course=self.course, instructor__in=self.instructors.all())
-        return reviews.aggregate(Avg("overall_rating"))["overall_rating__avg"]
 
     def get_miscellaneous_ratings(self):
         reviews = CourseReview.objects.filter(course=self.course, instructor__in=self.instructors.all())

@@ -345,7 +345,7 @@ class CourseDetailView(generic.DetailView):
         course_instructor_list = list(set(course_instructor_list)) # Remove duplicates
 
         context['reviews'] = CourseReview.objects.filter(course=course_object).order_by('-created_date')
-        context['average_rating'] = course_object.get_average_rating()
+        context['average_rating'] = course_object.rating
         context['course_instructor_list'] = course_instructor_list
         context['miscellaneous_ratings'] = course_object.get_miscellaneous_ratings()
         return context
