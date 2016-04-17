@@ -392,9 +392,25 @@ class ReviewView(View):
             overall_rating = form.cleaned_data["overall_rating"]
             work_per_week = form.cleaned_data["work_per_week"]
             comments = form.cleaned_data["comments"]
+
+            useful_rating = form.cleaned_data["useful_rating"]
+            difficulty_rating = form.cleaned_data["difficulty_rating"]
+            competency_rating = form.cleaned_data["competency_rating"]
+            lecturing_rating = form.cleaned_data["lecturing_rating"]
+            approachable_rating = form.cleaned_data["approachable_rating"]
+            enthusiasm_rating = form.cleaned_data["enthusiasm_rating"]
+
             review, created = CourseReview.objects.get_or_create(author=request.user, course=form.course, instructor=instructor)
             review.overall_rating = int(overall_rating)
             review.work_per_week = work_per_week
+
+            review.useful_rating = int(useful_rating)
+            review.difficulty_rating = int(difficulty_rating)
+            review.competency_rating = int(competency_rating)
+            review.lecturing_rating = int(lecturing_rating)
+            review.approachable_rating = int(approachable_rating)
+            review.enthusiasm_rating = int(approachable_rating)
+
             review.comments = comments
             review.save()
             return redirect(reverse('section_detail', kwargs={"instructor_id": instructor.id, "course_code": course_code}))

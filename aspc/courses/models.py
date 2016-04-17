@@ -335,8 +335,13 @@ class CourseReview(models.Model):
 
     overall_rating = models.FloatField(blank=True, null=True)
     grade = models.PositiveSmallIntegerField(blank=True, null=True, choices=POSSIBLE_GRADES)
-
-    work_per_week = models.PositiveSmallIntegerField(default=0)
+    useful_rating = models.FloatField(blank=True, null=True)
+    difficulty_rating = models.FloatField(blank=True, null=True)
+    competency_rating = models.FloatField(blank=True, null=True)
+    lecturing_rating = models.FloatField(blank=True, null=True)
+    enthusiasm_rating = models.FloatField(blank=True, null=True)
+    approachable_rating = models.FloatField(blank=True, null=True)
+    work_per_week = models.PositiveSmallIntegerField(blank=True, null=True)
 
     class Meta:
       unique_together = ('author', 'course', 'instructor')

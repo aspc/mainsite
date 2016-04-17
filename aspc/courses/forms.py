@@ -331,6 +331,12 @@ class ReviewSearchForm(forms.Form):
 class ReviewForm(forms.Form):
     CHOICES = [(i,i) for i in range(1,6)]
     overall_rating = forms.ChoiceField(choices=CHOICES, label='How many stars do you give this course? (Out of 5)')
+    useful_rating = forms.ChoiceField(choices=CHOICES, label='How useful is this course?')
+    difficulty_rating = forms.ChoiceField(choices=CHOICES, label='How difficult is the class?')
+    competency_rating = forms.ChoiceField(choices=CHOICES, label='How competent is the instructor on this subject?')
+    lecturing_rating = forms.ChoiceField(choices=CHOICES, label='How good are the lectures?')
+    approachable_rating = forms.ChoiceField(choices=CHOICES, label='How approachable is the instructor?')
+    enthusiasm_rating = forms.ChoiceField(choices=CHOICES, label='How enthusiastic is the instructor?')
     work_per_week = forms.IntegerField(max_value=25, label='How many hours of homework did you have each week?')
     comments = forms.CharField(widget=forms.Textarea(attrs={'cols': '70', 'rows': '15'}), label='General comments:')
 
@@ -343,7 +349,12 @@ class ReviewForm(forms.Form):
         self.initial['professor'] = review.instructor
         self.initial['overall_rating'] = int(review.overall_rating)
         self.initial['work_per_week'] = review.work_per_week
+        self.initial['useful_rating'] = int(review.useful_rating)
+        self.initial['difficulty_rating'] = int(review.difficulty_rating)
+        self.initial['competency_rating'] = int(review.competency_rating)
+        self.initial['lecturing_rating'] = int(review.lecturing_rating)
+        self.initial['approachable_rating'] = int(review.approachable_rating)
+        self.initial['enthusiasm_rating'] = int(review.enthusiasm_rating)
         self.initial['comments'] = review.comments
-
     def course(self):
       return self.course
