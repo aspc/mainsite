@@ -767,7 +767,7 @@ ul#reviews_header .big {
 		height: 120px;
 	}
 
-	.reviews_header-section:nth-last-child(3), .reviews_header-section:nth-last-child(2) {
+	.reviews_header-section:nth-child(2), .reviews_header-section:nth-child(3) {
 		display: none;
 	}
 
