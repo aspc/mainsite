@@ -17,12 +17,8 @@
 					<canvas id="reviews_barplot" width="200" height="150"></canvas>
 				</li>
                 <li class="reviews_header-section">
+					<input type="hidden" id="miscellaneous_ratings" value="{{ miscellaneous_ratings|join:","  }}">
 					<canvas id="reviews_radar" width="200" height="150"></canvas>
-				</li>
-				<li class="reviews_header-section">
-					<img src="{% static "images/housing/write_review.png" %}" width="60px" />
-					<br />
-					<a href="{% url "write_review" object.course.code_slug %}"><button>Write review</button></a>
 				</li>
 			{% else %}
 				{% if is_section %}
@@ -38,9 +34,11 @@
 			{% endif %}
 		</ul>
 		{% if reviews %}
-            <input type="hidden" id="miscellaneous_ratings" value="{{ miscellaneous_ratings|join:","  }}">
 			<div id="reviews_list">
 				<div id="reviews_list-header">
+					<p>
+						Did you take this class? Tell us what you thought about it! <a href="{% url "write_review" object.course.code_slug %}">Write a review</a>
+					</p>
 					{% if is_section %}
 						<p>Showing reviews for all sections of <em>{{ object.course.name }}</em> ever taught by <em>{{ professor }}</em>.</p>
 						<p>
