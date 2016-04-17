@@ -20,4 +20,9 @@ var data = {
     ]
 };
 
-var myRadarChart = new Chart(radar).Radar(data, {});
+var myRadarChart = new Chart(radar).Radar(data, {
+    scaleOverride:true,
+  scaleSteps:5,
+  scaleStartValue:0,
+scaleStepWidth:1
+});
