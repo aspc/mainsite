@@ -318,6 +318,7 @@ class SectionDetailView(generic.DetailView):
         context['current_term'] = Term.objects.all()[0]
         context['reviews'] = CourseReview.objects.filter(course=course_object, instructor=instructor_object).order_by('-created_date')
         context['average_rating'] = context['reviews'].aggregate(Avg("overall_rating"))["overall_rating__avg"]
+        context['miscellaneous_ratings'] = self.get_object().get_miscellaneous_ratings()
 
         return context
 
@@ -344,8 +345,9 @@ class CourseDetailView(generic.DetailView):
         course_instructor_list = list(set(course_instructor_list)) # Remove duplicates
 
         context['reviews'] = CourseReview.objects.filter(course=course_object).order_by('-created_date')
-        context['average_rating'] = course_object.get_average_rating()
+        context['average_rating'] = course_object.rating
         context['course_instructor_list'] = course_instructor_list
+        context['miscellaneous_ratings'] = course_object.get_miscellaneous_ratings()
         return context
 
 class InstructorDetailView(generic.DetailView):
@@ -392,9 +394,27 @@ class ReviewView(View):
             overall_rating = form.cleaned_data["overall_rating"]
             work_per_week = form.cleaned_data["work_per_week"]
             comments = form.cleaned_data["comments"]
+
+            useful_rating = form.cleaned_data["useful_rating"]
+            engagement_rating = form.cleaned_data["engagement_rating"]
+            difficulty_rating = form.cleaned_data["difficulty_rating"]
+            competency_rating = form.cleaned_data["competency_rating"]
+            lecturing_rating = form.cleaned_data["lecturing_rating"]
+            approachable_rating = form.cleaned_data["approachable_rating"]
+            enthusiasm_rating = form.cleaned_data["enthusiasm_rating"]
+
             review, created = CourseReview.objects.get_or_create(author=request.user, course=form.course, instructor=instructor)
             review.overall_rating = int(overall_rating)
             review.work_per_week = work_per_week
+
+            review.useful_rating = int(useful_rating)
+            review.engagement_rating = int(difficulty_rating)
+            review.difficulty_rating = int(difficulty_rating)
+            review.competency_rating = int(competency_rating)
+            review.lecturing_rating = int(lecturing_rating)
+            review.approachable_rating = int(approachable_rating)
+            review.enthusiasm_rating = int(approachable_rating)
+
             review.comments = comments
             review.save()
             return redirect(reverse('section_detail', kwargs={"instructor_id": instructor.id, "course_code": course_code}))
