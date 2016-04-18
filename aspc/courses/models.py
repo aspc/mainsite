@@ -197,6 +197,10 @@ class Section(models.Model):
                                                'detail_url': self.get_url_to_section_page(),
                                                'campus_code': self.get_campus(), }}
 
+    def get_average_rating(self):
+        reviews = CourseReview.objects.filter(course=self.course, instructor__in=self.instructors.all())
+        return reviews.aggregate(Avg("overall_rating"))["overall_rating__avg"]
+
     def get_miscellaneous_ratings(self):
         reviews = CourseReview.objects.filter(course=self.course, instructor__in=self.instructors.all())
         useful_rating = reviews.aggregate(Avg("useful_rating"))["useful_rating__avg"]
