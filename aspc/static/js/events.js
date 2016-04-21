@@ -18,11 +18,11 @@ ASPC.events = function () {
 					center: 'title',
 					right: 'month,agendaWeek,agendaDay'
 				},
-				minTime: my.self.calendar_data.earliest_event_time,
-				maxTime: my.self.calendar_data.latest_event_time + 3,
+				minTime: ASPC.calendar_data.earliest_event_time,
+				maxTime: ASPC.calendar_data.latest_event_time + 3,
 				allDaySlot: false,
 				editable: false,
-				events: my.self.calendar_data.events
+				events: ASPC.calendar_data.events
 			});
 		},
 		init_datepicker: function () {
@@ -61,12 +61,6 @@ ASPC.events = function () {
 			my.init_datepicker();
 		}
 	};
-
-	/**
-	 * @public
-	 * @description Holds the data for the calendar that is loaded by Django when the template is compiled
-	 */
-	my.self.calendar_data = {};
 
 	/**
 	 * @public
