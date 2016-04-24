@@ -408,12 +408,12 @@ class ReviewView(View):
             review.work_per_week = work_per_week
 
             review.useful_rating = int(useful_rating)
-            review.engagement_rating = int(difficulty_rating)
+            review.engagement_rating = int(engagement_rating)
             review.difficulty_rating = int(difficulty_rating)
             review.competency_rating = int(competency_rating)
             review.lecturing_rating = int(lecturing_rating)
             review.approachable_rating = int(approachable_rating)
-            review.enthusiasm_rating = int(approachable_rating)
+            review.enthusiasm_rating = int(enthusiasm_rating)
 
             review.comments = comments
             review.save()
