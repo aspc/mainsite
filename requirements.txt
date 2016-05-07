@@ -26,3 +26,11 @@ djangorestframework==3.2.4
 django-webtest==1.7.8
 coverage==4.1b2
 django-cors-headers
+
+# Course Recommendations
+numpy==1.11.0
+scipy==0.17.0
+lightfm==1.8
+scikit-learn==0.17.1
+pandas==0.18.1
+matplotlib==1.5.1
