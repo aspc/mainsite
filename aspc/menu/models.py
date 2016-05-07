@@ -78,3 +78,10 @@ class MenuSerializer(serializers.ModelSerializer):
     class Meta:
         model = Menu
         fields = ('id', 'dining_hall', 'day', 'meal', 'food_items')
+
+class Item(models.Model):
+    CHARFIELD_MAX_LENGTH = 255
+    name = models.CharField(max_length=CHARFIELD_MAX_LENGTH)
+    image_url = models.URLField(blank=True, null=True)
+    def __unicode__(self):
+        return self.name
