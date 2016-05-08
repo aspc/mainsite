@@ -18,7 +18,7 @@
 					<li>Closed.</li>
 				{% else %}
 					{% for item in frank_meals.breakfast_items %}
-						<li image_url="{{ item|image_url }}">{{ item }}</li>
+						<li image_url="{{ item.image_url }}">{{ item }}</li>
 					{% endfor %}
 				{% endif %}
 			</ul>
@@ -30,7 +30,7 @@
 					<li>Closed.</li>
 				{% else %}
 					{% for item in frank_meals.lunch_items %}
-						<li image_url="{{ item|image_url }}">{{ item }}</li>
+						<li image_url="{{ item.image_url }}">{{ item }}</li>
 					{% endfor %}
 				{% endif %}
 			</ul>
@@ -42,7 +42,7 @@
 					<li>Closed.</li>
 				{% else %}
 					{% for item in frank_meals.dinner_items %}
-						<li image_url="{{ item|image_url }}">{{ item }}</li>
+						<li image_url="{{ item.image_url }}">{{ item }}</li>
 					{% endfor %}
 				{% endif %}
 			</ul>
@@ -54,7 +54,7 @@
 			<span class="mobile_meal_header">Breakfast</span>
 			<ul>
 				{% for item in frary_meals.breakfast_items %}
-					<li image_url="{{ item|image_url }}">{{ item }}</li>
+					<li image_url="{{ item.image_url }}">{{ item }}</li>
 				{% endfor %}
 			</ul>
 		</td>
@@ -62,7 +62,7 @@
 			<span class="mobile_meal_header">Lunch</span>
 			<ul>
 				{% for item in frary_meals.lunch_items %}
-					<li image_url="{{ item|image_url }}">{{ item }}</li>
+					<li image_url="{{ item.image_url }}">{{ item }}</li>
 				{% endfor %}
 			</ul>
 		</td>
@@ -70,7 +70,7 @@
 			<span class="mobile_meal_header">Dinner</span>
 			<ul>
 				{% for item in frary_meals.dinner_items %}
-					<li image_url="{{ item|image_url }}">{{ item }}</li>
+					<li image_url="{{ item.image_url }}">{{ item }}</li>
 				{% endfor %}
 			</ul>
 		</td>
@@ -87,7 +87,7 @@
 			<span class="mobile_meal_header">Lunch</span>
 			<ul>
 				{% for item in oldenborg_meals.lunch_items %}
-					<li image_url="{{ item|image_url }}">{{ item }}</li>
+					<li image_url="{{ item.image_url }}">{{ item }}</li>
 				{% endfor %}
 			</ul>
 		</td>
@@ -104,7 +104,7 @@
 			<span class="mobile_meal_header">Breakfast</span>
 			<ul>
 				{% for item in cmc_meals.breakfast_items %}
-					<li image_url="{{ item|image_url }}">{{ item }}</li>
+					<li image_url="{{ item.image_url }}">{{ item }}</li>
 				{% endfor %}
 			</ul>
 		</td>
@@ -112,7 +112,7 @@
 			<span class="mobile_meal_header">Lunch</span>
 			<ul>
 				{% for item in cmc_meals.lunch_items %}
-					<li image_url="{{ item|image_url }}">{{ item }}</li>
+					<li image_url="{{ item.image_url }}">{{ item }}</li>
 				{% endfor %}
 			</ul>
 		</td>
@@ -120,7 +120,7 @@
 			<span class="mobile_meal_header">Dinner</span>
 			<ul>
 				{% for item in cmc_meals.dinner_items %}
-					<li image_url="{{ item|image_url }}">{{ item }}</li>
+					<li image_url="{{ item.image_url }}">{{ item }}</li>
 				{% endfor %}
 			</ul>
 		</td>
@@ -131,7 +131,7 @@
 			<span class="mobile_meal_header">Breakfast</span>
 			<ul>
 				{% for item in scripps_meals.breakfast_items %}
-					<li image_url="{{ item|image_url }}">{{ item }}</li>
+					<li image_url="{{ item.image_url }}">{{ item }}</li>
 				{% endfor %}
 			</ul>
 		</td>
@@ -139,7 +139,7 @@
 			<span class="mobile_meal_header">Lunch</span>
 			<ul>
 				{% for item in scripps_meals.lunch_items %}
-					<li image_url="{{ item|image_url }}">{{ item }}</li>
+					<li image_url="{{ item.image_url }}">{{ item }}</li>
 				{% endfor %}
 			</ul>
 		</td>
@@ -147,7 +147,7 @@
 			<span class="mobile_meal_header">Dinner</span>
 			<ul>
 				{% for item in scripps_meals.dinner_items %}
-					<li image_url="{{ item|image_url }}">{{ item }}</li>
+					<li image_url="{{ item.image_url }}">{{ item }}</li>
 				{% endfor %}
 			</ul>
 		</td>
@@ -158,7 +158,7 @@
 			<span class="mobile_meal_header">Breakfast</span>
 			<ul>
 				{% for item in pitzer_meals.breakfast_items %}
-					<li image_url="{{ item|image_url }}">{{ item }}</li>
+					<li image_url="{{ item.image_url }}">{{ item }}</li>
 				{% endfor %}
 			</ul>
 		</td>
@@ -166,7 +166,7 @@
 			<span class="mobile_meal_header">Lunch</span>
 			<ul>
 				{% for item in pitzer_meals.lunch_items %}
-					<li image_url="{{ item|image_url }}">{{ item }}</li>
+					<li image_url="{{ item.image_url }}">{{ item }}</li>
 				{% endfor %}
 			</ul>
 		</td>
@@ -174,7 +174,7 @@
 			<span class="mobile_meal_header">Dinner</span>
 			<ul>
 				{% for item in pitzer_meals.dinner_items %}
-					<li image_url="{{ item|image_url }}">{{ item }}</li>
+					<li image_url="{{ item.image_url }}">{{ item }}</li>
 				{% endfor %}
 			</ul>
 		</td>
@@ -185,7 +185,7 @@
 			<span class="mobile_meal_header">Breakfast</span>
 			<ul>
 				{% for item in mudd_meals.breakfast_items %}
-					<li image_url="{{ item|image_url }}">{{ item }}</li>
+					<li image_url="{{ item.image_url }}">{{ item }}</li>
 				{% endfor %}
 			</ul>
 		</td>
@@ -193,7 +193,7 @@
 			<span class="mobile_meal_header">Lunch</span>
 			<ul>
 				{% for item in mudd_meals.lunch_items %}
-					<li image_url="{{ item|image_url }}">{{ item }}</li>
+					<li image_url="{{ item.image_url }}">{{ item }}</li>
 				{% endfor %}
 			</ul>
 		</td>
@@ -201,7 +201,7 @@
 			<span class="mobile_meal_header">Dinner</span>
 			<ul>
 				{% for item in mudd_meals.dinner_items %}
-					<li image_url="{{ item|image_url }}">{{ item }}</li>
+					<li image_url="{{ item.image_url }}">{{ item }}</li>
 				{% endfor %}
 			</ul>
 		</td>
