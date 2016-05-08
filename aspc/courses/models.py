@@ -134,6 +134,9 @@ class Course(models.Model):
     def get_miscellaneous_ratings(self):
         return [self.useful_rating or 0, self.engagement_rating or 0, self.difficulty_rating or 0, self.competency_rating or 0, self.lecturing_rating or 0, self.enthusiasm_rating or 0, self.approachable_rating or 0]
 
+    def get_miscellaneous_ratings_for_recommendations(self):
+        return self.useful_rating or 3, self.engagement_rating or 3, self.difficulty_rating or 3, self.competency_rating or 3, self.lecturing_rating or 3, self.enthusiasm_rating or 3, self.approachable_rating or 3
+
     # TODO: Merge instructors who taught this class previously
     def get_instructors_from_all_sections(self):
         instructors = []
