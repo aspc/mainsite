@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, url, include
-from aspc.menu.views import home, weekend, weekday, get_image
+from aspc.menu.views import home, weekend, weekday
 
 urlpatterns = [
 	url(r'mon', weekday, {'day': 'mon'}, name='mon'),
@@ -9,6 +9,5 @@ urlpatterns = [
 	url(r'fri', weekday, {'day': 'fri'}, name='fri'),
 	url(r'sat', weekend, {'day': 'sat'}, name='sat'),
 	url(r'sun', weekend, {'day': 'sun'}, name='sun'),
-	url(r'image', get_image, name='get_image'),
 	url(r'', home, name='menu')
 ]

@@ -94,22 +94,6 @@ def weekend (request, day):
 	else:
 		return HttpResponseNotAllowed(['GET'])
 
-def get_image_url(name):
-	GOOGLE_SEARCH_URL = 'https://www.googleapis.com/customsearch/v1?'
-	params = {'q': name, 'key': GOOGLE_SEARCH_KEY, 'cx':GOOGLE_SEARCH_CX, 'num':1, 'searchType': "image"}
-	resp = requests.get(url=GOOGLE_SEARCH_URL, params=params)
-	data = json.loads(resp.text)
-	return data['items'][0]['link']
-
-def get_image(request):
-	name = request.GET['name']
-	i, created = Item.objects.get_or_create(name=name)
-	if not i.image_url:
-		url = str(get_image_url(i.name))
-		i.image_url = url
-		i.save()
-	return HttpResponse(i.image_url)
-
 # Helper function to prevent lookup errors on days when certain dining halls aren't serving
 def _get_or_none(model_objects, **kwargs):
     try:
