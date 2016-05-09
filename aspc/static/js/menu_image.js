@@ -1,6 +1,7 @@
 $('#menu_table tr td ul li').hover(function(){
         var item = $(this);
         var image_url = item.attr('image_url');
+        if (image_url != "None"){
             item.qtip({content: '<img width="100px" height="100px" src="'+image_url+'">',
                 position: {
                     at: 'bottom center'
@@ -21,6 +22,7 @@ $('#menu_table tr td ul li').hover(function(){
                     }
                 }
             },event)
+        }
     }
     ,function(){
         $('.image_link').remove();
