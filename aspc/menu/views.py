@@ -2,7 +2,6 @@ from aspc.menu.models import Menu, Item
 from django.shortcuts import render
 from django.http import HttpResponseNotAllowed, HttpResponse
 from datetime import datetime, date, timedelta
-from aspc.settings import GOOGLE_SEARCH_KEY, GOOGLE_SEARCH_CX
 import json, requests
 
 # /menu
