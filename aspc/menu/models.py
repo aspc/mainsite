@@ -32,8 +32,9 @@ class PitzerManager(models.Manager):
 
 class Item(models.Model):
     CHARFIELD_MAX_LENGTH = 255
+    URLFIELD_MAX_LENGTH = 1000
     name = models.CharField(primary_key=True, max_length=CHARFIELD_MAX_LENGTH)
-    image_url = models.URLField(blank=True, null=True)
+    image_url = models.URLField(blank=True, null=True, max_length=URLFIELD_MAX_LENGTH)
     def __unicode__(self):
         return self.name
 
