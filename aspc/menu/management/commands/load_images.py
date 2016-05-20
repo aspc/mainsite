@@ -35,9 +35,10 @@ class Command(BaseCommand):
             item_response_pairs = list(zip(updated_items, responses))
             for item, resp in item_response_pairs:
                 data = json.loads(resp.text)
+                print(data)
                 try:
                     # link = data['items'][0]['link']
-                    link = data['d']['results'][0]['MediaUrl']
+                    link = data['d']['results'][0]['Thumbnail']['MediaUrl']
                 except Exception as e:
                     link = ''
                 item.image_url = link
