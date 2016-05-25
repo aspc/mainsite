@@ -74,13 +74,6 @@ rabbitmqctl set_permissions developer ".*" ".*" ".*"
 # Some steps should be performed as the regular vagrant user
 sudo -u vagrant bash /vagrant/vagrant/init_as_user.sh
 
-# Set up Celery upstart tasks
-## FIXME: Removed for Django 1.8 upgrade
-# cp /vagrant/vagrant/celeryworker.conf /etc/init/
-# cp /vagrant/vagrant/celerybeat.conf /etc/init/
-# service celeryworker restart && info "Started Celery worker"
-# service celerybeat restart && info "Started Celery beat process"
-
 # Set up public-facing nginx
 rm -f /etc/nginx/sites-enabled/default
 cp /vagrant/vagrant/frontend_nginx.conf /etc/nginx/sites-enabled/

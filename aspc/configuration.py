@@ -138,7 +138,6 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
 	'corsheaders',
-	#'djcelery',
 	'stdimage',
 	'compressor',
 	'aspc.folio',
@@ -325,32 +324,6 @@ ACADEMIC_TERM_DEFAULTS = {
   'fall': ((8, 1), (12, 22)),
   'spring': ((1,10), (5, 25)),
 }
-
-#### Celery Configuration
-# FIXME: Removed for Django 1.8 upgrade
-#CELERY_RESULT_BACKEND = 'amqp'
-#CELERY_TASK_RESULT_EXPIRES = 18000 # 5 hours.
-#CELERY_RESULT_PERSISTENT = True
-
-# FIXME: Still need to convert management commands into tasks
-# from celery.schedules import crontab
-# CELERYBEAT_SCHEDULE = {
-#     'save-timestamp-every-minute': { # for testing only
-#         'task': 'aspc.celery_setup.save_timestamp',
-#         'schedule': crontab(minute="*"),
-#     },
-#     "update-catalog": {
-#         "task": "aspc.coursesearch.tasks.smart_update",
-#         # Full catalog refresh finishes by 5am typically
-#         "schedule": crontab(hour=5),
-#     },
-#     "update-enrollments": {
-#         "task": "aspc.coursesearch.tasks.smart_update",
-#         # Looks like the actual time the refresh finishes drifts
-#         # but it's usually done by 20 after the hour
-#         "schedule": crontab(hour="*", minute=20),
-#     },
-# }
 
 #### Twitter Activity Feed Sources
 
