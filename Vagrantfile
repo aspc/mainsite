@@ -23,7 +23,7 @@ Vagrant.configure("2") do |config|
   # your network.
   # config.vm.network :public_network # commented because of startup hangs on Pomona wifi
 
-  config.vm.provision :shell, :path => "vagrant/init.sh"
+  config.vm.provision :shell, :path => "vagrant/init/init.sh"
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is

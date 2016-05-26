@@ -31,26 +31,19 @@ fi
 
 # Dependencies for ASPC Main Site
 apt-get -y install build-essential git nginx postgresql libpq-dev python-dev \
-    python-virtualenv python-pip libldap2-dev libsasl2-dev libssl-dev libffi-dev \
-    python-psycopg2 curl unixodbc unixodbc-dev tdsodbc freetds-bin \
-    libjpeg-dev rabbitmq-server libxml2-dev libxslt-dev
-
-pip install requests
-pip install pytz
-
-# Set up FreeTDS
-cp /vagrant/vagrant/odbcinst.ini /etc/odbcinst.ini
+    python-virtualenv python-pip libsasl2-dev libssl-dev libffi-dev \
+    python-psycopg2 curl libjpeg-dev libxml2-dev libxslt-dev
 
 # Set up PostgreSQL
 /etc/init.d/postgresql stop
-cat /vagrant/vagrant/pg_hba_prepend.conf /etc/postgresql/9.3/main/pg_hba.conf > /tmp/pg_hba.conf
+cat /vagrant/vagrant/db/pg_hba_prepend.conf /etc/postgresql/9.3/main/pg_hba.conf > /tmp/pg_hba.conf
 mv /tmp/pg_hba.conf /etc/postgresql/9.3/main/pg_hba.conf
 /etc/init.d/postgresql start
 info "Waiting for PostgreSQL to finish starting"
 sleep 5
 
 info "Creating user 'main' in PostgreSQL (if it doesn't exist)"
-sudo -u postgres psql -f /vagrant/vagrant/setup_postgres.sql
+sudo -u postgres psql -f /vagrant/vagrant/db/setup_postgres.sql
 
 if [ $(sudo -u postgres psql -l | grep main_django | wc -l) -eq 0 ]; then
     info "Creating a 'main_django' database..."
@@ -61,23 +54,13 @@ else
     info "Database 'main_django' already exists"
 fi
 
-# Set up RabbitMQ
-if [ $(rabbitmqctl list_users 2>&1 | grep developer | wc -l) -eq 0 ]; then
-  info "Creating RabbitMQ account 'developer'"
-  rabbitmqctl add_user developer developer
-else
-  info "RabbitMQ account 'developer' exists already"
-fi
-
-rabbitmqctl set_permissions developer ".*" ".*" ".*"
-
 # Some steps should be performed as the regular vagrant user
-sudo -u vagrant bash /vagrant/vagrant/init_as_user.sh
+sudo -u vagrant bash /vagrant/vagrant/init/init_as_user.sh
 
 # Set up public-facing nginx
 rm -f /etc/nginx/sites-enabled/default
-cp /vagrant/vagrant/frontend_nginx.conf /etc/nginx/sites-enabled/
+cp /vagrant/vagrant/srv/frontend_nginx.conf /etc/nginx/sites-enabled/
 service nginx restart && info "Started nginx"
 
 # Start GUnicorn as a daemon process
-cd /vagrant && /home/vagrant/env/bin/gunicorn -c /vagrant/vagrant/gunicorn.cfg.py aspc.wsgi:application -D && info "Started GUnicorn"
+cd /vagrant && /home/vagrant/env/bin/gunicorn -c /vagrant/vagrant/srv/gunicorn.cfg.py aspc.wsgi:application -D && info "Started GUnicorn"

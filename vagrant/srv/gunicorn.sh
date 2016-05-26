@@ -2,7 +2,7 @@
 set -e
 PIDFILE="/home/vagrant/run/gunicorn.pid"
 SOCKFILE="/home/vagrant/run/gunicorn.sock"
-RUN_GUNICORN_CMD="/home/vagrant/env/bin/gunicorn -c /vagrant/vagrant/gunicorn.cfg.py aspc.wsgi:application -D"
+RUN_GUNICORN_CMD="/home/vagrant/env/bin/gunicorn -c /vagrant/vagrant/srv/gunicorn.cfg.py aspc.wsgi:application -D"
 
 case "$1" in
     start)

@@ -14,7 +14,7 @@ fi
 # pre-populate ssh known_hosts with the Peninsula pubkey
 mkdir -p /home/vagrant/.ssh
 if [ ! -f /home/vagrant/.ssh/known_hosts ]; then
-    cp /vagrant/vagrant/known_hosts /home/vagrant/.ssh/known_hosts
+    cp /vagrant/vagrant/init/known_hosts /home/vagrant/.ssh/known_hosts
 fi
 
 # set up python virtualenv if it doesn't exist
@@ -37,9 +37,6 @@ fi
 
 source /home/vagrant/env/bin/activate
 pip install -r /vagrant/requirements.txt
-
-pip install requests
-pip install pytz
 
 # create settings if they do not exist
 if [ ! -f /vagrant/aspc/settings.py ];
