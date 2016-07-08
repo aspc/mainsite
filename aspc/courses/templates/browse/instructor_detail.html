@@ -52,13 +52,18 @@
 		<h4>Reviews of this professor:</h4>
 		<br />
 
-		{% if reviews %}
-			{% for review in reviews %}
-				{% include "reviews/review_list_item.html" with is_instructor_view=True %}
-			{% endfor %}
+		{% if user.is_authenticated %}
+			{% if reviews %}
+				{% for review in reviews %}
+					{% include "reviews/review_list_item.html" with is_instructor_view=True %}
+				{% endfor %}
+			{% else %}
+				<br />
+				No reviews yet for this professor. You can be the first! Click on one of the classes above and then click "Write review".
+			{% endif %}
 		{% else %}
-			<br />
-			No reviews yet for this professor. You can be the first! Click on one of the classes above and then click "Write review".
+			<p>Pomona students, <a href="{% url 'aspc.auth2.views.login' %}?next={{ absolute_uri|urlencode:"" }}">log in</a> to see the 10,000+ reviews we have for this professor and many more.</p>
+			<p>5C students, we want you to be able to use this app too, but your ITS departments won't let us grant you access. <a href="http://itattcc.claremont.edu/project/team/">Submit a complaint on this page</a> if you're angry!</p>
 		{% endif %}
 	</p>
 
