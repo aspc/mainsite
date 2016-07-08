@@ -1,4 +1,4 @@
-Django>=1.9,<1.10
+Django>=1.9,<1.9.99
 Fabric==1.8.1
 Markdown==2.3.1
 Pillow==2.4.0
@@ -26,3 +26,4 @@ djangorestframework==3.2.4
 django-webtest==1.7.8
 coverage==4.1b2
 django-cors-headers==1.1.0
+oauthlib==0.7.2
