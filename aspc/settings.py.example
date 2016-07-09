@@ -76,9 +76,6 @@ SECRET_KEY = 'CHANGE_THIS_KEY'
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = os.path.join(PROJECT_ROOT, "temp")
 
-# Credentials for RabbitMQ (Celery)
-BROKER_URL = "amqp://developer:developer@localhost:5672//"
-
 # Set this value to be able to fetch data from Pomona's course API
 COURSE_API_URL = ''
 
