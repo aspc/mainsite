@@ -29,6 +29,15 @@ class PitzerManager(models.Manager):
     def get_queryset(self):
         return super(PitzerManager, self).get_queryset().filter(dining_hall='pitzer')
 
+
+class Item(models.Model):
+    CHARFIELD_MAX_LENGTH = 255
+    URLFIELD_MAX_LENGTH = 1000
+    name = models.CharField(primary_key=True, max_length=CHARFIELD_MAX_LENGTH)
+    image_url = models.URLField(blank=True, null=True, max_length=URLFIELD_MAX_LENGTH)
+    def __unicode__(self):
+        return self.name
+
 class Menu(models.Model):
     CHARFIELD_MAX_LENGTH = 255
     DINING_HALLS = (
@@ -59,7 +68,7 @@ class Menu(models.Model):
     dining_hall = models.CharField(max_length=CHARFIELD_MAX_LENGTH, choices=DINING_HALLS)
     meal = models.CharField(max_length=CHARFIELD_MAX_LENGTH, choices=MEALS)
     day = models.CharField(max_length=CHARFIELD_MAX_LENGTH, choices=DAYS)
-    food_items = models.TextField()
+    food_items = models.ManyToManyField(Item)
 
     objects = models.Manager()
     frank_meals = FrankManager()

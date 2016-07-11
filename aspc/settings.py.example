@@ -76,6 +76,10 @@ SECRET_KEY = 'CHANGE_THIS_KEY'
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = os.path.join(PROJECT_ROOT, "temp")
 
+# Set these values to display a custom announcement banner at the top of the page
+ANNOUNCEMENT_BANNER_ACTIVE = False
+ANNOUNCEMENT_BANNER_CONTENT = ''
+
 # Set this value to be able to fetch data from Pomona's course API
 COURSE_API_URL = ''
 
@@ -89,5 +93,5 @@ TWITTER_ACCESS_TOKEN_SECRET = ''
 FACEBOOK_APP_ID = ''
 FACEBOOK_APP_SECRET = ''
 
-ANNOUNCEMENT_BANNER_ACTIVE = False
-ANNOUNCEMENT_BANNER_CONTENT = ''
+# Set this value to make Bing search API calls (e.g. for the menu app)
+BING_SEARCH_KEY = ''

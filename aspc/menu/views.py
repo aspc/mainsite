@@ -1,8 +1,8 @@
-from aspc.menu.models import Menu
+from aspc.menu.models import Menu, Item
 from django.shortcuts import render
-from django.http import HttpResponseNotAllowed
+from django.http import HttpResponseNotAllowed, HttpResponse
 from datetime import datetime, date, timedelta
-import json
+import json, requests
 
 # /menu
 def home (request):
@@ -96,7 +96,7 @@ def weekend (request, day):
 # Helper function to prevent lookup errors on days when certain dining halls aren't serving
 def _get_or_none(model_objects, **kwargs):
     try:
-    	food_items = json.loads(model_objects.get(**kwargs).food_items)
+    	food_items = model_objects.get(**kwargs).food_items.all()
     	if food_items:
     		return food_items
     	else:
