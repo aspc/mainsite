@@ -1,12 +1,17 @@
-from django.views.generic.dates import (DateDetailView, ArchiveIndexView, 
+from django.views.generic.dates import (DateDetailView, ArchiveIndexView,
     MonthArchiveView, _date_from_string)
 from django.http import Http404
 from aspc.generic import FilteredMonthArchiveView
 import datetime
+from aspc.blog.models import Post
+from django.http import Http404
 
 class PostDetail(DateDetailView):
     def get_object(self):
-        return self.model.objects.get(slug=self.kwargs['slug'].lower())
+        try:
+            return self.model.objects.get(slug=self.kwargs['slug'].lower())
+        except Post.DoesNotExist:
+            raise Http404
 
 class PostMonthArchive(FilteredMonthArchiveView):
     pass
