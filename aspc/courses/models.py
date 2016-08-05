@@ -26,9 +26,9 @@ POSSIBLE_GRADES = (
     (8, u'C-'), (9, u'D+'), (10, u'D'), (11, u'D-'), (12, u'F'))
 
 # TODO: Make this robust for different semesters
-# (see the academic calendar at http://catalog.pomona.edu/content.php?catoid=14&navoid=2582)
-START_DATE = date(2015, 9, 1)
-END_DATE = date(2015, 12, 18)
+# (see the academic calendar at http://catalog.pomona.edu/content.php?catoid=21&navoid=4445)
+START_DATE = date(2016, 8, 30)
+END_DATE = date(2016, 12, 7)
 
 
 class Term(models.Model):
