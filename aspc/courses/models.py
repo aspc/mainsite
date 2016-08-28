@@ -314,6 +314,7 @@ class Meeting(models.Model):
 
 
 class Schedule(models.Model):
+    user = models.ForeignKey(User, blank=True, null=True)
     sections = models.ManyToManyField(Section)
     create_ts = models.DateTimeField(default=datetime.now)
 

@@ -434,6 +434,10 @@ h2#error_message {
 	float: right;
 }
 
+#all_schedules {
+	float: right;
+}
+
 /* @end */
 ol#schedule_courses {
 	padding: 0 2% 1% 2%;
