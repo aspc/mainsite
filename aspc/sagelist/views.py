@@ -13,6 +13,7 @@ from django.contrib import messages
 from django.utils.decorators import method_decorator
 from django.shortcuts import get_object_or_404
 from aspc.sagelist.models import BookSale
+from aspc.courses.models import Course
 import string
 
 class BookSaleForm(forms.ModelForm):
@@ -153,6 +154,29 @@ class ListUserBookSalesView(ListView):
     def get_queryset(self):
         qs = super(ListUserBookSalesView, self).get_queryset()
         qs = qs.filter(seller=self._get_user())
+        return qs
+
+class ListCourseBookSalesView(ListView):
+    model = BookSale
+    context_object_name = "listings"
+    template_name = "sagelist/booksale_list_course.html"
+    _course = None
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ListCourseBookSalesView, self).get_context_data(*args, **kwargs)
+        context.update({
+            'course': self._get_course(),
+        })
+        return context
+
+    def _get_course(self):
+        if not self._course:
+            self._course = get_object_or_404(Course, pk=self.kwargs['course_id'])
+        return self._course
+
+    def get_queryset(self):
+        qs = super(ListCourseBookSalesView, self).get_queryset()
+        qs = qs.filter(course=self._get_course(), buyer__isnull=True).order_by('title')
         return qs
 
 class ListBookSalesView(ListView):
