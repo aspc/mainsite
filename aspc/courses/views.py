@@ -133,7 +133,12 @@ def load_from_session(request):
     all_events = []
     valid_courses = set()
     schedule_courses = request.session.get('schedule_courses', set())
-    for course in Section.objects.filter(id__in=schedule_courses):
+    course_objects = Section.objects.filter(id__in=schedule_courses)
+    if request.user.is_authenticated() and not course_objects:
+        schedules = request.user.schedule_set.order_by('-create_ts')
+        if schedules:
+            course_objects = schedules[0].sections.all()
+    for course in course_objects:
         all_events.append(course.json())
         valid_courses.add(course.pk)
     if schedule_courses - valid_courses:
@@ -155,9 +160,10 @@ def share_schedule(request):
     schedule_courses = Section.objects.filter(id__in=request.session.get('schedule_courses',[]))
     if request.method == "POST":
         s = Schedule()
-        s.save()
         for course in schedule_courses:
             s.sections.add(course)
+        if request.user.is_authenticated():
+            s.user = request.user
         s.save()
 
         return render(request, 'schedule/schedule_share.html', {'saved': True, 'schedule': s, 'schedule_courses': s.sections.all(),})
@@ -171,6 +177,10 @@ def view_schedule(request, schedule_id):
         return HttpResponseRedirect(reverse('aspc.courses.views.schedule'))
     else:
         return render(request, 'schedule/schedule_frozen.html',{'schedule': schedule,})
+
+def my_schedules(request):
+    schedules = request.user.schedule_set.order_by('-create_ts')
+    return render(request, 'schedule/my_schedules.html', {'schedules': schedules})
 
 def ical_export(request, schedule_id=None):
     if schedule_id is not None:

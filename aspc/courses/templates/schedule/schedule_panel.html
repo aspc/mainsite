@@ -1,5 +1,9 @@
-<h2 id="schedule_course_label" class="header">Current schedule:</h2>
-
+<h2 id="schedule_course_label" class="header">
+    Current schedule:
+    {% if request.user.is_authenticated %}
+        <a id='all_schedules' href="{% url 'my_schedules' %}"> previous schedules</a>
+    {% endif %}
+</h2>
 <ol id="schedule_courses">
 </ol>
 
