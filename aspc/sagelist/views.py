@@ -162,21 +162,20 @@ class ListCourseBookSalesView(ListView):
     template_name = "sagelist/booksale_list_course.html"
     _course = None
 
+    def get(self, request, *args, **kwargs):
+        self._course = get_object_or_404(Course, pk=self.kwargs['course_id'])
+        return super(ListCourseBookSalesView, self).get(self, request, *args, **kwargs)
+
     def get_context_data(self, *args, **kwargs):
         context = super(ListCourseBookSalesView, self).get_context_data(*args, **kwargs)
         context.update({
-            'course': self._get_course(),
+            'course': self._course,
         })
         return context
 
-    def _get_course(self):
-        if not self._course:
-            self._course = get_object_or_404(Course, pk=self.kwargs['course_id'])
-        return self._course
-
     def get_queryset(self):
         qs = super(ListCourseBookSalesView, self).get_queryset()
-        qs = qs.filter(course=self._get_course(), buyer__isnull=True).order_by('title')
+        qs = qs.filter(course=self._course, buyer__isnull=True).order_by('title')
         return qs
 
 class ListBookSalesView(ListView):
