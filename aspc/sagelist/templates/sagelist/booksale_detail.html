@@ -16,6 +16,9 @@
   {% if book.isbn %}<dt>ISBN</dt>
   <dd>{{ book.isbn }}</dd>
   {% endif %}
+  {% if book.course %}<dt>Course</dt>
+  <dd>{{ book.course.name }}</dd>
+  {% endif %}
   <dt>Condition</dt>
   <dd>{{ book.get_condition_display }}</dd>
   <dt>Price</dt>
