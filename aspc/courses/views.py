@@ -160,7 +160,6 @@ def share_schedule(request):
     schedule_courses = Section.objects.filter(id__in=request.session.get('schedule_courses',[]))
     if request.method == "POST":
         s = Schedule()
-        s.save()
         for course in schedule_courses:
             s.sections.add(course)
         if request.user.is_authenticated():
