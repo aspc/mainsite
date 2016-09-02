@@ -2,9 +2,9 @@
 {% block "full_content" %}
 <ol class="breadcrumbs">
   <li><a href="{% url "sagelist" %}">SageBooks</a></li>
-  <li>Listings by {{ listings_by.get_full_name }}</li>
+  <li>Listings for {{ course.code }}</li>
 </ol>
-<h1>Listings by {{ listings_by.get_full_name }}</h1>
+<h1>Listings for {{ course.name }}</h1>
 <ul class="actions">
   <li><a href="{% url "sagelist_create" %}">List a book for sale</a></li>
 </ul>
@@ -25,6 +25,6 @@
 {% endfor %}
 </table>
 {% else %}
-<p class="list_empty content">You haven't listed any books for sale yet. <a href="{% url "sagelist_create" %}">Post a new one?</a></p>
+<p class="list_empty content">This course doesn't have any books for sale yet. <a href="{% url "sagelist_create" %}">Post a new one?</a></p>
 {% endif %}
 {% endblock %}

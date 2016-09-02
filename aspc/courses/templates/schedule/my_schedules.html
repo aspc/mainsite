@@ -1,0 +1,26 @@
+{% extends "courses/base.html" %}
+
+{% block "title" %}My Schedules{% endblock %}
+{% block "ogtitle" %}My Schedules{% endblock %}
+{% block "page_title" %}My Schedules{% endblock %}
+
+{% block "ogdesc" %}
+	Display all my schedules saved in the past.
+{% endblock %}
+
+{% block "metadesc" %}
+	Display all my schedules saved in the past.
+{% endblock %}
+
+{% block "courses_breadcrumbs" %}
+	<li><a href="{% url "aspc.courses.views.schedule" %}">Course Planner</a></li>
+	<li>My Schedules</li>
+{% endblock %}
+
+{% block "content" %}
+    <ol>
+    {% for schedule in schedules %}
+        <li> Schedule <a href="{% url 'view_schedule' schedule.id %}">#{{ schedule.id }}</a> — <i>{{ schedule.create_ts }}</i></li>
+    {% endfor %}
+    </ol>
+{% endblock %}

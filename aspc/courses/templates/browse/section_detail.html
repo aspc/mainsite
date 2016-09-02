@@ -90,5 +90,15 @@
 			<h4>Note:</h4> This section taught by {{ professor }} isn't being offered during the {{ current_term }} term.
 		{% endif %}
 	</p>
+    {% with object.course.booksale_set.all as books %}
+        <h4>Textbooks on sale:</h4>
+        {% if books %}
+            <p><a href="{% url 'sagelist_course_listings' object.course.id %}">{{ books|length }} books listed
+                on SageBooks</a></p>
+        {% else %}
+            <p>There are no textbooks for this course listed on Sagebooks yet.
+                <a href="{% url "sagelist_create" %}">List a book for sale</a></p>
+        {% endif %}
+    {% endwith %}
 	{% include "reviews/review_list.html" %}
 {% endblock %}

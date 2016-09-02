@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from aspc.activityfeed.signals import new_activity, delete_activity
+from aspc.courses.models import Course
 import datetime
 
 class BookSale(models.Model):
@@ -24,6 +25,7 @@ class BookSale(models.Model):
     """Model representing a sale of a textbook"""
     title = models.CharField(max_length=255)
     authors = models.CharField(max_length=255, verbose_name="Author(s)")
+    course = models.ForeignKey(Course, blank=True, null=True)
     isbn = models.CharField(max_length=20, null=True, blank=True, verbose_name="ISBN")
     edition = models.CharField(max_length=30, null=True, blank=True)
     condition = models.IntegerField(choices=CONDITIONS)
