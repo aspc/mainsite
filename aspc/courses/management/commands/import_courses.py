@@ -175,6 +175,7 @@ class Command(BaseCommand):
 
 		# Save the fully-formed Section
 		section_object.save()
+		section_object.update_ratings()
 
 		# Create the Meeting objects for this Section
 		if section_data['Schedules']:

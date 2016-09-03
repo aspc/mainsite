@@ -183,6 +183,15 @@ class Section(models.Model):
     requisites = models.BooleanField(default=False)
     fee = models.BooleanField(default=False)
 
+    rating = models.FloatField(blank=True, null=True)
+    useful_rating = models.FloatField(blank=True, null=True)
+    engagement_rating = models.FloatField(blank=True, null=True)
+    difficulty_rating = models.FloatField(blank=True, null=True)
+    competency_rating = models.FloatField(blank=True, null=True)
+    lecturing_rating = models.FloatField(blank=True, null=True)
+    enthusiasm_rating = models.FloatField(blank=True, null=True)
+    approachable_rating = models.FloatField(blank=True, null=True)
+
     perms = models.IntegerField(null=True)
     spots = models.IntegerField(null=True)
     filled = models.IntegerField(blank=True, null=True)
@@ -220,20 +229,24 @@ class Section(models.Model):
                                                'detail_url': self.get_url_to_section_page(),
                                                'campus_code': self.get_campus(), }}
 
-    def get_average_rating(self):
+    def update_ratings(self):
         reviews = CourseReview.objects.filter(course=self.course, instructor__in=self.instructors.all())
-        return reviews.aggregate(Avg("overall_rating"))["overall_rating__avg"]
+        self.rating = reviews.aggregate(Avg("overall_rating"))["overall_rating__avg"]
+        self.useful_rating = reviews.aggregate(Avg("useful_rating"))["useful_rating__avg"]
+        self.engagement_rating = reviews.aggregate(Avg("engagement_rating"))["engagement_rating__avg"]
+        self.difficulty_rating = reviews.aggregate(Avg("difficulty_rating"))["difficulty_rating__avg"]
+        self.competency_rating = reviews.aggregate(Avg("competency_rating"))["competency_rating__avg"]
+        self.lecturing_rating = reviews.aggregate(Avg("lecturing_rating"))["lecturing_rating__avg"]
+        self.enthusiasm_rating = reviews.aggregate(Avg("enthusiasm_rating"))["enthusiasm_rating__avg"]
+        self.approachable_rating = reviews.aggregate(Avg("approachable_rating"))["approachable_rating__avg"]
+        self.save()
+
+    def get_average_rating(self):
+        return self.rating
 
     def get_miscellaneous_ratings(self):
-        reviews = CourseReview.objects.filter(course=self.course, instructor__in=self.instructors.all())
-        useful_rating = reviews.aggregate(Avg("useful_rating"))["useful_rating__avg"]
-        engagement_rating = reviews.aggregate(Avg("engagement_rating"))["engagement_rating__avg"]
-        difficulty_rating = reviews.aggregate(Avg("difficulty_rating"))["difficulty_rating__avg"]
-        competency_rating = reviews.aggregate(Avg("competency_rating"))["competency_rating__avg"]
-        lecturing_rating = reviews.aggregate(Avg("lecturing_rating"))["lecturing_rating__avg"]
-        enthusiasm_rating = reviews.aggregate(Avg("enthusiasm_rating"))["enthusiasm_rating__avg"]
-        approachable_rating = reviews.aggregate(Avg("approachable_rating"))["approachable_rating__avg"]
-        return [useful_rating, engagement_rating, difficulty_rating, competency_rating, lecturing_rating, enthusiasm_rating, approachable_rating]
+        return [self.useful_rating, self.engagement_rating, self.difficulty_rating, self.competency_rating,
+                self.lecturing_rating, self.enthusiasm_rating, self.approachable_rating]
 
     @models.permalink
     def get_absolute_url(self):
@@ -405,9 +418,16 @@ class CourseReview(models.Model):
     def get_url_to_section_page(self):
         return '/courses/browse/instructor/{0}/course/{1}/'.format(self.instructor.id, self.course.code_slug)
 
+    def _get_affected_sections(self):
+        current_term = Term.objects.all()[0]
+        return Section.objects.filter(term=current_term, course=self.course, instructors=self.instructor)
+
     def update_course_and_instructor_rating(self):
         self.instructor.update_ratings()
         self.course.update_ratings()
+        affected_sections = self._get_affected_sections()
+        for section in affected_sections:
+            section.update_ratings()
 
     # update the instructor/course average on save/create
     def create(self, *args, **kwargs):
