@@ -425,9 +425,8 @@ class CourseReview(models.Model):
     def update_course_and_instructor_rating(self):
         self.instructor.update_ratings()
         self.course.update_ratings()
-        affected_sections = self._get_affected_sections()
-        for section in affected_sections:
-            section.update_ratings()
+        section = Section.objects.filter(course=self.course, instructors=self.instructor).order_by('term')[0]
+        section.update_ratings()
 
     # update the instructor/course average on save/create
     def create(self, *args, **kwargs):
