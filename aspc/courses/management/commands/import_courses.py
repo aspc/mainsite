@@ -176,6 +176,10 @@ class Command(BaseCommand):
 		# Save the fully-formed Section
 		section_object.save()
 
+		# Create the GenericSection object for this Section
+		for instructor in section_object.instructors.all():
+			GenericSection.objects.get_or_create(course=section_object.course, instructor=instructor)
+
 		# Create the Meeting objects for this Section
 		if section_data['Schedules']:
 			section_object.meeting_set.all().delete() # Delete all the old Meeting records for this Section first
