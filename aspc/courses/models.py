@@ -67,6 +67,17 @@ class Instructor(models.Model):
     def get_miscellaneous_ratings(self):
         return [self.useful_rating or 0, self.engagement_rating or 0, self.difficulty_rating or 0, self.competency_rating or 0, self.lecturing_rating or 0, self.enthusiasm_rating or 0, self.approachable_rating or 0]
 
+    def update_ratings(self):
+        instructor_related_reviews = CourseReview.objects.filter(instructor = self)
+        self.rating = instructor_related_reviews.aggregate(Avg("overall_rating"))["overall_rating__avg"]
+        self.useful_rating = instructor_related_reviews.aggregate(Avg("useful_rating"))["useful_rating__avg"]
+        self.engagement_rating = instructor_related_reviews.aggregate(Avg("engagement_rating"))["engagement_rating__avg"]
+        self.difficulty_rating = instructor_related_reviews.aggregate(Avg("difficulty_rating"))["difficulty_rating__avg"]
+        self.competency_rating = instructor_related_reviews.aggregate(Avg("competency_rating"))["competency_rating__avg"]
+        self.lecturing_rating = instructor_related_reviews.aggregate(Avg("lecturing_rating"))["lecturing_rating__avg"]
+        self.enthusiasm_rating = instructor_related_reviews.aggregate(Avg("enthusiasm_rating"))["enthusiasm_rating__avg"]
+        self.approachable_rating = instructor_related_reviews.aggregate(Avg("approachable_rating"))["approachable_rating__avg"]
+        self.save()
 
 class Department(models.Model):
     code = models.CharField(max_length=20, unique=True, db_index=True)
@@ -133,6 +144,18 @@ class Course(models.Model):
 
     def get_miscellaneous_ratings(self):
         return [self.useful_rating or 0, self.engagement_rating or 0, self.difficulty_rating or 0, self.competency_rating or 0, self.lecturing_rating or 0, self.enthusiasm_rating or 0, self.approachable_rating or 0]
+
+    def update_ratings(self):
+        course_related_reviews = CourseReview.objects.filter(course = self)
+        self.rating = course_related_reviews.aggregate(Avg("overall_rating"))["overall_rating__avg"]
+        self.useful_rating = course_related_reviews.aggregate(Avg("useful_rating"))["useful_rating__avg"]
+        self.engagement_rating = course_related_reviews.aggregate(Avg("engagement_rating"))["engagement_rating__avg"]
+        self.difficulty_rating = course_related_reviews.aggregate(Avg("difficulty_rating"))["difficulty_rating__avg"]
+        self.competency_rating = course_related_reviews.aggregate(Avg("competency_rating"))["competency_rating__avg"]
+        self.lecturing_rating = course_related_reviews.aggregate(Avg("lecturing_rating"))["lecturing_rating__avg"]
+        self.enthusiasm_rating = course_related_reviews.aggregate(Avg("enthusiasm_rating"))["enthusiasm_rating__avg"]
+        self.approachable_rating = course_related_reviews.aggregate(Avg("approachable_rating"))["approachable_rating__avg"]
+        self.save()
 
     # TODO: Merge instructors who taught this class previously
     def get_instructors_from_all_sections(self):
@@ -383,27 +406,8 @@ class CourseReview(models.Model):
         return '/courses/browse/instructor/{0}/course/{1}/'.format(self.instructor.id, self.course.code_slug)
 
     def update_course_and_instructor_rating(self):
-        instructor_related_reviews = CourseReview.objects.filter(instructor = self.instructor)
-        self.instructor.rating = instructor_related_reviews.aggregate(Avg("overall_rating"))["overall_rating__avg"]
-        self.instructor.useful_rating = instructor_related_reviews.aggregate(Avg("useful_rating"))["useful_rating__avg"]
-        self.instructor.engagement_rating = instructor_related_reviews.aggregate(Avg("engagement_rating"))["engagement_rating__avg"]
-        self.instructor.difficulty_rating = instructor_related_reviews.aggregate(Avg("difficulty_rating"))["difficulty_rating__avg"]
-        self.instructor.competency_rating = instructor_related_reviews.aggregate(Avg("competency_rating"))["competency_rating__avg"]
-        self.instructor.lecturing_rating = instructor_related_reviews.aggregate(Avg("lecturing_rating"))["lecturing_rating__avg"]
-        self.instructor.enthusiasm_rating = instructor_related_reviews.aggregate(Avg("enthusiasm_rating"))["enthusiasm_rating__avg"]
-        self.instructor.approachable_rating = instructor_related_reviews.aggregate(Avg("approachable_rating"))["approachable_rating__avg"]
-        self.instructor.save()
-
-        course_related_reviews = CourseReview.objects.filter(course = self.course)
-        self.course.rating = course_related_reviews.aggregate(Avg("overall_rating"))["overall_rating__avg"]
-        self.course.useful_rating = course_related_reviews.aggregate(Avg("useful_rating"))["useful_rating__avg"]
-        self.course.engagement_rating = course_related_reviews.aggregate(Avg("engagement_rating"))["engagement_rating__avg"]
-        self.course.difficulty_rating = course_related_reviews.aggregate(Avg("difficulty_rating"))["difficulty_rating__avg"]
-        self.course.competency_rating = course_related_reviews.aggregate(Avg("competency_rating"))["competency_rating__avg"]
-        self.course.lecturing_rating = course_related_reviews.aggregate(Avg("lecturing_rating"))["lecturing_rating__avg"]
-        self.course.enthusiasm_rating = course_related_reviews.aggregate(Avg("enthusiasm_rating"))["enthusiasm_rating__avg"]
-        self.course.approachable_rating = course_related_reviews.aggregate(Avg("approachable_rating"))["approachable_rating__avg"]
-        self.course.save()
+        self.instructor.update_ratings()
+        self.course.update_ratings()
 
     # update the instructor/course average on save/create
     def create(self, *args, **kwargs):
