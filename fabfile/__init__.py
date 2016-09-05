@@ -9,7 +9,7 @@ except ImportError:
 	env.hosts = ['peninsula.pomona.edu']
 
 env.site = env.branch = 'staging'
-env.origin = 'git@github.com:aspc/mainsite.git'
+env.origin = 'https://github.com/aspc/mainsite'
 
 ## Fab methods
 
