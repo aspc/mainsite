@@ -314,7 +314,7 @@ class SectionDetailView(generic.DetailView):
             # It doesn't really matter which Section object we return if there are multiple that fit the
             # <Instructor, Course> identifier, but we ought to return the most recent one so the section data
             # that we display is as up-to-date as possible
-            return Section.objects.filter(instructors__id__exact=self.kwargs['instructor_id'], course__code_slug=self.kwargs['course_code']).order_by('term')[0]
+            return Section.objects.filter(instructors__id__exact=self.kwargs['instructor_id'], course__code_slug=self.kwargs['course_code']).order_by('term','code_slug').first()
         except IndexError:
             raise Http404
 
