@@ -6,6 +6,7 @@ from datetime import date, datetime, timedelta
 import json
 from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.models import User
+from django.db import connection
 from django.template.defaultfilters import slugify
 
 CAMPUSES = (
@@ -68,15 +69,20 @@ class Instructor(models.Model):
         return [self.useful_rating or 0, self.engagement_rating or 0, self.difficulty_rating or 0, self.competency_rating or 0, self.lecturing_rating or 0, self.enthusiasm_rating or 0, self.approachable_rating or 0]
 
     def update_ratings(self):
-        instructor_related_reviews = CourseReview.objects.filter(instructor = self)
-        self.rating = instructor_related_reviews.aggregate(Avg("overall_rating"))["overall_rating__avg"]
-        self.useful_rating = instructor_related_reviews.aggregate(Avg("useful_rating"))["useful_rating__avg"]
-        self.engagement_rating = instructor_related_reviews.aggregate(Avg("engagement_rating"))["engagement_rating__avg"]
-        self.difficulty_rating = instructor_related_reviews.aggregate(Avg("difficulty_rating"))["difficulty_rating__avg"]
-        self.competency_rating = instructor_related_reviews.aggregate(Avg("competency_rating"))["competency_rating__avg"]
-        self.lecturing_rating = instructor_related_reviews.aggregate(Avg("lecturing_rating"))["lecturing_rating__avg"]
-        self.enthusiasm_rating = instructor_related_reviews.aggregate(Avg("enthusiasm_rating"))["enthusiasm_rating__avg"]
-        self.approachable_rating = instructor_related_reviews.aggregate(Avg("approachable_rating"))["approachable_rating__avg"]
+        cursor = connection.cursor()
+        cursor.execute('SELECT AVG("overall_rating"), AVG("useful_rating"), AVG("engagement_rating"),'
+                       ' AVG("difficulty_rating"), AVG("competency_rating"), AVG("lecturing_rating"),'
+                       ' AVG("enthusiasm_rating"), AVG("approachable_rating") FROM courses_coursereview'
+                       ' WHERE instructor_id=%d' % self.id)
+        ratings = cursor.fetchone()
+        self.rating = ratings[0]
+        self.useful_rating = ratings[1]
+        self.engagement_rating = ratings[2]
+        self.difficulty_rating = ratings[3]
+        self.competency_rating = ratings[4]
+        self.lecturing_rating = ratings[5]
+        self.enthusiasm_rating = ratings[6]
+        self.approachable_rating = ratings[7]
         self.save()
 
 class Department(models.Model):
@@ -146,15 +152,20 @@ class Course(models.Model):
         return [self.useful_rating or 0, self.engagement_rating or 0, self.difficulty_rating or 0, self.competency_rating or 0, self.lecturing_rating or 0, self.enthusiasm_rating or 0, self.approachable_rating or 0]
 
     def update_ratings(self):
-        course_related_reviews = CourseReview.objects.filter(course = self)
-        self.rating = course_related_reviews.aggregate(Avg("overall_rating"))["overall_rating__avg"]
-        self.useful_rating = course_related_reviews.aggregate(Avg("useful_rating"))["useful_rating__avg"]
-        self.engagement_rating = course_related_reviews.aggregate(Avg("engagement_rating"))["engagement_rating__avg"]
-        self.difficulty_rating = course_related_reviews.aggregate(Avg("difficulty_rating"))["difficulty_rating__avg"]
-        self.competency_rating = course_related_reviews.aggregate(Avg("competency_rating"))["competency_rating__avg"]
-        self.lecturing_rating = course_related_reviews.aggregate(Avg("lecturing_rating"))["lecturing_rating__avg"]
-        self.enthusiasm_rating = course_related_reviews.aggregate(Avg("enthusiasm_rating"))["enthusiasm_rating__avg"]
-        self.approachable_rating = course_related_reviews.aggregate(Avg("approachable_rating"))["approachable_rating__avg"]
+        cursor = connection.cursor()
+        cursor.execute('SELECT AVG("overall_rating"), AVG("useful_rating"), AVG("engagement_rating"),'
+                       ' AVG("difficulty_rating"), AVG("competency_rating"), AVG("lecturing_rating"),'
+                       ' AVG("enthusiasm_rating"), AVG("approachable_rating") FROM courses_coursereview'
+                       ' WHERE course_id=%d' % self.id)
+        ratings = cursor.fetchone()
+        self.rating = ratings[0]
+        self.useful_rating = ratings[1]
+        self.engagement_rating = ratings[2]
+        self.difficulty_rating = ratings[3]
+        self.competency_rating = ratings[4]
+        self.lecturing_rating = ratings[5]
+        self.enthusiasm_rating = ratings[6]
+        self.approachable_rating = ratings[7]
         self.save()
 
     # TODO: Merge instructors who taught this class previously
@@ -230,15 +241,21 @@ class Section(models.Model):
                                                'campus_code': self.get_campus(), }}
 
     def update_ratings(self):
-        reviews = CourseReview.objects.filter(course=self.course, instructor__in=self.instructors.all())
-        self.cached_overall_rating = reviews.aggregate(Avg("overall_rating"))["overall_rating__avg"]
-        self.cached_useful_rating = reviews.aggregate(Avg("useful_rating"))["useful_rating__avg"]
-        self.cached_engagement_rating = reviews.aggregate(Avg("engagement_rating"))["engagement_rating__avg"]
-        self.cached_difficulty_rating = reviews.aggregate(Avg("difficulty_rating"))["difficulty_rating__avg"]
-        self.cached_competency_rating = reviews.aggregate(Avg("competency_rating"))["competency_rating__avg"]
-        self.cached_lecturing_rating = reviews.aggregate(Avg("lecturing_rating"))["lecturing_rating__avg"]
-        self.cached_enthusiasm_rating = reviews.aggregate(Avg("enthusiasm_rating"))["enthusiasm_rating__avg"]
-        self.cached_approachable_rating = reviews.aggregate(Avg("approachable_rating"))["approachable_rating__avg"]
+        cursor = connection.cursor()
+        instructor_ids = str(tuple([instructor.id for instructor in self.instructors.all()])).replace(',)',')')
+        cursor.execute('SELECT AVG("overall_rating"), AVG("useful_rating"), AVG("engagement_rating"),'
+                       ' AVG("difficulty_rating"), AVG("competency_rating"), AVG("lecturing_rating"),'
+                       ' AVG("enthusiasm_rating"), AVG("approachable_rating") FROM courses_coursereview'
+                       ' WHERE course_id=%d and instructor_id IN %s' % (self.course.id, instructor_ids))
+        ratings = cursor.fetchone()
+        self.cached_rating = ratings[0]
+        self.cached_useful_rating = ratings[1]
+        self.cached_engagement_rating = ratings[2]
+        self.cached_difficulty_rating = ratings[3]
+        self.cached_competency_rating = ratings[4]
+        self.cached_lecturing_rating = ratings[5]
+        self.cached_enthusiasm_rating = ratings[6]
+        self.cached_approachable_rating = ratings[7]
         self.save()
 
     def get_average_rating(self):
@@ -419,14 +436,10 @@ class CourseReview(models.Model):
     def get_url_to_section_page(self):
         return '/courses/browse/instructor/{0}/course/{1}/'.format(self.instructor.id, self.course.code_slug)
 
-    def _get_affected_sections(self):
-        current_term = Term.objects.all()[0]
-        return Section.objects.filter(term=current_term, course=self.course, instructors=self.instructor)
-
     def update_course_and_instructor_rating(self):
         self.instructor.update_ratings()
         self.course.update_ratings()
-        section = Section.objects.filter(course=self.course, instructors=self.instructor).order_by('term','code_slug')[0]
+        section = Section.objects.filter(course=self.course, instructors=self.instructor).order_by('term','code_slug').first()
         section.update_ratings()
 
     # update the instructor/course average on save/create
