@@ -327,7 +327,6 @@ class SectionDetailView(generic.DetailView):
         context['professor'] = instructor_object
         context['current_term'] = Term.objects.all()[0]
         context['reviews'] = CourseReview.objects.filter(course=course_object, instructor=instructor_object).order_by('-created_date')
-        context['average_rating'] = context['reviews'].aggregate(Avg("overall_rating"))["overall_rating__avg"]
         context['miscellaneous_ratings'] = self.get_object().get_miscellaneous_ratings()
 
         return context
