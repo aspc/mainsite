@@ -139,6 +139,7 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
 	'corsheaders',
 	'stdimage',
+	'adminsortable2',
 	'compressor',
 	'aspc.folio',
 	'aspc.senate',
