@@ -1,5 +1,6 @@
 from django.views.generic import ListView
 from aspc.senate.models import Document, Appointment, Position
+from django.db.models import Q
 import datetime
 
 class DocumentList(ListView):
@@ -12,11 +13,10 @@ class AppointmentList(ListView):
     context_object_name = 'appointments'
     
     def get_queryset(self, *args, **kwargs):
-        all_qs = super(AppointmentList, self).get_queryset(*args, **kwargs)
-        qs = all_qs.filter(end__isnull=True)
-        qs |= all_qs.filter(end__gte=datetime.datetime.now())
-        qs = qs.order_by('position__sort_order')
-        return qs
+        qs = super(AppointmentList, self).get_queryset(*args, **kwargs)
+        return qs\
+            .filter(position__committee=self.kwargs['committee'])\
+            .filter(Q(end__isnull=True) | Q(end__gte=datetime.datetime.now()))
 
 class PositionList(ListView):
     model = Position
