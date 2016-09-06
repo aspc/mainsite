@@ -34,6 +34,10 @@ class CreateBookSaleView(CreateView):
         sale.authors = sale.authors.strip()
         sale.seller = self.request.user
         sale.save()
+        try:
+            sale.update_amazon_info()
+        except:
+            pass
         sale.seller.email_user(
             u"Posted {0} on SageBooks".format(sale.title),
             render_to_string(

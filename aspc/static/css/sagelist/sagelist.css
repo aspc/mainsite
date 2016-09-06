@@ -150,3 +150,15 @@
 .sagelist #delete {
 	background-color: #f7931e;
 }
+
+.detail {
+	display: inline-block; width: 50%;
+}
+
+.book_image_div{
+	padding: 10px; margin: 0 auto; display: inline-block; width: 40%;
+}
+
+.book_image{
+	width: 50%;
+}

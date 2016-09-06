@@ -2,6 +2,7 @@
 {% block "subtitle" %}&mdash; {{ book.title }}{% block "subsubtitle" %}{% endblock %}{% endblock %}
 {% block "page_title" %}{{ book.title }}{% endblock %}
 {% block "sagelist_breadcrumbs" %}
+    {% load static %}
   <li><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></li>
 {% endblock %}
 {% block "content" %}
@@ -22,7 +23,10 @@
   <dt>Condition</dt>
   <dd>{{ book.get_condition_display }}</dd>
   <dt>Price</dt>
-  <dd>${{ book.price }}</dd>
+  <dd>${{ book.price }}
+  {% if book.money_saved %}
+      <small><a href="{{ book.url }}">${{ book.money_saved|floatformat:2  }} cheaper than on Amazon!</a></small>
+  {% endif %}</dd>
   {% if book.is_recoop %}
   <dt class="detail_note">Note</dt>
   <dd class="detail_note">This is a ReCoop listing through the Sustainability Office! You can purchase the book like normal here on SageBooks, and then pick it up at the Walker EcoDesk in Walker Lounge. For Spring 2016, the book room will be open Monday (January 25) through Thursday (January 25), 7 to 9pm. Contact <a href="mailto:sustainability@pomona.edu">sustainability@pomona.edu</a> with questions.</dd>
@@ -34,6 +38,13 @@
   <dd>{{ book.buyer.get_full_name }}</dd>
   {% endif %}
 </dl>
+    <div class='book_image_div'>
+    {% if book.image_url %}
+        <img class='book_image' src="{{ book.image_url }}">
+    {% else %}
+        <img class='book_image' src="{% static 'images/no_image.png' %}">
+    {% endif %}
+    </div>
 <div class="info">
 {% block "form" %}
 {% if book.is_recoop and book.is_frozen %}
