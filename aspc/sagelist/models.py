@@ -33,7 +33,7 @@ class BookSale(models.Model):
     title = models.CharField(max_length=255)
     authors = models.CharField(max_length=255, verbose_name="Author(s)")
     course = models.ForeignKey(Course, blank=True, null=True)
-    isbn = models.CharField(max_length=20, null=True, blank=True, verbose_name="ISBN")
+    isbn = models.CharField(max_length=20, verbose_name="ISBN")
     edition = models.CharField(max_length=30, null=True, blank=True)
     condition = models.IntegerField(choices=CONDITIONS)
     price = models.DecimalField(max_digits=5, decimal_places=2)
