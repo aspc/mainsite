@@ -6,7 +6,7 @@
   <li><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></li>
 {% endblock %}
 {% block "content" %}
-<dl class="detail">
+<dl class="detail half-width">
   <dt>Title</dt>
   <dd>{{ book.title }}</dd>
   <dt>Author(s)</dt>
@@ -45,6 +45,12 @@
         <img class='book_image' src="{% static 'images/no_image.png' %}">
     {% endif %}
     </div>
+{% if book.description %}
+    <dl class="detail">
+      <dt>Description</dt>
+      <dd>{{ book.description|safe }}</dd>
+    </dl>
+{% endif %}
 <div class="info">
 {% block "form" %}
 {% if book.is_recoop and book.is_frozen %}

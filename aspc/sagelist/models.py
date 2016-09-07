@@ -43,7 +43,7 @@ class BookSale(models.Model):
 
     posted = models.DateTimeField(auto_now_add=True)
 
-    amazon_info = models.CharField(max_length=300, blank=True, null=True)
+    amazon_info = models.TextField(blank=True, null=True)
 
     class Meta:
         ordering = ['posted']
@@ -60,36 +60,38 @@ class BookSale(models.Model):
     def update_amazon_info(self):
         if not self.isbn:
             return
-        products = amazon.search_n(1,Keywords=self.isbn, SearchIndex='Books')
+        products = amazon.search_n(1,Keywords=self.isbn.replace('-',''), SearchIndex='Books')
         if not len(products):
             return
         amazon_info = {}
         amazon_info['price'] = products[0].price_and_currency[0]
         amazon_info['image_url'] = products[0].large_image_url
         amazon_info['url'] = products[0].offer_url
+        amazon_info['description'] = products[0].editorial_review
         self.title = products[0].title
         self.authors = products[0].author
-        self.edition = str(products[0].edition)
+        if not self.edition:
+            self.edition = products[0].edition
         self.amazon_info = json.dumps(amazon_info)
         self.save()
 
-    def amazon_price(self):
+    def get_amazon_attribute(self, attribute):
         if not self.amazon_info:
             return None
         amazon_info = json.loads(self.amazon_info)
-        return amazon_info['price']
+        return amazon_info.get(attribute)
+
+    def amazon_price(self):
+        return self.get_amazon_attribute('price')
 
     def url(self):
-        if not self.amazon_info:
-            return None
-        amazon_info = json.loads(self.amazon_info)
-        return amazon_info['url']
+        return self.get_amazon_attribute('url')
 
     def image_url(self):
-        if not self.amazon_info:
-            return None
-        amazon_info = json.loads(self.amazon_info)
-        return amazon_info['image_url']
+        return self.get_amazon_attribute('image_url')
+
+    def description(self):
+        return self.get_amazon_attribute('description')
 
     def money_saved(self):
         if not self.amazon_price() or self.price > self.amazon_price():
