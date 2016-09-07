@@ -6,7 +6,9 @@ from amazon.api import AmazonAPI
 import datetime
 from aspc.settings import AMAZON_ACCESS_KEY, AMAZON_SECRET_KEY, AMAZON_ASSOC_TAG
 import json
+import logging
 
+logger = logging.getLogger(__name__)
 amazon = AmazonAPI(AMAZON_ACCESS_KEY, AMAZON_SECRET_KEY, AMAZON_ASSOC_TAG)
 
 class BookSale(models.Model):
@@ -60,8 +62,10 @@ class BookSale(models.Model):
     def update_amazon_info(self):
         if not self.isbn:
             return
-        products = amazon.search_n(1,Keywords=self.isbn.replace('-',''), SearchIndex='Books')
-        if not len(products):
+        try:
+            products = amazon.search_n(1,Keywords=self.isbn.replace('-',''), SearchIndex='Books')
+        except:
+            logger.error(e)
             return
         amazon_info = {}
         amazon_info['price'] = products[0].price_and_currency[0]

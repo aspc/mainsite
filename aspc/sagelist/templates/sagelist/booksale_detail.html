@@ -25,7 +25,7 @@
   <dt>Price</dt>
   <dd>${{ book.price }}
   {% if book.money_saved %}
-      <small><a href="{{ book.url }}">${{ book.money_saved|floatformat:2  }} cheaper than on Amazon!</a></small>
+      <small><a href="{{ book.url }}">${{ book.money_saved|floatformat:2  }} cheaper than a new version on Amazon!</a></small>
   {% endif %}</dd>
   {% if book.is_recoop %}
   <dt class="detail_note">Note</dt>

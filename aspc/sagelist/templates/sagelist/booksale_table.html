@@ -17,8 +17,7 @@
       <td class="isbn">{{ book.isbn }}</td>
       <td class="condition">{{ book.get_condition_display }}</td>
       <td class="course">{{ book.course.code }}</td>
-      <td class="price">${{ book.price }}
-          {% if book.amazon_price %}<del>${{ book.amazon_price|floatformat:2  }}</del> {% endif %}</td>
+      <td class="price">${{ book.price }}{% if book.amazon_price %}<del>${{ book.amazon_price|floatformat:2  }}</del> {% endif %}</td>
       <td class="recoop">{% if book.is_recoop %} <img src="{% static "images/recoop_listing_icon.png" %}" /> {% endif %}</td>
     </tr>
   {% endfor %}
