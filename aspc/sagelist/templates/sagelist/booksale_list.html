@@ -19,7 +19,8 @@
   <form action="." method="GET" id="search_form">
     {% if search %}
       <a href=".">clear</a>
-    {% endif %}{{ form.search }}
+    {% endif %}
+      {{ form.search }}
     <input type="submit" value="search">
   </form>
 
@@ -28,28 +29,7 @@
 {% if listings %}
   {% include "includes/pagination.html" %}
 
-  <table>
-    <tr>
-      <th class="title">Title</th>
-      <th class="authors">Author(s)</th>
-      <th class="isbn">ISBN</th>
-      <th class="condition">Condition</th>
-      <th class="course">Course</th>
-      <th class="price">Price</th>
-      <th class="recoop">ReCoop</th>
-    </tr>
-  {% for book in listings %}
-    <tr>
-      <td class="title"><a href="{% url "sagelist_detail" pk=book.id %}">{{ book.title }}</a>{% if book.edition %} [{{ book.edition }} ed.]{% endif %}</td>
-      <td class="authors">{{ book.authors }}</td>
-      <td class="isbn">{{ book.isbn }}</td>
-      <td class="condition">{{ book.get_condition_display }}</td>
-      <td class="course">{{ book.course.code }}</td>
-      <td class="price">${{ book.price }}</td>
-      <td class="recoop">{% if book.is_recoop %} <img src="{% static "images/recoop_listing_icon.png" %}" /> {% endif %}</td>
-    </tr>
-  {% endfor %}
-  </table>
+    {% include 'sagelist/booksale_table.html' %}
 
   {% include "includes/pagination.html" %}
 

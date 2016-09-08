@@ -31,6 +31,13 @@ class Position(models.Model):
         blank=True,
         help_text="Sort ordering")
 
+    COMMITTEE_CHOICES = (
+        ('senate', 'Senate'),
+        ('student', 'Student-Led Committee'),
+        ('faculty', 'Faculty-Led Committee'),
+    )
+    committee = models.CharField(max_length=100, choices=COMMITTEE_CHOICES, default='senate')
+
     class Meta:
         ordering = ['sort_order', 'title']
 
@@ -73,8 +80,10 @@ class Appointment(models.Model):
 
     bio = models.TextField(null=True, blank=True)
 
+    order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
+
     class Meta:
-        ordering = ['-end', 'position__sort_order', 'name']
+        ordering = ['order']
 
     def __unicode__(self):
         return u"{0}: {1} from {2} to {3}".format(

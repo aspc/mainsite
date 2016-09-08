@@ -2,7 +2,14 @@ from django.db import models
 from django.contrib.auth.models import User
 from aspc.activityfeed.signals import new_activity, delete_activity
 from aspc.courses.models import Course
+from amazon.api import AmazonAPI
 import datetime
+from aspc.settings import AMAZON_ACCESS_KEY, AMAZON_SECRET_KEY, AMAZON_ASSOC_TAG
+import json
+import logging
+
+logger = logging.getLogger(__name__)
+amazon = AmazonAPI(AMAZON_ACCESS_KEY, AMAZON_SECRET_KEY, AMAZON_ASSOC_TAG)
 
 class BookSale(models.Model):
     CONDITIONS = (
@@ -26,7 +33,7 @@ class BookSale(models.Model):
     title = models.CharField(max_length=255)
     authors = models.CharField(max_length=255, verbose_name="Author(s)")
     course = models.ForeignKey(Course, blank=True, null=True)
-    isbn = models.CharField(max_length=20, null=True, blank=True, verbose_name="ISBN")
+    isbn = models.CharField(max_length=20, verbose_name="ISBN")
     edition = models.CharField(max_length=30, null=True, blank=True)
     condition = models.IntegerField(choices=CONDITIONS)
     price = models.DecimalField(max_digits=5, decimal_places=2)
@@ -37,6 +44,8 @@ class BookSale(models.Model):
     buyer = models.ForeignKey(User, null=True, blank=True, related_name="book_purchases_set")
 
     posted = models.DateTimeField(auto_now_add=True)
+
+    amazon_info = models.TextField(blank=True, null=True)
 
     class Meta:
         ordering = ['posted']
@@ -49,6 +58,49 @@ class BookSale(models.Model):
         super(BookSale, self).save(*args, **kwargs)
         if created and not self.is_recoop:
             new_activity.send(sender=self, category="sagelist", date=self.posted)
+
+    def update_amazon_info(self):
+        if not self.isbn:
+            return
+        try:
+            products = amazon.search_n(1,Keywords=self.isbn.replace('-',''), SearchIndex='Books')
+        except:
+            logger.error(e)
+            return
+        amazon_info = {}
+        amazon_info['price'] = products[0].price_and_currency[0]
+        amazon_info['image_url'] = products[0].large_image_url
+        amazon_info['url'] = products[0].offer_url
+        amazon_info['description'] = products[0].editorial_review
+        self.title = products[0].title
+        self.authors = products[0].author
+        if not self.edition:
+            self.edition = products[0].edition
+        self.amazon_info = json.dumps(amazon_info)
+        self.save()
+
+    def get_amazon_attribute(self, attribute):
+        if not self.amazon_info:
+            return None
+        amazon_info = json.loads(self.amazon_info)
+        return amazon_info.get(attribute)
+
+    def amazon_price(self):
+        return self.get_amazon_attribute('price')
+
+    def url(self):
+        return self.get_amazon_attribute('url')
+
+    def image_url(self):
+        return self.get_amazon_attribute('image_url')
+
+    def description(self):
+        return self.get_amazon_attribute('description')
+
+    def money_saved(self):
+        if not self.amazon_price() or self.price > self.amazon_price():
+            return 0
+        return self.amazon_price() - float(self.price)
 
     def delete(self, *args, **kwargs):
         delete_activity.send(sender=self)

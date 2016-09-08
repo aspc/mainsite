@@ -9,7 +9,7 @@
 		<ul id="reviews_header">
 			{% if reviews %}
 				<li class="reviews_header-section">
-					<span class="big">{{ average_rating | floatformat:2}}</span>
+					<span class="big">{{ object.get_average_rating | floatformat:2}}</span>
 					<br>
 					<strong>average rating</strong>
 				</li>

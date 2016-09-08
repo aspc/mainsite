@@ -248,7 +248,7 @@ class Section(models.Model):
                        ' AVG("enthusiasm_rating"), AVG("approachable_rating") FROM courses_coursereview'
                        ' WHERE course_id=%d and instructor_id IN %s' % (self.course.id, instructor_ids))
         ratings = cursor.fetchone()
-        self.cached_rating = ratings[0]
+        self.cached_overall_rating = ratings[0]
         self.cached_useful_rating = ratings[1]
         self.cached_engagement_rating = ratings[2]
         self.cached_difficulty_rating = ratings[3]

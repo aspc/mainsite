@@ -1,10 +1,11 @@
 from django.contrib import admin
+from adminsortable2.admin import SortableAdminMixin
 from aspc.senate.models import Position, Appointment, Document
 
 class PositionAdmin(admin.ModelAdmin):
     list_display = ("title",  "description", "sort_order",)
 
-class AppointmentAdmin(admin.ModelAdmin):
+class AppointmentAdmin(SortableAdminMixin, admin.ModelAdmin):
     list_display = ("position",  "name", "login_id", "start", "end")
     exclude = ("user",)
 
