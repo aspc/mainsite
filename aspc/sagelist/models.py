@@ -74,7 +74,7 @@ class BookSale(models.Model):
         amazon_info['description'] = products[0].editorial_review
         self.title = products[0].title
         self.authors = products[0].author
-        if not self.edition:
+        if products[0].edition.isdigit():
             self.edition = products[0].edition
         self.amazon_info = json.dumps(amazon_info)
         self.save()
