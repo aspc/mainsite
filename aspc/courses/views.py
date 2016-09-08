@@ -133,12 +133,7 @@ def load_from_session(request):
     all_events = []
     valid_courses = set()
     schedule_courses = request.session.get('schedule_courses', set())
-    course_objects = Section.objects.filter(id__in=schedule_courses)
-    if request.user.is_authenticated() and not course_objects:
-        schedules = request.user.schedule_set.order_by('-create_ts')
-        if schedules:
-            course_objects = schedules[0].sections.all()
-    for course in course_objects:
+    for course in Section.objects.filter(id__in=schedule_courses):
         all_events.append(course.json())
         valid_courses.add(course.pk)
     if schedule_courses - valid_courses:
