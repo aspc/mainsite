@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 class BookSaleForm(forms.ModelForm):
     class Meta:
         model = BookSale
-        exclude = ('buyer', 'seller', 'posted', 'is_recoop', 'recoop_id')
+        exclude = ('buyer', 'seller', 'posted', 'is_recoop', 'recoop_id', 'amazon_info')
 
 class BookSearchForm(forms.Form):
     search = forms.CharField(initial="search")
@@ -35,7 +35,7 @@ class CreateBookSaleView(CreateView):
     def form_valid(self, form):
         sale = form.save(commit=False)
         sale.title = sale.title.strip()
-        sale.isbn = re.sub("[^0-9]", "", sale.isbn)
+        sale.isbn = re.sub("[^0-9X]", "", sale.isbn)
         sale.authors = sale.authors.strip()
         sale.seller = self.request.user
         sale.save()
