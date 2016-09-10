@@ -3,7 +3,7 @@ from django.db import models
 from django.conf import settings
 from django.contrib.humanize.templatetags.humanize import ordinal
 from datetime import date
-
+from geoposition.fields import GeopositionField
 
 def _gen_termspecs(config=settings.ACADEMIC_TERM_DEFAULTS):
     """
@@ -139,6 +139,7 @@ class Building(Location):
     name = models.CharField(max_length=32)
     shortname = models.SlugField(max_length=32)
     type = models.IntegerField(choices=TYPES, db_index=True)
+    position = GeopositionField(blank=True, null=True)
 
     def __unicode__(self):
         return self.name
