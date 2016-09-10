@@ -5,6 +5,7 @@ from django.contrib.humanize.templatetags.humanize import ordinal
 from django.core.urlresolvers import reverse
 from datetime import date
 from geoposition.fields import GeopositionField
+from django.apps import apps
 
 def _gen_termspecs(config=settings.ACADEMIC_TERM_DEFAULTS):
     """
@@ -161,13 +162,37 @@ class Building(Location):
         }
         return data
 
+    def get_average_ratings(self):
+        Room = apps.get_model('housing', 'Room')
+        rooms = Room.objects.filter(floor__building=self, average_rating__isnull=False)
+        room_count = float(rooms.count())
+        if not room_count:
+            return {
+                'average_rating' : 0,
+                'average_rating_quiet' : 0,
+                'average_rating_spacious' : 0,
+                'average_rating_temperate' : 0,
+                'average_rating_maintained' : 0,
+                'average_rating_cellphone' : 0
+            }
+
+        return {
+            'average_rating' : sum(rooms.values_list('average_rating', flat=True)) / room_count + 1,
+            'average_rating_quiet' : sum(rooms.values_list('average_rating_quiet', flat=True)) / room_count + 1,
+            'average_rating_spacious' : sum(rooms.values_list('average_rating_spacious', flat=True)) / room_count + 1,
+            'average_rating_temperate' : sum(rooms.values_list('average_rating_temperate', flat=True)) / room_count + 1,
+            'average_rating_maintained' : sum(rooms.values_list('average_rating_maintained', flat=True)) / room_count + 1,
+            'average_rating_cellphone' : sum(rooms.values_list('average_rating_cellphone', flat=True)) / room_count + 1
+        }
+
     def map_object(self):
         if not self.position:
             return {}
         return {
             'name': self.name,
             'position': {'lat':float(self.position.latitude), 'lng': float(self.position.longitude or 0)},
-            'review_url': reverse('housing_browse_building_floor_first', kwargs={'building': self.shortname})
+            'review_url': reverse('housing_browse_building_floor_first', kwargs={'building': self.shortname}),
+            'ratings': self.get_average_ratings()
         }
 
 class Floor(models.Model):
