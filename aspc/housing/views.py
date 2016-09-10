@@ -7,7 +7,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.utils.safestring import mark_safe
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest, JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger, InvalidPage
 import json
 from django.conf import settings
@@ -17,12 +17,12 @@ from aspc.college.models import Building, Floor, Map
 from aspc.housing.models import Review, Room
 from aspc.housing.forms import ReviewRoomForm, NewReviewForm, SearchForm, RefineForm, SEARCH_ORDERING
 
-class Home(ArchiveIndexView):
-    template_name = "housing/home.html"
-    date_field = "create_ts"
-    allow_empty = True
-    queryset = Review.objects.all().select_related('room')
-    paginate_by = 15
+def home(request):
+    if request.method == 'GET':
+        return render(request, 'housing/home.html')
+    dorms = Building.objects.filter(type=0, position__isnull=False)
+    dorm_objects = [dorm.map_object() for dorm in dorms if dorm.map_object()]
+    return JsonResponse(dorm_objects, safe=False)
 
 def format_data(rooms):
     sorted_rooms = sorted(rooms, key=lambda r: r.floor.id)

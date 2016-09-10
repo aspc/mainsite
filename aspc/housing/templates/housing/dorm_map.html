@@ -1,0 +1,60 @@
+<div style='height:500px;' id="map"></div>
+{% load static %}
+<script src='{% static 'js/lib/jquery-1.7.1.min.js' %}'></script>
+<script>
+      // This example displays a marker at the center of Australia.
+      // When the user clicks the marker, an info window opens.
+
+      function initMap() {
+          var pomona = {lat: 34.098346, lng: -117.713507};
+          var map = new google.maps.Map(document.getElementById('map'), {
+              zoom: 16,
+              center: pomona
+          });
+
+          function addDormToMap(dorm) {
+              var contentString = '<div id="content">' +
+                      '<div id="siteNotice">' +
+                      '</div>' +
+                      `<h1 id="firstHeading" class="firstHeading">${dorm.name}</h1>` +
+                      '<div id="bodyContent">' +
+                      `<a href="${dorm.review_url}">See reviews</a>`+
+                      '</div>' +
+                      '</div>';
+              console.log(contentString);
+              var infowindow = new google.maps.InfoWindow({
+                  content: contentString
+              });
+
+              var marker = new google.maps.Marker({
+                  position: dorm.position,
+                  map: map,
+                  title: dorm.name
+              });
+              marker.addListener('click', function () {
+                  infowindow.open(map, marker);
+              });
+          }
+
+
+          $.ajax({
+              url: '',
+              type: 'POST',
+              data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+              },
+              success: function (data) {
+                  for (var i in data) {
+                      console.log(data[i]);
+                      addDormToMap(data[i]);
+                  }
+              },
+              error: function(error) {
+                  console.log(error.responseText);
+              }
+          })
+      }
+</script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD45ZA1-JZCRnza1VR3WkvfJc8U_2vpCHQ&callback=initMap">
+</script>

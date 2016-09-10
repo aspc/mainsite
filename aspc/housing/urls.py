@@ -1,11 +1,11 @@
 from django.conf.urls import patterns, include, url
-from aspc.housing.views import Home, RoomDetail, \
+from aspc.housing.views import home, RoomDetail, \
     BrowseBuildings, BrowseBuildingFloor, ReviewRoom, ReviewRoomWithChoice, \
     search
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
-    url(r'^$', Home.as_view(), name="housing_home"),
+    url(r'^$', home, name="housing_home"),
     url(r'^search/$', search, name="housing_search"),
     url(r'^browse/$', BrowseBuildings.as_view(), name="housing_browse"),
     url(r'^review/$', login_required(ReviewRoomWithChoice.as_view()), name="housing_review"),

@@ -2,6 +2,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.conf import settings
 from django.contrib.humanize.templatetags.humanize import ordinal
+from django.core.urlresolvers import reverse
 from datetime import date
 from geoposition.fields import GeopositionField
 
@@ -159,6 +160,15 @@ class Building(Location):
             'sw': (self.floor_set.all()[0].map_set.all()[0].s, self.floor_set.all()[0].map_set.all()[0].w),
         }
         return data
+
+    def map_object(self):
+        if not self.position:
+            return {}
+        return {
+            'name': self.name,
+            'position': {'lat':float(self.position.latitude), 'lng': float(self.position.longitude or 0)},
+            'review_url': reverse('housing_browse_building_floor_first', kwargs={'building': self.shortname})
+        }
 
 class Floor(models.Model):
     building = models.ForeignKey(Building)
