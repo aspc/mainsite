@@ -16,12 +16,13 @@ from itertools import groupby
 from aspc.college.models import Building, Floor, Map
 from aspc.housing.models import Review, Room
 from aspc.housing.forms import ReviewRoomForm, NewReviewForm, SearchForm, RefineForm, SEARCH_ORDERING
+from aspc.settings import GEOPOSITION_GOOGLE_MAPS_API_KEY
 
 def home(request):
     if request.method == 'GET':
-        return render(request, 'housing/home.html')
+        return render(request, 'housing/home.html', {'map_api': GEOPOSITION_GOOGLE_MAPS_API_KEY})
     dorms = Building.objects.filter(type=0, position__isnull=False)
-    dorm_objects = [dorm.map_object() for dorm in dorms if dorm.map_object()]
+    dorm_objects = filter(None, [dorm.map_object() for dorm in dorms])
     return JsonResponse(dorm_objects, safe=False)
 
 def format_data(rooms):

@@ -1,8 +1,9 @@
-<div style='height:500px;' id="map"></div>
+<div id="map"></div>
 {% load static %}
 <script src='{% static 'js/lib/jquery-1.7.1.min.js' %}'></script>
+<script src='{% static 'js/lib/cookie.js' %}'></script>
 <script src="{% static 'js/dorm_map.js' %}">
 </script>
 <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD45ZA1-JZCRnza1VR3WkvfJc8U_2vpCHQ&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key={{ map_api }}&callback=initMap">
 </script>

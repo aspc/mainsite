@@ -397,7 +397,9 @@ form p {
 	background: #eee;
 	border: 0.1em solid #999;
 }
-
+#map {
+	height:500px;
+}
 /* @end */
 
 @media handheld, only screen and (max-width: 767px)

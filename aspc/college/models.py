@@ -162,6 +162,9 @@ class Building(Location):
         }
         return data
 
+    def get_average_rating(self, rooms, room_count, name):
+        return sum(rooms.values_list(name, flat=True)) / room_count + 1
+
     def get_average_ratings(self):
         Room = apps.get_model('housing', 'Room')
         rooms = Room.objects.filter(floor__building=self, average_rating__isnull=False)
@@ -177,17 +180,17 @@ class Building(Location):
             }
 
         return {
-            'average_rating' : sum(rooms.values_list('average_rating', flat=True)) / room_count + 1,
-            'average_rating_quiet' : sum(rooms.values_list('average_rating_quiet', flat=True)) / room_count + 1,
-            'average_rating_spacious' : sum(rooms.values_list('average_rating_spacious', flat=True)) / room_count + 1,
-            'average_rating_temperate' : sum(rooms.values_list('average_rating_temperate', flat=True)) / room_count + 1,
-            'average_rating_maintained' : sum(rooms.values_list('average_rating_maintained', flat=True)) / room_count + 1,
-            'average_rating_cellphone' : sum(rooms.values_list('average_rating_cellphone', flat=True)) / room_count + 1
+            'average_rating' : self.get_average_rating(rooms, room_count, 'average_rating'),
+            'average_rating_quiet' : self.get_average_rating(rooms, room_count, 'average_rating_quiet'),
+            'average_rating_spacious' : self.get_average_rating(rooms, room_count, 'average_rating_spacious'),
+            'average_rating_temperate' : self.get_average_rating(rooms, room_count, 'average_rating_temperate'),
+            'average_rating_maintained' : self.get_average_rating(rooms, room_count, 'average_rating_maintained'),
+            'average_rating_cellphone' : self.get_average_rating(rooms, room_count, 'average_rating_cellphone'),
         }
 
     def map_object(self):
         if not self.position:
-            return {}
+            return None
         return {
             'name': self.name,
             'position': {'lat':float(self.position.latitude), 'lng': float(self.position.longitude or 0)},
