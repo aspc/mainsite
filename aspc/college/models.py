@@ -2,8 +2,10 @@ from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.conf import settings
 from django.contrib.humanize.templatetags.humanize import ordinal
+from django.core.urlresolvers import reverse
 from datetime import date
-
+from geoposition.fields import GeopositionField
+from django.apps import apps
 
 def _gen_termspecs(config=settings.ACADEMIC_TERM_DEFAULTS):
     """
@@ -139,6 +141,7 @@ class Building(Location):
     name = models.CharField(max_length=32)
     shortname = models.SlugField(max_length=32)
     type = models.IntegerField(choices=TYPES, db_index=True)
+    position = GeopositionField(blank=True, null=True)
 
     def __unicode__(self):
         return self.name
@@ -158,6 +161,42 @@ class Building(Location):
             'sw': (self.floor_set.all()[0].map_set.all()[0].s, self.floor_set.all()[0].map_set.all()[0].w),
         }
         return data
+
+    def get_average_rating(self, rooms, room_count, name):
+        return sum(rooms.values_list(name, flat=True)) / room_count + 1
+
+    def get_average_ratings(self):
+        Room = apps.get_model('housing', 'Room')
+        rooms = Room.objects.filter(floor__building=self, average_rating__isnull=False)
+        room_count = float(rooms.count())
+        if not room_count:
+            return {
+                'average_rating' : 0,
+                'average_rating_quiet' : 0,
+                'average_rating_spacious' : 0,
+                'average_rating_temperate' : 0,
+                'average_rating_maintained' : 0,
+                'average_rating_cellphone' : 0
+            }
+
+        return {
+            'average_rating' : self.get_average_rating(rooms, room_count, 'average_rating'),
+            'average_rating_quiet' : self.get_average_rating(rooms, room_count, 'average_rating_quiet'),
+            'average_rating_spacious' : self.get_average_rating(rooms, room_count, 'average_rating_spacious'),
+            'average_rating_temperate' : self.get_average_rating(rooms, room_count, 'average_rating_temperate'),
+            'average_rating_maintained' : self.get_average_rating(rooms, room_count, 'average_rating_maintained'),
+            'average_rating_cellphone' : self.get_average_rating(rooms, room_count, 'average_rating_cellphone'),
+        }
+
+    def map_object(self):
+        if not self.position:
+            return None
+        return {
+            'name': self.name,
+            'position': {'lat':float(self.position.latitude), 'lng': float(self.position.longitude or 0)},
+            'review_url': reverse('housing_browse_building_floor_first', kwargs={'building': self.shortname}),
+            'ratings': self.get_average_ratings()
+        }
 
 class Floor(models.Model):
     building = models.ForeignKey(Building)

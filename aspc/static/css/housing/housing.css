@@ -16,7 +16,7 @@
 }
 
 .housing .actions#home li a {
-	width: 32%;
+	width: 45%;
 	display: inline-block;
 	margin: 0;
 	padding: 0;
@@ -397,7 +397,9 @@ form p {
 	background: #eee;
 	border: 0.1em solid #999;
 }
-
+#map {
+	height:500px;
+}
 /* @end */
 
 @media handheld, only screen and (max-width: 767px)

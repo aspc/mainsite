@@ -2,7 +2,7 @@ from django.contrib import admin
 from aspc.college.models import Term, Building, Floor, Map
 
 class BuildingAdmin(admin.ModelAdmin):
-    list_display = ['name', 'shortname', 'type', 'latitude', 'longitude']
+    list_display = ['name', 'shortname', 'type', 'position']
 
 class FloorAdmin(admin.ModelAdmin):
     list_display = ['building_name', 'number']

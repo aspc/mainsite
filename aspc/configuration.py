@@ -132,6 +132,7 @@ INSTALLED_APPS = (
 	'django.contrib.admindocs',
 	'django.contrib.redirects',
 	'django.contrib.humanize',
+	"geoposition",
 	'gunicorn',
 	'django_extensions',
 	'debug_toolbar',
