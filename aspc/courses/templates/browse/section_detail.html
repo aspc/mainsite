@@ -100,5 +100,6 @@
                 <a href="{% url "sagelist_create" %}">List a book for sale</a></p>
         {% endif %}
     {% endwith %}
+    {{ object.get_summary }}
 	{% include "reviews/review_list.html" %}
 {% endblock %}

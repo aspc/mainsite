@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.db import connection
 from django.template.defaultfilters import slugify
 from aspc.activityfeed.signals import new_activity, delete_activity
+from aspc.courses.lib import rake
 
 CAMPUSES = (
     (1, u'PO'), (2, u'SC'), (3, u'CMC'), (4, u'HM'), (5, u'PZ'), (6, u'CGU'), (7, u'CU'), (8, u'KS'), (-1, u'?'))
@@ -31,6 +32,8 @@ POSSIBLE_GRADES = (
 # (see the academic calendar at http://catalog.pomona.edu/content.php?catoid=21&navoid=4445)
 START_DATE = date(2016, 8, 30)
 END_DATE = date(2016, 12, 7)
+
+rake_object = rake.Rake("aspc/courses/lib/SmartStoplist.txt", 4, 3, 3)
 
 
 class Term(models.Model):
@@ -266,6 +269,25 @@ class Section(models.Model):
         return [self.cached_useful_rating, self.cached_engagement_rating, self.cached_difficulty_rating,
                 self.cached_competency_rating, self.cached_lecturing_rating, self.cached_enthusiasm_rating,
                 self.cached_approachable_rating]
+
+    def find_sentence_for_keywords(self, input, keyword):
+        all_sentences = input.split('.')
+        for sentence in all_sentences:
+            if keyword[0] in sentence:
+                return sentence.replace('\r','').replace('\n','')
+
+    def get_summary(self):
+        reviews = CourseReview.objects.filter(course=self.course, instructor__in=self.instructors.all())
+        if len(reviews) < 5:
+            return []
+        comments = [review.comments for review in reviews]
+        input = ' '.join(comments)
+        keywords = rake_object.run(input)[0:5]
+        sentences = []
+        for keyword in keywords:
+            sentence = self.find_sentence_for_keywords(input, keyword)
+            sentences.append((keyword, sentence))
+        return sentences
 
     @models.permalink
     def get_absolute_url(self):
