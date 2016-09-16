@@ -626,6 +626,11 @@ ul#reviews_header .big {
 	margin-top: 10px;
 }
 
+#reviews_list-summary {
+	margin-left: 5%;
+	margin-right: 5%;
+}
+
 /* @end */
 
 /* @group add reviews */

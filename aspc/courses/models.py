@@ -33,7 +33,12 @@ POSSIBLE_GRADES = (
 START_DATE = date(2016, 8, 30)
 END_DATE = date(2016, 12, 7)
 
-rake_object = rake.Rake("aspc/courses/lib/SmartStoplist.txt", 4, 3, 3)
+# extracting key phrases for reviews
+MIN_PHRASE_LENGTH = 5
+MAX_WORDS_IN_PHRASE = 4
+MIN_FREQUENCY = 2
+STOPLIST = "aspc/courses/lib/SmartStoplist.txt"
+rake_object = rake.Rake(STOPLIST, MIN_PHRASE_LENGTH, MAX_WORDS_IN_PHRASE, MIN_FREQUENCY)
 
 
 class Term(models.Model):
@@ -271,23 +276,26 @@ class Section(models.Model):
                 self.cached_approachable_rating]
 
     def find_sentence_for_keywords(self, input, keyword):
+        input = input.replace('\r','.').replace('\n','.')
         all_sentences = input.split('.')
         for sentence in all_sentences:
-            if keyword[0] in sentence:
-                return sentence.replace('\r','').replace('\n','')
+            if keyword in sentence:
+                ind = sentence.index(keyword)
+                return sentence[0:ind] + '<b>' +keyword + '</b>' + sentence[ind+len(keyword):]
 
     def get_summary(self):
         reviews = CourseReview.objects.filter(course=self.course, instructor__in=self.instructors.all())
-        if len(reviews) < 5:
+        if len(reviews) < 3:
             return []
         comments = [review.comments for review in reviews]
         input = ' '.join(comments)
         keywords = rake_object.run(input)[0:5]
         sentences = []
         for keyword in keywords:
-            sentence = self.find_sentence_for_keywords(input, keyword)
-            sentences.append((keyword, sentence))
-        return sentences
+            sentence = self.find_sentence_for_keywords(input, keyword[0])
+            if sentence:
+                sentences.append(sentence)
+        return sentences[0:3]
 
     @models.permalink
     def get_absolute_url(self):
