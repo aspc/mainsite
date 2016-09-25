@@ -11,8 +11,6 @@ except ImportError:
 env.site = env.branch = 'staging'
 env.origin = 'https://github.com/aspc/mainsite'
 
-## Fab methods
-
 # Deploys `master` to the ASPC mainsite
 # e.g. `fab deploy`
 def deploy():

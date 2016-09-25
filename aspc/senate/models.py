@@ -2,6 +2,12 @@ from django.db import models
 from django.contrib.auth.models import User, Group
 import datetime
 
+COMMITTEE_CHOICES = (
+    ('senate', 'Senate'),
+    ('student', 'Student-Chaired Committee'),
+    ('faculty', 'Faculty and Alumni Committee'),
+)
+
 class Position(models.Model):
     """A position in ASPC (elected, appointed, or hired)"""
 
@@ -31,11 +37,6 @@ class Position(models.Model):
         blank=True,
         help_text="Sort ordering")
 
-    COMMITTEE_CHOICES = (
-        ('senate', 'Senate'),
-        ('student', 'Student-Led Committee'),
-        ('faculty', 'Faculty-Led Committee'),
-    )
     committee = models.CharField(max_length=100, choices=COMMITTEE_CHOICES, default='senate')
 
     class Meta:

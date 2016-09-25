@@ -1,5 +1,6 @@
 from django.views.generic import ListView
 from aspc.senate.models import Document, Appointment, Position
+from aspc.senate.models import COMMITTEE_CHOICES
 from django.db.models import Q
 import datetime
 
@@ -11,7 +12,12 @@ class DocumentList(ListView):
 class AppointmentList(ListView):
     model = Appointment
     context_object_name = 'appointments'
-    
+
+    def get_context_data(self, **kwargs):
+        context = super(AppointmentList, self).get_context_data(**kwargs)
+        context['committee'] = dict(COMMITTEE_CHOICES).get(self.kwargs['committee'])
+        return context
+
     def get_queryset(self, *args, **kwargs):
         qs = super(AppointmentList, self).get_queryset(*args, **kwargs)
         return qs\
