@@ -8,6 +8,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.models import User
 from django.db import connection
 from django.template.defaultfilters import slugify
+from aspc.activityfeed.signals import new_activity, delete_activity
 
 CAMPUSES = (
     (1, u'PO'), (2, u'SC'), (3, u'CMC'), (4, u'HM'), (5, u'PZ'), (6, u'CGU'), (7, u'CU'), (8, u'KS'), (-1, u'?'))
@@ -450,7 +451,10 @@ class CourseReview(models.Model):
     def save(self, *args, **kwargs):
         super(CourseReview, self).save(*args, **kwargs)
         self.update_course_and_instructor_rating()
+        if self.pk is None:
+            new_activity.send(sender=self, category="course", date=self.created_date)
 
     def delete(self, *args, **kwargs):
         super(CourseReview, self).delete(*args, **kwargs)
         self.update_course_and_instructor_rating()
+        delete_activity.send(sender=self)
