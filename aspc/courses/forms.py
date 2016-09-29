@@ -71,6 +71,10 @@ POSSIBLE_CREDIT = (
     (1.5, '1.5'),
     (2.0, '2.0'), (3.0, '3.0'), (4.0, '4.0'), (6.0, '6.0'))
 
+POSSIBLE_GRADES = (
+    (None, u'Unknown'), (1, u'A'), (2, u'A-'), (3, u'B+'), (4, u'B'), (5, u'B-'), (6, u'C+'), (7, u'C'),
+    (8, u'C-'), (9, u'D+'), (10, u'D'), (11, u'D-'), (12, u'F'))
+
 keyword_regex = re.compile(r'(\w+)')
 
 
@@ -338,6 +342,7 @@ class ReviewForm(forms.Form):
     enthusiasm_rating = forms.ChoiceField(choices=CHOICES, label='How enthusiastic was the professor?', help_text='1: The prof had no pulse <br />5: The prof\'s excitement was infectious')
     approachable_rating = forms.ChoiceField(choices=CHOICES, label='How approachable was the professor?', help_text='1: I would rather speak to Darth Vader <br />5: I consider this prof a personal friend')
     work_per_week = forms.IntegerField(max_value=25, label='How many hours of work did you have each week?')
+    grade = forms.ChoiceField(choices=POSSIBLE_GRADES, required=False)
     comments = forms.CharField(widget=forms.Textarea(attrs={'cols': '60', 'rows': '15'}), label='General comments:')
 
     def __init__(self, course_code, review=None, *args, **kwargs):
@@ -362,5 +367,6 @@ class ReviewForm(forms.Form):
         self.initial['approachable_rating'] = smart_int(review.approachable_rating)
         self.initial['enthusiasm_rating'] = smart_int(review.enthusiasm_rating)
         self.initial['comments'] = review.comments
+        self.initial['grade'] = review.grade
     def course(self):
       return self.course
