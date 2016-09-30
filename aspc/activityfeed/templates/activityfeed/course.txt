@@ -1,0 +1,1 @@
+A new review of <a href="{{ object.get_url_to_section_page }}">{{ object.course.name }}</a> has been posted.
