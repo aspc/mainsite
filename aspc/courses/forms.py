@@ -72,8 +72,8 @@ POSSIBLE_CREDIT = (
     (2.0, '2.0'), (3.0, '3.0'), (4.0, '4.0'), (6.0, '6.0'))
 
 POSSIBLE_GRADES = (
-    (None, u'Unknown'), (1, u'A'), (2, u'A-'), (3, u'B+'), (4, u'B'), (5, u'B-'), (6, u'C+'), (7, u'C'),
-    (8, u'C-'), (9, u'D+'), (10, u'D'), (11, u'D-'), (12, u'F'))
+    (None, u'Unknown'), (0, u'A+'), (1, u'A'), (2, u'A-'), (3, u'B+'), (4, u'B'), (5, u'B-'), (6, u'C+'), (7, u'C'),
+    (8, u'C-'), (9, u'D+'), (10, u'D'), (11, u'D-'), (12, u'F'), (13, u'P'), (14, u'NP'), (15, u'Other'))
 
 keyword_regex = re.compile(r'(\w+)')
 
