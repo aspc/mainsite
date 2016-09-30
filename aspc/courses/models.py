@@ -24,8 +24,8 @@ SESSIONS = ((u'SP', u'Spring'), (u'FA', u'Fall'))
 SUBSESSIONS = ((u'P1', u'1'), (u'P2', u'2'))
 
 POSSIBLE_GRADES = (
-    (1, u'A'), (2, u'A-'), (3, u'B+'), (4, u'B'), (5, u'B-'), (6, u'C+'), (7, u'C'),
-    (8, u'C-'), (9, u'D+'), (10, u'D'), (11, u'D-'), (12, u'F'))
+    (0, u'A+'), (1, u'A'), (2, u'A-'), (3, u'B+'), (4, u'B'), (5, u'B-'), (6, u'C+'), (7, u'C'),
+    (8, u'C-'), (9, u'D+'), (10, u'D'), (11, u'D-'), (12, u'F'), (13, u'P'), (14, u'NP'), (15, u'Other'))
 
 # TODO: Make this robust for different semesters
 # (see the academic calendar at http://catalog.pomona.edu/content.php?catoid=21&navoid=4445)

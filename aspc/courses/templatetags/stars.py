@@ -2,6 +2,7 @@ from django import template
 import math
 from django.utils.safestring import mark_safe
 from aspc.settings import STATIC_URL
+from aspc.courses.models import POSSIBLE_GRADES
 
 register = template.Library()
 
@@ -15,3 +16,8 @@ def star(rating):
         num_star_half * ('<img height=15 src="'+STATIC_URL+'images/star-half.png">') + \
         num_star_off * ('<img height=15 src="'+STATIC_URL+'images/star-empty.png">')
     return mark_safe(html)
+
+@register.filter
+def grade(rating):
+    grades = dict(POSSIBLE_GRADES)
+    return grades[rating]
