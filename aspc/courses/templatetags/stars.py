@@ -2,6 +2,7 @@ from django import template
 import math
 from django.utils.safestring import mark_safe
 from aspc.settings import STATIC_URL
+from aspc.courses.models import POSSIBLE_GRADES
 
 register = template.Library()
 
@@ -18,6 +19,5 @@ def star(rating):
 
 @register.filter
 def grade(rating):
-    grades = dict([(1, u'A'), (2, u'A-'), (3, u'B+'), (4, u'B'), (5, u'B-'), (6, u'C+'), (7, u'C'),
-    (8, u'C-'), (9, u'D+'), (10, u'D'), (11, u'D-'), (12, u'F')])
+    grades = dict(POSSIBLE_GRADES)
     return grades[rating]
