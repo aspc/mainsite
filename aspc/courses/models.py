@@ -449,9 +449,10 @@ class CourseReview(models.Model):
         self.update_course_and_instructor_rating()
 
     def save(self, *args, **kwargs):
+        new = self.pk is None
         super(CourseReview, self).save(*args, **kwargs)
         self.update_course_and_instructor_rating()
-        if self.pk is None:
+        if new:
             new_activity.send(sender=self, category="course", date=self.created_date)
 
     def delete(self, *args, **kwargs):
