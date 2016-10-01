@@ -8,6 +8,8 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.models import User
 from django.db import connection
 from django.template.defaultfilters import slugify
+from aspc.activityfeed.signals import new_activity, delete_activity
+from aspc.courses.lib import rake
 
 CAMPUSES = (
     (1, u'PO'), (2, u'SC'), (3, u'CMC'), (4, u'HM'), (5, u'PZ'), (6, u'CGU'), (7, u'CU'), (8, u'KS'), (-1, u'?'))
@@ -23,13 +25,20 @@ SESSIONS = ((u'SP', u'Spring'), (u'FA', u'Fall'))
 SUBSESSIONS = ((u'P1', u'1'), (u'P2', u'2'))
 
 POSSIBLE_GRADES = (
-    (1, u'A'), (2, u'A-'), (3, u'B+'), (4, u'B'), (5, u'B-'), (6, u'C+'), (7, u'C'),
-    (8, u'C-'), (9, u'D+'), (10, u'D'), (11, u'D-'), (12, u'F'))
+    (0, u'A+'), (1, u'A'), (2, u'A-'), (3, u'B+'), (4, u'B'), (5, u'B-'), (6, u'C+'), (7, u'C'),
+    (8, u'C-'), (9, u'D+'), (10, u'D'), (11, u'D-'), (12, u'F'), (13, u'P'), (14, u'NP'), (15, u'Other'))
 
 # TODO: Make this robust for different semesters
 # (see the academic calendar at http://catalog.pomona.edu/content.php?catoid=21&navoid=4445)
 START_DATE = date(2016, 8, 30)
 END_DATE = date(2016, 12, 7)
+
+# extracting key phrases for reviews
+MIN_PHRASE_LENGTH = 5
+MAX_WORDS_IN_PHRASE = 4
+MIN_FREQUENCY = 3
+STOPLIST = "aspc/courses/lib/SmartStoplist.txt"
+rake_object = rake.Rake(STOPLIST, MIN_PHRASE_LENGTH, MAX_WORDS_IN_PHRASE, MIN_FREQUENCY)
 
 
 class Term(models.Model):
@@ -266,6 +275,29 @@ class Section(models.Model):
                 self.cached_competency_rating, self.cached_lecturing_rating, self.cached_enthusiasm_rating,
                 self.cached_approachable_rating]
 
+    def find_sentence_for_keywords(self, input, keyword, used_sentences):
+        input = input.replace('\r','.').replace('\n','.')
+        all_sentences = input.split('.')
+        for sentence in all_sentences:
+            if (keyword+' ' in sentence or keyword+'.' in sentence) and sentence not in used_sentences:
+                ind = sentence.index(keyword)
+                used_sentences.append(sentence)
+                return sentence[0:ind] + '<b>' +keyword + '</b>' + sentence[ind+len(keyword):]+'.'
+
+    def get_summary(self):
+        reviews = CourseReview.objects.filter(course=self.course, instructor__in=self.instructors.all())
+        if len(reviews) < 3:
+            return []
+        comments = [review.comments for review in reviews]
+        input = ' '.join(comments)
+        keywords = rake_object.run(input)[0:5]
+        sentences, used_sentences = [], []
+        for keyword in keywords:
+            sentence = self.find_sentence_for_keywords(input, keyword[0], used_sentences)
+            if sentence:
+                sentences.append(sentence)
+        return sentences[0:3]
+
     @models.permalink
     def get_absolute_url(self):
         if not self.course.primary_department: print self.course
@@ -448,9 +480,13 @@ class CourseReview(models.Model):
         self.update_course_and_instructor_rating()
 
     def save(self, *args, **kwargs):
+        new = self.pk is None
         super(CourseReview, self).save(*args, **kwargs)
         self.update_course_and_instructor_rating()
+        if new:
+            new_activity.send(sender=self, category="course", date=self.created_date)
 
     def delete(self, *args, **kwargs):
         super(CourseReview, self).delete(*args, **kwargs)
         self.update_course_and_instructor_rating()
+        delete_activity.send(sender=self)

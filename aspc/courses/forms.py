@@ -1,6 +1,6 @@
 from django import forms
 from aspc.courses.models import (Department, Section, Meeting, Term, Course, Instructor,
-                                 RequirementArea, CAMPUSES, CAMPUSES_FULL_NAMES, CAMPUSES_LOOKUP)
+                                 RequirementArea, CAMPUSES, CAMPUSES_FULL_NAMES, CAMPUSES_LOOKUP, POSSIBLE_GRADES)
 from django.db.models import Count, F
 
 import re
@@ -70,6 +70,8 @@ POSSIBLE_CREDIT = (
     ('A', 'any'), ('F', 'full'), ('P', 'partial'), (0.0, '0.0'), (0.25, '0.25'), (0.5, '0.5'), (1.0, '1.0'),
     (1.5, '1.5'),
     (2.0, '2.0'), (3.0, '3.0'), (4.0, '4.0'), (6.0, '6.0'))
+
+POSSIBLE_GRADES_OPTIONS = [(None, u'Unknown')] + list(POSSIBLE_GRADES)
 
 keyword_regex = re.compile(r'(\w+)')
 
@@ -338,6 +340,7 @@ class ReviewForm(forms.Form):
     enthusiasm_rating = forms.ChoiceField(choices=CHOICES, label='How enthusiastic was the professor?', help_text='1: The prof had no pulse <br />5: The prof\'s excitement was infectious')
     approachable_rating = forms.ChoiceField(choices=CHOICES, label='How approachable was the professor?', help_text='1: I would rather speak to Darth Vader <br />5: I consider this prof a personal friend')
     work_per_week = forms.IntegerField(max_value=25, label='How many hours of work did you have each week?')
+    grade = forms.ChoiceField(choices=POSSIBLE_GRADES_OPTIONS, required=False)
     comments = forms.CharField(widget=forms.Textarea(attrs={'cols': '60', 'rows': '15'}), label='General comments:')
 
     def __init__(self, course_code, review=None, *args, **kwargs):
@@ -362,5 +365,6 @@ class ReviewForm(forms.Form):
         self.initial['approachable_rating'] = smart_int(review.approachable_rating)
         self.initial['enthusiasm_rating'] = smart_int(review.enthusiasm_rating)
         self.initial['comments'] = review.comments
+        self.initial['grade'] = review.grade
     def course(self):
       return self.course

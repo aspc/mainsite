@@ -13,7 +13,11 @@
 			<br />
 			{% endif %}
 			<strong>Rating:</strong> {{ review.overall_rating | star}} (<span class="reviews_list-rating_score">{{ review.overall_rating}}</span>)
-		</small>
+            | <strong>Work per week:</strong> {{ review.work_per_week}} hours
+            {% if review.grade %}
+                | <strong>Grade received:</strong> {{ review.grade | grade}}
+            {% endif %}
+        </small>
     </p>
     <p>{{ review.comments|linebreaksbr  }}</p>
 	{% if not is_section and not is_instructor_view %}

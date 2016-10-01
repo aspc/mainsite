@@ -1,0 +1,4 @@
+major
+prof
+professor
+learn

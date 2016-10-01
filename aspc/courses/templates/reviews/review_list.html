@@ -55,6 +55,11 @@
 						</div>
 					{% endif %}
 				</div>
+                <div id="reviews_list-summary">
+                    {% for sentence in object.get_summary %}
+                        <p><i>"{{ sentence|safe }}"</i></p>
+                    {% endfor %}
+                </div>
 				<div id="reviews_list-content">
 					{% for review in reviews %}
 						{% include "reviews/review_list_item.html" %}
