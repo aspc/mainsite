@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.db import connection
 from django.template.defaultfilters import slugify
 from aspc.activityfeed.signals import new_activity, delete_activity
+from aspc.courses.lib import rake
 
 CAMPUSES = (
     (1, u'PO'), (2, u'SC'), (3, u'CMC'), (4, u'HM'), (5, u'PZ'), (6, u'CGU'), (7, u'CU'), (8, u'KS'), (-1, u'?'))
@@ -31,6 +32,13 @@ POSSIBLE_GRADES = (
 # (see the academic calendar at http://catalog.pomona.edu/content.php?catoid=21&navoid=4445)
 START_DATE = date(2016, 8, 30)
 END_DATE = date(2016, 12, 7)
+
+# extracting key phrases for reviews
+MIN_PHRASE_LENGTH = 5
+MAX_WORDS_IN_PHRASE = 4
+MIN_FREQUENCY = 3
+STOPLIST = "aspc/courses/lib/SmartStoplist.txt"
+rake_object = rake.Rake(STOPLIST, MIN_PHRASE_LENGTH, MAX_WORDS_IN_PHRASE, MIN_FREQUENCY)
 
 
 class Term(models.Model):
@@ -266,6 +274,29 @@ class Section(models.Model):
         return [self.cached_useful_rating, self.cached_engagement_rating, self.cached_difficulty_rating,
                 self.cached_competency_rating, self.cached_lecturing_rating, self.cached_enthusiasm_rating,
                 self.cached_approachable_rating]
+
+    def find_sentence_for_keywords(self, input, keyword, used_sentences):
+        input = input.replace('\r','.').replace('\n','.')
+        all_sentences = input.split('.')
+        for sentence in all_sentences:
+            if (keyword+' ' in sentence or keyword+'.' in sentence) and sentence not in used_sentences:
+                ind = sentence.index(keyword)
+                used_sentences.append(sentence)
+                return sentence[0:ind] + '<b>' +keyword + '</b>' + sentence[ind+len(keyword):]+'.'
+
+    def get_summary(self):
+        reviews = CourseReview.objects.filter(course=self.course, instructor__in=self.instructors.all())
+        if len(reviews) < 3:
+            return []
+        comments = [review.comments for review in reviews]
+        input = ' '.join(comments)
+        keywords = rake_object.run(input)[0:5]
+        sentences, used_sentences = [], []
+        for keyword in keywords:
+            sentence = self.find_sentence_for_keywords(input, keyword[0], used_sentences)
+            if sentence:
+                sentences.append(sentence)
+        return sentences[0:3]
 
     @models.permalink
     def get_absolute_url(self):
