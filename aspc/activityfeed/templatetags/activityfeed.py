@@ -32,7 +32,7 @@ def parse_tweet(tweet):
     user_regex = re.compile(r'@[0-9a-zA-Z+_]*',re.IGNORECASE)
 
     #first deal with links. Any http://... string change to a proper link
-    tweet = re.sub('http://[^ ,]*', lambda t: '<a href="%s" target="_blank">%s</a>' % (t.group(0), t.group(0)), tweet)
+    tweet = re.sub('http[s]?://[^ ,]*', lambda t: '<a href="%s" target="_blank">%s</a>' % (t.group(0), t.group(0)), tweet)
 
     #for all elements matching our pattern...
     for usr in user_regex.finditer(tweet):
