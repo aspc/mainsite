@@ -315,7 +315,7 @@ class SectionDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(SectionDetailView, self).get_context_data(**kwargs)
-        instructor_object = Instructor.objects.get(id=self.kwargs['instructor_id'])
+        instructor_object = get_object_or_404(Instructor, id=self.kwargs['instructor_id'])
         course_object = Course.objects.get(code_slug=self.kwargs['course_code'])
 
         context['is_section'] = True
@@ -333,18 +333,15 @@ class CourseDetailView(generic.DetailView):
     template_name = "browse/course_detail.html"
 
     def get_object(self):
-        try:
-            # It doesn't really matter which Section object we return if there are multiple that fit the
-            # <Course> identifier, but we ought to return the most recent one so the section data
-            # that we display is as up-to-date as possible
-            course = Course.objects.get(code_slug=self.kwargs['course_code'])
-            return course.get_most_recent_section()
-        except IndexError:
-            raise Http404
+        # It doesn't really matter which Section object we return if there are multiple that fit the
+        # <Course> identifier, but we ought to return the most recent one so the section data
+        # that we display is as up-to-date as possible
+        course = get_object_or_404(Course, code_slug=self.kwargs['course_code'])
+        return course.get_most_recent_section()
 
     def get_context_data(self, **kwargs):
         context = super(CourseDetailView, self).get_context_data(**kwargs)
-        course_object = Course.objects.get(code_slug=self.kwargs['course_code'])
+        course_object = get_object_or_404(Course, code_slug=self.kwargs['course_code'])
         course_instructor_list = course_object.get_instructors_from_all_sections()
         course_instructor_list = list(set(course_instructor_list)) # Remove duplicates
 
@@ -359,15 +356,13 @@ class InstructorDetailView(generic.DetailView):
 	template_name = 'browse/instructor_detail.html'
 
 	def get_object(self):
-		try:
-			return Instructor.objects.get(id=self.kwargs['instructor_id'])
-		except IndexError:
-			raise Http404
+		return get_object_or_404(Instructor, id=self.kwargs['instructor_id'])
+
 
 	def get_context_data(self, **kwargs):
 		context = super(InstructorDetailView, self).get_context_data(**kwargs)
 
-		instructor_object = Instructor.objects.get(id=self.kwargs['instructor_id'])
+		instructor_object = get_object_or_404(Instructor, id=self.kwargs['instructor_id'])
 		sections_taught = Section.objects.filter(instructors=instructor_object)
 		courses_taught = []
 		for s in sections_taught:
@@ -382,9 +377,9 @@ class ReviewView(View):
     @method_decorator(login_required)
     def get(self, request, course_code, instructor_id=None):
         if instructor_id:
-          course = Course.objects.get(code_slug=course_code)
-          instructor = Instructor.objects.get(id=instructor_id)
-          review = CourseReview.objects.get(author=request.user, course=course, instructor=instructor)
+          course = get_object_or_404(Course, code_slug=course_code)
+          instructor = get_object_or_404(Instructor, id=instructor_id)
+          review = get_object_or_404(CourseReview, author=request.user, course=course, instructor=instructor)
           form = ReviewForm(course_code, review)
         else:
           form = ReviewForm(course_code)
