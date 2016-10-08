@@ -1,0 +1,14 @@
+Dear {{ user.first_name }},
+
+Have you taken the classes below this semester? We would love to have your reviews on our Course Review app.
+
+{% for course in courses %}
+{{course.code}} {{course.course.name}}
+{% endfor %}
+
+Have you bought any textbooks for them? List them on SageBook!
+
+Thank you!
+
+Sincerely,
+Digital Media Group

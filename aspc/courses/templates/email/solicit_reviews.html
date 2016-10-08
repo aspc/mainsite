@@ -1,0 +1,13 @@
+<p>Dear {{ user.first_name }}, </p>
+<p>Have you taken these classes this semester? We would love to have your reviews on
+    <a href="https://aspc.pomona.edu/{% url 'search_reviews' %}">Course Review.</a></p>
+<ul>
+  {% for course in courses %}
+    <li>{{course.code}} <b>{{course.course.name}}</b>
+    <a href="https://aspc.pomona.edu/{% url "write_review" course.course.code_slug %}">review here</a></li>
+  {% endfor %}
+</ul>
+<p>Have you bought any textbooks for them? List them on <a href="https://aspc.pomona.edu/{% url 'sagelist' %}">SageBook</a>!</p>
+<p>Thank you!</p>
+<p>Sincerely, <br>Digital Media Group</p>
+
