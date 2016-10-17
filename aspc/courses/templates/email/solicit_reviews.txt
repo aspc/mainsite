@@ -12,3 +12,5 @@ Thank you!
 
 Sincerely,
 Digital Media Group
+
+Don't need our reminder? Unsubscribe at https://aspc.pomona.edu/{% url "unsubscribe"%}.
