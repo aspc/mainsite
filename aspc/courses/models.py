@@ -3,13 +3,14 @@ from django.db.models import Avg
 from django.db.models.signals import post_save
 from django.conf import settings
 from datetime import date, datetime, timedelta
-import json
+import json, random
 from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.models import User
 from django.db import connection
 from django.template.defaultfilters import slugify
 from aspc.activityfeed.signals import new_activity, delete_activity
 from aspc.courses.lib import rake
+from django.db import connection
 
 CAMPUSES = (
     (1, u'PO'), (2, u'SC'), (3, u'CMC'), (4, u'HM'), (5, u'PZ'), (6, u'CGU'), (7, u'CU'), (8, u'KS'), (-1, u'?'))
@@ -490,3 +491,20 @@ class CourseReview(models.Model):
         super(CourseReview, self).delete(*args, **kwargs)
         self.update_course_and_instructor_rating()
         delete_activity.send(sender=self)
+
+class FeaturingQuery(models.Model):
+    name = models.TextField(max_length=20)
+    query = models.TextField(max_length=600)
+    helper_text = models.TextField(max_length=300)
+
+    def __unicode__(self):
+        return self.name
+
+    def get_instance(self, k=1):
+        cursor = connection.cursor()
+        cursor.execute(self.query)
+        results = cursor.fetchall()
+        chosen = random.sample(results, k)
+        instances = [Section.objects.get(id=id) for id in chosen[0]]
+        return instances
+

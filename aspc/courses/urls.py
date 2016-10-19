@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^schedule/clear/$', 'aspc.courses.views.clear_schedule'),
     url(r'^schedule/save/$', 'aspc.courses.views.share_schedule'),
     url(r'^schedule/my_schedules/$', 'aspc.courses.views.my_schedules', name='my_schedules'),
+    url(r'^schedule/query/(?P<name>\w+)/$', 'aspc.courses.views.featuring_query', name="featuring_query"),
 
 	# Browse: /courses/browse
 	url(r'^browse/course/(?P<course_code>[\w\d-]+)/$', CourseDetailView.as_view(), name="course_detail"),
