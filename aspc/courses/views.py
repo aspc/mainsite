@@ -454,3 +454,9 @@ class ReviewSearchView(View):
             return render(request, 'reviews/review_search.html', {
                 'form': form,
             })
+
+def unsubscribe(request):
+    user_data = request.user.user.all()
+    if user_data:
+        user_data[0].subscribed_email = False
+    return HttpResponse('successfully unsubscribed')

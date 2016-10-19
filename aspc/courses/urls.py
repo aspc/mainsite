@@ -25,6 +25,7 @@ urlpatterns = [
 
 	# Reviews: /courses/reviews
 	url(r'^reviews/$', ReviewSearchView.as_view(), name="search_reviews"),
+    url(r'^reviews/unsubscribe/$', 'aspc.courses.views.unsubscribe', name="unsubscribe"),
 	url(r'^reviews/(?P<course_code>[\w\d-]+)/$', ReviewView.as_view(), name="write_review"),
 	url(r'^reviews/(?P<course_code>[\w\d-]+)/instructor/(?P<instructor_id>\d+)$', ReviewView.as_view(), name="write_review"),
 ]
