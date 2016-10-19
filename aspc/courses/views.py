@@ -57,7 +57,6 @@ def search(request):
                     results = paginator.page(page)
                 except (EmptyPage, InvalidPage):
                     results = paginator.page(paginator.num_pages)
-
                 return render(request, 'search/search.html', {
                     'form': form,
                     'results': results,
@@ -114,7 +113,11 @@ def schedule(request):
             for course in results.object_list:
                 if course.id in request.session.get('schedule_courses', []):
                     course.added = True
-
+            if request.is_ajax():
+                return render(request, 'schedule/search/search_results.html', {
+                    'results': results,
+                    'path': ''.join([request.path, '?', GET_data.urlencode()])
+                })
             return render(request, 'schedule/schedule.html', {
                 'form': form,
                 'results': results,

@@ -20,6 +20,7 @@
 	<script type="text/javascript" src="{% static "js/lib/date.js" %}"></script>
 	<script type="text/javascript" src="{% static "js/lib/jquery.weekcalendar.js" %}"></script>
 	<script type="text/javascript" src="{% static "js/courses.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/search_result.js" %}"></script>
 {% endblock %}
 
 {% block "content_class" %}
@@ -36,9 +37,7 @@
 {% block "outer_content" %}
 	<div id="search_panel" class="panel">
 		{% include "schedule/search/search_form.html" %}
-		{% if results %}
 			{% include "schedule/search/search_results.html" %}
-		{% endif %}
 		<p id="update_info">Course data was last updated {% if last_full %}on {{ last_full.last_refresh_date }}{% else %}never{% endif %}</p>
 	</div>
 	<div id="schedule_panel" class="panel {% block schedule_panel_class %}{% endblock %}">
