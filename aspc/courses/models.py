@@ -186,7 +186,8 @@ class Course(models.Model):
         return instructors
 
     def get_most_recent_section(self):
-        return self.sections.all().order_by('term')[0]
+        sections = self.sections.order_by('term')
+        return sections[0] if sections else None
 
 class Section(models.Model):
     term = models.ForeignKey(Term, related_name='sections')
