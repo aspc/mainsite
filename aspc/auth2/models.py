@@ -34,6 +34,7 @@ class UserData(models.Model):
 	is_faculty = models.BooleanField(default=False)
 	year = models.IntegerField(null=True, blank=True)
 	dorm = models.CharField(max_length=255, null=True, blank=True)
+	subscribed_email = models.BooleanField(default=True)
 
 	# Returns what college a user belongs to, based on his email suffix
 	@staticmethod
