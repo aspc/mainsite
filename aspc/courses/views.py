@@ -419,9 +419,8 @@ class ReviewSearchView(View):
             })
 
 def featuring_query(request, name):
-    # query = Query.objects.get(name=name)
-    # section = query.get_instance()
-    section = Section.objects.all()[4747];
+    query = FeaturingQuery.objects.get(name=name)
+    section = query.get_instance()
     return render(request, 'schedule/search/search_result.html', {'c':section})
 
 def unsubscribe(request):

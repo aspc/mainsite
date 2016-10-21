@@ -501,11 +501,11 @@ class FeaturingQuery(models.Model):
     def __unicode__(self):
         return self.name
 
-    def get_instance(self, k=1):
+    def get_instance(self):
         cursor = connection.cursor()
         cursor.execute(self.query)
         results = cursor.fetchall()
-        chosen = random.sample(results, k)
-        instances = [Section.objects.get(id=id) for id in chosen[0]]
+        chosen = random.choice(results)
+        instances = Section.objects.get(id=chosen[0])
         return instances
 
