@@ -10,7 +10,6 @@ from django.db import connection
 from django.template.defaultfilters import slugify
 from aspc.activityfeed.signals import new_activity, delete_activity
 from aspc.courses.lib import rake
-from django.db import connection
 
 CAMPUSES = (
     (1, u'PO'), (2, u'SC'), (3, u'CMC'), (4, u'HM'), (5, u'PZ'), (6, u'CGU'), (7, u'CU'), (8, u'KS'), (-1, u'?'))
