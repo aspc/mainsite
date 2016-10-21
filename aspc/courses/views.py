@@ -10,7 +10,8 @@ from django.db.models import Count, Avg, Q
 from django.views.generic import View, ListView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from aspc.courses.models import (Section, Department, Schedule, RefreshHistory, START_DATE, END_DATE, Term, Course, Instructor, CourseReview)
+from aspc.courses.models import (Section, Department, Schedule, RefreshHistory, START_DATE, END_DATE, Term, Course,
+                                 Instructor, CourseReview, FeaturingQuery)
 from aspc.courses.forms import SearchForm, ICalExportForm, ReviewSearchForm, ReviewForm
 import json
 import datetime
@@ -39,57 +40,17 @@ def _get_refresh_history():
 
     return last_full, last_reg
 
-def search(request):
-    last_full, last_reg = _get_refresh_history()
-
-    if request.method == "GET":
-        if len(request.GET) > 0:
-            form = SearchForm(request.GET)
-            if form.is_valid():
-                results_set, term = form.build_queryset_and_term()
-                paginator = Paginator(results_set, per_page=20, orphans=10)
-                GET_data = request.GET.copy()
-
-                page = int(request.GET.get('page', '1'))
-                GET_data.pop('page', None)
-
-                try:
-                    results = paginator.page(page)
-                except (EmptyPage, InvalidPage):
-                    results = paginator.page(paginator.num_pages)
-
-                return render(request, 'search/search.html', {
-                    'form': form,
-                    'results': results,
-                    'path': ''.join([request.path, '?', GET_data.urlencode()]),
-                    'last_full': last_full,
-                    'last_reg': last_reg
-                })
-            else:
-                return render(request, 'search/search.html', {
-                    'form': form,
-                    'last_full': last_full,
-                    'last_reg': last_reg
-                })
-        else:
-            form = SearchForm()
-            return render(request, 'search/search.html', {
-                'form': form,
-                'last_full': last_full,
-                'last_reg': last_reg
-            })
-    else:
-        return HttpResponseNotAllowed(['GET'])
-
 def schedule(request):
     last_full, last_reg = _get_refresh_history()
+    featuring_queries = FeaturingQuery.objects.all()
 
     if not request.method == "GET" or len(request.GET) == 0:
         form = SearchForm()
         return render(request, 'schedule/schedule.html', {
             'form': form,
             'last_full': last_full,
-            'last_reg': last_reg
+            'last_reg': last_reg,
+            'featuring_queries': featuring_queries
         })
     else:
         form = SearchForm(request.GET)
@@ -120,13 +81,15 @@ def schedule(request):
                 'results': results,
                 'path': ''.join([request.path, '?', GET_data.urlencode()]),
                 'last_full': last_full,
-                'last_reg': last_reg
+                'last_reg': last_reg,
+                'featuring_queries': featuring_queries
             })
         else:
             return render(request, 'schedule/schedule.html', {
                 'form': form,
                 'last_full': last_full,
-                'last_reg': last_reg
+                'last_reg': last_reg,
+                'featuring_queries': featuring_queries
             })
 
 def load_from_session(request):
@@ -455,8 +418,14 @@ class ReviewSearchView(View):
                 'form': form,
             })
 
+def featuring_query(request, name):
+    query = FeaturingQuery.objects.get(name=name)
+    section = query.get_instance()
+    return render(request, 'schedule/search/search_result.html', {'c':section})
+
 def unsubscribe(request):
     user_data = request.user.user.all()
     if user_data:
         user_data[0].subscribed_email = False
     return HttpResponse('successfully unsubscribed')
+
