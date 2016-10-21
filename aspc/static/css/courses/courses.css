@@ -116,9 +116,39 @@ div#search_form p {
 	padding-top: 5px;
 	padding-bottom: 5px;
 	margin-top: 10px;
+	width: 8em;
 }
 
-#submit:hover {
+#lucky {
+	float: left;
+	border: 1px solid white;
+	background-color: white;
+	color: #0071a6;
+	font-size: 1em;
+	font-family: "Hammersmith One", Verdana, "Lucida Grande", Lucida, sans-serif;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 15px;
+	padding-bottom: 5px;
+	margin-top: 10px;
+	margin-left: 15px;
+	width: 10em;
+}
+
+.featuring_query {
+	border: 1px solid #0071a6;
+	background-color: white;
+	color: #0071a6;
+	font-size: 1em;
+	font-family: "Hammersmith One", Verdana, "Lucida Grande", Lucida, sans-serif;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	margin-top: 10px;
+}
+
+#submit:hover, #lucky:hover, .featuring_query:hover {
 	cursor: pointer;
 }
 

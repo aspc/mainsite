@@ -23,6 +23,11 @@
 	<p>&hellip;&nbsp;taught by {{ form.instructor }} for {{ form.credit }} credit</p>
 	<p>&hellip;&nbsp;with the keywords {{ form.keywords }}</p>
 	<!--<p>including only courses with seats available {{ form.spots_left }}</p>-->
-	<input id="submit" type="submit" value="Search">
+    <input id="submit" type="submit" value="Search">
+    <input id="lucky" type="button" value="How do you feel?">
+    <br><br><br>
+    {% for query in featuring_queries %}
+    <input hidden title="{{ query.helper_text }}" helper_text="{{ query.helper_text }}" class="featuring_query" feeling="{{ query.name }}" value="feeling {{ query.name }}" type="button">
+    {% endfor %}
 </form>
 </div>
