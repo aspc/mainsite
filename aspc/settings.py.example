@@ -95,3 +95,11 @@ FACEBOOK_APP_SECRET = ''
 
 # Set this value to make Bing search API calls (e.g. for the menu app)
 BING_SEARCH_KEY = ''
+
+GOOGLE_SEARCH_KEY = ''
+GOOGLE_SEARCH_CX = ''
+AMAZON_ACCESS_KEY = ''
+AMAZON_SECRET_KEY= ''
+AMAZON_ASSOC_TAG = ''
+
+GEOPOSITION_GOOGLE_MAPS_API_KEY = ''
