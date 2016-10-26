@@ -1,6 +1,4 @@
 from selenium import webdriver
-import ipdb
-import time
 
 class MuddBackend(object):
     def __init__(self):
@@ -18,14 +16,17 @@ class MuddBackend(object):
         try:
             self.menu_url = self.get_menu_url()
         except:
-            print "Error: Menu link currently unavailable from website"
+            self.link_unavailable()
             return
     
     def get_menu_url(self):
         self.selenium.get(self.homepage_url)
-        link_container = self.selenium.find_element_by_id("ui-accordion-accordion_3543-panel-0")
+        link_container = self.selenium.find_element_by_class_name("accordionBody")
         link = link_container.find_element_by_tag_name("a")
         return link.get_attribute("href")        
+    
+    def link_unavailable(self):
+        print "Error: Menu link currently unavailable from website"
     
     def get_hours(self):
         """
@@ -80,7 +81,13 @@ class MuddBackend(object):
             full_day_menu[mealname_list[index]] = meal_menu
             index += 1
         return full_day_menu
-
+    
+    def update_progress(self,day_name):
+        print "Scraped Mudd-" + day_name
+        
+    def print_timeout_error(self):
+        print "Error: Mudd's website likely timed out or sent a bad response. Returning days that were successfully scraped."
+        
     def menu(self):
         """
         Returns menu for this week
@@ -88,7 +95,7 @@ class MuddBackend(object):
         try:
             self.selenium.get(self.menu_url)
         except:
-            print "Error: Mudd's website likely timed out or sent a bad response. Returning days that were successfully scraped."
+            self.print_timeout_error()
             return self.menus
         
         #toggle through each day's button and scrape the updated menu.
@@ -102,17 +109,9 @@ class MuddBackend(object):
                         day_name = button.get_attribute("innerHTML")
                         button.click()
                         self.menus[day_name] = self.get_day_menu()
-                        print "Scraped Mudd-" + day_name
+                        self.update_progress(day_name)
                         break
             except:
-                print "Error: Mudd's website likely timed out or sent a bad response. Returning days that were successfully scraped."
+                self.print_timeout_error()
                 return self.menus
-        #Pretty(ish) print for debugging
-        """
-        for day, meals in menus.iteritems():
-            print day
-            for meal,items in meals.iteritems():    
-                print meal.upper()
-                print items
-        """
         return self.menus    
