@@ -8,7 +8,6 @@ from aspc.menu.backends.pomona import PomonaBackend
 import json
 import traceback
 import ast
-import ipdb
 
 def make_item_list(text):
 	item_list = ast.literal_eval(text)

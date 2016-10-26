@@ -45,6 +45,12 @@ then
     cp /vagrant/aspc/settings.py.example /vagrant/aspc/settings.py
 fi
 
+-# create tables
+-/vagrant/manage.py migrate --noinput
+-
+-# copy static files
+-/vagrant/manage.py collectstatic --noinput
+
 # load fixtures (order is important)
 python manage.py loaddata /vagrant/fixtures/sites.json
 python manage.py loaddata /vagrant/fixtures/users.json
