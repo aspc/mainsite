@@ -11,6 +11,7 @@ from django.template.defaultfilters import slugify
 from aspc.activityfeed.signals import new_activity, delete_activity
 from aspc.courses.lib import rake
 from django.db import connection
+from collections import Counter
 
 CAMPUSES = (
     (1, u'PO'), (2, u'SC'), (3, u'CMC'), (4, u'HM'), (5, u'PZ'), (6, u'CGU'), (7, u'CU'), (8, u'KS'), (-1, u'?'))
@@ -57,7 +58,6 @@ class Term(models.Model):
     class Meta:
         ordering = ['-year', 'session']
 
-
 class Instructor(models.Model):
     name = models.CharField(max_length=100)
     rating = models.FloatField(blank = True, null = True)
@@ -94,6 +94,23 @@ class Instructor(models.Model):
         self.enthusiasm_rating = ratings[6]
         self.approachable_rating = ratings[7]
         self.save()
+
+    def get_campus(self):
+        sections = self.sections.all()
+        if not sections:
+            return ''
+        most_commons = Counter([section.get_campus() for section in sections]).most_common()
+        return most_commons[0][0]
+
+    def get_RMPInfo(self):
+        try:
+            return self.rmpinfo
+        except:
+            return None
+
+class RMPInfo(models.Model):
+    instructor = models.OneToOneField(Instructor)
+    url = models.CharField(max_length=100)
 
 class Department(models.Model):
     code = models.CharField(max_length=20, unique=True, db_index=True)
