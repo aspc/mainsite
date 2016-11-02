@@ -1,4 +1,7 @@
 from selenium import webdriver
+import logging
+
+logger = logging.getLogger(__name__)
 
 class MuddBackend(object):
     def __init__(self):
@@ -26,7 +29,7 @@ class MuddBackend(object):
         return link.get_attribute("href")        
     
     def link_unavailable(self):
-        print "Error: Menu link currently unavailable from website"
+        logger.error("Error: Menu link currently unavailable from website")
     
     def get_hours(self):
         """
@@ -83,10 +86,10 @@ class MuddBackend(object):
         return full_day_menu
     
     def update_progress(self,day_name):
-        print "Scraped Mudd-" + day_name
+        logger.info("Scraped Mudd-" + day_name)
         
     def print_timeout_error(self):
-        print "Error: Mudd's website likely timed out or sent a bad response. Returning days that were successfully scraped."
+        logger.error("Error: Mudd's website likely timed out or sent a bad response. Returning days that were successfully scraped.")
         
     def menu(self):
         """
