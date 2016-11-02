@@ -7,7 +7,7 @@ import urllib
 
 class Command(BaseCommand):
     args = ''
-    help = 'loads the images of food items'
+    help = 'Scrape professor ratings from ratemyprofessor.com'
 
     def handle(self, *args, **options):
         if len(args):
@@ -30,9 +30,9 @@ class Command(BaseCommand):
                         rating = float(listing.text)
                         infos[i].rating = rating
                         infos[i].save()
-                        print 'Get RMP rating for ' + infos[i].instructor.name + ' : ' + str(rating)
-                    except:
-                        pass
+                        self.stdout.write('Get RMP rating for ' + infos[i].instructor.name + ' : ' + str(rating))
+                    except Exception as e:
+                        self.stdout.write('Error: %s\n' % e)
 
         info_chunks = split_into_chunks(infos)
         for chunk in info_chunks:

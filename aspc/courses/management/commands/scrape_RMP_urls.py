@@ -7,7 +7,7 @@ import urllib
 
 class Command(BaseCommand):
     args = ''
-    help = 'loads the images of food items'
+    help = 'Scrape professor ratings from ratemyprofessor.com'
 
     def handle(self, *args, **options):
         college_names = {'PO': 'Pomona',
