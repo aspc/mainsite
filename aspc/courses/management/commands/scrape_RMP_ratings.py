@@ -13,12 +13,12 @@ class Command(BaseCommand):
         if len(args):
             self.stdout.write('scrape_RMP_reviews takes no arguments \n')
             return
-        infos = RMPInfo.objects.filter(rating__isnull=True)
+        infos = RMPInfo.objects.all()
 
         def split_into_chunks(l, n=25):
             return [l[i:i+n] for i in xrange(0, len(l), n)]
 
-        def get_ratings_for_instructors(instructors):
+        def get_ratings_for_instructors(infos):
             urls = [info.url for info in infos]
             unsent_request = (grequests.get(url) for url in urls)
             results = grequests.map(unsent_request)
@@ -32,7 +32,8 @@ class Command(BaseCommand):
                         infos[i].save()
                         print 'Get RMP rating for ' + infos[i].instructor.name + ' : ' + str(rating)
                     except:
-                        print 'Fail to get RMP rating for ' + infos[i].instructor.name + ' : ' + str(rating)
+                        pass
+
         info_chunks = split_into_chunks(infos)
         for chunk in info_chunks:
             get_ratings_for_instructors(chunk)

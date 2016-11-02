@@ -22,6 +22,12 @@
 				</li>
 			{% else %}
 				{% if is_section %}
+                    {% for instructor in object.instructors.all %}
+                    {% if instructor.rmpinfo.rating %}
+                        <p>{{ instructor.name }} is rated <b>{{ instructor.rmpinfo.rating|floatformat:2 }}</b> on
+                            <a href="{{ instructor.rmpinfo.url }}">RateMyProfessor</a>.</p>
+                    {% endif %}
+                    {% endfor %}
 					<li>There are no reviews for this section yet! You can be the first:&nbsp;&nbsp; <a href="{% url "write_review" object.course.code_slug %}"><button>Write review</button></a></li>
 					<br />
 					<br />
@@ -36,6 +42,12 @@
 		{% if reviews %}
 			<div id="reviews_list">
 				<div id="reviews_list-header">
+                    {% for instructor in object.instructors.all %}
+                    {% if instructor.rmpinfo.rating %}
+                        <p>{{ instructor.name }} is rated <b>{{ instructor.rmpinfo.rating|floatformat:2 }}</b> on
+                            <a href="{{ instructor.rmpinfo.url }}">RateMyProfessor</a>.</p>
+                    {% endif %}
+                    {% endfor %}
 					<p>
 						Did you take this class? Tell us what you thought about it! <a href="{% url "write_review" object.course.code_slug %}">Write a review</a>
 					</p>

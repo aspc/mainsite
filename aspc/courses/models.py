@@ -111,7 +111,7 @@ class Instructor(models.Model):
 class RMPInfo(models.Model):
     instructor = models.OneToOneField(Instructor)
     url = models.CharField(max_length=100)
-    rating = models.IntegerField(blank=True, null=True)
+    rating = models.FloatField(blank=True, null=True)
 
 class Department(models.Model):
     code = models.CharField(max_length=20, unique=True, db_index=True)
@@ -294,6 +294,16 @@ class Section(models.Model):
         return [self.cached_useful_rating, self.cached_engagement_rating, self.cached_difficulty_rating,
                 self.cached_competency_rating, self.cached_lecturing_rating, self.cached_enthusiasm_rating,
                 self.cached_approachable_rating]
+
+    def get_RMP_rating(self):
+        rmps = [instructor.get_RMPInfo() for instructor in self.instructors.all()]
+        ratings = [rmp.rating for rmp in rmps if rmp and rmp.rating]
+        return sum(ratings)/len(ratings) if ratings else None
+
+    def get_RMP_link(self):
+        rmps = [instructor.get_RMPInfo() for instructor in self.instructors.all()]
+        urls = [rmp.url for rmp in rmps if rmp and rmp.url]
+        return urls[0]
 
     def find_sentence_for_keywords(self, input, keyword, used_sentences):
         input = input.replace('\r','.').replace('\n','.')
