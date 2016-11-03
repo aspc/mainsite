@@ -1,65 +1,121 @@
-# Scraper for HMC (Hoch-Shanahan) dining hall.
+from selenium import webdriver
+import logging
 
-import requests
-from bs4 import BeautifulSoup
+logger = logging.getLogger(__name__)
 
 class MuddBackend(object):
-	def __init__(self):
-		self.DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
-
-	def _get_menu_url(self):
-		index_url = 'https://hmc.sodexomyway.com/dining-choices/index.html'
-		resp = requests.get(index_url)
-		doc = BeautifulSoup(resp.text)
-		menu_url = doc.find_all('div', {'class': 'accordionBody'})[0].find_all('a')[0]['href']
-		return 'https://hmc.sodexomyway.com' + menu_url # The href attribute is not the full URL for some reason
-
-	def _get_menu_data(self, menu_url):
-		resp = requests.get(menu_url)
-		if resp.status_code == 404: # Sometimes Mudd does not update its menu on time...
-			return None
-		else:
-			return BeautifulSoup(resp.text)
-
-	def _parse_menu_data(self, menu_data):
-		current_meal = None
-
-		# Menu structure to return
-		menus = {
-			'mon': {}, # Each day dict contains key value pairs as meal_name, [fooditems]
-			'tue': {},
-			'wed': {},
-			'thu': {},
-			'fri': {},
-			'sat': {},
-			'sun': {}
-		}
-
-		if not menu_data: # If the data can't be loaded for some reason, just return an empty dict
-			return menus
-
-		for day in self.DAYS:
-			day_node = menu_data.find(id=day) # i.e. Find all the meals that correspond to 'monday' first
-
-			day_elements = day_node.find_all('tr')
-
-			for element in day_elements:
-				if len(element.find_all('td', {'class':'mealname'})):
-					current_meal = element.find_all('td', {'class':'mealname'})[0].text.lower()
-					if (day == 'saturday' or day == 'sunday') and current_meal == 'lunch':
-						current_meal = 'brunch'
-					continue
-				elif element.find('div', {'class':'menuitem'}) and element.find('div', {'class':'menuitem'}).find('span'):
-					try:
-						menus[day[:3].lower()][current_meal].append(element.find('div', {'class':'menuitem'}).find('span').text)
-					except KeyError: # Create the list if nothing has been loaded yet for this day's current meal
-						menus[day[:3].lower()][current_meal] = [element.find('div', {'class':'menuitem'}).find('span').text]
-
-		return menus
-
-	def menu(self):
-		# Mudd stupidly changes the url to their menu every week (honestly, who conceived of this...?)
-		# It used to happen in a standardized format (i.e. numerical progression), but now it appears to be quite random
-		# So we instead have to first inspect the DOM of the dining hall "index page" for the weekly URL, and then scrape that!
-
-		return self._parse_menu_data(self._get_menu_data(self._get_menu_url()))
+    def __init__(self):
+        self.selenium = webdriver.PhantomJS("phantomjs", service_args=['--ssl-protocol=any'])
+        self.homepage_url = "https://hmc.sodexomyway.com/dining-choices/index.html"
+        self.menus = {
+            'mon': {}, # Each day dict contains key value pairs as meal_name, [fooditems]
+            'tue': {},
+            'wed': {},
+            'thu': {},
+            'fri': {},
+            'sat': {},
+            'sun': {}
+        }
+        try:
+            self.menu_url = self.get_menu_url()
+        except:
+            self.link_unavailable()
+            return
+    
+    def get_menu_url(self):
+        self.selenium.get(self.homepage_url)
+        link_container = self.selenium.find_element_by_class_name("accordionBody")
+        link = link_container.find_element_by_tag_name("a")
+        return link.get_attribute("href")        
+    
+    def link_unavailable(self):
+        logger.error("Error: Menu link currently unavailable from website")
+    
+    def get_hours(self):
+        """
+        returns hours of operation
+        """
+        self.selenium.get(self.homepage_url)
+        hours_element = self.selenium.find_element_by_id("ui-accordion-accordion_3543-panel-1")
+        return hours_element.get_attribute("innerText")
+    
+    def get_day_menu(self):
+        """
+        fetches menu data for a specific day in a returned dict of
+        format meal_name: [fooditems]
+        """
+        #Breakfast,Lunch,Dinner on wkdays, Lunch,Dinner on wknds
+        mealname_list = []
+        mealname_data = self.selenium.find_elements_by_tag_name("h2")
+        for meal in mealname_data:
+            mealname_list.append(meal.get_attribute("innerText").lower())
+        
+        full_day_menu = {} #menu data with all meals and food items for specific day
+        mealtable_data = self.selenium.find_elements_by_tag_name("table")
+        index = 0 #use to match mealtable to the above mealname list
+        for mealtable in mealtable_data:
+            meal_menu = [] #[fooditems] for the specific meal
+            menu_data = mealtable.find_elements_by_tag_name("tr")
+            for row_item in menu_data:
+                #This extracts categories, uncomment if desired
+                """
+                if food_item.get_attribute("class") == "category":
+                    print food_item.get_attribute("innerText")
+                """
+                #extract only food names to add to menu list
+                food_type = row_item.get_attribute("class")
+                if "product" in food_type:
+                    food_item = row_item.find_element_by_tag_name("td").get_attribute("innerText")
+                    #uncomment if this is a desired feature...
+                    """
+                    #add vegetarian, vegan, mindful tags if applicable
+                    tags = " ("
+                    if "vegetarian" in food_type:
+                        tags += "V,"
+                    if "vegan" in food_type:
+                        tags += "VG,"
+                    if "mindful" in food_type:
+                        tags += "M,"
+                    if tags != " (":
+                        tags = tags[:-1] +")" #remove extra comma and add )
+                        food_item += tags
+                    """
+                    meal_menu.append(food_item)
+            full_day_menu[mealname_list[index]] = meal_menu
+            index += 1
+        return full_day_menu
+    
+    def update_progress(self,day_name):
+        logger.info("Scraped Mudd-" + day_name)
+        
+    def print_timeout_error(self):
+        logger.error("Error: Mudd's website likely timed out or sent a bad response. Returning days that were successfully scraped.")
+        
+    def menu(self):
+        """
+        Returns menu for this week
+        """
+        try:
+            self.selenium.get(self.menu_url)
+        except:
+            self.print_timeout_error()
+            return self.menus
+        
+        #toggle through each day's button and scrape the updated menu.
+        #skip if button not found (in case of shorter week)
+        for i in range(7):
+            try:
+                all_buttons = self.selenium.find_elements_by_xpath('//a[@href="javascript:void(0)"]')
+                for button in all_buttons:
+                    menu_button = button.get_attribute("onclick")
+                    if menu_button == "changeTab(%d)"%(i):
+                        day_name = button.get_attribute("innerHTML")
+                        day_name = day_name[:3].lower() #Monday -> mon
+                        button.click()
+                        self.menus[day_name] = self.get_day_menu()
+                        self.update_progress(day_name)
+                        break
+            except:
+                self.print_timeout_error()
+                return self.menus
+        return self.menus    

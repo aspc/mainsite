@@ -17,6 +17,10 @@ vagrant/run/
 /static/
 .idea/
 tmp/
+*.exe
+/aspc/menu/backends/ghostdriver.log
+ghostdriver.log
+
 
 # Django logging
 /log/
