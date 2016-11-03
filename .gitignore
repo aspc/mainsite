@@ -17,6 +17,7 @@ vagrant/run/
 /static/
 .idea/
 tmp/
+\aspc\menu\backends\phantomjs.exe
 
 # Django logging
 /log/
