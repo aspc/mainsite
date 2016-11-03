@@ -18,7 +18,7 @@ vagrant/run/
 .idea/
 tmp/
 *.exe
-\aspc\menu\backends\ghostdriver.log
+/aspc/menu/backends/ghostdriver.log
 ghostdriver.log
 
 
