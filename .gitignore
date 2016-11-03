@@ -17,7 +17,7 @@ vagrant/run/
 /static/
 .idea/
 tmp/
-\aspc\menu\backends\phantomjs.exe
+*.exe
 \aspc\menu\backends\ghostdriver.log
 ghostdriver.log
 
