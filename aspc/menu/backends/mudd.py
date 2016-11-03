@@ -8,13 +8,13 @@ class MuddBackend(object):
         self.selenium = webdriver.PhantomJS("phantomjs", service_args=['--ssl-protocol=any'])
         self.homepage_url = "https://hmc.sodexomyway.com/dining-choices/index.html"
         self.menus = {
-            'Monday': {}, # Each day dict contains key value pairs as meal_name, [fooditems]
-            'Tuesday': {},
-            'Wednesday': {},
-            'Thursday': {},
-            'Friday': {},
-            'Saturday': {},
-            'Sunday': {}
+            'mon': {}, # Each day dict contains key value pairs as meal_name, [fooditems]
+            'tue': {},
+            'wed': {},
+            'thu': {},
+            'fri': {},
+            'sat': {},
+            'sun': {}
         }
         try:
             self.menu_url = self.get_menu_url()
@@ -110,6 +110,7 @@ class MuddBackend(object):
                     menu_button = button.get_attribute("onclick")
                     if menu_button == "changeTab(%d)"%(i):
                         day_name = button.get_attribute("innerHTML")
+                        day_name = day_name[:3].lower() #Monday -> mon
                         button.click()
                         self.menus[day_name] = self.get_day_menu()
                         self.update_progress(day_name)

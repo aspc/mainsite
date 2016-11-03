@@ -18,6 +18,9 @@ vagrant/run/
 .idea/
 tmp/
 \aspc\menu\backends\phantomjs.exe
+\aspc\menu\backends\ghostdriver.log
+ghostdriver.log
+
 
 # Django logging
 /log/
