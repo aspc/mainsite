@@ -5,7 +5,7 @@ logger = logging.getLogger(__name__)
 
 class MuddBackend(object):
     def __init__(self):
-        self.selenium = webdriver.PhantomJS()
+        self.selenium = webdriver.PhantomJS("phantomjs", service_args=['--ssl-protocol=any'])
         self.homepage_url = "https://hmc.sodexomyway.com/dining-choices/index.html"
         self.menus = {
             'Monday': {}, # Each day dict contains key value pairs as meal_name, [fooditems]
