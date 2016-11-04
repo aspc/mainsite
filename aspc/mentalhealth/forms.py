@@ -14,19 +14,25 @@ import operator
 
 class ReviewForm(forms.Form):
 	# Need modification
+    # Use charField
+    # Need to be changed
     CHOICES = [(i,i) for i in range(1,6)]
-    therapist = forms.ChoiceField(choices=CHOICES, label='How many stars do you give this class?')
-    reasons = forms.ChoiceField(choices=CHOICES, label='How useful was this class?', help_text='1: This course was irrelevant for me <br />5: I use what I learned in this course every day')
-    duration = forms.ChoiceField(choices=CHOICES, label='How engaging was this class?', help_text='1: I fell asleep every day <br />5: I couldn\'t stop thinking about this course')
-    feeling = forms.ChoiceField(choices=CHOICES, label='How difficult was this class?', help_text='1: I could do the homework in my sleep <br />5: I still don\'t understand what I did in this course')
-    gender = forms.ChoiceField(choices=CHOICES, label='How competent was the professor?', help_text='1: The prof had no clue <br />5: The prof knew the material backwards and forwards')
-    sexual_orientation = forms.ChoiceField(choices=CHOICES, label='How was the professor\'s lecturing style?', help_text='1: Lectures were poorly planned and delivered <br />5: I remember every word the prof said')
-    ethnicity = forms.ChoiceField(choices=CHOICES, label='How enthusiastic was the professor?', help_text='1: The prof had no pulse <br />5: The prof\'s excitement was infectious')
-    identity = forms.ChoiceField(choices=CHOICES, label='How approachable was the professor?', help_text='1: I would rather speak to Darth Vader <br />5: I consider this prof a personal friend')
-    identity_related_comment = forms.IntegerField(max_value=25, label='How many hours of work did you have each week?')
-    therapist_recommendation = forms.ChoiceField(choices=POSSIBLE_GRADES_OPTIONS, required=False)
-    therapist_strategy = forms.CharField(widget=forms.Textarea(attrs={'cols': '60', 'rows': '15'}), label='General comments:')
-    tags = ...
+    therapist = forms.CharField(widget=forms.Textarea(attrs={'cols': '60', 'rows': '1'}), label='Name of the therapist:')
+    reasons = forms.CharField(widget=forms.Textarea(attrs={'cols': '60', 'rows': '3'}), label='Reason for therapy:')
+    # Need to be changed
+    duration = forms.CharField(widget=forms.Textarea(attrs={'cols': '60', 'rows': '1'}), label='Duration:')
+    # choices
+    feeling = forms.ChoiceField(choices=CHOICES, label='What is your feeling')
+    # choices
+    gender = forms.ChoiceField(choices=CHOICES, label='What is your gender')
+    # choices
+    sexual_orientation = forms.ChoiceField(choices=CHOICES, label='What is your sexual_orientation')
+    ethnicity = forms.ChoiceField(choices=CHOICES, label='What is your ethnicity')
+    identity = forms.ChoiceField(choices=CHOICES, label='What is your identity')
+    identity_related_comment = forms.CharField(widget=forms.Textarea(attrs={'cols': '60', 'rows': '3'}), label='Comment related to identity')
+    therapist_recommendation = forms.ChoiceField(choices=CHOICES)
+    therapist_strategy = forms.CharField(widget=forms.Textarea(attrs={'cols': '60', 'rows': '3'}), label='Therapist_strategy:')
+    #tags = ...
 
 
 

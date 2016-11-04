@@ -17,7 +17,6 @@ class ReviewView(view):
     def post(self, request, therapist_id):
         form = ReviewForm(therapist_id, None, request.POST)
         if form.is_valid():
-            #instructor = form.cleaned_data["professor"]
             therapist = form.cleaned_data["therapist"]
             reasons = form.cleaned_data["reasons"]
             duration = form.cleaned_data["duration"]
