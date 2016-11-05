@@ -18,7 +18,8 @@ class Command(BaseCommand):
                          'KS': 'Keck Science',
                          'CU': 'Claremont Graduate',
                          'CGU': 'Claremont Graduate',
-                         'UU': ''}
+                         'UU': '',
+                         '': ''}
         if len(args):
             self.stdout.write('scrape_RMP_urls takes no arguments \n')
             return
