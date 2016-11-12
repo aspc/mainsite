@@ -7,10 +7,10 @@
 
 
 {% block "breadcrumbs" %}
-<ol class="breadcrumbs">
-  <li><a href="{% url "laundry_home" %}">Laundry Master</a></li>
-  <li><a href="{% url "laundry_machine" machine.id %}">{{ machine.building.name }}-{{ machine.name }}</a></li>
-</ol>
+    <ol class="breadcrumbs">
+        <li><a href="{% url "laundry_home" %}">Laundry Master</a></li>
+        <li><a href="{% url "laundry_machine" machine.id %}">{{ machine.building.name }}-{{ machine.name }}</a></li>
+    </ol>
 {% endblock %}
 
 {% block "content" %}
@@ -22,53 +22,57 @@
     <canvas id="myChart"></canvas>
 
     <script src="{% static 'js/lib/jquery-1.7.1.min.js' %}"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script>
     <script>
 
-          function generate_graph(points){
+        function generate_graph(points) {
 
             var ctx = document.getElementById("myChart");
             var myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-                datasets: [{
-                    label: 'vibration',
-                    data: points,
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                animation: false,
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            max:1,
-                            min:0,
-                            stepSize: 0.1
-                        }
+                type: 'line',
+                data: {
+                    labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+                    datasets: [{
+                        label: 'vibration',
+                        data: points,
+                        borderWidth: 1
                     }]
+                },
+                options: {
+                    animation: false,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                max: 1,
+                                min: 0,
+                                stepSize: 0.1
+                            }
+                        }]
+                    }
                 }
+            });
+
+        }
+
+        var data_points = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        generate_graph(data_points);
+        var ws = new WebSocket('ws://' + window.location.host + '/laundry/machine/' + '{{ machine.id }}' + '/')
+        var counter = 0;
+        ws.id = 1;
+        // Make it show a console message when a message is received
+        ws.onmessage = function (message) {
+            if (counter % 5 == 0) {
+                var score = message.data.split()[0];
+                var status = message.data.split()[1];
+                $('#vibration_score').text(score);
+                $('#vibration_status').text(status);
+                data_points.shift();
+                data_points.push(parseFloat(score));
+                generate_graph(data_points);
             }
-        });
-
-      }
-
-      var data_points = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-      generate_graph(data_points);
-      var ws = new WebSocket('ws://'  +  window.location.host + '/laundry/machine/' + '{{ machine.id }}'+'/')
-      ws.id = 1;
-      // Make it show a console message when a message is received
-      ws.onmessage = function(message) {
-          var score = message.data.split()[0];
-          var status = message.data.split()[1];
-          $('#vibration_score').text(score);
-          $('#vibration_status').text(status);
-          data_points.shift();
-          data_points.push(parseFloat(score));
-          generate_graph(data_points);
-      }
-
+            counter++;
+        }
 
 
     </script>

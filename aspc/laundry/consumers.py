@@ -34,17 +34,13 @@ def process_stream(message):
         magnitude = math.sqrt((abs(X)**2 + abs(Y)**2 + abs(Z)**2)/3.0)
         add_entry(machine_cache, magnitude, CACHE_SIZE)
         status, variance = classify_status(machine_cache)
-        Group('machine-%d' % machine.pk).send({
-            'text': str(variance)+','+str(status)
-        })
+        Group('machine-%d' % machine.pk).send({'text': str(variance)+','+str(status)})
         if machine.status != status:
             StatusChange(machine=machine, new_status=status).save()
         machine.status = status
-        print machine.status
         machine.save()
     except Exception as e:
         raise
-    print machine_table
 
 def machine_details(message, pk):
     Group('machine-%s' % pk).add(message.reply_channel)
