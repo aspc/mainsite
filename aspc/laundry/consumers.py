@@ -5,7 +5,7 @@ from collections import deque
 import math
 import numpy
 
-CACHE_SIZE = 1000
+CACHE_SIZE = 100
 ACTIVE_THRESHOLD = 0.05
 MAX_VALUE = 10.0
 machines = LaundryMachine.objects.all()
@@ -16,12 +16,9 @@ def add_entry(d, entry, max_size):
         d.popleft()
     d.append(entry)
 
-def classify_status(old_status, cache):
-    values = [min(value, MAX_VALUE) for value in list(cache)]
-    variance = numpy.var(values)
+def classify_status(cache):
+    variance = numpy.var(list(cache))
     print variance
-    if len(values) < CACHE_SIZE:
-        return (old_status, variance)
     if variance > ACTIVE_THRESHOLD:
         return (1, variance)
     return (0, variance)
@@ -36,7 +33,7 @@ def process_stream(message):
         machine_cache = machine_table[machine.building.name+'_'+machine.name]
         magnitude = math.sqrt((abs(X)**2 + abs(Y)**2 + abs(Z)**2)/3.0)
         add_entry(machine_cache, magnitude, CACHE_SIZE)
-        status, variance = classify_status(machine.status, machine_cache)
+        status, variance = classify_status(machine_cache)
         Group('machine-%d' % machine.pk).send({
             'text': str(variance)
         })
@@ -47,6 +44,7 @@ def process_stream(message):
         machine.save()
     except Exception as e:
         raise
+    print machine_table
 
 def machine_details(message, pk):
     Group('machine-%s' % pk).add(message.reply_channel)

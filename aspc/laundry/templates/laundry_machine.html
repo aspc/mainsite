@@ -19,17 +19,54 @@
     <p>Machine Name: {{ machine.name }}</p>
     <p>Status: {{ machine.status }}</p>
     <p>Vibration: <span id="vibration_score">0.0</span></p>
+    <canvas id="myChart"></canvas>
 
     <script src="{% static 'js/lib/jquery-1.7.1.min.js' %}"></script>
-
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script>
     <script>
+
+          function generate_graph(points){
+
+            var ctx = document.getElementById("myChart");
+            var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+                datasets: [{
+                    label: 'vibration',
+                    data: points,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                animation: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
+        });
+
+      }
+
+      var data_points = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+      generate_graph(data_points);
       var ws = new WebSocket('ws://'  +  window.location.host + '/laundry/machine/' + '{{ machine.id }}'+'/')
       ws.id = 1;
       // Make it show a console message when a message is received
       ws.onmessage = function(message) {
         var score = message.data;
           $('#vibration_score').text(score);
+          data_points.shift();
+          data_points.push(parseFloat(score));
+          generate_graph(data_points);
       }
+
+
+
     </script>
 
 {% endblock %}

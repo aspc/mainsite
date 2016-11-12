@@ -7,6 +7,11 @@
 {% block "page_title" %}Smart Laundry brought to you by Laundry Master!{% endblock %}
 
 
+{% block "css" %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static "css/laundry/laundry.css" %}"/>
+{% endblock %}
+
 {% block "breadcrumbs" %}
 <ol class="breadcrumbs">
   <li><a href="{% url "laundry_home" %}">Laundry Master</a></li>
@@ -45,7 +50,7 @@
                 <ul>
                     {% if building.laundrymachine_set.all %}
                     {% for machine in building.laundrymachine_set.all %}
-                        <li> <a href="{% url 'laundry_machine' machine.pk %}">{{machine.name}}</a>:
+                        <li class = "blueborder"><a href="{% url 'laundry_machine' machine.pk %}">{{machine.name}}</a>:
                         {% if machine.status == 0 %}
                             <span>available</span>
                         {% else %}

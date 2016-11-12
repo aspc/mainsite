@@ -1,0 +1,17 @@
+    ul {
+      list-style-type: none;
+    }
+    #dorms_div, #laundry_machines_div {
+      width: 49%;
+      float: left;
+    }
+
+    .blueborder{
+        list-style-position:inside;
+        border: 1px dashed black;
+      	font-weight: normal;
+      	font-size: 1em;
+      	margin-top: 20px;
+      	background-color: #81dff9;
+
+    }
