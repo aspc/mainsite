@@ -142,6 +142,7 @@ INSTALLED_APPS = (
 	'stdimage',
 	'adminsortable2',
 	'compressor',
+	'channels',
 	'aspc.folio',
 	'aspc.senate',
 	'aspc.blog',
@@ -157,7 +158,8 @@ INSTALLED_APPS = (
 	'aspc.activityfeed',
 	'aspc.courses',
 	'aspc.menu',
-	'aspc.files'
+	'aspc.files',
+	'aspc.laundry'
 )
 
 # Serializer to use for User sessions. Preferable not to use
@@ -346,5 +348,15 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES': {
         'anon': '100/day',
         'user': '1000/day'
+    },
+}
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+        },
+        "ROUTING": "aspc.laundry.routing.channel_routing",
     },
 }

@@ -45,6 +45,7 @@ then
     cp /vagrant/aspc/settings.py.example /vagrant/aspc/settings.py
 fi
 
+cd /vagrant/
 -# create tables
 python manage.py migrate --noinput
 -
