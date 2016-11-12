@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include('aspc.api.urls')),
+    url(r'^laundry/', include('aspc.laundry.urls')),
     url(r'^news/', include('aspc.blog.urls')),
     url(r'^eatshop/', include('aspc.eatshop.urls')),
     url(r'^events/', include('aspc.events.urls')),

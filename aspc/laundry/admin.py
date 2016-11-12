@@ -1,3 +1,4 @@
 from django.contrib import admin
+from aspc.laundry.models import LaundryMachine
 
-# Register your models here.
+admin.site.register(LaundryMachine)

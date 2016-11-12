@@ -1,0 +1,59 @@
+{% extends 'base_page.html' %}
+{% load static %}
+{% block "title" %}Laundry Master{% endblock "title" %}
+
+{% block "css" %}
+  {{ block.super }}
+  <style>
+    ul {
+      list-style-type: none;
+    }
+  </style>
+{% endblock %}
+
+
+{% block "breadcrumbs" %}
+<ol class="breadcrumbs">
+  <li><a href="{% url "laundry_home" %}">Laundry Master</a></li>
+{#  {% block "housing_breadcrumbs" %}#}
+{#  {% endblock %}#}
+</ol>
+{% endblock %}
+
+{% block "content" %}
+    <h2>Dorms:</h2>
+    <ul>
+    {% for building in buildings %}
+        <li><a href="javascript:void(0)" class="dorm_link">{{  building.name }}</a></li>
+    {% endfor %}
+    </ul>
+
+    <div id="laundry_machines_div">
+        {% for building in buildings %}
+            <div class="dorm_detail" dorm_name="{{ building.name }}" hidden>
+                <h3>Laundry Machines for {{ building.name }}</h3>
+                <ul>
+                    <li>A1</li>
+                    <li>A2</li>
+                    <li>A3</li>
+                    <li>A4</li>
+                    <li>B1</li>
+                    <li>B2</li>
+                    <li>B3</li>
+                    <li>B4</li>
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+
+
+    <script src="{% static 'js/lib/jquery-1.7.1.min.js' %}"></script>
+    <script>
+        $('.dorm_link').click(function(){
+            $('.dorm_detail').hide();
+            var building_name = $(this).text();
+            $('.dorm_detail[dorm_name="' + building_name + '"]').show();
+        })
+    </script>
+
+{% endblock %}
