@@ -10,6 +10,12 @@ class LaundryMachine(models.Model):
     name = models.CharField(max_length=3)
     status = models.SmallIntegerField(choices=STATUSES)
 
+    def last_change_time(self):
+        changes = StatusChange.objects.filter(machine=self).order_by('-timestamp')
+        if not changes:
+            return None
+        return changes[0].timestamp
+
 class StatusChange(models.Model):
     machine = models.ForeignKey(LaundryMachine)
     new_status = models.SmallIntegerField(choices=STATUSES)
