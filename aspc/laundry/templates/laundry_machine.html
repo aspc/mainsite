@@ -1,0 +1,35 @@
+{% extends 'base_page.html' %}
+{% load static %}
+
+{% block "title" %} Master{% endblock "title" %}
+
+{% block "page_title" %}Smart Laundry brought to you by Laundry Master!{% endblock %}
+
+
+{% block "breadcrumbs" %}
+<ol class="breadcrumbs">
+  <li><a href="{% url "laundry_home" %}">Laundry Master</a></li>
+  <li><a href="{% url "laundry_machine" machine.id %}">{{ machine.building.name }}-{{ machine.name }}</a></li>
+</ol>
+{% endblock %}
+
+{% block "content" %}
+
+    <p>Dorm: {{ machine.building.name }}</p>
+    <p>Machine Name: {{ machine.name }}</p>
+    <p>Status: {{ machine.status }}</p>
+    <p>Vibration: <span id="vibration_score">0.0</span></p>
+
+    <script src="{% static 'js/lib/jquery-1.7.1.min.js' %}"></script>
+
+    <script>
+      var ws = new WebSocket('ws://'  +  window.location.host + '/laundry/machine/' + '{{ machine.id }}'+'/')
+      ws.id = 1;
+      // Make it show a console message when a message is received
+      ws.onmessage = function(message) {
+        var score = message.data;
+          $('#vibration_score').text(score);
+      }
+    </script>
+
+{% endblock %}

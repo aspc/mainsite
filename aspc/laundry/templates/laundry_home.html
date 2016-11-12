@@ -1,6 +1,10 @@
 {% extends 'base_page.html' %}
 {% load static %}
-{% block "title" %}Laundry Master{% endblock "title" %}
+
+{% block "title" %} Master{% endblock "title" %}
+
+<!--{% block "ogtitle" %}Servicesfdfdf at Laundryffbgfgf Master{% endblock %} -->
+{% block "page_title" %}Smart Laundry brought to you by Laundry Master!{% endblock %}
 
 
 {% block "breadcrumbs" %}
@@ -12,26 +16,47 @@
 {% endblock %}
 
 {% block "content" %}
-    <h2>Dorms:</h2>
+<div id="about_div">
+    <p>Click on your dorm to see each washer and dryer's availability/remaining run-time.</p>
+    <hr>
+
+    <ls>
+    &nbsp;
+    &nbsp;
+    &nbsp;
+    &nbsp;
+    &nbsp;
+    </ls>
+
+</div>
+<div id="dorms_div">
+    <h2> &nbsp; &nbsp; &nbsp; Dorms</h2>
     <ul>
     {% for building in buildings %}
         <li><a href="javascript:void(0)" class="dorm_link">{{  building.name }}</a></li>
     {% endfor %}
     </ul>
+</div>
 
     <div id="laundry_machines_div">
         {% for building in buildings %}
             <div class="dorm_detail" dorm_name="{{ building.name }}" hidden>
-                <h3>Laundry Machines for {{ building.name }}</h3>
+                <h3>&nbsp; &nbsp; &nbsp; &nbsp; Laundry Machines for {{ building.name }}</h3>
                 <ul>
-                    <li>A1</li>
-                    <li>A2</li>
-                    <li>A3</li>
-                    <li>A4</li>
-                    <li>B1</li>
-                    <li>B2</li>
-                    <li>B3</li>
-                    <li>B4</li>
+                    {% if building.laundrymachine_set.all %}
+                    {% for machine in building.laundrymachine_set.all %}
+                        <li> <a href="{% url 'laundry_machine' machine.pk %}">{{machine.name}}</a>:
+                        {% if machine.status == 0 %}
+                            <span>available</span>
+                        {% else %}
+                            <span>occupied</span>
+                        {% endif %}
+                        </li>
+                    {% endfor %}
+                    {% else %}
+                      <p>There is no laundry machine in {{building.name}}!</p>
+                    {% endif %}
+
                 </ul>
             </div>
         {% endfor %}

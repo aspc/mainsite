@@ -1,5 +1,6 @@
 from aspc.laundry.models import LaundryMachine, StatusChange
 from aspc.college.models import Building
+from channels import Group
 from collections import deque
 import math
 import numpy
@@ -17,13 +18,13 @@ def add_entry(d, entry, max_size):
 
 def classify_status(old_status, cache):
     values = [min(value, MAX_VALUE) for value in list(cache)]
-    if len(values) < CACHE_SIZE:
-        return old_status
     variance = numpy.var(values)
     print variance
+    if len(values) < CACHE_SIZE:
+        return (old_status, variance)
     if variance > ACTIVE_THRESHOLD:
-        return 1
-    return 0
+        return (1, variance)
+    return (0, variance)
 
 def process_stream(message):
     message_parts = message.content['text'].split(',')
@@ -35,11 +36,17 @@ def process_stream(message):
         machine_cache = machine_table[machine.building.name+'_'+machine.name]
         magnitude = math.sqrt((abs(X)**2 + abs(Y)**2 + abs(Z)**2)/3.0)
         add_entry(machine_cache, magnitude, CACHE_SIZE)
-        status = classify_status(machine.status, machine_cache)
+        status, variance = classify_status(machine.status, machine_cache)
+        Group('machine-%d' % machine.pk).send({
+            'text': str(variance)
+        })
         if machine.status != status:
             StatusChange(machine=machine, new_status=status).save()
         machine.status = status
         print machine.status
         machine.save()
     except Exception as e:
-        print e
+        raise
+
+def machine_details(message, pk):
+    Group('machine-%s' % pk).add(message.reply_channel)
