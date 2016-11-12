@@ -2,10 +2,10 @@ from aspc.laundry.models import LaundryMachine, StatusChange
 from aspc.college.models import Building
 from collections import deque
 import math
+import numpy
 
-CACHE_SIZE = 20
-CONFIDENCE_SIZE = 10
-ACTIVE_THRESHOLD = 3.0
+CACHE_SIZE = 1000
+ACTIVE_THRESHOLD = 0.05
 MAX_VALUE = 10.0
 machines = LaundryMachine.objects.all()
 machine_table = dict([ (machine.building.name+'_'+machine.name, deque()) for machine in machines])
@@ -17,10 +17,11 @@ def add_entry(d, entry, max_size):
 
 def classify_status(old_status, cache):
     values = [min(value, MAX_VALUE) for value in list(cache)]
-    if len(values) < CONFIDENCE_SIZE:
+    if len(values) < CACHE_SIZE:
         return old_status
-    mean_value = sum(values)/len(values)
-    if mean_value > ACTIVE_THRESHOLD:
+    variance = numpy.var(values)
+    print variance
+    if variance > ACTIVE_THRESHOLD:
         return 1
     return 0
 
@@ -42,4 +43,3 @@ def process_stream(message):
         machine.save()
     except Exception as e:
         print e
-    print machine_table
