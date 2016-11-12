@@ -35,7 +35,7 @@ def process_stream(message):
         add_entry(machine_cache, magnitude, CACHE_SIZE)
         status, variance = classify_status(machine_cache)
         Group('machine-%d' % machine.pk).send({
-            'text': str(variance)
+            'text': str(variance)+','+str(status)
         })
         if machine.status != status:
             StatusChange(machine=machine, new_status=status).save()

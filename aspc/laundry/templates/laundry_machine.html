@@ -17,7 +17,7 @@
 
     <p>Dorm: {{ machine.building.name }}</p>
     <p>Machine Name: {{ machine.name }}</p>
-    <p>Status: {{ machine.status }}</p>
+    <p>Status: <span id="vibration_status">{{ machine.status }}</span></p>
     <p>Vibration: <span id="vibration_score">0.0</span></p>
     <canvas id="myChart"></canvas>
 
@@ -43,7 +43,9 @@
                 scales: {
                     yAxes: [{
                         ticks: {
-                            beginAtZero:true
+                            max:1,
+                            min:0,
+                            stepSize: 0.1
                         }
                     }]
                 }
@@ -58,8 +60,10 @@
       ws.id = 1;
       // Make it show a console message when a message is received
       ws.onmessage = function(message) {
-        var score = message.data;
+          var score = message.data.split()[0];
+          var status = message.data.split()[1];
           $('#vibration_score').text(score);
+          $('#vibration_status').text(status);
           data_points.shift();
           data_points.push(parseFloat(score));
           generate_graph(data_points);
