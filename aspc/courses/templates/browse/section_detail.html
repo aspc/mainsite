@@ -36,7 +36,7 @@
 
 {% block "content" %}
 	<p>
-		<h4>Professor: </h4><a href="/courses/browse/instructor/{{ professor.id }}/">{{ professor }}</a>
+		<h4>Professor: </h4><a href="{% url 'instructor_detail' professor.id %}">{{ professor }}</a>
 	</p>
 
 	<p>
