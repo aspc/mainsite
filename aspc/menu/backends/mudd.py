@@ -39,7 +39,7 @@ class MuddBackend(object):
         hours_element = self.selenium.find_element_by_id("ui-accordion-accordion_3543-panel-1")
         return hours_element.get_attribute("innerText")
     
-    def get_day_menu(self):
+    def get_day_menu(self,day_id):
         """
         fetches menu data for a specific day in a returned dict of
         format meal_name: [fooditems]
@@ -49,6 +49,9 @@ class MuddBackend(object):
         mealname_data = self.selenium.find_elements_by_tag_name("h2")
         for meal in mealname_data:
             mealname_list.append(meal.get_attribute("innerText").lower())
+        
+        if day_id == 5 or day_id == 6: #if it's a weekend
+            mealname_list[0] = "brunch"
         
         full_day_menu = {} #menu data with all meals and food items for specific day
         mealtable_data = self.selenium.find_elements_by_tag_name("table")
@@ -112,7 +115,7 @@ class MuddBackend(object):
                         day_name = button.get_attribute("innerHTML")
                         day_name = day_name[:3].lower() #Monday -> mon
                         button.click()
-                        self.menus[day_name] = self.get_day_menu()
+                        self.menus[day_name] = self.get_day_menu(i)
                         self.update_progress(day_name)
                         break
             except:
