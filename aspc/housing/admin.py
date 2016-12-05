@@ -3,6 +3,8 @@ from django.conf.urls import patterns
 from django.contrib.auth.models import User
 from django.shortcuts import render
 from aspc.housing.models import Room, Review
+from aspc.courses.models import CourseReview
+import random
 
 
 class ReviewAdmin(admin.ModelAdmin):
@@ -25,12 +27,10 @@ class ReviewAdmin(admin.ModelAdmin):
                 start = form.cleaned_data["start_date"]
                 end = form.cleaned_data["end_date"]
                 num = form.cleaned_data["num_winners"]
-                winner_ids = Review.objects\
-                    .filter(create_ts__range=[start, end])\
-                    .order_by('?')[:num]\
-                    .values_list('author', flat=True)
-                winners = User.objects.filter(pk__in=winner_ids)
-                context.update({'winners': winners})
+                reviews = list(Review.objects.filter(create_ts__range=[start, end])) + \
+                    list(CourseReview.objects.filter(created_date__range=[start, end]))
+                winner_reviews = random.sample(reviews, num)
+                context.update({'winner_reviews': winner_reviews})
         else:
             form = RaffleForm()
         context.update({'form': form})

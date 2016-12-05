@@ -334,16 +334,16 @@ class Section(models.Model):
         return ('section_detail', (),
                 {'course_code': self.code_slug, 'instructor': self.instructors.all()[0].slug() })
 
-    def get_url_to_section_page(self):
-        # It doesn't really matter which instructor we choose here, since from the section page the user will be able
-        # to find information about the other instructors that teach this class too (if there are multiple)
-        # But never return the "staff" instructor if possible!
-        staff_instructor_object = Instructor.objects.get(name='Staff')
-        possible_instructors = self.instructors.all()
-        instructor = possible_instructors[0] if possible_instructors else staff_instructor_object
+    def get_most_reviewed_instructor(self):
+        return max(self.instructors.all(), key=lambda i: CourseReview.objects.filter(
+                instructor=i, course=self.course).count())
 
-        if instructor == staff_instructor_object and len(possible_instructors) > 1:
-            instructor = possible_instructors[1]
+    def get_url_to_section_page(self):
+        staff_instructor_object = Instructor.objects.get(name='Staff')
+        if not self.instructors.all():
+            instructor = staff_instructor_object
+        else:
+            instructor = self.get_most_reviewed_instructor()
 
         return '/courses/browse/instructor/{0}/course/{1}/'.format(instructor.id, self.course.code_slug)
 
