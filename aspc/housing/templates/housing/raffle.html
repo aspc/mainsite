@@ -1,9 +1,9 @@
 {% extends "admin/base_site.html" %}
 
-{% block title %}Housing Reviews Raffle{% endblock %}
+{% block title %}Reviews Raffle{% endblock %}
 
 {% block content_title %}
-    <h1>Housing Reviews Raffle</h1>
+    <h1>Reviews Raffle</h1>
 {% endblock %}
 
 {% block content %}
@@ -17,10 +17,11 @@
       {{ form.as_p }}
       <input type="submit" value="Run Raffle"><br><br>
     </form>
-    {% if winners %}
+    {% if winner_reviews %}
     <ul>
-        {% for u in winners %}
-        <li>{{ u.get_full_name }} (<a href="mailto:{{ u.email }}">{{ u.email }}</a>)</li>
+        {% for review in winner_reviews %}
+        <li>{{ review.author.get_full_name }} (<a href="mailto:{{ review.author.email }}">{{ review.author.email }}</a>)
+        {{ review }}</li>
         {% endfor %}
     </ul>
     {% endif %}
