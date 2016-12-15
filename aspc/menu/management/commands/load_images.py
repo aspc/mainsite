@@ -24,7 +24,7 @@ class Command(BaseCommand):
             # BING_SEARCH_URL = 'https://api.datamarket.azure.com/Bing/Search/v1/Image?$format=json&'
             unsent_requests, updated_items = [], []
             for item in items:
-                if not item.image_url:
+                if item.image_url is None:
                     params = {'q': item.name, 'key': GOOGLE_SEARCH_KEY, 'cx':GOOGLE_SEARCH_CX, 'num':1, 'searchType': "image"}
                     # params = {'Query':"'"+item.name.encode('utf-8')+"'"}
                     unsent_requests.append(grequests.get(url=GOOGLE_SEARCH_URL,  params=params))
@@ -34,13 +34,19 @@ class Command(BaseCommand):
             responses = grequests.map(unsent_requests)
             item_response_pairs = list(zip(updated_items, responses))
             for item, resp in item_response_pairs:
-                data = json.loads(resp.text)
-                print(data)
+                if resp.status_code == 403:
+                    print "Daily request limit exceeded"
+                    continue
+                data = resp.json()
                 try:
-                    link = data['items'][0]['thumbnailLink']
+                    if 'items' in data.keys():
+                        link = data['items'][0]['image']['thumbnailLink']
+                    else:
+                        link = ''
                     # link = data['d']['results'][0]['Thumbnail']['MediaUrl']
                 except Exception as e:
-                    link = ''
+                    print e
+                    continue
                 item.image_url = link
                 item.save()
                 print(item.name+" : "+item.image_url)
