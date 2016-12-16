@@ -1,0 +1,51 @@
+{% extends 'base_page.html' %}
+{% load static %}
+{% block "title" %}Mental Health Resources{% endblock "title" %}
+{% block "metadesc" %}
+  Search for therapists with advanced filters!
+{% endblock %}
+{% block "ogdesc" %}
+  Search for therapists with advanced filters!
+{% endblock %}
+
+<h2 id="search_panel_label" class="header">Find therapists that match your needs:</h2>
+
+<div id="search_form">
+<form action="" method="GET">
+  {{ form.non_field_errors }}
+  <p>I'm looking for a {{ form.gender }} {{ form.sexualorientation }} {{ form.ethnicity }} {{ form.identity }} therapist</p>
+  <p>&hellip;&nbsp;, who works a maximum of {{ form.distance }} miles away</p>
+  <p>&hellip;&nbsp;, who specializes in {{ form.specialties }}</p>
+  <p>&hellip;&nbsp;, who has a degree in {{ form.qualifications }}</p>
+  <p>&hellip;&nbsp;, who accepts insurances {{ form.insurances }}</p> 
+  <p>&hellip;&nbsp;, and has the tags {{ form.tags }}.</p>
+    <input id="submit" type="submit" value="Search">
+    <br><br><br>
+</form>
+</div>
+
+{% block "title" %}Therapists{% endblock "title" %}
+<table>
+    <tr>
+      <th class="name">Name</th>
+      <th class="phone">Phone</th>
+      <th class="email">Email</th>
+      <th class="address">Address</th>
+      <th class="website">Website</th>
+      <th class="insurance">Insurances</th>
+      <th class="specialties">Specialties</th>
+      <th class="qualifications">Qualifications</th>
+    <tr>
+  {% for therapists in listings %}
+    <tr>
+      <td class="name">{{therapist.name}}</td>
+      <td class="phone">{{therapist.phone}}</td>
+      <td class="email">{{therapist.email}}</td>
+      <td class="address">{{therapist.address}}</td>
+      <td class="name">{{therapist.insurances}}</td>
+      <td class="name">{{therapist.specialties}}</td>
+      <td class="name">{{therapist.qualifications}}</td>
+  {% endfor %}
+</table>
+
+
