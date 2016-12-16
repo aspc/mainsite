@@ -1,4 +1,5 @@
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View
 
@@ -26,11 +27,22 @@ class ReviewView(View):
         else:
             return render(request, 'reviews/review_new.html', {'form': form})
 
-
 def home(request):
-    therapists = Therapist.objects.all()
+    q = request.GET.get("q")
+    if q:
+        therapists = Therapist.objects.filter(
+            Q(name__contains=q) |
+            Q(phone__contains=q) |
+            Q(email__contains=q) |
+            Q(address__contains=q) |
+            Q(website__contains=q) |
+            Q(insurances__name__contains=q) |
+            Q(specialties__name__contains=q) |
+            Q(qualifications__name__contains=q)
+        )
+    else:
+        therapists = Therapist.objects.all()
     return render(request, 'mentalhealth_home.html', {'therapists': therapists})
-
 def therapist(request, therapist_id):
     therapist = get_object_or_404(Therapist, id=therapist_id)
     return render(request, 'therapists/therapist.html', {'t': therapist})

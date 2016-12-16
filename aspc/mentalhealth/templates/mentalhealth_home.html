@@ -1,1 +1,14 @@
-{% include 'mentalhealth_base.html' %}
+{% extends 'mentalhealth_base.html' %}
+
+{% block "content" %}
+    <form class="form-search">
+        <div class="input-append">
+            <input type="text" class="span2 search-query" name="q">
+            <button type="submit" class="btn">Search</button>
+        </div>
+    </form>
+    {% for therapist in therapists %}
+        <!-- TODO: swap out with include therapist partial -->
+        <div><h1>{{ therapist.name }}</h1></div>
+    {% endfor %}
+{% endblock %}
