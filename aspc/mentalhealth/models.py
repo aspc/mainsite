@@ -48,7 +48,7 @@ class Therapist(models.Model):
 
 class MentalHealthReview(models.Model):
     reviewer = models.ForeignKey(User)
-    therapist = models.ForeignKey(Therapist)
+    therapist = models.ForeignKey(Therapist, related_name='reviews')
     reasons = models.ManyToManyField(Specialty)
     duration = models.TextField()
     feeling = models.TextField()
