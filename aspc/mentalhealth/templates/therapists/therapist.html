@@ -10,37 +10,14 @@
 
 {% block "content" %}
     <div id="therapist_info">
-        <p>
-            <b>Name</b>: {{ t.name }}
-        </p>
-        <p>
-            <b>Phone</b>: {{ t.phone }}
-        </p>
-        <p>
-            <b>Email</b>: {{ t.email }}
-        </p>
-        <p>
-            <b>Address</b>: {{ t.address }}
-        </p>
-        <p>
-            <b>Website</b>: <a href="{{ t.website }}">{{ t.website }}</a>
-        </p>
-        <p>
-            <b>Insurances</b>: {{ t.insurances.all|join:","  }}
-        </p>
-        <p>
-            <b>Specialties</b>: {{ t.specialties.all|join:","  }}
-        </p>
-        <p>
-            <b>Qualifications</b>: {{ t.qualifications.all|join:","  }}
-        </p>
+        {% include 'therapists/therapist_info.html' %}
     </div>
     <hr>
     <div id="therapist_reviews">
         {% with t.reviews.all as reviews %}
             {% if reviews %}
                 {% for r in t.reviews.all %}
-                Here is a review.
+                    {% include 'reviews/review.html' %}
                 {% endfor %}
             {% else %}
                 <p>There isn't any review for {{ t.name }} yet.
