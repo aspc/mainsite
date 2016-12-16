@@ -1,0 +1,16 @@
+.col-md-3 {
+    float: left; width: 25%;
+}
+.col-md-9 {
+    float: left; width: 75%;
+}
+.block-out {
+    clear: both; overflow: auto;
+}
+.fill-up-with-padding {
+    width: 90%;
+    padding: 10px 10px 10px 0px;
+}
+.margin-top-10 {
+    margin-top: 10px;
+}

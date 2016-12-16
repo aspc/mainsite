@@ -43,6 +43,7 @@ def home(request):
     else:
         therapists = Therapist.objects.all()
     return render(request, 'mentalhealth_home.html', {'therapists': therapists})
+
 def therapist(request, therapist_id):
     therapist = get_object_or_404(Therapist, id=therapist_id)
     return render(request, 'therapists/therapist.html', {'t': therapist})
