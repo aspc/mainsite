@@ -51,3 +51,8 @@ class ReviewView(view):
         else:
             return render(request, 'reviews/review_new.html', {'form': form})
 
+from aspc.mentalhealth.models import Therapist
+
+def home(request):
+    therapists = Therapist.objects.all()
+    return render(request, 'mentalhealth_home.html', {'therapists': therapists})

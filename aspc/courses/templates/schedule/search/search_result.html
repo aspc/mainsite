@@ -22,7 +22,10 @@
 	<div class="rating-div">
 		<h4>Rating: </h4>
 		{% if c.get_average_rating %}
-			{{ c.get_average_rating|star }} <a href="{{ c.get_url_to_section_page}}">Read reviews!</a>
+			{{ c.get_average_rating|star }}({{ c.get_average_rating|floatformat:2 }}) <a href="{{ c.get_url_to_section_page}}">Read reviews!</a>
+        {% elif c.get_RMP_rating %}
+			{{ c.get_RMP_rating|blue_star }} ({{ c.get_RMP_rating|floatformat:2 }} on <a href="{{ c.get_RMP_link }}">RateMyProfessor</a>)
+            <a href="{% url "write_review" c.course.code_slug %}">Add a review!</a>
 		{% else %}
 			No reviews yet. <a href="{{ c.course.get_absolute_url }}">See reviews for other sections instead</a> or <a href="{% url "write_review" c.course.code_slug %}">Add a review!</a>
 		{% endif %}

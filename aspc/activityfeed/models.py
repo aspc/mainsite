@@ -7,7 +7,7 @@ from .signals import new_activity, delete_activity
 
 CATEGORY_CHOICES = (
     ('housing', 'Housing Reviews'),
-    ('course', 'Housing Reviews'),
+    ('course', 'Course Reviews'),
     ('sagelist', 'SageBooks'),
     ('twitter', 'Twitter'),
 )

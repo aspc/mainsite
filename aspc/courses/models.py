@@ -10,6 +10,9 @@ from django.db import connection
 from django.template.defaultfilters import slugify
 from aspc.activityfeed.signals import new_activity, delete_activity
 from aspc.courses.lib import rake
+from django.db import connection
+from collections import Counter
+
 
 CAMPUSES = (
     (1, u'PO'), (2, u'SC'), (3, u'CMC'), (4, u'HM'), (5, u'PZ'), (6, u'CGU'), (7, u'CU'), (8, u'KS'), (-1, u'?'))
@@ -56,7 +59,6 @@ class Term(models.Model):
     class Meta:
         ordering = ['-year', 'session']
 
-
 class Instructor(models.Model):
     name = models.CharField(max_length=100)
     rating = models.FloatField(blank = True, null = True)
@@ -93,6 +95,24 @@ class Instructor(models.Model):
         self.enthusiasm_rating = ratings[6]
         self.approachable_rating = ratings[7]
         self.save()
+
+    def get_campus(self):
+        sections = self.sections.all()
+        if not sections:
+            return ''
+        most_commons = Counter([section.get_campus() for section in sections]).most_common()
+        return most_commons[0][0]
+
+    def get_RMPInfo(self):
+        try:
+            return self.rmpinfo
+        except:
+            return None
+
+class RMPInfo(models.Model):
+    instructor = models.OneToOneField(Instructor)
+    url = models.CharField(max_length=100)
+    rating = models.FloatField(blank=True, null=True)
 
 class Department(models.Model):
     code = models.CharField(max_length=20, unique=True, db_index=True)
@@ -276,6 +296,16 @@ class Section(models.Model):
                 self.cached_competency_rating, self.cached_lecturing_rating, self.cached_enthusiasm_rating,
                 self.cached_approachable_rating]
 
+    def get_RMP_rating(self):
+        rmps = [instructor.get_RMPInfo() for instructor in self.instructors.all()]
+        ratings = [rmp.rating for rmp in rmps if rmp and rmp.rating]
+        return sum(ratings)/len(ratings) if ratings else None
+
+    def get_RMP_link(self):
+        rmps = [instructor.get_RMPInfo() for instructor in self.instructors.all()]
+        urls = [rmp.url for rmp in rmps if rmp and rmp.url]
+        return urls[0]
+
     def find_sentence_for_keywords(self, input, keyword, used_sentences):
         input = input.replace('\r','.').replace('\n','.')
         all_sentences = input.split('.')
@@ -305,16 +335,16 @@ class Section(models.Model):
         return ('section_detail', (),
                 {'course_code': self.code_slug, 'instructor': self.instructors.all()[0].slug() })
 
-    def get_url_to_section_page(self):
-        # It doesn't really matter which instructor we choose here, since from the section page the user will be able
-        # to find information about the other instructors that teach this class too (if there are multiple)
-        # But never return the "staff" instructor if possible!
-        staff_instructor_object = Instructor.objects.get(name='Staff')
-        possible_instructors = self.instructors.all()
-        instructor = possible_instructors[0] if possible_instructors else staff_instructor_object
+    def get_most_reviewed_instructor(self):
+        return max(self.instructors.all(), key=lambda i: CourseReview.objects.filter(
+                instructor=i, course=self.course).count())
 
-        if instructor == staff_instructor_object and len(possible_instructors) > 1:
-            instructor = possible_instructors[1]
+    def get_url_to_section_page(self):
+        staff_instructor_object = Instructor.objects.get(name='Staff')
+        if not self.instructors.all():
+            instructor = staff_instructor_object
+        else:
+            instructor = self.get_most_reviewed_instructor()
 
         return '/courses/browse/instructor/{0}/course/{1}/'.format(instructor.id, self.course.code_slug)
 
