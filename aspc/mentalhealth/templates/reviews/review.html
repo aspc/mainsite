@@ -1,14 +1,31 @@
 <div class="reviews_list-item">
     <p>
-        <strong>Therapist:</strong> {{ r.therapist.name }}  <i>{{ r.created_ts|date:"F d, Y" }}</i>
+        <strong>Therapist: </strong> {{ r.therapist.name }}
     </p>
-{#    <p>{{ review.comments|linebreaksbr  }}</p>#}
-{#	{% if not is_section and not is_instructor_view %}#}
-{#		<small><a href="{{ review.get_url_to_section_page }}">Only see reviews for {{ review.instructor }}...</a></small>#}
-{#	{% endif %}#}
-{#	<div class="reviews_list-edit_review">#}
-{#		{% if review.author == request.user %}#}
-{#			<a href="{% url "write_review" review.course.code_slug review.instructor.id %}"><button>This is your own review! Click to edit.</button></a>#}
-{#		{% endif %}#}
-{#	</div>#}
+    <p>
+        <strong>Reviewed on: </strong>  {{ r.created_ts|date:"F d, Y" }}
+    </p>
+    <div class="reviewer_info">
+        <p><strong>Gender: </strong> {{ r.gender.all|join:","  }}</p>
+        <p><strong>Sexual Orientation: </strong> {{ r.sexual_orientation.all|join:","  }} </p></p>
+        <p><strong>Ethnicity: </strong> {{ r.ethnicity.all|join:","  }} </p>
+        <p><strong>Identity: </strong> {{ r.identity.all|join:","  }}</p>
+    </div>
+    <div class="review_details">
+        <p>
+            <strong>Do you feel that your identities affected your visit(s) with this therapist?</strong><br>
+            {{ r.identity_related_comment|linebreaksbr  }}
+        </p>
+        <p>
+            <strong>What did your therapist recommend? </strong><br>
+            {{ r.therapist_recommendation|linebreaksbr  }}
+        </p>
+        <p>
+            <strong>What ongoing strategies did you and your therapist use? </strong><br>
+            {{ r.therapist_strategy|linebreaksbr  }}
+        </p>
+    </div>
+    <div class="review_tags">
+        <p>{{ r.tags.all|join:"," }}</p>
+    </div>
 </div>
