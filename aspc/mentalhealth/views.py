@@ -1,3 +1,4 @@
 from django.shortcuts import render
 
-# Create your views here.
+def mental_health_home(request):
+    return render(request, "mental_health_home.html")
