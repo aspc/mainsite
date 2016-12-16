@@ -35,6 +35,7 @@ class Ethnicity(Category):
 
 class Therapist(models.Model):
     name = models.CharField(max_length=30)
+    image = models.ImageField(upload_to='profile', null=True)
     phone = models.CharField(max_length=30, unique=True, null=True, blank=True)
     email = models.EmailField(max_length=70, unique=True, null=True, blank=True)
     address = models.CharField(max_length=100, unique=True, null=True, blank=True)

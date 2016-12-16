@@ -8,7 +8,9 @@
         </div>
     </form>
     {% for therapist in therapists %}
-        <!-- TODO: swap out with include therapist partial -->
-        <div><h1>{{ therapist.name }}</h1></div>
+        <div class="block-out">
+            {% include 'therapists/therapist_info.html' with t=therapist %}
+        </div>
+        <hr />
     {% endfor %}
 {% endblock %}
