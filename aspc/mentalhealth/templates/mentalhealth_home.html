@@ -2,15 +2,13 @@
 
 {% block "content" %}
     <form class="form-search">
-        <div class="input-append">
-            <input type="text" class="span2 search-query" name="q">
-            <button type="submit" class="btn">Search</button>
+        <div class="mh-search-form-div">
+            <input type="text" class="mh-search-bar" name="q">
+            <button type="submit" class="mh-search-button">Search</button>
         </div>
     </form>
     {% for therapist in therapists %}
-        <div class="block-out">
-            {% include 'therapists/therapist_info.html' with t=therapist %}
-        </div>
-        <hr />
+                <hr/>
+        {% include 'therapists/therapist_info.html' with t=therapist %}
     {% endfor %}
 {% endblock %}
