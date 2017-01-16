@@ -268,18 +268,18 @@ class SectionDetailView(generic.DetailView):
     template_name = "browse/section_detail.html"
 
     def get_object(self):
-        try:
-            # It doesn't really matter which Section object we return if there are multiple that fit the
-            # <Instructor, Course> identifier, but we ought to return the most recent one so the section data
-            # that we display is as up-to-date as possible
-            return Section.objects.filter(instructors__id__exact=self.kwargs['instructor_id'], course__code_slug=self.kwargs['course_code']).order_by('term','code_slug').first()
-        except IndexError:
+        # It doesn't really matter which Section object we return if there are multiple that fit the
+        # <Instructor, Course> identifier, but we ought to return the most recent one so the section data
+        # that we display is as up-to-date as possible
+        section = Section.objects.filter(instructors__id__exact=self.kwargs['instructor_id'], course__code_slug=self.kwargs['course_code']).order_by('term','code_slug').first()
+        if not section:
             raise Http404
+        return section
 
     def get_context_data(self, **kwargs):
         context = super(SectionDetailView, self).get_context_data(**kwargs)
         instructor_object = get_object_or_404(Instructor, id=self.kwargs['instructor_id'])
-        course_object = Course.objects.get(code_slug=self.kwargs['course_code'])
+        course_object = get_object_or_404(Course, code_slug=self.kwargs['course_code'])
 
         context['is_section'] = True
         context['professor'] = instructor_object
