@@ -1,4 +1,6 @@
 from __future__ import unicode_literals
+
+import django
 from django.contrib.auth.models import User
 from django.db import models
 from datetime import datetime
@@ -61,5 +63,5 @@ class MentalHealthReview(models.Model):
     therapist_recommendation = models.TextField(null=True, blank=True)
     therapist_strategy = models.TextField(null=True, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
-    created_ts = models.DateTimeField(default=datetime.now())
+    created_ts = models.DateTimeField(default=django.utils.timezone.now)
 
