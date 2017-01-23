@@ -26,8 +26,8 @@ class ReviewView(View):
             review = form.save(commit=False)
             review.reviewer = self.request.user
             review.therapist = Therapist.objects.get(id=therapist_id)
-            form.save_m2m()
             review.save()
+            form.save_m2m()
             return redirect(reverse('therapist', kwargs={"therapist_id": review.therapist.id}))
         else:
             return render(request, 'mentalhealth_reviews/review_new.html', {'form': form})
