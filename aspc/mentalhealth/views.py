@@ -30,7 +30,8 @@ class ReviewView(View):
             form.save_m2m()
             return redirect(reverse('therapist', kwargs={"therapist_id": review.therapist.id}))
         else:
-            return render(request, 'mentalhealth_reviews/review_new.html', {'form': form})
+            therapist = Therapist.objects.get(id=therapist_id).name
+            return render(request, 'mentalhealth_reviews/review_new.html', {'therapist_name': therapist, 'form': form})
 
 def home(request):
     q = request.GET.get("q")
