@@ -44,3 +44,7 @@
 .mh-search-form-div {
     margin: 20px 20px 30px 0;
 }
+
+#new_review_form li label {
+    width: 10em;
+}

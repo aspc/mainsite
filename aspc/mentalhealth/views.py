@@ -7,25 +7,30 @@ from aspc.mentalhealth.forms import MentalHealthReviewForm
 from aspc.mentalhealth.models import Therapist, MentalHealthReview
 
 class ReviewView(View):
-    def get(self, request, review_id=None):
-        review = None
-        if review_id:
-          review = get_object_or_404(MentalHealthReview, id=review_id)
+    def get(self, request, therapist_id=None):
+        try:
+            review = MentalHealthReview.objects.get(therapist=therapist_id, reviewer=self.request.user)
+        except MentalHealthReview.DoesNotExist:
+            review = None
         form = MentalHealthReviewForm(instance=review)
-        return render(request, 'reviews/review_new.html', {'form': form})
+        therapist = Therapist.objects.get(id=therapist_id).name
+        return render(request, 'mentalhealth_reviews/review_new.html', {'therapist_name': therapist, 'form': form})
 
-    def post(self, request, review_id=None):
-        review = None
-        if review_id:
-            review = get_object_or_404(MentalHealthReview, id=review_id)
+    def post(self, request, therapist_id=None):
+        try:
+            review = MentalHealthReview.objects.get(therapist=therapist_id, reviewer=self.request.user)
+        except MentalHealthReview.DoesNotExist:
+            review = None
         form = MentalHealthReviewForm(request.POST, instance=review)
         if form.is_valid():
-            review = form.save()
-            return redirect(reverse('mentalhealth_home'))
-            # TODO: Change to below
-            #return redirect(reverse('therapist', kwargs={"therapist_id": review.therapist.id}))
+            review = form.save(commit=False)
+            review.reviewer = self.request.user
+            review.therapist = Therapist.objects.get(id=therapist_id)
+            form.save_m2m()
+            review.save()
+            return redirect(reverse('therapist', kwargs={"therapist_id": review.therapist.id}))
         else:
-            return render(request, 'reviews/review_new.html', {'form': form})
+            return render(request, 'mentalhealth_reviews/review_new.html', {'form': form})
 
 def home(request):
     q = request.GET.get("q")

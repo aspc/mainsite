@@ -15,12 +15,13 @@
     <hr>
     <div id="therapist_reviews">
         <p>
-            <a href="{% url 'review_create' %}"><button>Create New Review</button></a>
+            <a href="{% url 'therapist_review' t.id %}"><button>Create/Edit Review</button></a>
         </p>
         {% with t.reviews.all as reviews %}
             {% if reviews %}
                 {% for r in t.reviews.all %}
-                    {% include 'reviews/review.html' %}
+                    <hr />
+                    {% include 'mentalhealth_reviews/review.html' %}
                 {% endfor %}
             {% else %}
                 <p>There isn't any review for {{ t.name }} yet.</p>

@@ -61,5 +61,5 @@ class MentalHealthReview(models.Model):
     therapist_recommendation = models.TextField(null=True, blank=True)
     therapist_strategy = models.TextField(null=True, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
-    created_ts = models.DateTimeField(default=datetime.now)
+    created_ts = models.DateTimeField(default=datetime.now())
 
