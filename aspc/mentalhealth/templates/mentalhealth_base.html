@@ -1,0 +1,25 @@
+{% extends "base_page.html" %}
+
+{% load staticfiles %}
+
+{% block "page_class" %}mentalhealth{% endblock %}
+{% block "title" %}Mental Health Resources Review {% block "subtitle" %}{% endblock %}{% endblock %}
+{% block "page_title" %}Mental Health Resources Review {% endblock %}
+
+{% block "css" %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static "css/mentalhealth/mentalhealth.css" %}"/>
+{% endblock %}
+
+{% block "mobile_css" %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static "css/mentalhealth/mentalhealth.mobile.css" %}"/>
+{% endblock %}
+
+{% block "breadcrumbs" %}
+<ol class="breadcrumbs">
+  <li><a href="{% url "mentalhealth_home" %}">Mental Health Resources Review</a></li>
+  {% block "mentalhealth_breadcrumbs" %}
+  {% endblock %}
+</ol>
+{% endblock %}

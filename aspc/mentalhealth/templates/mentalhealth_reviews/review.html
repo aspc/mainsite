@@ -1,0 +1,59 @@
+<div class="reviews_list-item">
+    <p>
+        <strong>Therapist: </strong> {{ r.therapist.name }}
+    </p>
+    <p>
+        <strong>Reviewed on: </strong>  {{ r.created_ts|date:"F d, Y" }}
+    </p>
+    <div class="reviewer_info">
+        {% if r.gender.all %}
+            <p><strong>Gender: </strong> {{ r.gender.all|join:","  }}</p>
+        {% endif %}
+        {% if r.sexual_orientation.all %}
+            <p><strong>Sexual Orientation: </strong> {{ r.sexual_orientation.all|join:","  }} </p>
+        {% endif %}
+        {% if r.ethnicity.all %}
+            <p><strong>Ethnicity: </strong> {{ r.ethnicity.all|join:","  }} </p>
+        {% endif %}
+        {% if r.identity.all %}
+            <p><strong>Identity: </strong> {{ r.identity.all|join:","  }}</p>
+        {% endif %}
+    </div>
+    <div class="review_details">
+        <p>
+            <strong>For what type of care did you visit this therapist?</strong><br>
+            {{ r.reasons.all|join:","  }}
+        </p>
+        <p>
+            <strong>How long have you been with this therapist?</strong><br>
+            {{ r.duration|linebreaksbr  }}
+        </p>
+        <p>
+            <strong>How do you feel your visit went?</strong><br>
+            {{ r.feeling|linebreaksbr  }}
+        </p>
+        {% if r.identity_related_comment %}
+            <p>
+                <strong>Do you feel that your identities affected your visit(s) with this therapist?</strong><br>
+                {{ r.identity_related_comment|linebreaksbr  }}
+            </p>
+        {% endif %}
+        {% if r.therapist_recommendation %}
+            <p>
+                <strong>What did your therapist recommend? </strong><br>
+                {{ r.therapist_recommendation|linebreaksbr  }}
+            </p>
+        {% endif %}
+        {% if r.therapist_strategy %}
+            <p>
+                <strong>What ongoing strategies did you and your therapist use? </strong><br>
+                {{ r.therapist_strategy|linebreaksbr  }}
+            </p>
+        {% endif %}
+    </div>
+    {% if r.tags.all %}
+        <div class="review_tags">
+            <p>{{ r.tags.all|join:"," }}</p>
+        </div>
+    {% endif %}
+</div>

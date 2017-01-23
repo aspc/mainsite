@@ -1,0 +1,34 @@
+{% extends 'mentalhealth_base.html' %}
+
+{% block "metadesc" %}
+	Read and write reviews for therapists.
+{% endblock %}
+{% block "ogdesc" %}
+	Read and write reviews for therapists.
+{% endblock %}
+
+{% block "title" %}Add a New Review{% endblock %}
+{% block "page_title" %}Add a New Review for {{ therapist_name }}{% endblock %}
+
+{% block "therapists_breadcrumbs" %}
+	<li>
+		<a href="{% url "search_reviews" %}">Browse and Add Therapy Reviews</a>
+	</li>
+	<li>Add a New Review</li>
+{% endblock %}
+
+{% block "content" %}
+<div id="new_review_form">
+    <div style="margin: 20px 0;"></div>
+    <form action="{{ action }}" method="POST">
+		{% csrf_token %}
+        {% for field in form %}
+            {{ field.label }} <br /><br />
+            {{ field }}
+            {{ field.errors }} <br /><br /><br />
+        {% endfor %}
+        <input id="submit" class="mh-search-button" type="submit" value="Submit review &rarr;" />
+	</form>
+    <div style="margin: 20px 0;"></div>
+</div>
+{% endblock %}

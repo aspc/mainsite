@@ -157,7 +157,8 @@ INSTALLED_APPS = (
 	'aspc.activityfeed',
 	'aspc.courses',
 	'aspc.menu',
-	'aspc.files'
+	'aspc.files',
+	'aspc.mentalhealth'
 )
 
 # Serializer to use for User sessions. Preferable not to use

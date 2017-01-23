@@ -1,0 +1,14 @@
+{% extends 'mentalhealth_base.html' %}
+
+{% block "content" %}
+    <form class="form-search">
+        <div class="mh-search-form-div">
+            <input type="text" class="mh-search-bar" name="q">
+            <button type="submit" class="mh-search-button">Search</button>
+        </div>
+    </form>
+    {% for therapist in therapists %}
+                <hr/>
+        {% include 'therapists/therapist_info.html' with t=therapist %}
+    {% endfor %}
+{% endblock %}
