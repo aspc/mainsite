@@ -49,7 +49,11 @@
     width: 100%;
 }
 
-#new_review_form li{
+#new_review_form ul {
+    overflow: auto;
+}
+
+#new_review_form li {
     float:left;
     display:inline;
     width: 50%;
