@@ -1,0 +1,33 @@
+<div class="block-out">
+    <a href="{% url "therapist" t.pk %}">
+        <div class="col-md-3">
+            <h1>{{ t.name }}</h1>
+            {% if t.image %}
+                <img src="{{ t.image.url }}" class="fill-up-with-padding"/>
+            {% endif %}
+        </div>
+    </a>
+    <div class="col-md-9 margin-top-10">
+        <p>
+            <b>Phone</b>: {{ t.phone }}
+        </p>
+        <p>
+            <b>Email</b>: {{ t.email }}
+        </p>
+        <p>
+            <b>Address</b>: {{ t.address }}
+        </p>
+        <p>
+            <b>Website</b>: <a href="{{ t.website }}">{{ t.website }}</a>
+        </p>
+        <p>
+            <b>Insurance Coverage</b>: {{ t.insurances.all|join:","  }}
+        </p>
+        <p>
+            <b>Areas of Specialty</b>: {{ t.specialties.all|join:","  }}
+        </p>
+        <p>
+            <b>Qualifications</b>: {{ t.qualifications.all|join:","  }}
+        </p>
+    </div>
+</div>

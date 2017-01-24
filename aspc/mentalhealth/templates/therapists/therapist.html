@@ -1,0 +1,32 @@
+{% extends 'mentalhealth_base.html' %}
+
+{% block "title" %}Therapist - {% block "subtitle" %}{{ t.name }}{% endblock %}{% endblock %}
+{% block "page_title" %} {{ t.name }} {% endblock %}
+
+{% block "mentalhealth_breadcrumbs" %}
+    <li><a href="{% url "therapist" t.id %}">{{ t.name }}</a></li>
+{% endblock %}
+
+
+{% block "content" %}
+    <div id="therapist_info">
+        {% include 'therapists/therapist_info.html' %}
+    </div>
+    <hr>
+    <div id="therapist_reviews">
+        <p>
+            <a href="{% url 'therapist_review' t.id %}"><button>Create/Edit Review</button></a>
+        </p>
+        {% with t.reviews.all as reviews %}
+            {% if reviews %}
+                {% for r in t.reviews.all %}
+                    <hr />
+                    {% include 'mentalhealth_reviews/review.html' %}
+                {% endfor %}
+            {% else %}
+                <p>There isn't any review for {{ t.name }} yet.</p>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+{% endblock %}
