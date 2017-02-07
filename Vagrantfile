@@ -45,4 +45,6 @@ Vagrant.configure("2") do |config|
 
   # Forward local SSH keys to Vagrant
   config.ssh.forward_agent = true
+
+  config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
 end

@@ -37,15 +37,15 @@ def home(request):
     q = request.GET.get("q")
     if q:
         therapists = Therapist.objects.filter(
-            Q(name__contains=q) |
-            Q(phone__contains=q) |
-            Q(email__contains=q) |
-            Q(address__contains=q) |
-            Q(website__contains=q) |
-            Q(insurances__name__contains=q) |
-            Q(specialties__name__contains=q) |
-            Q(qualifications__name__contains=q)
-        )
+            Q(name__icontains=q) |
+            Q(phone__icontains=q) |
+            Q(email__icontains=q) |
+            Q(address__icontains=q) |
+            Q(website__icontains=q) |
+            Q(insurances__name__icontains=q) |
+            Q(specialties__name__icontains=q) |
+            Q(qualifications__name__icontains=q)
+        ).distinct()
     else:
         therapists = Therapist.objects.all()
     return render(request, 'mentalhealth_home.html', {'therapists': therapists})
