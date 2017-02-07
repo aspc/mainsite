@@ -59,7 +59,6 @@ python manage.py loaddata /vagrant/fixtures/folio.json
 python manage.py loaddata /vagrant/fixtures/blog.json
 python manage.py loaddata /vagrant/fixtures/eatshop.json
 python manage.py loaddata /vagrant/fixtures/sagelist.json
-python manage.py loaddata /vagrant/fixtures/mhdata.json
 
 # load housing data
 python manage.py load_dorms
