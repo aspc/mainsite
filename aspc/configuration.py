@@ -35,13 +35,12 @@ USE_L10N = True
 # caches and password reset emails with links to malicious hosts by
 # submitting requests with a fake HTTP Host header, which is possible even
 # under many seemingly-safe web server configurations.
-#ALLOWED_HOSTS = (
-#	'aspc.pomona.edu',
-#	'aspc.pomona.edu.',
-#	'.aspc.pomona.edu',
-#	'.aspc.pomona.edu.', # allow FQDN (with trailing dot)
-#)
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = (
+	'aspc.pomona.edu',
+	'aspc.pomona.edu.',
+	'.aspc.pomona.edu',
+	'.aspc.pomona.edu.', # allow FQDN (with trailing dot)
+)
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
