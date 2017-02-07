@@ -46,10 +46,10 @@ then
 fi
 
 -# create tables
--python /vagrant/manage.py migrate --noinput
+-python manage.py migrate --noinput
 -
 -# copy static files
--python /vagrant/manage.py collectstatic --noinput
+-python manage.py collectstatic --noinput
 
 # load fixtures (order is important)
 python manage.py loaddata /vagrant/fixtures/sites.json
@@ -59,6 +59,7 @@ python manage.py loaddata /vagrant/fixtures/folio.json
 python manage.py loaddata /vagrant/fixtures/blog.json
 python manage.py loaddata /vagrant/fixtures/eatshop.json
 python manage.py loaddata /vagrant/fixtures/sagelist.json
+python manage.py loaddata /vagrant/fixtures/mhdata.json
 
 # load housing data
 python manage.py load_dorms
