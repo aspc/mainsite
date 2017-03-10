@@ -2,11 +2,13 @@ from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View
-
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 from aspc.mentalhealth.forms import MentalHealthReviewForm
 from aspc.mentalhealth.models import Therapist, MentalHealthReview
 
 class ReviewView(View):
+    @method_decorator(login_required)
     def get(self, request, therapist_id=None):
         try:
             review = MentalHealthReview.objects.get(therapist=therapist_id, reviewer=self.request.user)
@@ -15,7 +17,7 @@ class ReviewView(View):
         form = MentalHealthReviewForm(instance=review)
         therapist = Therapist.objects.get(id=therapist_id).name
         return render(request, 'mentalhealth_reviews/review_new.html', {'therapist_name': therapist, 'form': form})
-
+    @method_decorator(login_required)
     def post(self, request, therapist_id=None):
         try:
             review = MentalHealthReview.objects.get(therapist=therapist_id, reviewer=self.request.user)
@@ -32,7 +34,7 @@ class ReviewView(View):
         else:
             therapist = Therapist.objects.get(id=therapist_id).name
             return render(request, 'mentalhealth_reviews/review_new.html', {'therapist_name': therapist, 'form': form})
-
+@method_decorator(login_required)
 def home(request):
     q = request.GET.get("q")
     if q:
@@ -49,7 +51,7 @@ def home(request):
     else:
         therapists = Therapist.objects.all()
     return render(request, 'mentalhealth_home.html', {'therapists': therapists})
-
+@method_decorator(login_required)
 def therapist(request, therapist_id):
     therapist = get_object_or_404(Therapist, id=therapist_id)
     return render(request, 'therapists/therapist.html', {'t': therapist})
