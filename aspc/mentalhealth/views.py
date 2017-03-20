@@ -34,7 +34,7 @@ class ReviewView(View):
         else:
             therapist = Therapist.objects.get(id=therapist_id).name
             return render(request, 'mentalhealth_reviews/review_new.html', {'therapist_name': therapist, 'form': form})
-@method_decorator(login_required)
+
 def home(request):
     q = request.GET.get("q")
     if q:
