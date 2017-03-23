@@ -138,9 +138,13 @@
 		<td>
 			<span class="mobile_meal_header">Lunch</span>
 			<ul>
-				{% for item in scripps_meals.lunch_items %}
-					<li image_url="{{ item.image_url }}">{{ item.name|clean_item_name }}</li>
-				{% endfor %}
+				{% if current_day == 'thu' %}
+				    <li>Community lunch on Bowling Green Lawn outside of Malott in support of ethical spending practices at Scripps; light lunch provided from the Grove House and Shakedown.</li>
+				{% else %}
+				    {% for item in scripps_meals.lunch_items %}
+				        <li image_url="{{ item.image_url }}">{{ item.name|clean_item_name }}</li>
+				    {% endfor %}
+				{% endif %}
 			</ul>
 		</td>
 		<td>
