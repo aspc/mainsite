@@ -138,15 +138,9 @@
 		<td>
 			<span class="mobile_meal_header">Lunch</span>
 			<ul>
-				{% if current_day == 'thu' %}
-				    <li>Community lunch on Bowling Green Lawn outside of Malott in support of ethical spending practices at Scripps; light lunch provided from the Grove House and Shakedown. For more info, please visit:
-            		<a href="https://www.facebook.com/dropsodexo/?hc_location=ufi" style="color:blue">https://www.facebook.com/dropsodexo/?hc_location=ufi</a></li>
-
-				{% else %}
-				    {% for item in scripps_meals.lunch_items %}
-				        <li image_url="{{ item.image_url }}">{{ item.name|clean_item_name }}</li>
-				    {% endfor %}
-				{% endif %}
+				{% for item in scripps_meals.lunch_items %}
+					<li image_url="{{ item.image_url }}">{{ item.name|clean_item_name }}</li>
+				{% endfor %}
 			</ul>
 		</td>
 		<td>
