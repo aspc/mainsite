@@ -15,7 +15,7 @@ class Post(models.Model):
     def __unicode__(self):
         return u"{0} by {1} ({2}) on {3}".format(
             self.title,
-            self.author.user.get_full_name(),
+            self.author.name,
             self.author.position.title,
             self.posted,
         )
