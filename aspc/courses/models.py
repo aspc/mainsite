@@ -272,11 +272,17 @@ class Section(models.Model):
 
     def update_ratings(self):
         cursor = connection.cursor()
-        instructor_ids = str(tuple([instructor.id for instructor in self.instructors.all()])).replace(',)',')')
-        cursor.execute('SELECT AVG("overall_rating"), AVG("useful_rating"), AVG("engagement_rating"),'
-                       ' AVG("difficulty_rating"), AVG("competency_rating"), AVG("lecturing_rating"),'
-                       ' AVG("enthusiasm_rating"), AVG("approachable_rating") FROM courses_coursereview'
-                       ' WHERE course_id=%d and instructor_id IN %s' % (self.course.id, instructor_ids))
+        if self.instructors.count():
+            instructor_ids = str(tuple([instructor.id for instructor in self.instructors.all()])).replace(',)',')')
+            cursor.execute('SELECT AVG("overall_rating"), AVG("useful_rating"), AVG("engagement_rating"),'
+                           ' AVG("difficulty_rating"), AVG("competency_rating"), AVG("lecturing_rating"),'
+                           ' AVG("enthusiasm_rating"), AVG("approachable_rating") FROM courses_coursereview'
+                           ' WHERE course_id=%d and instructor_id IN %s' % (self.course.id, instructor_ids))
+        else:
+            cursor.execute('SELECT AVG("overall_rating"), AVG("useful_rating"), AVG("engagement_rating"),'
+                           ' AVG("difficulty_rating"), AVG("competency_rating"), AVG("lecturing_rating"),'
+                           ' AVG("enthusiasm_rating"), AVG("approachable_rating") FROM courses_coursereview'
+                           ' WHERE course_id=%d' % self.course.id)
         ratings = cursor.fetchone()
         self.cached_overall_rating = ratings[0]
         self.cached_useful_rating = ratings[1]
@@ -537,4 +543,3 @@ class FeaturingQuery(models.Model):
         chosen = random.choice(results)
         instances = Section.objects.get(id=chosen[0])
         return instances
-
