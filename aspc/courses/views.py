@@ -364,6 +364,7 @@ class ReviewView(View):
             lecturing_rating = form.cleaned_data["lecturing_rating"]
             approachable_rating = form.cleaned_data["approachable_rating"]
             enthusiasm_rating = form.cleaned_data["enthusiasm_rating"]
+            inclusivity_rating = form.cleaned_data["inclusivity_rating"]
             grade = form.cleaned_data["grade"]
 
             review, created = CourseReview.objects.get_or_create(author=request.user, course=form.course, instructor=instructor)
@@ -376,6 +377,7 @@ class ReviewView(View):
             review.competency_rating = int(competency_rating)
             review.lecturing_rating = int(lecturing_rating)
             review.approachable_rating = int(approachable_rating)
+            review.inclusivity_rating = int (inclusivity_rating)
             review.enthusiasm_rating = int(enthusiasm_rating)
             review.grade = int(grade) if grade else None
             review.comments = comments
