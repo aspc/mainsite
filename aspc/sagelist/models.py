@@ -37,6 +37,7 @@ class BookSale(models.Model):
     edition = models.CharField(max_length=30, null=True, blank=True)
     condition = models.IntegerField(choices=CONDITIONS)
     price = models.DecimalField(max_digits=5, decimal_places=2)
+    copies = models.IntegerField(default=1)
     is_recoop = models.BooleanField(default=False)
     recoop_id = models.IntegerField(unique=True, null=True)
 

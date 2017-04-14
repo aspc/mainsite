@@ -137,8 +137,13 @@ class BookSaleDeleteView(DeleteView):
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
-        self.object.delete()
-        messages.add_message(request, messages.SUCCESS, u"Deleted listing for {0}".format(self.object.title))
+        if self.object.copies > 1:
+            self.object.copies -= 1
+            self.object.save()
+            messages.add_message(request, messages.SUCCESS, u"Decremented listing for {0}".format(self.object.title))
+        else:
+            self.object.delete()
+            messages.add_message(request, messages.SUCCESS, u"Deleted listing for {0}".format(self.object.title))
         return HttpResponseRedirect(self.get_success_url())
 
 
