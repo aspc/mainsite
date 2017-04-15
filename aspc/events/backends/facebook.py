@@ -29,9 +29,8 @@ class FacebookBackend(object):
                 'grant_type': 'client_credentials'
             }
         )
-        response_data = json.loads(response.text) # Parses the returned query string
+        response_data = json.loads(response.text) # Parses the returned json
 
-        #response_data = response.text
         return response_data['access_token']
 
     def _event_lookup(self, event_id):
