@@ -69,6 +69,7 @@ class Instructor(models.Model):
     lecturing_rating = models.FloatField(blank=True, null=True)
     enthusiasm_rating = models.FloatField(blank=True, null=True)
     approachable_rating = models.FloatField(blank=True, null=True)
+    inclusivity_rating = models.FloatField(blank=True, null=True)
 
     def __unicode__(self):
         return self.name
@@ -77,13 +78,13 @@ class Instructor(models.Model):
         return slugify(self.name)
 
     def get_miscellaneous_ratings(self):
-        return [self.useful_rating or 0, self.engagement_rating or 0, self.difficulty_rating or 0, self.competency_rating or 0, self.lecturing_rating or 0, self.enthusiasm_rating or 0, self.approachable_rating or 0]
+        return [self.useful_rating or 0, self.engagement_rating or 0, self.difficulty_rating or 0, self.competency_rating or 0, self.lecturing_rating or 0, self.enthusiasm_rating or 0, self.approachable_rating or 0, self.inclusivity_rating or 0]
 
     def update_ratings(self):
         cursor = connection.cursor()
         cursor.execute('SELECT AVG("overall_rating"), AVG("useful_rating"), AVG("engagement_rating"),'
                        ' AVG("difficulty_rating"), AVG("competency_rating"), AVG("lecturing_rating"),'
-                       ' AVG("enthusiasm_rating"), AVG("approachable_rating") FROM courses_coursereview'
+                       ' AVG("enthusiasm_rating"), AVG("approachable_rating"), AVG("inclusivity_rating") FROM courses_coursereview'
                        ' WHERE instructor_id=%d' % self.id)
         ratings = cursor.fetchone()
         self.rating = ratings[0]
@@ -94,6 +95,7 @@ class Instructor(models.Model):
         self.lecturing_rating = ratings[5]
         self.enthusiasm_rating = ratings[6]
         self.approachable_rating = ratings[7]
+        self.inclusivity_rating = ratings[8]
         self.save()
 
     def get_campus(self):
@@ -161,6 +163,7 @@ class Course(models.Model):
     lecturing_rating = models.FloatField(blank=True, null=True)
     enthusiasm_rating = models.FloatField(blank=True, null=True)
     approachable_rating = models.FloatField(blank=True, null=True)
+    inclusivity_rating = models.FloatField(blank=True, null=True)
 
     primary_department = models.ForeignKey(Department, related_name='primary_course_set', null=True)
     departments = models.ManyToManyField(Department, related_name='course_set')
@@ -178,13 +181,13 @@ class Course(models.Model):
                 {'course_code': self.code_slug})
 
     def get_miscellaneous_ratings(self):
-        return [self.useful_rating or 0, self.engagement_rating or 0, self.difficulty_rating or 0, self.competency_rating or 0, self.lecturing_rating or 0, self.enthusiasm_rating or 0, self.approachable_rating or 0]
+        return [self.useful_rating or 0, self.engagement_rating or 0, self.difficulty_rating or 0, self.competency_rating or 0, self.lecturing_rating or 0, self.enthusiasm_rating or 0, self.approachable_rating or 0, self.inclusivity_rating or 0]
 
     def update_ratings(self):
         cursor = connection.cursor()
         cursor.execute('SELECT AVG("overall_rating"), AVG("useful_rating"), AVG("engagement_rating"),'
                        ' AVG("difficulty_rating"), AVG("competency_rating"), AVG("lecturing_rating"),'
-                       ' AVG("enthusiasm_rating"), AVG("approachable_rating") FROM courses_coursereview'
+                       ' AVG("enthusiasm_rating"), AVG("approachable_rating"), AVG("inclusivity_rating") FROM courses_coursereview'
                        ' WHERE course_id=%d' % self.id)
         ratings = cursor.fetchone()
         self.rating = ratings[0]
@@ -195,6 +198,7 @@ class Course(models.Model):
         self.lecturing_rating = ratings[5]
         self.enthusiasm_rating = ratings[6]
         self.approachable_rating = ratings[7]
+        self.inclusivity_rating = ratings[8]
         self.save()
 
     # TODO: Merge instructors who taught this class previously
@@ -232,6 +236,7 @@ class Section(models.Model):
     cached_lecturing_rating = models.FloatField(blank=True, null=True)
     cached_enthusiasm_rating = models.FloatField(blank=True, null=True)
     cached_approachable_rating = models.FloatField(blank=True, null=True)
+    cached_inclusivity_rating = models.FloatField(blank=True, null=True)
 
     perms = models.IntegerField(null=True)
     spots = models.IntegerField(null=True)
@@ -276,12 +281,12 @@ class Section(models.Model):
             instructor_ids = str(tuple([instructor.id for instructor in self.instructors.all()])).replace(',)',')')
             cursor.execute('SELECT AVG("overall_rating"), AVG("useful_rating"), AVG("engagement_rating"),'
                            ' AVG("difficulty_rating"), AVG("competency_rating"), AVG("lecturing_rating"),'
-                           ' AVG("enthusiasm_rating"), AVG("approachable_rating") FROM courses_coursereview'
+                           ' AVG("enthusiasm_rating"), AVG("approachable_rating"), AVG("inclusivity_rating") FROM courses_coursereview'
                            ' WHERE course_id=%d and instructor_id IN %s' % (self.course.id, instructor_ids))
         else:
             cursor.execute('SELECT AVG("overall_rating"), AVG("useful_rating"), AVG("engagement_rating"),'
                            ' AVG("difficulty_rating"), AVG("competency_rating"), AVG("lecturing_rating"),'
-                           ' AVG("enthusiasm_rating"), AVG("approachable_rating") FROM courses_coursereview'
+                           ' AVG("enthusiasm_rating"), AVG("approachable_rating"), AVG("inclusivity_rating") FROM courses_coursereview'
                            ' WHERE course_id=%d' % self.course.id)
         ratings = cursor.fetchone()
         self.cached_overall_rating = ratings[0]
@@ -292,6 +297,7 @@ class Section(models.Model):
         self.cached_lecturing_rating = ratings[5]
         self.cached_enthusiasm_rating = ratings[6]
         self.cached_approachable_rating = ratings[7]
+        self.cached_inclusivity_rating = ratings [8]
         self.save()
 
     def get_average_rating(self):
@@ -300,7 +306,7 @@ class Section(models.Model):
     def get_miscellaneous_ratings(self):
         return [self.cached_useful_rating, self.cached_engagement_rating, self.cached_difficulty_rating,
                 self.cached_competency_rating, self.cached_lecturing_rating, self.cached_enthusiasm_rating,
-                self.cached_approachable_rating]
+                self.cached_approachable_rating, self.cached_inclusivity_rating]
 
     def get_RMP_rating(self):
         rmps = [instructor.get_RMPInfo() for instructor in self.instructors.all()]
@@ -494,6 +500,7 @@ class CourseReview(models.Model):
     lecturing_rating = models.FloatField(blank=True, null=True)
     enthusiasm_rating = models.FloatField(blank=True, null=True)
     approachable_rating = models.FloatField(blank=True, null=True)
+    inclusivity_rating = models.FloatField(blank=True, null=True)
     work_per_week = models.PositiveSmallIntegerField(blank=True, null=True)
 
     class Meta:
