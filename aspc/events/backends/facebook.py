@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 class FacebookBackend(object):
     event_required_fields = ('name', 'place', 'start_time', 'description', 'owner')
-    page_required_fields = ('name', 'link')
+    page_required_fields = ('name', 'link', 'id')
     GRAPH_API_TEMPLATE = 'https://graph.facebook.com/v2.8/'
     EVENT_LINK_TEMPLATE = re.compile(r'(?:https?:\/\/(?:www\.)?)?facebook.com/events/(?P<event_id>\d+)')
 
@@ -52,7 +52,8 @@ class FacebookBackend(object):
         response = requests.get(
             self.GRAPH_API_TEMPLATE + page_id,
             params = {
-                'access_token': self.facebook_token
+                'access_token': self.facebook_token,
+                'fields': ','.join(self.page_required_fields)
             }
         )
 
@@ -164,7 +165,7 @@ class FacebookBackend(object):
             # https://www.facebook.com/pages/Studio-47/146452969759
             #
             # This slice will grab either the page ID or the page username, either of which can be used to perform a Graph API lookup
-            page_id = page_url[page_url.rfind('/')+1:]
+            page_id = page_url.split('/')[-2]
         except:
             # Validation also happens client-side so an error is unlikely to occur here
             raise InvalidFacebookEventPageException('Invalid url: ' + page_url)
