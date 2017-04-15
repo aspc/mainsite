@@ -12,6 +12,7 @@ from aspc.activityfeed.signals import new_activity, delete_activity
 from aspc.courses.lib import rake
 from django.db import connection
 from collections import Counter
+from rest_framework import serializers
 
 
 CAMPUSES = (
@@ -110,6 +111,20 @@ class Instructor(models.Model):
             return self.rmpinfo
         except:
             return None
+
+    def courses_taught(self):
+        sections_taught = self.sections.all()
+        courses_taught = []
+        for s in sections_taught:
+            courses_taught.append(s.course)
+        return list(set(courses_taught))
+
+class InstructorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Instructor
+        fields = ('id', 'name', 'rating', 'useful_rating', 'engagement_rating',
+                  'difficulty_rating', 'competency_rating', 'lecturing_rating',
+                  'enthusiasm_rating', 'approachable_rating', 'inclusivity_rating')
 
 class RMPInfo(models.Model):
     instructor = models.OneToOneField(Instructor)

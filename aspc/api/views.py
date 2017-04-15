@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from aspc.menu.models import Menu, MenuSerializer
+from aspc.courses.models import Instructor, InstructorSerializer
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -9,6 +10,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.throttling import UserRateThrottle
 from rest_framework.authtoken.models import Token
 from django.views.decorators.cache import never_cache
+import re, operator
+from django.db.models import Q
 
 class TokenAuthenticationWithQueryString(TokenAuthentication):
 	def authenticate(self, request):
@@ -116,3 +119,32 @@ class MenuDiningHallDayMealDetail(APIView):
         menus = self.get_object(dining_hall, day, meal)
         serializer = MenuSerializer(menus, many=True)
         return Response(serializer.data)
+
+class InstructorList(APIView):
+    """
+    List all instructors
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthenticationWithQueryString)
+    permission_classes = (IsAuthenticated,)
+    throttle_classes = (UserRateThrottle,)
+
+    def get(self, request, format=None):
+        instructors = Instructor.objects.all()
+        serializer = InstructorSerializer(instructors, many=True)
+        return Response(serializer.data)
+
+
+class InstructorName(APIView):
+    """
+    List instructors by name
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthenticationWithQueryString)
+    permission_classes = (IsAuthenticated,)
+    throttle_classes = (UserRateThrottle,)
+
+    def get(self, request, name, format=None):
+        name_tokens = re.split('(?!-)\W+', name)
+        instructors = list(Instructor.objects.filter(reduce(operator.and_,(Q(name__icontains=nt) for nt in name_tokens))).distinct())
+        serializer = InstructorSerializer(instructors, many=True)
+        return Response(serializer.data)
+
