@@ -47,7 +47,7 @@ ASPC.menu = function () {
 	 */
 	my.self.init = function () {
 		// .one() makes the qtip assignment happen only once
-		$('#menu_table tr td ul li').one('mouseover', my.bind_qtip);
+		//$('#menu_table tr td ul li').one('mouseover', my.bind_qtip);
 	};
 
 	return my.self;
