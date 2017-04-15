@@ -1,5 +1,5 @@
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseForbidden, HttpResponseRedirect
+from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpResponse
 from django.db.models import Q
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -11,12 +11,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.decorators import method_decorator
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render, redirect
 from aspc.sagelist.models import BookSale
 from aspc.courses.models import Course
 import string
 import re
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -137,8 +138,13 @@ class BookSaleDeleteView(DeleteView):
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
-        self.object.delete()
-        messages.add_message(request, messages.SUCCESS, u"Deleted listing for {0}".format(self.object.title))
+        if self.object.copies > 1:
+            self.object.copies -= 1
+            self.object.save()
+            messages.add_message(request, messages.SUCCESS, u"Decremented listing for {0}".format(self.object.title))
+        else:
+            self.object.delete()
+            messages.add_message(request, messages.SUCCESS, u"Deleted listing for {0}".format(self.object.title))
         return HttpResponseRedirect(self.get_success_url())
 
 
@@ -222,3 +228,28 @@ class ListBookSalesView(ListView):
         context['total_sold'] = self.model.objects.filter(buyer__isnull=False).count()
         context['total'] = self.model.objects.count()
         return context
+
+def create_many(request):
+    if request.user.username != 'sustainability@pomona.edu':
+        return redirect(reverse('sagelist'))
+    if request.method == 'GET':
+        return render(request,"sagelist/booksale_many_form.html")
+    text = request.POST['text']
+    parse_csv(text)
+    return redirect(reverse('sagelist'))
+
+def parse_csv(text):
+    lines = text.split('\n')
+    for line in lines:
+        parts = line.split(',')
+        if len(parts) != 3:
+            continue
+        sale = BookSale(isbn=parts[0], is_recoop=True, condition=2,
+                        seller=User.objects.get(username='sustainability@pomona.edu'),
+                        copies=parts[1], price=parts[2],  title='', authors='')
+        try:
+            sale.update_amazon_info()
+        except:
+            continue
+        sale.save()
+        time.sleep(0.5)

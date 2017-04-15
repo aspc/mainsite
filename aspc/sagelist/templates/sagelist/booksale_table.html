@@ -8,6 +8,7 @@
       <th class="condition">Condition</th>
       <th class="course">Course</th>
       <th class="price">Price</th>
+      <th class="copies">Copies</th>
       <th class="recoop">ReCoop</th>
     </tr>
   {% for book in listings %}
@@ -18,6 +19,7 @@
       <td class="condition">{{ book.get_condition_display }}</td>
       <td class="course">{{ book.course.code }}</td>
       <td class="price">${{ book.price }}{% if book.amazon_price %}<del>${{ book.amazon_price|floatformat:2  }}</del> {% endif %}</td>
+      <td class="copies">{{ book.copies }}</td>
       <td class="recoop">{% if book.is_recoop %} <img src="{% static "images/recoop_listing_icon.png" %}" /> {% endif %}</td>
     </tr>
   {% endfor %}
