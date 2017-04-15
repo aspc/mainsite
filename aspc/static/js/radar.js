@@ -5,7 +5,7 @@ for (var i in misc_ratings){
 }
 
 var data = {
-    labels: ["Usefulness", "Engagement", "Difficulty", "Competency", "Lecture style", "Enthusiasm", "Approachability"],
+    labels: ["Usefulness", "Engagement", "Difficulty", "Competency", "Lecture style", "Enthusiasm", "Approachability", "Inclusivity"],
     datasets: [
         {
             label: "My First dataset",

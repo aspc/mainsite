@@ -1,11 +1,12 @@
 from django.conf.urls import patterns, include, url
 from django.contrib.auth.decorators import login_required
 from aspc.sagelist.views import (CreateBookSaleView, BookSaleDetailView,
-    ListBookSalesView, ListCourseBookSalesView, ListUserBookSalesView, BookSaleDeleteView)
+    ListBookSalesView, ListCourseBookSalesView, ListUserBookSalesView, BookSaleDeleteView, create_many)
 
 urlpatterns = [
     url(r'^$', ListBookSalesView.as_view(), name="sagelist"),
     url(r'^create/$', login_required(CreateBookSaleView.as_view()), name="sagelist_create"),
+    url(r'^create_many/$', create_many, name="sagelist_create_many"),
     url(r'^(?P<pk>\d+)/$', BookSaleDetailView.as_view(), name="sagelist_detail"),
     url(r'^(?P<pk>\d+)/delete/$', BookSaleDeleteView.as_view(), name="sagelist_delete"),
     url(r'^course/(?P<course_id>\d+)/', ListCourseBookSalesView.as_view(), name="sagelist_course_listings"),

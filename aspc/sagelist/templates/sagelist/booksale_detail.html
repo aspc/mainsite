@@ -14,6 +14,8 @@
   {% if book.edition %}<dt>Edition</dt>
   <dd>{{ book.edition }}</dd>
   {% endif %}
+  <dt>Copies</dt>
+  <dd>{{ book.copies }}</dd>
   {% if book.isbn %}<dt>ISBN</dt>
   <dd>{{ book.isbn }}</dd>
   {% endif %}
@@ -27,10 +29,6 @@
   {% if book.money_saved %}
       <small><a href="{{ book.url }}">${{ book.money_saved|floatformat:2  }} cheaper than a new version on Amazon!</a></small>
   {% endif %}</dd>
-  {% if book.is_recoop %}
-  <dt class="detail_note">Note</dt>
-  <dd class="detail_note">This is a ReCoop listing through the Sustainability Office! You can purchase the book like normal here on SageBooks, and then pick it up at the Walker EcoDesk in Walker Lounge. For Spring 2016, the book room will be open Monday (January 25) through Thursday (January 25), 7 to 9pm. Contact <a href="mailto:sustainability@pomona.edu">sustainability@pomona.edu</a> with questions.</dd>
-  {% endif %}
   <dt>Posted by</dt>
   <dd>{{ book.seller.get_full_name }} on {{ book.posted }}</dd>
   {% if book.buyer %}
@@ -50,6 +48,10 @@
       <dt>Description</dt>
       <dd>{{ book.description|safe }}</dd>
     </dl>
+{% endif %}
+{% if book.is_recoop %}
+  <dt class="detail_note">Note</dt>
+  <dd class="detail_note"><i>This is a ReCoop listing through the Sustainability Office! You can purchase the book like normal here on SageBooks, and then pick it up at the Walker EcoDesk in Walker Lounge. For Spring 2016, the book room will be open Monday (January 25) through Thursday (January 25), 7 to 9pm. Contact <a href="mailto:sustainability@pomona.edu">sustainability@pomona.edu</a> with questions.</i></dd>
 {% endif %}
 <div class="info">
 {% block "form" %}
