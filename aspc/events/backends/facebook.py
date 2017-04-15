@@ -6,6 +6,7 @@ from aspc.events.exceptions import InvalidEventException, InvalidFacebookEventPa
 import re
 import logging
 import pytz
+import json
 from datetime import datetime, timedelta
 
 logger = logging.getLogger(__name__)
@@ -28,8 +29,9 @@ class FacebookBackend(object):
                 'grant_type': 'client_credentials'
             }
         )
-        response_data = urlparse.parse_qs(response.text) # Parses the returned query string
+        response_data = json.loads(response.text) # Parses the returned query string
 
+        #response_data = response.text
         return response_data['access_token']
 
     def _event_lookup(self, event_id):
