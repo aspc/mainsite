@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from aspc.menu.models import Menu, MenuSerializer
-from aspc.courses.models import Instructor, InstructorSerializer
+from aspc.courses.models import Instructor, InstructorSerializer, CourseSerializer, Course, Department, DepartmentSerializer
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -120,6 +120,19 @@ class MenuDiningHallDayMealDetail(APIView):
         serializer = MenuSerializer(menus, many=True)
         return Response(serializer.data)
 
+class DepartmentList(APIView):
+    """
+    List all instructors
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthenticationWithQueryString)
+    permission_classes = (IsAuthenticated,)
+    throttle_classes = (UserRateThrottle,)
+
+    def get(self, request, format=None):
+        departments = Department.objects.all()
+        serializer = DepartmentSerializer(departments, many=True)
+        return Response(serializer.data)
+
 class InstructorList(APIView):
     """
     List all instructors
@@ -148,3 +161,43 @@ class InstructorName(APIView):
         serializer = InstructorSerializer(instructors, many=True)
         return Response(serializer.data)
 
+class CourseList(APIView):
+    """
+    List all courses
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthenticationWithQueryString)
+    permission_classes = (IsAuthenticated,)
+    throttle_classes = (UserRateThrottle,)
+
+    def get(self, request, format=None):
+        courses = Course.objects.all()
+        serializer = CourseSerializer(courses, many=True)
+        return Response(serializer.data)
+
+class CourseDepartment(APIView):
+    """
+    List all courses
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthenticationWithQueryString)
+    permission_classes = (IsAuthenticated,)
+    throttle_classes = (UserRateThrottle,)
+
+    def get(self, request, department_id, format=None):
+        department = Department.objects.get(id=department_id)
+        courses = Course.objects.filter(departments=department)
+        serializer = CourseSerializer(courses, many=True)
+        return Response(serializer.data)
+
+class CourseInstructor(APIView):
+    """
+    List all courses
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthenticationWithQueryString)
+    permission_classes = (IsAuthenticated,)
+    throttle_classes = (UserRateThrottle,)
+
+    def get(self, request, instructor_id, format=None):
+        instructor = Instructor.objects.get(id=instructor_id)
+        courses = instructor.courses_taught()
+        serializer = CourseSerializer(courses, many=True)
+        return Response(serializer.data)

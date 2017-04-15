@@ -144,6 +144,12 @@ class Department(models.Model):
     def __unicode__(self):
         return u'[%s] %s' % (self.code, self.name)
 
+class DepartmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Department
+        fields = ('id', 'name', 'code')
+
+
 
 class RequirementArea(models.Model):
     code = models.CharField(max_length=20, unique=True, db_index=True)
@@ -226,6 +232,15 @@ class Course(models.Model):
     def get_most_recent_section(self):
         sections = self.sections.order_by('term')
         return sections[0] if sections else None
+
+
+class CourseSerializer(serializers.ModelSerializer):
+    department = DepartmentSerializer(source='primary_department')
+    class Meta:
+        model = Course
+        fields = ('id', 'name', 'code', 'number', 'rating', 'useful_rating', 'engagement_rating',
+                  'difficulty_rating', 'competency_rating', 'lecturing_rating',
+                  'enthusiasm_rating', 'approachable_rating', 'inclusivity_rating', 'department')
 
 class Section(models.Model):
     term = models.ForeignKey(Term, related_name='sections')

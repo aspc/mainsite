@@ -298,6 +298,32 @@ curl &quot;{{ absolute_uri }}menu/dining_hall/cmc/day/fri/meal/breakfast?auth_to
 }
 </code></pre>
 
+</code></pre><h3 id="all-departments">All Departments [/api/departmentss/{name}/]</h3>
+<p>List all departments.</p>
+<h4 id="request-get-">Example request (GET)</h4>
+<pre>
+	<code>
+curl &quot;{{ absolute_uri }}departments?auth_token={% if token %}{{ token }}{% else %}YOUR_TOKEN{% endif %}&quot;
+	</code>
+</pre>
+
+<h4 id="response-200-application-json-">Example response 200 (application/json)</h4>
+<pre><code>{
+    ...
+    {
+        "id": 30,
+        "name": "Computer Sci-Mathematics",
+        "code": "CSMT"
+    },
+    {
+        "id": 31,
+        "name": "Computer Science",
+        "code": "CSCI"
+    },
+    ...
+}
+</code></pre>
+
 </code></pre><h3 id="all-instructors">All Instructors [/api/instructors/{name}/]</h3>
 <p>List all instructors.</p>
 <h4 id="request-get-">Example request (GET)</h4>
@@ -370,6 +396,166 @@ curl &quot;{{ absolute_uri }}instructors/yamashita?auth_token={% if token %}{{ t
         "enthusiasm_rating": 4.65432098765432,
         "approachable_rating": 2.77777777777778,
         "inclusivity_rating": null
+}
+</code></pre>
+
+</code></pre><h3 id="all-courses">All Courses [/api/courses/{name}/]</h3>
+<p>List all courses.</p>
+<h4 id="request-get-">Example request (GET)</h4>
+<pre>
+	<code>
+curl &quot;{{ absolute_uri }}courses?auth_token={% if token %}{{ token }}{% else %}YOUR_TOKEN{% endif %}&quot;
+	</code>
+</pre>
+
+<h4 id="response-200-application-json-">Example response 200 (application/json)</h4>
+<pre><code>{
+    ...
+ {
+        "id": 518,
+        "name": "Machine Learning    ",
+        "code": "CSCI158  PO",
+        "number": 158,
+        "rating": 5.0,
+        "useful_rating": 4.0,
+        "engagement_rating": 5.0,
+        "difficulty_rating": 3.0,
+        "competency_rating": 5.0,
+        "lecturing_rating": 5.0,
+        "enthusiasm_rating": 4.0,
+        "approachable_rating": 5.0,
+        "inclusivity_rating": null,
+        "department": {
+            "id": 31,
+            "name": "Computer Science",
+            "code": "CSCI"
+        }
+    },
+    {
+        "id": 1978,
+        "name": "Natural Language Processing",
+        "code": "CSCI159  PO",
+        "number": 159,
+        "rating": 5.0,
+        "useful_rating": 4.0,
+        "engagement_rating": 5.0,
+        "difficulty_rating": 3.0,
+        "competency_rating": 5.0,
+        "lecturing_rating": 5.0,
+        "enthusiasm_rating": 5.0,
+        "approachable_rating": 5.0,
+        "inclusivity_rating": null,
+        "department": {
+            "id": 31,
+            "name": "Computer Science",
+            "code": "CSCI"
+        }
+    },
+    ...
+}
+</code></pre>
+
+</code></pre><h3 id="course-by-instructor">Courses by instructor [/api/courses/instructor/{instructor_id}/]</h3>
+<p>Find courses taught by an instructor.</p>
+<h4 id="parameters">Parameters</h4>
+<ul>
+<li><p>instructor_id (enum[string])</p>
+<p> The id of the instructor.</p>
+</li>
+</ul>
+
+<h4 id="request-get-">Example request (GET)</h4>
+<pre>
+	<code>
+curl &quot;{{ absolute_uri }}courses/instructor/47?auth_token={% if token %}{{ token }}{% else %}YOUR_TOKEN{% endif %}&quot;
+	</code>
+</pre>
+
+<h4 id="response-200-application-json-">Example response 200 (application/json)</h4>
+<pre><code>{
+    {
+        "id": 52,
+        "name": "Introduction to Int'l Politics    ",
+        "code": "GOVT070  CM",
+        "number": 70,
+        "rating": null,
+        "useful_rating": null,
+        "engagement_rating": null,
+        "difficulty_rating": null,
+        "competency_rating": null,
+        "lecturing_rating": null,
+        "enthusiasm_rating": null,
+        "approachable_rating": null,
+        "inclusivity_rating": null,
+        "department": {
+            "id": 58,
+            "name": "Government",
+            "code": "GOVT"
+        }
+    }
+}
+</code></pre>
+
+</code></pre><h3 id="course-by-department">Courses by department [/api/courses/department/{department-id}/]</h3>
+<p>Find courses in a department.</p>
+<h4 id="parameters">Parameters</h4>
+<ul>
+<li><p>department-id (enum[string])</p>
+<p>  The id of the department.</p>
+</li>
+</ul>
+
+<h4 id="request-get-">Example request (GET)</h4>
+<pre>
+	<code>
+curl &quot;{{ absolute_uri }}courses/department/25?auth_token={% if token %}{{ token }}{% else %}YOUR_TOKEN{% endif %}&quot;
+	</code>
+</pre>
+
+<h4 id="response-200-application-json-">Example response 200 (application/json)</h4>
+<pre><code>{
+    ...
+    {
+        "id": 243,
+        "name": "Central Americans in the US    ",
+        "code": "CHLT072  CH",
+        "number": 72,
+        "rating": null,
+        "useful_rating": null,
+        "engagement_rating": null,
+        "difficulty_rating": null,
+        "competency_rating": null,
+        "lecturing_rating": null,
+        "enthusiasm_rating": null,
+        "approachable_rating": null,
+        "inclusivity_rating": null,
+        "department": {
+            "id": 24,
+            "name": "Chican@/Latin@ Transnatl",
+            "code": "CHLT"
+        }
+    },
+    {
+        "id": 465,
+        "name": "Decolonial Love US Latina/o Lit    ",
+        "code": "CHLT185A CH",
+        "number": 185,
+        "rating": null,
+        "useful_rating": null,
+        "engagement_rating": null,
+        "difficulty_rating": null,
+        "competency_rating": null,
+        "lecturing_rating": null,
+        "enthusiasm_rating": null,
+        "approachable_rating": null,
+        "inclusivity_rating": null,
+        "department": {
+            "id": 24,
+            "name": "Chican@/Latin@ Transnatl",
+            "code": "CHLT"
+        }
+    },
+    ...
 }
 </code></pre>
 {% endblock %}
