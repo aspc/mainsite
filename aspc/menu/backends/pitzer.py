@@ -7,10 +7,14 @@ from collections import defaultdict
 from bs4 import BeautifulSoup
 
 class PitzerBackend(object):
-    rss = feedparser.parse('http://legacy.cafebonappetit.com/rss/menu/219')
-    days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
-    menus = { # Menu structure to return
-        'mon': {}, # Each day dict contains key value pairs as meal_name, [fooditems]
+    rss = feedparser.parse('http://legacy.cafebonappetit.com/rss/menu/219',"html.parser")
+    #self.menus format:
+    # {'day':
+    #    'meal': 
+    #	    'station':['fooditem']
+    # }    
+    menus = {
+        'mon': {}, 
         'tue': {},
         'wed': {},
         'thu': {},
@@ -21,69 +25,41 @@ class PitzerBackend(object):
 
     def menu(self):
         # for everything on the site
-        for entry in self.rss.entries:
+        for entry in self.rss.entries: #one day with all meals
             body = BeautifulSoup(entry.summary)
-            date = entry.title[:4]
-            # everything that has a h3 or h4 tag
+            date = entry.title[:3].lower() # 'mon'
             tm = titles_and_meals = body.findAll(['h3', 'h4'])
-
-            meal_dict = defaultdict(list)
-            # print("meal dict first: ", meal_dict)
-
-            toAdd = ""
-            add_save = ""
-            to_save = ""
-            old_list = []
-
+            #meal dict's format: MealName: {Station1: [food1, food2...]},{Station2...}
+            meal_dict = {}
+            
             # take all of the meals and foods
             for m in tm:
-                # num = -1
-                if m.name == 'h3':                  # is a meal
+                # is a meal
+                if m.name == 'h3':                  
                     meal_title = m.text
-                elif m.name == 'h4':                # is a food item
-                    food = m.text.strip().split(', ')
-                    for f in food:
-                        station_and_food = f.split('] ')
+                    if meal_title not in meal_dict:
+                        meal_dict[meal_title] = {}
+                # Is a food item. Looks like '[station] food name'
+                elif m.name == 'h4': 
+                    raw_food_data = m.text.strip().split(', ')
+                    #Format of f: "[station] food name"
+                    for f in raw_food_data: 
+                        #s_and_f format: list ['[station','food name']
+                        station_and_food = f.split('] ') 
                         if len(station_and_food) > 1:
-                            station = station_and_food[0]
-                            toAdd = station.title() [1:] #+ ":"
+                            station_raw_string = station_and_food[0] #'[station'
+                            #remove the '[' in front of station name
+                            station = station_raw_string.title() [1:] #+ ":"
                             # because all breakfast meal lines are named "Breakfast"
-                            if toAdd == "Breakfast":
-                                toAdd = ""
-                            # don't want repetition 
-                            if toAdd not in meal_dict[meal_title]:
-                                # meal_dict[meal_title][num + 1].append(toAdd)
-                                # num += 1
-
-                                my_dict = meal_dict[meal_title] = {}
-
-
-                                my_list = meal_dict[meal_title][toAdd] = [] #defaultdict(list)
-
-
-                            food = station_and_food[1]
-                            my_list.append(food.title())
-
-                            # testing for getting full inner dictionaries 
-                            # have completed one thing, moving on to next
-                            if (toAdd != add_save):
-                                print ("adding here ", add_save, " ", to_save)
-                                # meal_dict[to_save]
+                            if station == "Breakfast":
+                                station = ""
+                            # don't want repetition
                             
-                            old_list = my_list
-                            to_save = my_dict           # the old, complete dictionary 
-                            add_save = toAdd            # the old name of the stocks
-                            # print("adding here ", f, " ", my_dict)
-                        else:
-                            food = station_and_food[0]
-                            my_list.append(food.title())
-                # print("LOOK Here ", meal_dict[meal_title][0])        
-
-            # print ("meal dict second: ", meal_dict)
-            meal_dict = dict(meal_dict)
-            # print("md third: ", meal_dict)
-            # meal_dict[0].append("I'm working?")
-
-            # change back to iteritems for 2.7 - but runs on computer with items (3.5)
-            self.menus[entry.title[:3].lower()] = {key.lower(): value for key, value in meal_dict.iteritems()}
+                            food_item = station_and_food[1]
+                            if station not in meal_dict[meal_title].keys():
+                                meal_dict[meal_title][station] = [food_item.title()]
+                            else:
+                                meal_dict[meal_title][station].append(food_item.title()) 
+            self.menus[date] = meal_dict
+                
         return (self.menus)
