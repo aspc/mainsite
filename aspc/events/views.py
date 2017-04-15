@@ -36,8 +36,8 @@ def event (request, event_id):
 				content=e.error_message,
 				status=500
 			)
-		else:
-			return HttpResponse(serializers.serialize('json', [new_event])) # Return a JSON hash of the new event
+
+		return HttpResponse(serializers.serialize('json', [new_event])) # Return a JSON hash of the new event
 	else:
 		return HttpResponseNotAllowed(['GET', 'POST'])
 
