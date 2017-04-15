@@ -12,9 +12,9 @@ from datetime import datetime, timedelta
 logger = logging.getLogger(__name__)
 
 class FacebookBackend(object):
-    event_required_fields = ('name', 'location', 'start_time', 'description')
+    event_required_fields = ('name', 'place', 'start_time', 'description', 'owner')
     page_required_fields = ('name', 'link')
-    GRAPH_API_TEMPLATE = 'https://graph.facebook.com/v2.2/'
+    GRAPH_API_TEMPLATE = 'https://graph.facebook.com/v2.8/'
     EVENT_LINK_TEMPLATE = re.compile(r'(?:https?:\/\/(?:www\.)?)?facebook.com/events/(?P<event_id>\d+)')
 
     def __init__(self, options=None):
@@ -38,7 +38,8 @@ class FacebookBackend(object):
         response = requests.get(
             self.GRAPH_API_TEMPLATE + event_id,
             params = {
-                'access_token': self.facebook_token
+                'access_token': self.facebook_token,
+                'fields': ','.join(self.event_required_fields)
             }
         )
 
@@ -62,7 +63,7 @@ class FacebookBackend(object):
 
     def _parse_event_data(self, event_data):
         # Checks if the event has a start and end time
-        if event_data.get('is_date_only', True):
+        if not event_data.get('start_time', True) and not event_data.get('end_time'):
             raise InvalidEventException('Event does not have a specific start time.')
 
         start_dt = dateutil.parser.parse(event_data['start_time'])
@@ -79,7 +80,7 @@ class FacebookBackend(object):
 
         normalized = {
             'name': event_data['name'],
-            'location': event_data['location'],
+            'location': event_data['place']['name'],
             'start': start,
             'description': event_data.get('description', ''),
             'host': event_data['owner']['name'],
