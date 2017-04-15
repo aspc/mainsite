@@ -6,6 +6,7 @@
 {% block "outer_content" %}
 <ul class="actions">
   <li><a href="{% url "sagelist_create" %}">List a book for sale</a></li>
+  <li><a href="{% url "sagelist_create_many" %}">List many books for sale</a></li>
   {% if user.is_authenticated %}
   <li><a href="{% url "sagelist_user_listings" email=user.email %}">View my listings</a></li>
   {% endif %}
