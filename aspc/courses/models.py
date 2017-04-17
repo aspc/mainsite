@@ -393,7 +393,6 @@ class Section(models.Model):
     class Meta:
         ordering = ('code',)
 
-
 class Meeting(models.Model):
     section = models.ForeignKey(Section)
     monday = models.BooleanField(default=False)
@@ -471,6 +470,20 @@ class Meeting(models.Model):
         return u'[%s] Meeting every %s, %s-%s' % (
             self.section.code, ''.join(self.gen_days()), self.begin.strftime('%I:%M %p'), self.end.strftime('%I:%M %p'))
 
+class MeetingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Meeting
+        fields = ('campus', 'location', 'begin', 'end', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday')
+
+class SectionSerializer(serializers.ModelSerializer):
+    instructors = InstructorSerializer(many=True, read_only=True)
+    course = CourseSerializer()
+    meetings = MeetingSerializer(source="meeting_set", many=True)
+    class Meta:
+        model = Section
+        fields = ('instructors', 'course', 'code', 'meetings', 'cached_useful_rating', 'cached_engagement_rating',
+                  'cached_difficulty_rating', 'cached_competency_rating', 'cached_lecturing_rating',
+                  'cached_enthusiasm_rating', 'cached_approachable_rating', 'cached_inclusivity_rating')
 
 class Schedule(models.Model):
     user = models.ForeignKey(User, blank=True, null=True)
