@@ -14,6 +14,13 @@ class ScrippsBackend(object):
 		menu_url = doc.find_all('div', {'class': 'accordionBody'})[0].find_all('a')[0]['href']
 		return 'https://scrippsdining.sodexomyway.com' + menu_url # The href attribute is not the full URL for some reason
 
+	def get_hours(self):
+		index_url = 'https://scrippsdining.sodexomyway.com/dining-choices/index.html'
+		resp = requests.get(index_url)
+		doc = BeautifulSoup(resp.text)
+		hours = doc.find_all('div', {'class': 'accordionBody'})[1]
+		return hours.span
+	
 	def _get_menu_data(self, menu_url):
 		resp = requests.get(menu_url)
 		if resp.status_code == 404:
@@ -23,10 +30,13 @@ class ScrippsBackend(object):
 
 	def _parse_menu_data(self, menu_data):
 		current_meal = None
-
-		# Menu structure to return
+		#self.menus format:
+		# {'day':
+		#    'meal': 
+		#	    'station':['fooditem']
+		# }
 		menus = {
-			'mon': {}, # Each day dict contains key value pairs as meal_name, [fooditems]
+			'mon': {},
 			'tue': {},
 			'wed': {},
 			'thu': {},
@@ -38,22 +48,31 @@ class ScrippsBackend(object):
 		if not menu_data: # If the data can't be loaded for some reason, just return an empty dict
 			return menus
 
+		current_station = ""
 		for day in self.DAYS:
 			day_node = menu_data.find(id=day) # i.e. Find all the meals that correspond to 'monday' first
 
 			day_elements = day_node.find_all('tr')
 
 			for element in day_elements:
+				if element.find('td', {'class':'station'}):
+					raw_station = element.find('td', {'class':'station'})
+					if raw_station.text[1:] != "":
+						current_station = raw_station.text[1:]				
 				if len(element.find_all('td', {'class':'mealname'})):
 					current_meal = element.find_all('td', {'class':'mealname'})[0].text.lower()
 					if (day == 'saturday' or day == 'sunday') and current_meal == 'lunch':
 						current_meal = 'brunch'
 					continue
 				elif element.find('div', {'class':'menuitem'}) and element.find('div', {'class':'menuitem'}).find('span'):
-					try:
-						menus[day[:3].lower()][current_meal].append(element.find('div', {'class':'menuitem'}).find('span').text)
-					except KeyError: # Create the list if nothing has been loaded yet for this day's current meal
-						menus[day[:3].lower()][current_meal] = [element.find('div', {'class':'menuitem'}).find('span').text]
+					# Create the dict if nothing has been loaded yet for this day's current meal
+					if current_meal not in menus[day[:3].lower()].keys():
+						menus[day[:3].lower()][current_meal] = {current_station:[element.find('div', {'class':'menuitem'}).find('span').text]}
+					#if station hasn't been created yet
+					elif current_station not in menus[day[:3].lower()][current_meal].keys():
+						menus[day[:3].lower()][current_meal][current_station] = [element.find('div', {'class':'menuitem'}).find('span').text]
+					else:
+						menus[day[:3].lower()][current_meal][current_station].append(element.find('div', {'class':'menuitem'}).find('span').text)
 
 		return menus
 
