@@ -3,6 +3,7 @@
 # Originally from https://github.com/sean-adler/5c-dining-api
 
 import feedparser
+import requests
 from collections import defaultdict
 from bs4 import BeautifulSoup
 
@@ -22,6 +23,16 @@ class PitzerBackend(object):
         'sat': {},
         'sun': {}
     }
+    
+    def get_hours(self):
+        """
+        returns hours of operation
+        """
+        index_url = 'http://pitzer.cafebonappetit.com/'
+        resp = requests.get(index_url)
+        doc = BeautifulSoup(resp.text, "html.parser")
+        hours = doc.find_all('div', {'class': 'cafe-details six columns end'})[0]
+        return hours.text    
 
     def menu(self):
         # for everything on the site
