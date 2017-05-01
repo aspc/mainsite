@@ -228,25 +228,95 @@ class PomonaBackend(object):
 		# Menu structure to return
 		menus = {
 			'mon': {
-				'lunch': []
+				'lunch': {
+					'Soups': [],
+					'Entrée': [],
+					'Vegan/Veggie': [],
+					'Starch': [],
+					'Vegetable': [],
+					'Pizza': [],
+					'Salad': [],
+					'Deli-Salad': [],
+					'Dessert': []
+				}
 			},
 			'tue': {
-				'lunch': []
+				'lunch': {
+					'Soups': [],
+					'Entrée': [],
+					'Vegan/Veggie': [],
+					'Starch': [],
+					'Vegetable': [],
+					'Pizza': [],
+					'Salad': [],
+					'Deli-Salad': [],
+					'Dessert': []
+				}
 			},
 			'wed': {
-				'lunch': []
+				'lunch': {
+					'Soups': [],
+					'Entrée': [],
+					'Vegan/Veggie': [],
+					'Starch': [],
+					'Vegetable': [],
+					'Pizza': [],
+					'Salad': [],
+					'Deli-Salad': [],
+					'Dessert': []
+				}
 			},
 			'thu': {
-				'lunch': []
+				'lunch': {
+					'Soups': [],
+					'Entrée': [],
+					'Vegan/Veggie': [],
+					'Starch': [],
+					'Vegetable': [],
+					'Pizza': [],
+					'Salad': [],
+					'Deli-Salad': [],
+					'Dessert': []
+				}
 			},
 			'fri': {
-				'lunch': []
+				'lunch': {
+					'Soups': [],
+					'Entrée': [],
+					'Vegan/Veggie': [],
+					'Starch': [],
+					'Vegetable': [],
+					'Pizza': [],
+					'Salad': [],
+					'Deli-Salad': [],
+					'Dessert': []
+				}
 			},
 			'sat': {
-				'lunch': []
+				'lunch': {
+					'Soups': [],
+					'Entrée': [],
+					'Vegan/Veggie': [],
+					'Starch': [],
+					'Vegetable': [],
+					'Pizza': [],
+					'Salad': [],
+					'Deli-Salad': [],
+					'Dessert': []
+				}
 			},
 			'sun': {
-				'lunch': []
+				'lunch': {
+					'Soups': [],
+					'Entrée': [],
+					'Vegan/Veggie': [],
+					'Starch': [],
+					'Vegetable': [],
+					'Pizza': [],
+					'Salad': [],
+					'Deli-Salad': [],
+					'Dessert': []
+				}
 			},
 		}
 
@@ -260,20 +330,26 @@ class PomonaBackend(object):
 			if cell.row < 4:
 				continue
 
-			# Cells in the B, C, D, E, and F columns contain food items for each day
-			if cell.column == 'B':
-				menus['mon']['lunch'].append(cell.value)
+
+			# get the meal line, need to decide it because its in a byte literal and we need a string
+			if cell.column == 'A':
+				mycell = (cell.value).decode("utf-8") 
+
+			# Cells in the B, C, D, E, and F columns contain food items for each day, add the food to the right section
+			elif cell.column == 'B':
+				menus['mon']['lunch'][mycell].append(cell.value)
 			elif cell.column == 'C':
-				menus['tue']['lunch'].append(cell.value)
+				menus['tue']['lunch'][mycell].append(cell.value)
 			elif cell.column == 'D':
-				menus['wed']['lunch'].append(cell.value)
+				menus['wed']['lunch'][mycell].append(cell.value)
 			elif cell.column == 'E':
-				menus['thu']['lunch'].append(cell.value)
+				menus['thu']['lunch'][mycell].append(cell.value)
 			elif cell.column == 'F':
-				menus['fri']['lunch'].append(cell.value)
+				menus['fri']['lunch'][mycell].append(cell.value)
 
+		
 		return menus
-
+	
 	def _get_menu(self, url):
 		search_date = (datetime.datetime.today() + datetime.timedelta(hours=4)).date()
 
