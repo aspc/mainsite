@@ -68,11 +68,11 @@ class PitzerBackend(object):
                                 station = ""
                             # don't want repetition
                             
-                            food_item = station_and_food[1]
+                            food_item = string.capwords(station_and_food[1])
                             if station not in meal_dict[meal_title].keys():
-                                meal_dict[meal_title][station] = [food_item.title()]
+                                meal_dict[meal_title][station] = [food_item]
                             else:
-                                meal_dict[meal_title][station].append(food_item.title()) 
+                                meal_dict[meal_title][station].append(food_item) 
             self.menus[date] = meal_dict
                 
         return (self.menus)
