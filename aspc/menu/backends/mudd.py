@@ -6,8 +6,9 @@ class MuddBackend(object):
     def __init__(self):
         #self.menus format:
         # {'day':
-        #    'meal': 
-        #	    'station':['fooditem']
+        #    {'meal': 
+        #	    {'station':['fooditem']}
+        #    }
         # }         
         self.menus = {
             'mon': {},

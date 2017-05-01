@@ -4,6 +4,7 @@
 
 import feedparser
 import requests
+import string
 from collections import defaultdict
 from bs4 import BeautifulSoup
 
@@ -11,8 +12,9 @@ class PitzerBackend(object):
     rss = feedparser.parse('http://legacy.cafebonappetit.com/rss/menu/219',"html.parser")
     #self.menus format:
     # {'day':
-    #    'meal': 
-    #	    'station':['fooditem']
+    #    {'meal': 
+    #	    {'station':['fooditem']}
+    #    }
     # }    
     menus = {
         'mon': {}, 
@@ -47,7 +49,7 @@ class PitzerBackend(object):
             for m in tm:
                 # is a meal
                 if m.name == 'h3':                  
-                    meal_title = m.text
+                    meal_title = m.text.lower()
                     if meal_title not in meal_dict:
                         meal_dict[meal_title] = {}
                 # Is a food item. Looks like '[station] food name'
@@ -60,7 +62,7 @@ class PitzerBackend(object):
                         if len(station_and_food) > 1:
                             station_raw_string = station_and_food[0] #'[station'
                             #remove the '[' in front of station name
-                            station = station_raw_string.title() [1:] #+ ":"
+                            station = string.capwords(station_raw_string[1:]) #+ ":"
                             # because all breakfast meal lines are named "Breakfast"
                             if station == "Breakfast":
                                 station = ""
