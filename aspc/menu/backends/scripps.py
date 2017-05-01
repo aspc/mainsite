@@ -32,8 +32,9 @@ class ScrippsBackend(object):
 		current_meal = None
 		#self.menus format:
 		# {'day':
-		#    'meal': 
-		#	    'station':['fooditem']
+		#    {'meal': 
+		#	    {'station':['fooditem']}
+		#    }
 		# }
 		menus = {
 			'mon': {},
