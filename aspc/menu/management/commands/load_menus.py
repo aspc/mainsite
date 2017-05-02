@@ -14,10 +14,11 @@ def make_item_list(text):
 	item_list = [item.replace('\n',' ').strip() for item in item_list]
 	return item_list
 
-def add_items_to_menu(menu, items):
+def add_items_to_menu(menu, station, items):
 	for item in items:
-		item_object, created = Item.objects.get_or_create(name=item)
+		item_object, created = Item.objects.get_or_create(name=item, station=station)
 		menu.food_items.add(item_object)
+
 
 class Command(BaseCommand):
 	args = ''
@@ -34,48 +35,52 @@ class Command(BaseCommand):
 		# Scrape each menu source
 		# All backends return data in the same format:
 		# {'day':
-		#   'meal': ['fooditem']
+		#   {'meal': 
+		#		{'station':['fooditem']}
+		#	}
 		# }
-
+		"""
 		try:
 			cmc_meals = CmcBackend().menu()
 			for day in cmc_meals:
 				for meal in cmc_meals[day]:
-					food_items=make_item_list(json.dumps(cmc_meals[day][meal]))
 					new_menu = Menu(dining_hall='cmc', day=day, meal=meal)
 					new_menu.save()
-					add_items_to_menu(new_menu, food_items)
+					for station in cmc_meals[day][meal]:
+						food_items=make_item_list(json.dumps(cmc_meals[day][meal][station]))
+						add_items_to_menu(new_menu, station, food_items)
 		except Exception as e:
 			self.stdout.write('*ERROR* - loading cmc menus:\n %s \n' % traceback.format_exc())
 		else:
 			self.stdout.write('SUCCESS - cmc menus loaded \n')
-
+		"""
 		try:
 			pitzer_meals = PitzerBackend().menu()
 			for day in pitzer_meals:
 				for meal in pitzer_meals[day]:
-					food_items=make_item_list(json.dumps(pitzer_meals[day][meal]))
 					new_menu = Menu(dining_hall='pitzer', day=day, meal=meal)
 					new_menu.save()
-					add_items_to_menu(new_menu, food_items)
+					for station in pitzer_meals[day][meal]:
+						food_items=make_item_list(json.dumps(pitzer_meals[day][meal][station]))
+						add_items_to_menu(new_menu, station, food_items)
 		except Exception as e:
 			self.stdout.write('*ERROR* - loading pitzer menus:\n %s \n' % traceback.format_exc())
 		else:
 			self.stdout.write('SUCCESS - pitzer menus loaded \n')
-
 		try:
 			mudd_meals = MuddBackend().menu()
 			for day in mudd_meals:
 				for meal in mudd_meals[day]:
-					food_items=make_item_list(json.dumps(mudd_meals[day][meal]))
 					new_menu = Menu(dining_hall='mudd', day=day, meal=meal)
 					new_menu.save()
-					add_items_to_menu(new_menu, food_items)
+					for station in mudd_meals[day][meal]:
+						food_items=make_item_list(json.dumps(mudd_meals[day][meal][station]))
+						add_items_to_menu(new_menu, station, food_items)
 		except Exception as e:
 			self.stdout.write('*ERROR* - loading mudd menus:\n %s \n' % traceback.format_exc())
 		else:
 			self.stdout.write('SUCCESS - mudd menus loaded \n')
-
+		"""
 		try:
 			frary_meals = PomonaBackend().frary_menu()
 			for day in frary_meals:
@@ -114,15 +119,16 @@ class Command(BaseCommand):
 			self.stdout.write('*ERROR* - loading oldenborg menus:\n %s \n' % traceback.format_exc())
 		else:
 			self.stdout.write('SUCCESS - oldenborg menus loaded \n')
-
+		"""
 		try:
 			scripps_meals = ScrippsBackend().menu()
 			for day in scripps_meals:
 				for meal in scripps_meals[day]:
-					food_items=make_item_list(json.dumps(scripps_meals[day][meal]))
 					new_menu = Menu(dining_hall='scripps', day=day, meal=meal)
 					new_menu.save()
-					add_items_to_menu(new_menu, food_items)
+					for station in scripps_meals[day][meal]:
+						food_items=make_item_list(json.dumps(scripps_meals[day][meal][station]))
+						add_items_to_menu(new_menu, station, food_items)
 		except Exception as e:
 			self.stdout.write('*ERROR* - loading scripps menus:\n %s \n' % traceback.format_exc())
 		else:
