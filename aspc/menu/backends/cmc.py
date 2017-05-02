@@ -2,8 +2,9 @@
 #
 # Originally from https://github.com/sean-adler/5c-dining-api
 
-import feedparser
+import requests
 import HTMLParser
+import feedparser
 from bs4 import BeautifulSoup
 from collections import defaultdict
 
@@ -21,6 +22,16 @@ class CmcBackend(object):
         'sat': {},
         'sun': {}
     }
+
+    def get_hours(self):
+        """
+        returns hours of operation
+        """
+        index_url = 'http://collins-cmc.cafebonappetit.com/cafe/collins/'
+        resp = requests.get(index_url)
+        doc = BeautifulSoup(resp.text, "html.parser")
+        hours = doc.find_all('div', {'class': 'cafe-details six columns end'})[0]
+        return hours.text  
 
     def menu(self):
         for entry in self.rss.entries:
