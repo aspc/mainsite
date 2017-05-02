@@ -13,203 +13,261 @@
 		<th class="pomona_background"><a href="http://www.pomona.edu/administration/dining/menus/frank" target="_blank">Frank</a></th>
 		<td>
 			<span class="mobile_meal_header">Breakfast</span>
-			<ul>
-				{% if current_day == 'fri' %}
-					<li>Closed.</li>
-				{% else %}
-					{% for item in frank_meals.breakfast_items %}
-						<li image_url="{{ item.image_url }}">{{ item.name|clean_item_name }}</li>
+			{% if current_day == 'fri' %}
+				<ul>Closed.</ul>
+			{% else %}
+				{% regroup frank_meals.breakfast_items|dictsort:"station" by station as station_list %}
+				<DL>
+					{% for station in station_list %}
+						<DT><b>{{station.grouper}}</b>
+						{% for food_item in station.list%}
+							<DD><li image_url="{{ item.image_url }}">{{ food_item.name}}</li>
+						{% endfor %}
 					{% endfor %}
-				{% endif %}
-			</ul>
+				</DL>
+			{% endif %}
 		</td>
 		<td>
 			<span class="mobile_meal_header">Lunch</span>
-			<ul>
-				{% if current_day == 'fri' %}
-					<li>Closed.</li>
-				{% else %}
-					{% for item in frank_meals.lunch_items %}
-						<li image_url="{{ item.image_url }}">{{ item.name|clean_item_name }}</li>
+			{% regroup frank_meals.lunch_items|dictsort:"station" by station as station_list %}
+			<DL>
+				{% for station in station_list %}
+					<DT><b>{{station.grouper}}</b>
+					{% for food_item in station.list%}
+						<DD><li image_url="{{ item.image_url }}">{{ food_item.name}}</li>
 					{% endfor %}
-				{% endif %}
-			</ul>
+				{% endfor %}
+			</DL>
 		</td>
 		<td>
 			<span class="mobile_meal_header">Dinner</span>
-			<ul>
-				{% if current_day == 'fri' %}
-					<li>Closed.</li>
-				{% else %}
-					{% for item in frank_meals.dinner_items %}
-						<li image_url="{{ item.image_url }}">{{ item.name|clean_item_name }}</li>
+			{% regroup frank_meals.dinner_items|dictsort:"station" by station as station_list %}
+			<DL>
+				{% for station in station_list %}
+					<DT><b>{{station.grouper}}</b>
+					{% for food_item in station.list%}
+						<DD><li image_url="{{ item.image_url }}">{{ food_item.name}}</li>
 					{% endfor %}
-				{% endif %}
-			</ul>
+				{% endfor %}
+			</DL>
 		</td>
 	</tr>
 	<tr id="frary_menu">
 		<th class="pomona_background"><a href="http://www.pomona.edu/administration/dining/menus/frary" target="_blank">Frary</a></th>
 		<td>
 			<span class="mobile_meal_header">Breakfast</span>
-			<ul>
-				{% for item in frary_meals.breakfast_items %}
-					<li image_url="{{ item.image_url }}">{{ item.name|clean_item_name }}</li>
+			{% regroup frary_meals.break_items|dictsort:"station" by station as station_list %}
+			<DL>
+				{% for station in station_list %}
+					<DT><b>{{station.grouper}}</b>
+					{% for food_item in station.list%}
+						<DD><li image_url="{{ item.image_url }}">{{ food_item.name}}</li>
+					{% endfor %}
 				{% endfor %}
-			</ul>
+			</DL>
 		</td>
 		<td>
 			<span class="mobile_meal_header">Lunch</span>
-			<ul>
-				{% for item in frary_meals.lunch_items %}
-					<li image_url="{{ item.image_url }}">{{ item.name|clean_item_name }}</li>
+			{% regroup frary_meals.lunch_items|dictsort:"station" by station as station_list %}
+			<DL>
+				{% for station in station_list %}
+					<DT><b>{{station.grouper}}</b>
+					{% for food_item in station.list%}
+						<DD><li image_url="{{ item.image_url }}">{{ food_item.name}}</li>
+					{% endfor %}
 				{% endfor %}
-			</ul>
+			</DL>
 		</td>
 		<td>
 			<span class="mobile_meal_header">Dinner</span>
-			<ul>
-				{% for item in frary_meals.dinner_items %}
-					<li image_url="{{ item.image_url }}">{{ item.name|clean_item_name }}</li>
+			{% regroup frary_meals.dinner_items|dictsort:"station" by station as station_list %}
+			<DL>
+				{% for station in station_list %}
+					<DT><b>{{station.grouper}}</b>
+					{% for food_item in station.list%}
+						<DD><li image_url="{{ item.image_url }}">{{ food_item.name}}</li>
+					{% endfor %}
 				{% endfor %}
-			</ul>
+			</DL>
 		</td>
 	</tr>
 	<tr id="oldenborg_menu">
 		<th class="pomona_background"><a href="http://www.pomona.edu/administration/dining/menus/oldenborg" target="_blank">Oldenborg</a></th>
 		<td>
 			<span class="mobile_meal_header">Breakfast</span>
-			<ul>
-				<li>Closed.</li>
-			</ul>
+				<ul>Closed.</ul>
 		</td>
 		<td>
 			<span class="mobile_meal_header">Lunch</span>
+			{% regroup oldenborg_meals.lunch_items|dictsort:"station" by station as station_list %}
 			<ul>
-				{% for item in oldenborg_meals.lunch_items %}
-					<li image_url="{{ item.image_url }}">{{ item.name|clean_item_name }}</li>
+				{% for station in station_list %}
+					<b>{{station.grouper}}</b><br>
+					{% for food_item in station.list%}
+						<li image_url="{{ item.image_url }}">{{ food_item.name}}</li>
+					{% endfor %}
 				{% endfor %}
 			</ul>
 		</td>
 		<td>
 			<span class="mobile_meal_header">Dinner</span>
-			<ul>
-				<li>Closed.</li>
-			</ul>
+				<ul>Closed.</ul>
 		</td>
 	</tr>
 	<tr id="cmc_menu">
 		<th class="cmc_background"><a href="http://collins-cmc.cafebonappetit.com/hungry/collins/" target="_blank">CMC</a></th>
 		<td>
 			<span class="mobile_meal_header">Breakfast</span>
-			<ul>
-				{% for item in cmc_meals.breakfast_items %}
-					<li image_url="{{ item.image_url }}">{{ item.name|clean_item_name }}</li>
+			{% regroup cmc_meals.breakfast_items|dictsort:"station" by station as station_list %}
+			<DL>
+				{% for station in station_list %}
+					<DT><b>{{station.grouper}}</b>
+					{% for food_item in station.list%}
+						<DD><li image_url="{{ item.image_url }}">{{ food_item.name}}</li>
+					{% endfor %}
 				{% endfor %}
-			</ul>
+			</DL>
 		</td>
 		<td>
 			<span class="mobile_meal_header">Lunch</span>
-			<ul>
-				{% for item in cmc_meals.lunch_items %}
-					<li image_url="{{ item.image_url }}">{{ item.name|clean_item_name }}</li>
+			{% regroup cmc_meals.lunch_items|dictsort:"station" by station as station_list %}
+			<DL>
+				{% for station in station_list %}
+					<DT><b>{{station.grouper}}</b>
+					{% for food_item in station.list%}
+						<DD><li image_url="{{ item.image_url }}">{{ food_item.name}}</li>
+					{% endfor %}
 				{% endfor %}
-			</ul>
+			</DL>
 		</td>
 		<td>
 			<span class="mobile_meal_header">Dinner</span>
-			<ul>
-				{% for item in cmc_meals.dinner_items %}
-					<li image_url="{{ item.image_url }}">{{ item.name|clean_item_name }}</li>
+			{% regroup cmc_meals.dinner_items|dictsort:"station" by station as station_list %}
+			<DL>
+				{% for station in station_list %}
+					<DT><b>{{station.grouper}}</b>
+					{% for food_item in station.list%}
+						<DD><li image_url="{{ item.image_url }}">{{ food_item.name}}</li>
+					{% endfor %}
 				{% endfor %}
-			</ul>
+			</DL>
 		</td>
 	</tr>
 	<tr id="scripps_menu">
 		<th class="scripps_background"><a href="https://scrippsdining.sodexomyway.com/dining-choices/index.html" target="_blank">Scripps</a></th>
 		<td>
 			<span class="mobile_meal_header">Breakfast</span>
-			<ul>
-				{% for item in scripps_meals.breakfast_items %}
-					<li image_url="{{ item.image_url }}">{{ item.name|clean_item_name }}</li>
+			{% regroup scripps_meals.breakfast_items|dictsort:"station" by station as station_list %}
+			<DL>
+				{% for station in station_list %}
+					<DT><b>{{station.grouper}}</b>
+					{% for food_item in station.list%}
+						<DD><li image_url="{{ item.image_url }}">{{ food_item.name}}</li>
+					{% endfor %}
 				{% endfor %}
-			</ul>
+			</DL>
 		</td>
 		<td>
 			<span class="mobile_meal_header">Lunch</span>
-			<ul>
-				{% if current_day == 'thu' %}
-				    <li>Community lunch on Bowling Green Lawn outside of Malott in support of ethical spending practices at Scripps; light lunch provided from the Grove House and Shakedown. For more info, please visit:
-            		<a href="https://www.facebook.com/dropsodexo/?hc_location=ufi" style="color:blue">https://www.facebook.com/dropsodexo/?hc_location=ufi</a></li>
-
-				{% else %}
-				    {% for item in scripps_meals.lunch_items %}
-				        <li image_url="{{ item.image_url }}">{{ item.name|clean_item_name }}</li>
-				    {% endfor %}
-				{% endif %}
-			</ul>
+			{% regroup scripps_meals.lunch_items|dictsort:"station" by station as station_list %}
+			<DL>
+				{% for station in station_list %}
+					<DT><b>{{station.grouper}}</b>
+					{% for food_item in station.list%}
+						<DD><li image_url="{{ item.image_url }}">{{ food_item.name}}</li>
+					{% endfor %}
+				{% endfor %}
+			</DL>
 		</td>
 		<td>
 			<span class="mobile_meal_header">Dinner</span>
-			<ul>
-				{% for item in scripps_meals.dinner_items %}
-					<li image_url="{{ item.image_url }}">{{ item.name|clean_item_name }}</li>
+			{% regroup scripps_meals.dinner_items|dictsort:"station" by station as station_list %}
+			<DL>
+				{% for station in station_list %}
+					<DT><b>{{station.grouper}}</b>
+					{% for food_item in station.list%}
+						<DD><li image_url="{{ item.image_url }}">{{ food_item.name}}</li>
+					{% endfor %}
 				{% endfor %}
-			</ul>
+			</DL>
 		</td>
 	</tr>
 	<tr id="pitzer_menu">
 		<th class="pitzer_background"><a href="http://pitzer.cafebonappetit.com/" target="_blank">Pitzer</a></th>
 		<td>
 			<span class="mobile_meal_header">Breakfast</span>
-			<ul>
-				{% for item in pitzer_meals.breakfast_items %}
-					<li image_url="{{ item.image_url }}">{{ item.name|clean_item_name }}</li>
+			{% regroup pitzer_meals.breakfast_items|dictsort:"station" by station as station_list %}
+			<DL>
+				{% for station in station_list %}
+					<DT><b>{{station.grouper}}</b>
+					{% for food_item in station.list%}
+						<DD><li image_url="{{ item.image_url }}">{{ food_item.name}}</li>
+					{% endfor %}
 				{% endfor %}
-			</ul>
+			</DL>
 		</td>
 		<td>
 			<span class="mobile_meal_header">Lunch</span>
-			<ul>
-				{% for item in pitzer_meals.lunch_items %}
-					<li image_url="{{ item.image_url }}">{{ item.name|clean_item_name }}</li>
+			{% regroup pitzer_meals.lunch_items|dictsort:"station" by station as station_list %}
+			<DL>
+				{% for station in station_list %}
+					<DT><b>{{station.grouper}}</b>
+					{% for food_item in station.list%}
+						<DD><li image_url="{{ item.image_url }}">{{ food_item.name}}</li>
+					{% endfor %}
 				{% endfor %}
-			</ul>
+			</DL>
 		</td>
 		<td>
 			<span class="mobile_meal_header">Dinner</span>
-			<ul>
-				{% for item in pitzer_meals.dinner_items %}
-					<li image_url="{{ item.image_url }}">{{ item.name|clean_item_name }}</li>
+			{% regroup pitzer_meals.dinner_items|dictsort:"station" by station as station_list %}
+			<DL>
+				{% for station in station_list %}
+					<DT><b>{{station.grouper}}</b>
+					{% for food_item in station.list%}
+						<DD><li image_url="{{ item.image_url }}">{{ food_item.name}}</li>
+					{% endfor %}
 				{% endfor %}
-			</ul>
+			</DL>
 		</td>
 	</tr>
 	<tr id="mudd_menu">
 		<th class="mudd_background"><a href="https://hmc.sodexomyway.com/dining-choices/index.html" target="_blank">Mudd</a></th>
 		<td>
 			<span class="mobile_meal_header">Breakfast</span>
-			<ul>
-				{% for item in mudd_meals.breakfast_items %}
-					<li image_url="{{ item.image_url }}">{{ item.name|clean_item_name }}</li>
+			{% regroup mudd_meals.breakfast_items|dictsort:"station" by station as station_list %}
+			<DL>
+				{% for station in station_list %}
+					<DT><b>{{station.grouper}}</b>
+					{% for food_item in station.list%}
+						<DD><li image_url="{{ item.image_url }}">{{ food_item.name}}</li>
+					{% endfor %}
 				{% endfor %}
-			</ul>
+			</DL>
 		</td>
 		<td>
 			<span class="mobile_meal_header">Lunch</span>
-			<ul>
-				{% for item in mudd_meals.lunch_items %}
-					<li image_url="{{ item.image_url }}">{{ item.name|clean_item_name }}</li>
+			{% regroup mudd_meals.lunch_items|dictsort:"station" by station as station_list %}
+			<DL>
+				{% for station in station_list %}
+					<DT><b>{{station.grouper}}</b>
+					{% for food_item in station.list%}
+						<DD><li image_url="{{ item.image_url }}">{{ food_item.name}}</li>
+					{% endfor %}
 				{% endfor %}
-			</ul>
+			</DL>
 		</td>
 		<td>
 			<span class="mobile_meal_header">Dinner</span>
-			<ul>
-				{% for item in mudd_meals.dinner_items %}
-					<li image_url="{{ item.image_url }}">{{ item.name|clean_item_name }}</li>
+			{% regroup mudd_meals.dinner_items|dictsort:"station" by station as station_list %}
+			<DL>
+				{% for station in station_list %}
+					<DT><b>{{station.grouper}}</b>
+					{% for food_item in station.list%}
+						<DD><li image_url="{{ item.image_url }}">{{ food_item.name}}</li>
+					{% endfor %}
 				{% endfor %}
-			</ul>
+			</DL>
 		</td>
 	</tr>
 </table>

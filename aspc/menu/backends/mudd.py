@@ -6,8 +6,9 @@ class MuddBackend(object):
     def __init__(self):
         #self.menus format:
         # {'day':
-        #    'meal': 
-        #	    'station':['fooditem']
+        #    {'meal': 
+        #	    {'station':['fooditem']}
+        #    }
         # }         
         self.menus = {
             'mon': {},
@@ -72,7 +73,7 @@ class MuddBackend(object):
                     station_name = station['title']
                     food_id_list = station['products']
                     for food_id in food_id_list:
-                        food_name = fooditem_dict[food_id][22]
+                        food_name = fooditem_dict[food_id][22].replace("\\","") #'General Tso\'s Tofu' -> 'General Tso's Tofu'
                         if station_name not in day_dict[meal_name].keys():
                             day_dict[meal_name][station_name] = [food_name]
                         else:

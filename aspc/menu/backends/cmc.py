@@ -12,9 +12,13 @@ from collections import defaultdict
 class CmcBackend(object):
     rss = feedparser.parse('http://legacy.cafebonappetit.com/rss/menu/50')
 
-    days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
-    menus = { # Menu structure to return
-        'mon': {}, # Each day dict contains key value pairs as meal_name, [fooditems]
+    #self.menus format:
+    # {'day':
+    #    'meal': 
+    #       'station':['fooditem']
+    # }    
+    menus = {
+        'mon': {}, 
         'tue': {},
         'wed': {},
         'thu': {},
@@ -34,30 +38,42 @@ class CmcBackend(object):
         return hours.text  
 
     def menu(self):
-        for entry in self.rss.entries:
+        # for everything on the site
+        for entry in self.rss.entries: #one day with all meals
             body = BeautifulSoup(entry.summary)
-            date = entry.title[:4]
+            date = entry.title[:3].lower() # 'mon'
             tm = titles_and_meals = body.findAll(['h3', 'h4'])
-
-            meal_dict = defaultdict(list)
-
+            #meal dict's format: MealName: {Station1: [food1, food2...]},{Station2...}
+            meal_dict = {}
+            
+            # take all of the meals and foods
             for m in tm:
-                if m.name == 'h3':
-                    meal_title = m.text
-                elif m.name == 'h4':
-                    food = m.text.strip().split(', ')
-                    for f in food:
-                        station_and_food = f.split('] ')
+                # is a meal
+                if m.name == 'h3':                  
+                    meal_title = m.text.lower()
+                    if meal_title not in meal_dict:
+                        meal_dict[meal_title] = {}
+                # Is a food item. Looks like '[station] food name'
+                elif m.name == 'h4': 
+                    raw_food_data = m.text.strip().split(', ')
+                    #Format of f: "[station] food name"
+                    for f in raw_food_data: 
+                        #s_and_f format: list ['[station','food name']
+                        station_and_food = f.split('] ') 
                         if len(station_and_food) > 1:
-                            station = station_and_food[0]
-                            food = station_and_food[1]
-                            meal_dict[meal_title].append(food.title())
-                        else:
-                            food = station_and_food[0]
-                            meal_dict[meal_title].append(food.title())
-
-            meal_dict = dict(meal_dict)
-
-            self.menus[entry.title[:3].lower()] = {key.lower(): value for key, value in meal_dict.iteritems()}
-
-        return self.menus
+                            station_raw_string = station_and_food[0] #'[station'
+                            #remove the '[' in front of station name
+                            station = station_raw_string.title() [1:] #+ ":"
+                            # because all breakfast meal lines are named "Breakfast"
+                            if station == "Breakfast":
+                                station = ""
+                            # don't want repetition
+                            
+                            food_item = station_and_food[1]
+                            if station not in meal_dict[meal_title].keys():
+                                meal_dict[meal_title][station] = [food_item.title()]
+                            else:
+                                meal_dict[meal_title][station].append(food_item.title()) 
+            self.menus[date] = meal_dict
+                
+        return (self.menus)

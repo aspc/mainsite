@@ -110,3 +110,7 @@
 #mobile_page_title {
 	display: none;
 }
+
+DT {
+	padding-left: 15px;
+}
