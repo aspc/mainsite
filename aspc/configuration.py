@@ -41,6 +41,10 @@ ALLOWED_HOSTS = (
 	'.aspc.pomona.edu',
 	'.aspc.pomona.edu.', # allow FQDN (with trailing dot)
 )
+
+# Use this in case of disallowed host exception
+#ALLOWED_HOSTS = ['*']
+
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
@@ -235,7 +239,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 CAS_SETTINGS = {
-	'SERVER_URL': 'https://cas1.campus.pomona.edu/cas/',
+	'SERVER_URL': 'https://ssocas.campus.pomona.edu/cas/',
 	'ADMIN_PREFIX': 'admin'
 }
 
