@@ -16,7 +16,7 @@ urlpatterns = [
     url(r'instructors/(?P<name>[^/]+)/?$', InstructorName.as_view()),
 
     url(r'courses/instructor/(?P<instructor_id>\d+)/?$', CourseInstructor.as_view()),
-    url(r'courses/department/(?P<department_id>\d+)/?$', CourseDepartment.as_view()),
+    url(r'courses/department/(?P<department_code>[^/]+)/?$', CourseDepartment.as_view()),
     url(r'courses/?$', CourseList.as_view()),
 
     url(r'^$', views.api_home, name="api_home"),
