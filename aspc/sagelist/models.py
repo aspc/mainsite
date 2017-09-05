@@ -31,7 +31,7 @@ class BookSale(models.Model):
 
     """Model representing a sale of a textbook"""
     title = models.CharField(max_length=255)
-    authors = models.CharField(max_length=255, verbose_name="Author(s)")
+    authors = models.CharField(max_length=255, verbose_name="Author(s)", null=True, blank=True)
     course = models.ForeignKey(Course, blank=True, null=True)
     isbn = models.CharField(max_length=20, verbose_name="ISBN")
     edition = models.CharField(max_length=30, null=True, blank=True)
@@ -75,8 +75,8 @@ class BookSale(models.Model):
         amazon_info['description'] = products[0].editorial_review
         self.title = products[0].title
         self.authors = products[0].author
-        if products[0].edition.isdigit():
-            self.edition = products[0].edition
+        if products[0].edition is not None and products[0].edition.isdigit():
+                self.edition = products[0].edition
         self.amazon_info = json.dumps(amazon_info)
         self.save()
 
