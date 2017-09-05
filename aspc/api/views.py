@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from aspc.menu.models import Menu, MenuSerializer
-from aspc.courses.models import Instructor, InstructorSerializer, CourseSerializer, Course, Department, DepartmentSerializer
+from aspc.courses.models import (Instructor, InstructorSerializer, CourseSerializer, Course, Department, DepartmentSerializer,
+    Term, Section, SectionSerializer)
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -183,7 +184,7 @@ class CourseDepartment(APIView):
     throttle_classes = (UserRateThrottle,)
 
     def get(self, request, department_id, format=None):
-        department = Department.objects.get(id=department_id)
+        department = get_object_or_404(Department,id=department_id)
         courses = Course.objects.filter(departments=department)
         serializer = CourseSerializer(courses, many=True)
         return Response(serializer.data)
@@ -197,7 +198,21 @@ class CourseInstructor(APIView):
     throttle_classes = (UserRateThrottle,)
 
     def get(self, request, instructor_id, format=None):
-        instructor = Instructor.objects.get(id=instructor_id)
+        instructor = get_object_or_404(Instructor, id=instructor_id)
         courses = instructor.courses_taught()
         serializer = CourseSerializer(courses, many=True)
+        return Response(serializer.data)
+
+class SectionList(APIView):
+    """
+    List all courses
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthenticationWithQueryString)
+    permission_classes = (IsAuthenticated,)
+    throttle_classes = (UserRateThrottle,)
+
+    def get(self, request, term_key, format=None):
+        term = get_object_or_404(Term,key=term_key)
+        sections = Section.objects.filter(term=term)
+        serializer = SectionSerializer(sections, many=True)
         return Response(serializer.data)

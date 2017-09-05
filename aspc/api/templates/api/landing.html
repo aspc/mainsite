@@ -558,4 +558,86 @@ curl &quot;{{ absolute_uri }}courses/department/25?auth_token={% if token %}{{ t
     ...
 }
 </code></pre>
+
+</code></pre><h3 id="section-by-term">Sections by term [/api/sections/term/{term-key}/]</h3>
+<p>Find sections in a term.</p>
+<h4 id="parameters">Parameters</h4>
+<ul>
+<li><p>term-key (enum[string])</p>
+<p>  The key of the term. (e.g., 2015;SP, 2016;FA)</p>
+</li>
+</ul>
+
+<h4 id="request-get-">Example request (GET)</h4>
+<pre>
+	<code>
+curl &quot;{{ absolute_uri }}sections/term/2015;SP?auth_token={% if token %}{{ token }}{% else %}YOUR_TOKEN{% endif %}&quot;
+	</code>
+</pre>
+
+<h4 id="response-200-application-json-">Example response 200 (application/json)</h4>
+<pre><code>{
+    ...
+    {
+        "instructors": [
+            {
+                "id": 184,
+                "name": "Mahdavi, Pardis",
+                "rating": 4.48275862068965,
+                "useful_rating": 4.27586206896552,
+                "engagement_rating": 3.72413793103448,
+                "difficulty_rating": 3.48275862068966,
+                "competency_rating": 4.03448275862069,
+                "lecturing_rating": 3.62068965517241,
+                "enthusiasm_rating": 4.62068965517241,
+                "approachable_rating": 3.31034482758621,
+                "inclusivity_rating": null
+            }
+        ],
+        "course": {
+            "id": 1773,
+            "name": "Mthds in Anthropological Inquiry",
+            "code": "ANTH105  PO",
+            "number": 105,
+            "rating": 3.625,
+            "useful_rating": 3.75,
+            "engagement_rating": 3.125,
+            "difficulty_rating": 3.125,
+            "competency_rating": 3.875,
+            "lecturing_rating": 3.375,
+            "enthusiasm_rating": 3.5,
+            "approachable_rating": 3.375,
+            "inclusivity_rating": null,
+            "department": {
+                "id": 9,
+                "name": "Anthropology",
+                "code": "ANTH"
+            }
+        },
+        "code": "ANTH105  PO 01",
+        "meetings": [
+            {
+                "campus": 1,
+                "location": "Pomona",
+                "begin": "01:00:00",
+                "end": "02:00:00",
+                "monday": true,
+                "tuesday": false,
+                "wednesday": false,
+                "thursday": false,
+                "friday": false
+            }
+        ],
+        "cached_useful_rating": 4.33333333333333,
+        "cached_engagement_rating": 4.66666666666667,
+        "cached_difficulty_rating": 4.0,
+        "cached_competency_rating": 5.0,
+        "cached_lecturing_rating": 5.0,
+        "cached_enthusiasm_rating": 5.0,
+        "cached_approachable_rating": 4.66666666666667,
+        "cached_inclusivity_rating": null
+    },
+    ...
+}
+</code></pre>
 {% endblock %}
