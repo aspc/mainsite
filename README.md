@@ -35,7 +35,7 @@ And some apps are placeholders that have yet to be fleshed out or removed:
 
 ## ASPC API ##
 
-We now have an API for the 5C Menu. Please see the [API README](aspc/api/README.md) for more details.
+We now have an API for the 5C Menu and Course. Please see the [API README](aspc/api/README.md) for more details.
 
 ## Contributing ##
 
