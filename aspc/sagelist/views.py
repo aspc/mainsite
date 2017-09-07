@@ -239,11 +239,14 @@ def create_many(request):
     return redirect(reverse('sagelist'))
 
 def parse_csv(text):
-    lines = text.split('\n')
+    lines = text.split('\r\n')
     for line in lines:
         parts = line.split(',')
         if len(parts) != 3:
             continue
+        for i in range(0,3):
+            if parts[i][0] == '<' and parts[i][-1] == '>' and len(parts[i]) > 2:
+                parts[i] = parts[i][1:-1]
         sale = BookSale(isbn=parts[0], is_recoop=True, condition=2,
                         seller=User.objects.get(username='sustainability@pomona.edu'),
                         copies=parts[1], price=parts[2],  title='', authors='')
