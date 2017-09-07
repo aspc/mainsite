@@ -182,8 +182,8 @@ class CourseDepartment(APIView):
     permission_classes = (IsAuthenticated,)
     throttle_classes = (UserRateThrottle,)
 
-    def get(self, request, department_id, format=None):
-        department = Department.objects.get(id=department_id)
+    def get(self, request, department_code, format=None):
+        department = Department.objects.get(code=department_code)
         courses = Course.objects.filter(departments=department)
         serializer = CourseSerializer(courses, many=True)
         return Response(serializer.data)
