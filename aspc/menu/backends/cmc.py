@@ -1,16 +1,12 @@
-# Scraper for CMC (Collins) dining hall.
-#
-# Originally from https://github.com/sean-adler/5c-dining-api
-
 import requests
-import HTMLParser
-import feedparser
+import demjson
+import datetime
+import string
+from dateutil import parser
 from bs4 import BeautifulSoup
-from collections import defaultdict
 
 
 class CmcBackend(object):
-    rss = feedparser.parse('http://legacy.cafebonappetit.com/rss/menu/50')
 
     #self.menus format:
     # {'day':
@@ -37,43 +33,48 @@ class CmcBackend(object):
         hours = doc.find_all('div', {'class': 'cafe-details six columns end'})[0]
         return hours.text  
 
+    def get_week(self):
+        """
+        Return string listing dates of current full week
+        """
+        week = []
+        now = datetime.datetime.now().date()
+        one_day = datetime.timedelta(days=1)
+        sunday = now - datetime.timedelta(days=now.weekday())
+        date = sunday
+        for n in range(7):
+            week.append(date.isoformat())
+            date += one_day
+        return ",".join(week)
+
     def menu(self):
-        # for everything on the site
-        for entry in self.rss.entries: #one day with all meals
-            body = BeautifulSoup(entry.summary)
-            date = entry.title[:3].lower() # 'mon'
-            tm = titles_and_meals = body.findAll(['h3', 'h4'])
-            #meal dict's format: MealName: {Station1: [food1, food2...]},{Station2...}
-            meal_dict = {}
-            
-            # take all of the meals and foods
-            for m in tm:
-                # is a meal
-                if m.name == 'h3':                  
-                    meal_title = m.text.lower()
-                    if meal_title not in meal_dict:
-                        meal_dict[meal_title] = {}
-                # Is a food item. Looks like '[station] food name'
-                elif m.name == 'h4': 
-                    raw_food_data = m.text.strip().split(', ')
-                    #Format of f: "[station] food name"
-                    for f in raw_food_data: 
-                        #s_and_f format: list ['[station','food name']
-                        station_and_food = f.split('] ') 
-                        if len(station_and_food) > 1:
-                            station_raw_string = station_and_food[0] #'[station'
-                            #remove the '[' in front of station name
-                            station = station_raw_string.title() [1:] #+ ":"
-                            # because all breakfast meal lines are named "Breakfast"
-                            if station == "Breakfast":
-                                station = ""
-                            # don't want repetition
-                            
-                            food_item = station_and_food[1]
-                            if station not in meal_dict[meal_title].keys():
-                                meal_dict[meal_title][station] = [food_item.title()]
+        """
+        Returns menu for this week
+        """
+        index_url = 'http://legacy.cafebonappetit.com/api/2/menus?format=json&cafe=50&date=%s'%(
+        self.get_week())
+        raw_string = requests.get(index_url).text
+        
+        menu_json= demjson.decode(raw_string)
+        fooditem_dict = menu_json["items"] #use this to translate food item number id's into English
+        
+        for day in menu_json["days"]:
+            day_dict = {} # key: meal_name -> value: (key: station -> value: [items])
+            day_name = parser.parse(day["date"]).strftime("%A").lower()[:3] #Monday -> mon
+            all_meals = day["cafes"]["50"]["dayparts"][0]
+            for meal in all_meals:
+                meal_name = meal["label"].lower()
+                day_dict[meal_name] = {} #station->[food items]
+                station_list = meal['stations']
+                for station in station_list:
+                    station_name = string.capwords(station['label'])
+                    food_id_list = station['items']
+                    for food_id in food_id_list:
+                        food_name = string.capwords(fooditem_dict[food_id]["label"])
+                        if fooditem_dict[food_id]["tier"] == 1: #tiers 2+ display too much detail
+                            if station_name not in day_dict[meal_name].keys():
+                                day_dict[meal_name][station_name] = [food_name]
                             else:
-                                meal_dict[meal_title][station].append(food_item.title()) 
-            self.menus[date] = meal_dict
-                
-        return (self.menus)
+                                day_dict[meal_name][station_name].append(food_name)
+            self.menus[day_name] = day_dict
+        return self.menus

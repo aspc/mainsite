@@ -10,7 +10,7 @@
 	</tr>
 	<tr id="frank_menu">
 		<th class="pomona_background"><a href="http://www.pomona.edu/administration/dining/menus/frank" target="_blank">Frank</a></th>
-		<td>
+		<td class="wknd_meal_col">
 			<span class="mobile_meal_header">Brunch</span>
 			{% if current_day == 'sat' %}
 				<ul>Closed.</ul>
@@ -26,7 +26,7 @@
 				</DL>
 			{% endif %}
 		</td>
-		<td>
+		<td class="wknd_meal_col">
 			<span class="mobile_meal_header">Dinner</span>
 			{% if current_day == 'sat' %}
 				<ul>Closed.</ul>
@@ -45,7 +45,7 @@
 	</tr>
 	<tr id="frary_menu">
 		<th class="pomona_background"><a href="http://www.pomona.edu/administration/dining/menus/frary" target="_blank">Frary</a></th>
-		<td>
+		<td class="wknd_meal_col">
 			<span class="mobile_meal_header">Brunch</span>
 			{% regroup frary_meals.brunch_items|dictsort:"station" by station as station_list %}
 			<DL>
@@ -57,7 +57,7 @@
 				{% endfor %}
 			</DL>
 		</td>
-		<td>
+		<td class="wknd_meal_col">
 			<span class="mobile_meal_header">Dinner</span>
 			{% regroup frary_meals.dinner_items|dictsort:"station" by station as station_list %}
 			<DL>
@@ -72,7 +72,7 @@
 	</tr>
 	<tr id="cmc_menu">
 		<th class="cmc_background"><a href="http://collins-cmc.cafebonappetit.com/hungry/collins/" target="_blank">CMC</a></th>
-		<td>
+		<td class="wknd_meal_col">
 			<span class="mobile_meal_header">Brunch</span>
 			{% regroup cmc_meals.brunch_items|dictsort:"station" by station as station_list %}
 			<DL>
@@ -84,7 +84,7 @@
 				{% endfor %}
 			</DL>
 		</td>
-		<td>
+		<td class="wknd_meal_col">
 			<span class="mobile_meal_header">Dinner</span>
 			{% regroup cmc_meals.dinner_items|dictsort:"station" by station as station_list %}
 			<DL>
@@ -99,7 +99,7 @@
 	</tr>
 	<tr id="scripps_menu">
 		<th class="scripps_background"><a href="https://scrippsdining.sodexomyway.com/dining-choices/index.html" target="_blank">Scripps</a></th>
-		<td>
+		<td class="wknd_meal_col">
 			<span class="mobile_meal_header">Brunch</span>
 			{% regroup scripps_meals.brunch_items|dictsort:"station" by station as station_list %}
 			<DL>
@@ -111,7 +111,7 @@
 				{% endfor %}
 			</DL>
 		</td>
-		<td>
+		<td class="wknd_meal_col">
 			<span class="mobile_meal_header">Dinner</span>
 			{% regroup scripps_meals.dinner_items|dictsort:"station" by station as station_list %}
 			<DL>
@@ -126,7 +126,7 @@
 	</tr>
 	<tr id="pitzer_menu">
 		<th class="pitzer_background"><a href="http://pitzer.cafebonappetit.com/" target="_blank">Pitzer</a></th>
-		<td>
+		<td class="wknd_meal_col">
 			<span class="mobile_meal_header">Brunch</span>
 			{% regroup pitzer_meals.brunch_items|dictsort:"station" by station as station_list %}
 			<DL>
@@ -138,7 +138,7 @@
 				{% endfor %}
 			</DL>
 		</td>
-		<td>
+		<td class="wknd_meal_col">
 			<span class="mobile_meal_header">Dinner</span>
 			{% regroup pitzer_meals.dinner_items|dictsort:"station" by station as station_list %}
 			<DL>
@@ -153,7 +153,7 @@
 	</tr>
 	<tr id="mudd_menu">
 		<th class="mudd_background"><a href="https://hmc.sodexomyway.com/dining-choices/index.html" target="_blank">Mudd</a></th>
-		<td>
+		<td class="wknd_meal_col">
 			<span class="mobile_meal_header">Brunch</span>
 			{% regroup mudd_meals.brunch_items|dictsort:"station" by station as station_list %}
 			<DL>
@@ -165,7 +165,7 @@
 				{% endfor %}
 			</DL>
 		</td>
-		<td>
+		<td class="wknd_meal_col">
 			<span class="mobile_meal_header">Dinner</span>
 			{% regroup mudd_meals.dinner_items|dictsort:"station" by station as station_list %}
 			<DL>
