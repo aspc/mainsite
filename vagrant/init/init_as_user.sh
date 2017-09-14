@@ -45,29 +45,29 @@ then
     cp /vagrant/aspc/settings.py.example /vagrant/aspc/settings.py
 fi
 
--# create tables
--python manage.py migrate --noinput
--
--# copy static files
--python manage.py collectstatic --noinput
+# create tables
+python /vagrant/manage.py migrate --noinput
+
+# copy static files
+python /vagrant/manage.py collectstatic --noinput
 
 # load fixtures (order is important)
-python manage.py loaddata /vagrant/fixtures/sites.json
-python manage.py loaddata /vagrant/fixtures/users.json
-python manage.py loaddata /vagrant/fixtures/appointments.json
-python manage.py loaddata /vagrant/fixtures/folio.json
-python manage.py loaddata /vagrant/fixtures/blog.json
-python manage.py loaddata /vagrant/fixtures/eatshop.json
-python manage.py loaddata /vagrant/fixtures/sagelist.json
-python manage.py loaddata /vagrant/fixtures/mhdata.json
+python /vagrant/manage.py loaddata /vagrant/fixtures/sites.json
+python /vagrant/manage.py loaddata /vagrant/fixtures/users.json
+python /vagrant/manage.py loaddata /vagrant/fixtures/appointments.json
+python /vagrant/manage.py loaddata /vagrant/fixtures/folio.json
+python /vagrant/manage.py loaddata /vagrant/fixtures/blog.json
+python /vagrant/manage.py loaddata /vagrant/fixtures/eatshop.json
+python /vagrant/manage.py loaddata /vagrant/fixtures/sagelist.json
+python /vagrant/manage.py loaddata /vagrant/fixtures/mhdata.json
 
 # load housing data
-python manage.py load_dorms
-python manage.py load_maps
-python manage.py load_dorm_rooms
-python manage.py loaddata /vagrant/fixtures/housing.json
+python /vagrant/manage.py load_dorms
+python /vagrant/manage.py load_maps
+python /vagrant/manage.py load_dorm_rooms
+python /vagrant/manage.py loaddata /vagrant/fixtures/housing.json
 
 # generate fake data for certain apps
-python manage.py fakeevents
-python manage.py scrape_twitter
-python manage.py load_menus
+python /vagrant/manage.py fakeevents
+python /vagrant/manage.py scrape_twitter
+python /vagrant/manage.py load_menus

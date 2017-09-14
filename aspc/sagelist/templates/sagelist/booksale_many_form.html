@@ -1,0 +1,16 @@
+{% extends "sagelist/base.html" %}
+{% block "subtitle" %}&mdash; Sell Books{% endblock %}
+{% block "page_title" %}Sell Books{% endblock %}
+{% block "sagelist_breadcrumbs" %}
+  <li>Sell Books</li>
+{% endblock %}
+{% block "content" %}
+<form action="." method="POST">
+  {% csrf_token %}
+  <p><strong>Note:</strong> This is supposed to be used only by ReCoop. Copy the text in your csv file into the textbox
+  below. If there many listings, you may get a timeout error. Check your new listings after the upload. If any listing
+  have empty titles and authors. Delete it and create the listing manually. Thank you.</p>
+  <textarea required="required" rows="20" cols="140" placeholder="Format: <ISBN>,<number of copies>,<price>" name="text"></textarea>
+  <p><input type="submit" value="Post new listing" id="post"></p>
+</form>
+{% endblock %}

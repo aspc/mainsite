@@ -12,6 +12,7 @@ from aspc.activityfeed.signals import new_activity, delete_activity
 from aspc.courses.lib import rake
 from django.db import connection
 from collections import Counter
+from rest_framework import serializers
 
 
 CAMPUSES = (
@@ -69,6 +70,7 @@ class Instructor(models.Model):
     lecturing_rating = models.FloatField(blank=True, null=True)
     enthusiasm_rating = models.FloatField(blank=True, null=True)
     approachable_rating = models.FloatField(blank=True, null=True)
+    inclusivity_rating = models.FloatField(blank=True, null=True)
 
     def __unicode__(self):
         return self.name
@@ -77,13 +79,13 @@ class Instructor(models.Model):
         return slugify(self.name)
 
     def get_miscellaneous_ratings(self):
-        return [self.useful_rating or 0, self.engagement_rating or 0, self.difficulty_rating or 0, self.competency_rating or 0, self.lecturing_rating or 0, self.enthusiasm_rating or 0, self.approachable_rating or 0]
+        return [self.useful_rating or 0, self.engagement_rating or 0, self.difficulty_rating or 0, self.competency_rating or 0, self.lecturing_rating or 0, self.enthusiasm_rating or 0, self.approachable_rating or 0, self.inclusivity_rating or 0]
 
     def update_ratings(self):
         cursor = connection.cursor()
         cursor.execute('SELECT AVG("overall_rating"), AVG("useful_rating"), AVG("engagement_rating"),'
                        ' AVG("difficulty_rating"), AVG("competency_rating"), AVG("lecturing_rating"),'
-                       ' AVG("enthusiasm_rating"), AVG("approachable_rating") FROM courses_coursereview'
+                       ' AVG("enthusiasm_rating"), AVG("approachable_rating"), AVG("inclusivity_rating") FROM courses_coursereview'
                        ' WHERE instructor_id=%d' % self.id)
         ratings = cursor.fetchone()
         self.rating = ratings[0]
@@ -94,6 +96,7 @@ class Instructor(models.Model):
         self.lecturing_rating = ratings[5]
         self.enthusiasm_rating = ratings[6]
         self.approachable_rating = ratings[7]
+        self.inclusivity_rating = ratings[8]
         self.save()
 
     def get_campus(self):
@@ -108,6 +111,20 @@ class Instructor(models.Model):
             return self.rmpinfo
         except:
             return None
+
+    def courses_taught(self):
+        sections_taught = self.sections.all()
+        courses_taught = []
+        for s in sections_taught:
+            courses_taught.append(s.course)
+        return list(set(courses_taught))
+
+class InstructorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Instructor
+        fields = ('id', 'name', 'rating', 'useful_rating', 'engagement_rating',
+                  'difficulty_rating', 'competency_rating', 'lecturing_rating',
+                  'enthusiasm_rating', 'approachable_rating', 'inclusivity_rating')
 
 class RMPInfo(models.Model):
     instructor = models.OneToOneField(Instructor)
@@ -126,6 +143,12 @@ class Department(models.Model):
 
     def __unicode__(self):
         return u'[%s] %s' % (self.code, self.name)
+
+class DepartmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Department
+        fields = ('id', 'name', 'code')
+
 
 
 class RequirementArea(models.Model):
@@ -161,6 +184,7 @@ class Course(models.Model):
     lecturing_rating = models.FloatField(blank=True, null=True)
     enthusiasm_rating = models.FloatField(blank=True, null=True)
     approachable_rating = models.FloatField(blank=True, null=True)
+    inclusivity_rating = models.FloatField(blank=True, null=True)
 
     primary_department = models.ForeignKey(Department, related_name='primary_course_set', null=True)
     departments = models.ManyToManyField(Department, related_name='course_set')
@@ -178,13 +202,13 @@ class Course(models.Model):
                 {'course_code': self.code_slug})
 
     def get_miscellaneous_ratings(self):
-        return [self.useful_rating or 0, self.engagement_rating or 0, self.difficulty_rating or 0, self.competency_rating or 0, self.lecturing_rating or 0, self.enthusiasm_rating or 0, self.approachable_rating or 0]
+        return [self.useful_rating or 0, self.engagement_rating or 0, self.difficulty_rating or 0, self.competency_rating or 0, self.lecturing_rating or 0, self.enthusiasm_rating or 0, self.approachable_rating or 0, self.inclusivity_rating or 0]
 
     def update_ratings(self):
         cursor = connection.cursor()
         cursor.execute('SELECT AVG("overall_rating"), AVG("useful_rating"), AVG("engagement_rating"),'
                        ' AVG("difficulty_rating"), AVG("competency_rating"), AVG("lecturing_rating"),'
-                       ' AVG("enthusiasm_rating"), AVG("approachable_rating") FROM courses_coursereview'
+                       ' AVG("enthusiasm_rating"), AVG("approachable_rating"), AVG("inclusivity_rating") FROM courses_coursereview'
                        ' WHERE course_id=%d' % self.id)
         ratings = cursor.fetchone()
         self.rating = ratings[0]
@@ -195,6 +219,7 @@ class Course(models.Model):
         self.lecturing_rating = ratings[5]
         self.enthusiasm_rating = ratings[6]
         self.approachable_rating = ratings[7]
+        self.inclusivity_rating = ratings[8]
         self.save()
 
     # TODO: Merge instructors who taught this class previously
@@ -207,6 +232,15 @@ class Course(models.Model):
     def get_most_recent_section(self):
         sections = self.sections.order_by('term')
         return sections[0] if sections else None
+
+
+class CourseSerializer(serializers.ModelSerializer):
+    department = DepartmentSerializer(source='primary_department')
+    class Meta:
+        model = Course
+        fields = ('id', 'name', 'code', 'number', 'rating', 'useful_rating', 'engagement_rating',
+                  'difficulty_rating', 'competency_rating', 'lecturing_rating',
+                  'enthusiasm_rating', 'approachable_rating', 'inclusivity_rating', 'department')
 
 class Section(models.Model):
     term = models.ForeignKey(Term, related_name='sections')
@@ -232,6 +266,7 @@ class Section(models.Model):
     cached_lecturing_rating = models.FloatField(blank=True, null=True)
     cached_enthusiasm_rating = models.FloatField(blank=True, null=True)
     cached_approachable_rating = models.FloatField(blank=True, null=True)
+    cached_inclusivity_rating = models.FloatField(blank=True, null=True)
 
     perms = models.IntegerField(null=True)
     spots = models.IntegerField(null=True)
@@ -272,11 +307,17 @@ class Section(models.Model):
 
     def update_ratings(self):
         cursor = connection.cursor()
-        instructor_ids = str(tuple([instructor.id for instructor in self.instructors.all()])).replace(',)',')')
-        cursor.execute('SELECT AVG("overall_rating"), AVG("useful_rating"), AVG("engagement_rating"),'
-                       ' AVG("difficulty_rating"), AVG("competency_rating"), AVG("lecturing_rating"),'
-                       ' AVG("enthusiasm_rating"), AVG("approachable_rating") FROM courses_coursereview'
-                       ' WHERE course_id=%d and instructor_id IN %s' % (self.course.id, instructor_ids))
+        if self.instructors.count():
+            instructor_ids = str(tuple([instructor.id for instructor in self.instructors.all()])).replace(',)',')')
+            cursor.execute('SELECT AVG("overall_rating"), AVG("useful_rating"), AVG("engagement_rating"),'
+                           ' AVG("difficulty_rating"), AVG("competency_rating"), AVG("lecturing_rating"),'
+                           ' AVG("enthusiasm_rating"), AVG("approachable_rating"), AVG("inclusivity_rating") FROM courses_coursereview'
+                           ' WHERE course_id=%d and instructor_id IN %s' % (self.course.id, instructor_ids))
+        else:
+            cursor.execute('SELECT AVG("overall_rating"), AVG("useful_rating"), AVG("engagement_rating"),'
+                           ' AVG("difficulty_rating"), AVG("competency_rating"), AVG("lecturing_rating"),'
+                           ' AVG("enthusiasm_rating"), AVG("approachable_rating"), AVG("inclusivity_rating") FROM courses_coursereview'
+                           ' WHERE course_id=%d' % self.course.id)
         ratings = cursor.fetchone()
         self.cached_overall_rating = ratings[0]
         self.cached_useful_rating = ratings[1]
@@ -286,6 +327,7 @@ class Section(models.Model):
         self.cached_lecturing_rating = ratings[5]
         self.cached_enthusiasm_rating = ratings[6]
         self.cached_approachable_rating = ratings[7]
+        self.cached_inclusivity_rating = ratings [8]
         self.save()
 
     def get_average_rating(self):
@@ -294,7 +336,7 @@ class Section(models.Model):
     def get_miscellaneous_ratings(self):
         return [self.cached_useful_rating, self.cached_engagement_rating, self.cached_difficulty_rating,
                 self.cached_competency_rating, self.cached_lecturing_rating, self.cached_enthusiasm_rating,
-                self.cached_approachable_rating]
+                self.cached_approachable_rating, self.cached_inclusivity_rating]
 
     def get_RMP_rating(self):
         rmps = [instructor.get_RMPInfo() for instructor in self.instructors.all()]
@@ -488,6 +530,7 @@ class CourseReview(models.Model):
     lecturing_rating = models.FloatField(blank=True, null=True)
     enthusiasm_rating = models.FloatField(blank=True, null=True)
     approachable_rating = models.FloatField(blank=True, null=True)
+    inclusivity_rating = models.FloatField(blank=True, null=True)
     work_per_week = models.PositiveSmallIntegerField(blank=True, null=True)
 
     class Meta:
@@ -537,4 +580,3 @@ class FeaturingQuery(models.Model):
         chosen = random.choice(results)
         instances = Section.objects.get(id=chosen[0])
         return instances
-
