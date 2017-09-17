@@ -1,19 +1,20 @@
-# Scraper for CMC (Collins) dining hall.
-#
-# Originally from https://github.com/sean-adler/5c-dining-api
-
-import feedparser
-import HTMLParser
+import requests
+import demjson
+import datetime
+import string
+from dateutil import parser
 from bs4 import BeautifulSoup
-from collections import defaultdict
 
 
 class CmcBackend(object):
-    rss = feedparser.parse('http://legacy.cafebonappetit.com/rss/menu/50')
 
-    days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
-    menus = { # Menu structure to return
-        'mon': {}, # Each day dict contains key value pairs as meal_name, [fooditems]
+    #self.menus format:
+    # {'day':
+    #    'meal': 
+    #       'station':['fooditem']
+    # }    
+    menus = {
+        'mon': {}, 
         'tue': {},
         'wed': {},
         'thu': {},
@@ -22,31 +23,58 @@ class CmcBackend(object):
         'sun': {}
     }
 
+    def get_hours(self):
+        """
+        returns hours of operation
+        """
+        index_url = 'http://collins-cmc.cafebonappetit.com/cafe/collins/'
+        resp = requests.get(index_url)
+        doc = BeautifulSoup(resp.text, "html.parser")
+        hours = doc.find_all('div', {'class': 'cafe-details six columns end'})[0]
+        return hours.text  
+
+    def get_week(self):
+        """
+        Return string listing dates of current full week
+        """
+        week = []
+        now = datetime.datetime.now().date()
+        one_day = datetime.timedelta(days=1)
+        sunday = now - datetime.timedelta(days=now.weekday())
+        date = sunday
+        for n in range(7):
+            week.append(date.isoformat())
+            date += one_day
+        return ",".join(week)
+
     def menu(self):
-        for entry in self.rss.entries:
-            body = BeautifulSoup(entry.summary)
-            date = entry.title[:4]
-            tm = titles_and_meals = body.findAll(['h3', 'h4'])
-
-            meal_dict = defaultdict(list)
-
-            for m in tm:
-                if m.name == 'h3':
-                    meal_title = m.text
-                elif m.name == 'h4':
-                    food = m.text.strip().split(', ')
-                    for f in food:
-                        station_and_food = f.split('] ')
-                        if len(station_and_food) > 1:
-                            station = station_and_food[0]
-                            food = station_and_food[1]
-                            meal_dict[meal_title].append(food.title())
-                        else:
-                            food = station_and_food[0]
-                            meal_dict[meal_title].append(food.title())
-
-            meal_dict = dict(meal_dict)
-
-            self.menus[entry.title[:3].lower()] = {key.lower(): value for key, value in meal_dict.iteritems()}
-
+        """
+        Returns menu for this week
+        """
+        index_url = 'http://legacy.cafebonappetit.com/api/2/menus?format=json&cafe=50&date=%s'%(
+        self.get_week())
+        raw_string = requests.get(index_url).text
+        
+        menu_json= demjson.decode(raw_string)
+        fooditem_dict = menu_json["items"] #use this to translate food item number id's into English
+        
+        for day in menu_json["days"]:
+            day_dict = {} # key: meal_name -> value: (key: station -> value: [items])
+            day_name = parser.parse(day["date"]).strftime("%A").lower()[:3] #Monday -> mon
+            all_meals = day["cafes"]["50"]["dayparts"][0]
+            for meal in all_meals:
+                meal_name = meal["label"].lower()
+                day_dict[meal_name] = {} #station->[food items]
+                station_list = meal['stations']
+                for station in station_list:
+                    station_name = string.capwords(station['label'])
+                    food_id_list = station['items']
+                    for food_id in food_id_list:
+                        food_name = string.capwords(fooditem_dict[food_id]["label"])
+                        if fooditem_dict[food_id]["tier"] == 1: #tiers 2+ display too much detail
+                            if station_name not in day_dict[meal_name].keys():
+                                day_dict[meal_name][station_name] = [food_name]
+                            else:
+                                day_dict[meal_name][station_name].append(food_name)
+            self.menus[day_name] = day_dict
         return self.menus
