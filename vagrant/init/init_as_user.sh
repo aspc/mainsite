@@ -36,7 +36,7 @@ else
 fi
 
 source /home/vagrant/env/bin/activate
-pip install -r /vagrant/requirements.txt --user
+pip install -r /vagrant/requirements.txt
 
 # create settings if they do not exist
 if [ ! -f /vagrant/aspc/settings.py ];
