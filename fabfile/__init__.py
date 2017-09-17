@@ -79,7 +79,7 @@ def _install_requirements():
 		cd('/srv/www/{0}/mainsite'.format(env.site)),
 		prefix('source /srv/www/{0}/env/bin/activate'.format(env.site))
 	):
-		sudo('pip install -r ./requirements.txt', user=env.site)
+		sudo('pip install -r ./requirements.txt --user', user=env.site)
 
 # Reloads GUnicorn to serve the latest files
 def _reload():
