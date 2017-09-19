@@ -29,17 +29,17 @@ class PitzerManager(models.Manager):
     def get_queryset(self):
         return super(PitzerManager, self).get_queryset().filter(dining_hall='pitzer')
 
+
 class Item(models.Model):
-    CHARFIELD_MAX_LENGTH = 1024
+    CHARFIELD_MAX_LENGTH = 255
     URLFIELD_MAX_LENGTH = 1000
-    name = models.CharField(max_length=CHARFIELD_MAX_LENGTH)
-    station = models.CharField(max_length=CHARFIELD_MAX_LENGTH)
+    name = models.CharField(primary_key=True, max_length=CHARFIELD_MAX_LENGTH)
     image_url = models.URLField(blank=True, null=True, max_length=URLFIELD_MAX_LENGTH)
     def __unicode__(self):
         return self.name
 
 class Menu(models.Model):
-    CHARFIELD_MAX_LENGTH = 1024
+    CHARFIELD_MAX_LENGTH = 255
     DINING_HALLS = (
         ('frank', 'Frank'),
         ('frary', 'Frary'),
