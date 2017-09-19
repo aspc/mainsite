@@ -1,4 +1,5 @@
 # Scraper for Pomona (Frank, Frary) dining halls.
+# -*- coding: utf-8 -*-
 
 from codecs import open
 from datetime import date
@@ -147,8 +148,13 @@ class PomonaBackend(object):
 		weekends = ['sat', 'sun']
 
 		# Menu structure to return
+        # {'day':
+        #    {'meal': 
+        #	    {'station':['fooditem']}
+        #    }
+        # }
 		menus = {
-			'mon': {}, # Each day dict contains key value pairs as meal_name, [fooditems]
+			'mon': {},
 			'tue': {},
 			'wed': {},
 			'thu': {},
@@ -179,8 +185,9 @@ class PomonaBackend(object):
 			if cell.value[0] in ignored_cells:
 				continue
 
-			# No need to collect the meal name (as of now...)
+			# Get the station name
 			if cell.column == 'B':
+				current_station = cell.value[0]
 				continue
 
 			# On weekends, the D column is not used
@@ -201,15 +208,16 @@ class PomonaBackend(object):
 				current_meal = 'lunch'
 			elif cell.column == 'E':
 				current_meal = 'dinner'
+			
+			#create key entry in menus dictionary if doesn't exist for meal/station yet			
+			if current_meal not in menus[current_day].keys():
+				menus[current_day][current_meal] = {}
+			if current_station not in menus[current_day][current_meal].keys():
+				menus[current_day][current_meal][current_station] = []
 
-			# Anything else that is in a cell should be a food item that we want to append to the appropriate menu
-			try:
-				current_menu = menus[current_day][current_meal]
-			except KeyError: # Create the list if nothing has been loaded yet for this day's current meal
-				current_menu = menus[current_day][current_meal] = []
-
+            # Anything else that is in a cell should be a food item that we want to append to the appropriate menu
 			for food_item in cell.value:
-				current_menu.append(food_item)
+				menus[current_day][current_meal][current_station].append(food_item)
 
 		return menus
 
@@ -228,25 +236,95 @@ class PomonaBackend(object):
 		# Menu structure to return
 		menus = {
 			'mon': {
-				'lunch': []
+				'lunch': {
+					'Soups': [],
+					'Entrée': [],
+					'Vegan/Veggie': [],
+					'Starch': [],
+					'Vegetable': [],
+					'Pizza': [],
+					'Salad': [],
+					'Deli-Salad': [],
+					'Dessert': []
+				}
 			},
 			'tue': {
-				'lunch': []
+				'lunch': {
+					'Soups': [],
+					'Entrée': [],
+					'Vegan/Veggie': [],
+					'Starch': [],
+					'Vegetable': [],
+					'Pizza': [],
+					'Salad': [],
+					'Deli-Salad': [],
+					'Dessert': []
+				}
 			},
 			'wed': {
-				'lunch': []
+				'lunch': {
+					'Soups': [],
+					'Entrée': [],
+					'Vegan/Veggie': [],
+					'Starch': [],
+					'Vegetable': [],
+					'Pizza': [],
+					'Salad': [],
+					'Deli-Salad': [],
+					'Dessert': []
+				}
 			},
 			'thu': {
-				'lunch': []
+				'lunch': {
+					'Soups': [],
+					'Entrée': [],
+					'Vegan/Veggie': [],
+					'Starch': [],
+					'Vegetable': [],
+					'Pizza': [],
+					'Salad': [],
+					'Deli-Salad': [],
+					'Dessert': []
+				}
 			},
 			'fri': {
-				'lunch': []
+				'lunch': {
+					'Soups': [],
+					'Entrée': [],
+					'Vegan/Veggie': [],
+					'Starch': [],
+					'Vegetable': [],
+					'Pizza': [],
+					'Salad': [],
+					'Deli-Salad': [],
+					'Dessert': []
+				}
 			},
 			'sat': {
-				'lunch': []
+				'lunch': {
+					'Soups': [],
+					'Entrée': [],
+					'Vegan/Veggie': [],
+					'Starch': [],
+					'Vegetable': [],
+					'Pizza': [],
+					'Salad': [],
+					'Deli-Salad': [],
+					'Dessert': []
+				}
 			},
 			'sun': {
-				'lunch': []
+				'lunch': {
+					'Soups': [],
+					'Entrée': [],
+					'Vegan/Veggie': [],
+					'Starch': [],
+					'Vegetable': [],
+					'Pizza': [],
+					'Salad': [],
+					'Deli-Salad': [],
+					'Dessert': []
+				}
 			},
 		}
 
@@ -260,20 +338,26 @@ class PomonaBackend(object):
 			if cell.row < 4:
 				continue
 
-			# Cells in the B, C, D, E, and F columns contain food items for each day
-			if cell.column == 'B':
-				menus['mon']['lunch'].append(cell.value)
+
+			# get the meal line, need to decode it because its in a byte literal and we need a string
+			if cell.column == 'A':
+				station = cell.value
+
+			# Cells in the B, C, D, E, and F columns contain food items for each day, add the food to the right section
+			elif cell.column == 'B':
+				menus['mon']['lunch'][station].append(cell.value)
 			elif cell.column == 'C':
-				menus['tue']['lunch'].append(cell.value)
+				menus['tue']['lunch'][station].append(cell.value)
 			elif cell.column == 'D':
-				menus['wed']['lunch'].append(cell.value)
+				menus['wed']['lunch'][station].append(cell.value)
 			elif cell.column == 'E':
-				menus['thu']['lunch'].append(cell.value)
+				menus['thu']['lunch'][station].append(cell.value)
 			elif cell.column == 'F':
-				menus['fri']['lunch'].append(cell.value)
+				menus['fri']['lunch'][station].append(cell.value)
 
+		
 		return menus
-
+	
 	def _get_menu(self, url):
 		search_date = (datetime.datetime.today() + datetime.timedelta(hours=4)).date()
 
