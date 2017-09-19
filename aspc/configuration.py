@@ -40,7 +40,6 @@ ALLOWED_HOSTS = (
 	'aspc.pomona.edu.',
 	'.aspc.pomona.edu',
 	'.aspc.pomona.edu.', # allow FQDN (with trailing dot)
-	'localhost'
 )
 
 # Use this in case of disallowed host exception
