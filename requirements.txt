@@ -28,4 +28,4 @@ django-cors-headers==1.1.0
 oauthlib==0.7.2
 grequests==0.3.0
 django-geoposition==0.3.0
-selenium==3.0.1
+demjson==2.2.4
