@@ -332,16 +332,18 @@ class ReviewSearchForm(forms.Form):
 class ReviewForm(forms.Form):
     CHOICES = [(i,i) for i in range(1,6)]
     overall_rating = forms.ChoiceField(choices=CHOICES, label='How many stars do you give this class?')
+    grade = forms.ChoiceField(choices=POSSIBLE_GRADES_OPTIONS, required=False)
+    work_per_week = forms.IntegerField(max_value=25, label='How many hours of work did you have each week?')
     useful_rating = forms.ChoiceField(choices=CHOICES, label='How useful was this class?', help_text='1: This course was irrelevant for me <br />5: I use what I learned in this course every day')
     engagement_rating = forms.ChoiceField(choices=CHOICES, label='How engaging was this class?', help_text='1: I fell asleep every day <br />5: I couldn\'t stop thinking about this course')
     difficulty_rating = forms.ChoiceField(choices=CHOICES, label='How difficult was this class?', help_text='1: I could do the homework in my sleep <br />5: I still don\'t understand what I did in this course')
     competency_rating = forms.ChoiceField(choices=CHOICES, label='How competent was the professor?', help_text='1: The prof had no clue <br />5: The prof knew the material backwards and forwards')
     lecturing_rating = forms.ChoiceField(choices=CHOICES, label='How was the professor\'s lecturing style?', help_text='1: Lectures were poorly planned and delivered <br />5: I remember every word the prof said')
-    enthusiasm_rating = forms.ChoiceField(choices=CHOICES, label='How enthusiastic was the professor?', help_text='1: The prof had no pulse <br />5: The prof\'s excitement was infectious')
+    enthusiasm_rating = forms.ChoiceField(choices=CHOICES, label='How enthusiastic was the professor?', help_text='1: The professor had no pulse <br />5: The prof\'s excitement was infectious')
     approachable_rating = forms.ChoiceField(choices=CHOICES, label='How approachable was the professor?', help_text='1: I would rather speak to Darth Vader <br />5: I consider this prof a personal friend')
-    inclusivity_rating = forms.ChoiceField(choices=CHOICES, label='How inclusive was the classroom environment?', help_text='1: My opinions were not respected <br />5: Everyone\'s voice was heard and respected')
-    work_per_week = forms.IntegerField(max_value=25, label='How many hours of work did you have each week?')
-    grade = forms.ChoiceField(choices=POSSIBLE_GRADES_OPTIONS, required=False)
+    inclusivity_rating = forms.ChoiceField(choices=CHOICES, label='How inclusive was the classroom environment?', help_text='1: I felt afraid to contribute <br />5: Everyone\'s voice was heard and respected')
+    respect_rating = forms.ChoiceField(choices=CHOICES, label='I felt that my perspectives were respected in this course.', help_text='1: My perspectives were not respected <br />5: Everyone\'s voice was heard and respected')
+    challenge_rating = forms.ChoiceField(choices=CHOICES, label='I felt challenged in ways that were constructive and meaninful.', help_text='1: Nothing but mindless busywork <br />5: This course was intellectually engaging and stimulating')
     comments = forms.CharField(widget=forms.Textarea(attrs={'cols': '60', 'rows': '15'}), label='General comments:')
 
     def __init__(self, course_code, review=None, *args, **kwargs):
@@ -366,6 +368,8 @@ class ReviewForm(forms.Form):
         self.initial['approachable_rating'] = smart_int(review.approachable_rating)
         self.initial['inclusivity_rating'] = smart_int(review.inclusivity_rating)
         self.initial['enthusiasm_rating'] = smart_int(review.enthusiasm_rating)
+        self.initial['respect_rating'] = smart_int(review.respect_rating)
+        self.initial['challenge_rating'] = smart_int(review.challenge_rating)
         self.initial['comments'] = review.comments
         self.initial['grade'] = review.grade
     def course(self):
