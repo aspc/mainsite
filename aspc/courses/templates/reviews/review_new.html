@@ -18,6 +18,17 @@
 {% endblock %}
 
 {% block "content" %}
+<p>
+When writing reviews, please note that:
+	<ul>
+		<li>Not all questions are applicable to all courses</li>
+		<li>No identifying information will be attached to your response, but your comments are viewable by any current Pomona student.</li>
+		<li>You have the option of removing your review in the future.</li>
+	</ul>
+	<br>
+	When reading reviews, please note that students of backgrounds (including identities
+	and experiences with the course content) take and evaluate this course.
+</p>
 <div id="new_review_form">
 	<form action="{{ action }}" method="POST">
 		{% csrf_token %}

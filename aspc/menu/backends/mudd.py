@@ -1,124 +1,94 @@
-from selenium import webdriver
-import logging
-
-logger = logging.getLogger(__name__)
+import requests
+import demjson
+from bs4 import BeautifulSoup
+import datetime
+from dateutil import parser
 
 class MuddBackend(object):
     def __init__(self):
-        self.selenium = webdriver.PhantomJS("phantomjs", service_args=['--ssl-protocol=any'])
-        self.homepage_url = "https://hmc.sodexomyway.com/dining-choices/index.html"
+        #self.menus format:
+        # {'day':
+        #    {'meal': ['fooditem']
+        #    }
+        # }         
         self.menus = {
-            'mon': {}, # Each day dict contains key value pairs as meal_name, [fooditems]
+            'mon': {},
             'tue': {},
             'wed': {},
             'thu': {},
             'fri': {},
             'sat': {},
             'sun': {}
-        }
-        try:
-            self.menu_url = self.get_menu_url()
-        except:
-            self.link_unavailable()
-            return
-    
-    def get_menu_url(self):
-        self.selenium.get(self.homepage_url)
-        link_container = self.selenium.find_element_by_class_name("accordionBody")
-        link = link_container.find_element_by_tag_name("a")
-        return link.get_attribute("href")        
-    
-    def link_unavailable(self):
-        logger.error("Error: Menu link currently unavailable from website")
+        } 
     
     def get_hours(self):
         """
         returns hours of operation
         """
-        self.selenium.get(self.homepage_url)
-        hours_element = self.selenium.find_element_by_id("ui-accordion-accordion_3543-panel-1")
-        return hours_element.get_attribute("innerText")
+        index_url = 'https://hmc.sodexomyway.com/dining-choices/index.html'
+        resp = requests.get(index_url)
+        doc = BeautifulSoup(resp.text, "html.parser")
+        hours = doc.find_all('div', {'class': 'accordionBody'})[1]
+        return hours.span
     
-    def get_day_menu(self,day_id):
+    def get_monday(self):
         """
-        fetches menu data for a specific day in a returned dict of
-        format meal_name: [fooditems]
+        Return datetime object of Monday of week
         """
-        #Breakfast,Lunch,Dinner on wkdays, Lunch,Dinner on wknds
-        mealname_list = []
-        mealname_data = self.selenium.find_elements_by_tag_name("h2")
-        for meal in mealname_data:
-            mealname_list.append(meal.get_attribute("innerText").lower())
-        
-        if day_id == 5 or day_id == 6: #if it's a weekend
-            mealname_list[0] = "brunch"
-        
-        full_day_menu = {} #menu data with all meals and food items for specific day
-        mealtable_data = self.selenium.find_elements_by_tag_name("table")
-        index = 0 #use to match mealtable to the above mealname list
-        for mealtable in mealtable_data:
-            meal_menu = [] #[fooditems] for the specific meal
-            menu_data = mealtable.find_elements_by_tag_name("tr")
-            for row_item in menu_data:
-                #This extracts categories, uncomment if desired
-                """
-                if food_item.get_attribute("class") == "category":
-                    print food_item.get_attribute("innerText")
-                """
-                #extract only food names to add to menu list
-                food_type = row_item.get_attribute("class")
-                if "product" in food_type:
-                    food_item = row_item.find_element_by_tag_name("td").get_attribute("innerText")
-                    #uncomment if this is a desired feature...
-                    """
-                    #add vegetarian, vegan, mindful tags if applicable
-                    tags = " ("
-                    if "vegetarian" in food_type:
-                        tags += "V,"
-                    if "vegan" in food_type:
-                        tags += "VG,"
-                    if "mindful" in food_type:
-                        tags += "M,"
-                    if tags != " (":
-                        tags = tags[:-1] +")" #remove extra comma and add )
-                        food_item += tags
-                    """
-                    meal_menu.append(food_item)
-            full_day_menu[mealname_list[index]] = meal_menu
-            index += 1
-        return full_day_menu
-    
-    def update_progress(self,day_name):
-        logger.info("Scraped Mudd-" + day_name)
-        
-    def print_timeout_error(self):
-        logger.error("Error: Mudd's website likely timed out or sent a bad response. Returning days that were successfully scraped.")
-        
+        week = []
+        now = datetime.datetime.now().date()
+        return now - datetime.timedelta(days=now.weekday()) #Monday
+
     def menu(self):
         """
         Returns menu for this week
         """
-        try:
-            self.selenium.get(self.menu_url)
-        except:
-            self.print_timeout_error()
-            return self.menus
+        index_url = 'https://hmc.sodexomyway.com/smgmenu/json/harvey%20mudd%20college%20-%20resident%20dining'
+        raw_string = requests.get(index_url).text
+    
+        #The link above isn't a traditional json - it's a js file with:
+        #1. a pseudo json (the keys aren't contained in strings and therefore can't
+        #be processed by the traditional json library)
+        #2. a data object contains all the information for a given food item
         
-        #toggle through each day's button and scrape the updated menu.
-        #skip if button not found (in case of shorter week)
-        for i in range(7):
-            try:
-                all_buttons = self.selenium.find_elements_by_xpath('//a[@href="javascript:void(0)"]')
-                for button in all_buttons:
-                    menu_button = button.get_attribute("onclick")
-                    if menu_button == "changeTab(%d)"%(i):
-                        day_name = button.get_attribute("innerHTML")
-                        day_name = day_name[:3].lower() #Monday -> mon
-                        button.click()
-                        self.menus[day_name] = self.get_day_menu(i)
-                        self.update_progress(day_name)
-                        break
-            except:
-                self.print_timeout_error()
-                return self.menus
-        return self.menus    
+        #Isolate the pseudo json and make it more json-like
+        parts  = raw_string.split("aData=new Object();")
+        json_part = parts[0].split("menuData = ")
+        json_string = "{ menuData : " + json_part[1].strip()[0:-1] + " }"
+        #Run it through demjson, which can handle the weird format
+        json_obj = demjson.decode(json_string)
+        #Sometimes, the json will have 2+ weeks' menus in it. Check which one
+        #matches the current week.
+        #If the check doesn't work, display whatever week it has available...
+        menu_json = json_obj['menuData'][0]['menus'][0]['tabs']
+        for i in range(len(json_obj)):
+            start_date = json_obj['menuData'][i]['startDate']
+            if parser.parse(start_date).date() == self.get_monday():
+                menu_json = json_obj['menuData'][i]['menus'][0]['tabs']
+        #Parse contents of 'aData'
+        aData = parts[1]
+        fooditem_dict = {}
+        for entry in aData.split("\r\n"):
+            entry_parts = entry.split("]=new Array(") #looks like ["aData['###'","'# oz, '0'..."]
+            if len(entry_parts)==2:
+                fooditem_id = entry_parts[0].split("aData[")[1][1:-1] #remove surrounding ''s
+                fooditem_data = entry_parts[1][:-1] #remove ) at end
+                fooditem_data_list = [data[1:-1] for data in fooditem_data.split(",")]
+                fooditem_dict[fooditem_id]=fooditem_data_list
+        
+        for day in menu_json:
+            day_dict = {} # key: meal_name -> value: (key: station -> value: [items])
+            day_name = day["title"].lower()[:3] #Monday -> mon
+            for meal in day["groups"]:
+                meal_name = meal["title"].lower()
+                if (day_name == "sat" or day_name == "sun") and meal_name == "lunch":
+                    meal_name = "brunch"
+                day_dict[meal_name] = [] #[food items]
+                station_list = meal['category']
+                for station in station_list:
+                    food_id_list = station['products']
+                    for food_id in food_id_list:
+                        food_name = fooditem_dict[food_id][22].replace("\\","") #'General Tso\'s Tofu' -> 'General Tso's Tofu'
+                        day_dict[meal_name].append(food_name)
+            self.menus[day_name] = day_dict
+        return self.menus
