@@ -10,7 +10,7 @@ class MuddBackend(object):
         # {'day':
         #    {'meal': ['fooditem']
         #    }
-        # }         
+        # }
         self.menus = {
             'mon': {},
             'tue': {},
@@ -19,8 +19,8 @@ class MuddBackend(object):
             'fri': {},
             'sat': {},
             'sun': {}
-        } 
-    
+        }
+
     def get_hours(self):
         """
         returns hours of operation
@@ -30,7 +30,7 @@ class MuddBackend(object):
         doc = BeautifulSoup(resp.text, "html.parser")
         hours = doc.find_all('div', {'class': 'accordionBody'})[1]
         return hours.span
-    
+
     def get_monday(self):
         """
         Return datetime object of Monday of week
@@ -45,12 +45,12 @@ class MuddBackend(object):
         """
         index_url = 'https://hmc.sodexomyway.com/smgmenu/json/harvey%20mudd%20college%20-%20resident%20dining'
         raw_string = requests.get(index_url).text
-    
+
         #The link above isn't a traditional json - it's a js file with:
         #1. a pseudo json (the keys aren't contained in strings and therefore can't
         #be processed by the traditional json library)
         #2. a data object contains all the information for a given food item
-        
+
         #Isolate the pseudo json and make it more json-like
         parts  = raw_string.split("aData=new Object();")
         json_part = parts[0].split("menuData = ")
@@ -61,7 +61,7 @@ class MuddBackend(object):
         #matches the current week.
         #If the check doesn't work, display whatever week it has available...
         menu_json = json_obj['menuData'][0]['menus'][0]['tabs']
-        for i in range(len(json_obj)):
+        for i in range(len(json_obj['menuData'])):
             start_date = json_obj['menuData'][i]['startDate']
             if parser.parse(start_date).date() == self.get_monday():
                 menu_json = json_obj['menuData'][i]['menus'][0]['tabs']
@@ -75,7 +75,7 @@ class MuddBackend(object):
                 fooditem_data = entry_parts[1][:-1] #remove ) at end
                 fooditem_data_list = [data[1:-1] for data in fooditem_data.split(",")]
                 fooditem_dict[fooditem_id]=fooditem_data_list
-        
+
         for day in menu_json:
             day_dict = {} # key: meal_name -> value: (key: station -> value: [items])
             day_name = day["title"].lower()[:3] #Monday -> mon
