@@ -103,10 +103,24 @@
 	vertical-align: top !important;
 }
 
+#menu_table .meal_col {
+	vertical-align: top !important;
+	width: 33%;
+}
+
+#menu_table .wknd_meal_col {
+	vertical-align: top !important;
+	width: 50%;
+}
+
 #desktop_page_title {
 	display: block;
 }
 
 #mobile_page_title {
 	display: none;
+}
+
+DT {
+	padding-left: 15px;
 }

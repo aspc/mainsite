@@ -9,7 +9,8 @@ class PitzerBackend(object):
     def __init__(self):
         #self.menus format:
         # {'day':
-        #    {'meal': ['fooditems']
+        #    {'meal': 
+        #	    {'station':['fooditem']}
         #    }
         # }         
         self.menus = {
@@ -63,13 +64,17 @@ class PitzerBackend(object):
             all_meals = day["cafes"]["219"]["dayparts"][0]
             for meal in all_meals:
                 meal_name = meal["label"].lower()
-                day_dict[meal_name] = [] #food items
+                day_dict[meal_name] = {} #station->[food items]
                 station_list = meal['stations']
                 for station in station_list:
+                    station_name = string.capwords(station['label'])
                     food_id_list = station['items']
                     for food_id in food_id_list:
                         food_name = string.capwords(fooditem_dict[food_id]["label"])
                         if fooditem_dict[food_id]["tier"] == 1: #tiers 2+ display too much detail
-                            day_dict[meal_name].append(food_name)
+                            if station_name not in day_dict[meal_name].keys():
+                                day_dict[meal_name][station_name] = [food_name]
+                            else:
+                                day_dict[meal_name][station_name].append(food_name)
             self.menus[day_name] = day_dict
         return self.menus
