@@ -1,0 +1,34 @@
+{% extends 'general/forum_base.html' %}
+
+{% block "metadesc" %}
+	Ask questions about financial aid.
+{% endblock %}
+{% block "ogdesc" %}
+	Ask questions about financial aid.
+{% endblock %}
+
+{% block "title" %}Ask a question{% endblock %}
+{% block "page_title" %}Ask a question{% endblock %}
+
+{% block "questions_breadcrumbs" %}
+	<li>
+		<a href="{% url "search_questions" %}">Browse and Ask questions</a>
+	</li>
+	<li>Ask a question</li>
+{% endblock %}
+
+{% block "content" %}
+<div id="new_question_form">
+    <div style="margin: 20px 0;"></div>
+    <form action="{{ action }}" method="POST">
+		{% csrf_token %}
+        {% for field in form %}
+            {{ field.label }} <br /><br />
+            {{ field }}
+            {{ field.errors }} <br /><br /><br />
+        {% endfor %}
+        <input id="submit" class="mh-search-button" type="submit" value="Submit question &rarr;" />
+	</form>
+    <div style="margin: 20px 0;"></div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'forum_base.html' %}
+
+{% block "content" %}
+    {% if user.is_authenticated %}
+        <form class="form-search">
+            <div class="mh-search-form-div">
+                <input type="text" class="mh-search-bar" name="q">
+                <button type="submit" class="mh-search-button">Search</button>
+            </div>
+        </form>
+
+        {% for post in posts %}
+                    <hr/>
+
+            {% include 'posts/post.html' with p=post %}
+        {% endfor %}
+    {% else %}
+    <p>Pomona students, <a href="{% url 'aspc.auth2.views.login' %}?next={{ absolute_uri|urlencode:"" }}">log in</a> to see the financial aid forum.</p>
+    <p>5C students, we want you to be able to use this app too, but your ITS departments won't let us grant you access. <a href="http://itattcc.claremont.edu/project/team/">Submit a complaint on this page</a> if you're angry!</p>
+    {% endif %}
+{% endblock %}

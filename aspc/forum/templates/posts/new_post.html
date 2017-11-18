@@ -1,25 +1,34 @@
-{% extends 'answers.html' %}
+{% extends 'general/forum_base.html' %}
 
+{% block "metadesc" %}
+	Submit a post about financial aid.
+{% endblock %}
+{% block "ogdesc" %}
+	Submit a post about financial aid.
+{% endblock %}
+
+{% block "title" %}Submit a post{% endblock %}
+{% block "page_title" %}Submit a post{% endblock %}
 
 {% block "questions_breadcrumbs" %}
-    <li>
-        <a href="{% url "search_questions" %}">Answer this question</a>
-    </li>
-    <li>Ask this question</li>
+	<li>
+		<a href="{% url "search_questions" %}">Browse and Submit Posts</a>
+	</li>
+	<li>Submit a post</li>
 {% endblock %}
 
 {% block "content" %}
-<div id="new_answer_form">
+<div id="new_post_form">
     <div style="margin: 20px 0;"></div>
     <form action="{{ action }}" method="POST">
-        {% csrf_token %}
+		{% csrf_token %}
         {% for field in form %}
             {{ field.label }} <br /><br />
             {{ field }}
             {{ field.errors }} <br /><br /><br />
         {% endfor %}
         <input id="submit" class="mh-search-button" type="submit" value="Submit question &rarr;" />
-    </form>
+	</form>
     <div style="margin: 20px 0;"></div>
 </div>
 {% endblock %}
