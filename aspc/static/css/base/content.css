@@ -97,7 +97,7 @@ body.wide .row {
 	width: 80%;
 	float: left;
 	background: white;
-	border-bottom: 0.4em solid #486285;
+	margin-bottom: -3px;
 }
 
 .secondary {
