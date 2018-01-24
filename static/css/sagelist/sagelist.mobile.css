@@ -1,0 +1,43 @@
+@media handheld, only screen and (max-width: 767px) {
+
+	.sagelist ul.stats {
+		display: none;
+	}
+
+
+	.sagelist .authors, .sagelist .isbn, .sagelist .condition, .sagelist .recoop {
+		display: none;
+	}
+
+	.sagelist form label, .sagelist form .faux_label {
+		display: block;
+	}
+
+	.sagelist form ul {
+		margin-top: 0;
+	}
+
+	.sagelist ol#alphanav li {
+		display: inline-block;
+		padding: 0;
+		margin: 0.25em 0.25em;
+	}
+
+	.sagelist ol#alphanav a {
+		color: white;
+	}
+
+	.sagelist dl {
+		font-size: 0.85em;
+	}
+
+	.sagelist .detail_note {
+		height: 11em;
+	}
+
+	.sagelist input[type="submit"] {
+		width: 100%;
+		font-size: 1em;
+		height: 2em;
+	}
+}
