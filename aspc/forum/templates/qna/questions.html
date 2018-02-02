@@ -1,0 +1,19 @@
+{% extends 'forum_base.html' %}
+<div>
+	<a href="{% url "new_question" %}"><button>Ask a question</button></a>
+<div>
+	<p>
+		<h4>All Questions:</h4>
+	</p>
+{% for q in object.questions.all %}
+                    <hr/>
+
+            <div>
+            	<a href="/questions/{{q.id}}">{{q.title}}</a>
+				<strong>Posted on:</strong> {{ q.created_ts|date:"F d, Y" }}
+			<br />
+			</div>
+        {% endfor %}
+
+</div>
+   

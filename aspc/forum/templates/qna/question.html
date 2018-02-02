@@ -1,0 +1,12 @@
+{% extends 'forum_base.html' %}
+<div>
+	<p>
+		<h4>{{q.title}}</h4>
+	</p>
+	<p>{{q.text}}</p>
+	{% for answer in q.answers %}
+		<p>{{answer.text}}</p>
+
+		{% endfor %}
+	<a href="{% url "new_answer" %}"
+</div>

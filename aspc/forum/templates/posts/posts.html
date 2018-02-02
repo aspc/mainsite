@@ -1,0 +1,12 @@
+{% extends 'forum_base.html' %}
+<div>
+	<a href={"% url "new_post" %"}
+	<p>
+		<h4>All posts:</h4>
+	</p>
+{% for post in object.posts.all %}
+                    <hr/>
+
+            {% include 'posts/post.html' with p=post %}
+        {% endfor %}
+    </div>
