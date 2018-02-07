@@ -174,6 +174,20 @@ class CourseList(APIView):
         serializer = CourseSerializer(courses, many=True)
         return Response(serializer.data)
 
+class CourseName(APIView):
+    """
+    List courses by name
+    """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthenticationWithQueryString)
+    permission_classes = (IsAuthenticated,)
+    throttle_classes = (UserRateThrottle,)
+
+    def get(self, request, name, format=None):
+        name_tokens = re.split('(?!-)\W+', name)
+        courses = list(Course.objects.filter(reduce(operator.and_,(Q(name__icontains=nt) for nt in name_tokens))).distinct())
+        serializer = CourseSerializer(courses, many=True)
+        return Response(serializer.data)
+
 class CourseDepartment(APIView):
     """
     List all courses
