@@ -16,6 +16,7 @@ class Post(models.Model):
 	created_ts = models.DateTimeField(default=django.utils.timezone.now)
 	text = models.TextField()
 	tags = models.ManyToManyField(Tag, blank=True)
+	anonymous = models.BooleanField(default = False)
 class Question(models.Model):
 	author = models.ForeignKey(User)
 	title = models.CharField(max_length=200)

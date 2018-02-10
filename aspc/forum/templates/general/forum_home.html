@@ -4,8 +4,9 @@
     {% if user.is_authenticated %}
             <nav>
                 <ul id="home" class="listview">
-                    <li><a href="{% url "all_posts" %}">View all posts</a></li>
-                    <li><a href="{% url "all_questions" %}">Ask, answer or browse questions</a></li>
+                    <li><a href="{% url "all_posts" %}">General Forum</a></li>
+                    <li><a href="{% url "all_questions" %}">Q & A section</a></li>
+                    <li><a href="{% url "all_questions" %}">Resources</a></li>
                 </ul>
             </nav>
     {% else %}

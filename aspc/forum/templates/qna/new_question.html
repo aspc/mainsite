@@ -18,7 +18,8 @@
 {% endblock %}
 
 {% block "content" %}
-<div id="new_question_form">
+<h2>Your question will be anonymous. <br><br>You will be contacted by email if another student answers their question</h2>
+<div id="new_review_form">
     <div style="margin: 20px 0;"></div>
     <form action="{{ action }}" method="POST">
 		{% csrf_token %}

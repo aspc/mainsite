@@ -11,14 +11,20 @@
 {% block "page_title" %}Submit a post{% endblock %}
 
 {% block "content" %}
-<div id="new_post_form">
+<h2>Tell us about your experience with financial aid at Pomona College. Your post is anonymous. <br><br>You will remain anonymous unless you choose to respond to students' emails regarding the post, in which case you will reveal their identity.</h2>
+<div id="new_review_form">
     <div style="margin: 20px 0;"></div>
     <form action="{{ action }}" method="POST">
 		{% csrf_token %}
         {% for field in form %}
-            {{ field.label }} <br /><br />
-            {{ field }}
-            {{ field.errors }} <br /><br /><br />
+            {% if field.name == 'anonymous' %}
+                {{ field }} {{ field.label }} 
+                {{ field.errors }} <br /><br /><br />
+            {% else %}
+                {{ field.label }} <br /><br />
+                {{ field }}
+                {{ field.errors }} <br /><br /><br />
+            {% endif %}
         {% endfor %}
         <input id="submit" class="mh-search-button" type="submit" value="Submit post &rarr;" />
 	</form>
