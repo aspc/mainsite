@@ -10,13 +10,6 @@
 {% block "title" %}Submit a post{% endblock %}
 {% block "page_title" %}Submit a post{% endblock %}
 
-{% block "questions_breadcrumbs" %}
-	<li>
-		<a href="{% url "search_questions" %}">Browse and Submit Posts</a>
-	</li>
-	<li>Submit a post</li>
-{% endblock %}
-
 {% block "content" %}
 <div id="new_post_form">
     <div style="margin: 20px 0;"></div>
@@ -27,7 +20,7 @@
             {{ field }}
             {{ field.errors }} <br /><br /><br />
         {% endfor %}
-        <input id="submit" class="mh-search-button" type="submit" value="Submit question &rarr;" />
+        <input id="submit" class="mh-search-button" type="submit" value="Submit post &rarr;" />
 	</form>
     <div style="margin: 20px 0;"></div>
 </div>

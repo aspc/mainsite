@@ -1,12 +1,20 @@
-{% extends 'forum_base.html' %}
+{% extends 'general/forum_base.html' %}
+{% block "content" %}
 <div>
 	<p>
 		<h4>{{q.title}}</h4>
 	</p>
 	<p>{{q.text}}</p>
-	{% for answer in q.answers %}
-		<p>{{answer.text}}</p>
-
-		{% endfor %}
-	<a href="{% url "new_answer" %}"
+	{% with q.answers.all as answers %}
+		{% if answers %}
+			<h3> answers </h3>
+			{% for answer in answers %}
+			<p>{{answer.text}}</p>
+			{% endfor %}
+		{% else %}
+			<p>There isn't any answer for this question yet.</p>
+		{% endif %}
+	{% endwith %}
+	<a href="{% url "new_answer" q.id %}">Write an answer</a>
 </div>
+{% endblock %}

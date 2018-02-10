@@ -1,4 +1,4 @@
-{% extends 'question.html' %}
+{% extends 'qna/question.html' %}
 
 
 {% block "questions_breadcrumbs" %}
@@ -18,7 +18,7 @@
             {{ field }}
             {{ field.errors }} <br /><br /><br />
         {% endfor %}
-        <input id="submit" class="mh-search-button" type="submit" value="Submit question &rarr;" />
+        <input id="submit" class="mh-search-button" type="submit" value="Submit answer &rarr;" />
     </form>
     <div style="margin: 20px 0;"></div>
 </div>

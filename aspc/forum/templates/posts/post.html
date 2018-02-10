@@ -3,10 +3,5 @@
 	<h4>{{p.title}}</h4>
 	<strong>Posted on:</strong> {{ p.created_ts|date:"F d, Y" }}
 	<br />
-    <p>{{ p.text|linebreaksbr  }}</p>
-	<!--div class="reviews_list-edit_review">
-		{% if p.author == request.user %}
-			<a href="{% url "write_review" review.course.code_slug review.instructor.id %}"><button>This is your own review! Click to edit.</button></a>
-		{% endif %}
-	</div-->
+    <p>{{ p.text|linebreaksbr  }}</p>	
 </div>

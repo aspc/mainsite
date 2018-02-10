@@ -4,15 +4,17 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from aspc.mentalhealth.forms import MentalHealthReviewForm
-from aspc.mentalhealth.models import Therapist, MentalHealthReview
+from aspc.forum.forms import PostForm, QuestionForm, AnswerForm
+from aspc.forum.models import Question, Post, Answer
+#from aspc.forum.models import Therapist, MentalHealthReview
 
 class PostView(View):
     @method_decorator(login_required)
     def get(self, request):
-        return
+        form = PostForm()
+        return render(request, 'posts/new_post.html', {'form': form})
     @method_decorator(login_required)
-    def post(self, request, therapist_id=None):
+    def post(self, request):
         #this is for editing
         #try:
         #    review = MentalHealthReview.objects.get(therapist=therapist_id, reviewer=self.request.user)
@@ -21,28 +23,46 @@ class PostView(View):
         # check valid?
         form = PostForm(request.POST)#, instance=review)
         if form.is_valid():
-    		post = form.save(commit=False)
-    		post.author = self.request.user
-    		post.save()
+            post = form.save(commit=False)
+            post.author = self.request.user
+            post.save()
             form.save_m2m()
-            return redirect(reverse('showAllPosts'))
-		else:
+            return redirect(reverse('all_posts'))
+        else:
             return render(request, 'posts/new_post.html', {'form' : form})
         
 
 class QuestionView(View):
-	@method_decorator(login_required)
-    def get(self, request, therapist_id=None):
-        return
     @method_decorator(login_required)
-    def post(self, request, therapist_id=None):
+    def get(self, request):
+        form = QuestionForm()
+        return render(request, 'qna/new_question.html', {'form': form})
+    @method_decorator(login_required)
+    def post(self, request):
         form = QuestionForm(request.POST)
         if form.is_valid():  
             question = form.save(commit=False)
             question.author = self.request.user
             question.save()
             form.save_m2m()
-        return redirect(reverse('showAllQuestions'))
+        return redirect(reverse('all_questions'))
+
+class AnswerView(View):
+    @method_decorator(login_required)
+    def get(self, request, question_id):
+        form = AnswerForm()
+        return render(request, 'qna/new_answer.html', {'form': form})
+    @method_decorator(login_required)
+    def post(self, request, question_id):
+        form = AnswerForm(request.POST)
+        if form.is_valid():  
+            answer = form.save(commit=False)
+            answer.author = self.request.user
+            question = get_object_or_404(Question, id=question_id)
+            answer.question = question
+            answer.save()
+            form.save_m2m()
+        return redirect(reverse('all_questions'))
 
 # class QuestionDetailView(View):
 #     model = Question
@@ -62,10 +82,12 @@ class QuestionView(View):
 #         return context    
 
 def showAllPosts(request):
-    return render(request, 'posts/posts.html')
+    posts = Post.objects.all()
+    return render(request, 'posts/posts.html', {'posts' : posts})
 
 def showAllQuestions(request):
-    return render(request, 'qna/questions.html')
+    questions = Question.objects.all()
+    return render(request, 'qna/questions.html', {'questions': questions})
 
 def question(request, question_id):
     question = get_object_or_404(Question, id=question_id)
