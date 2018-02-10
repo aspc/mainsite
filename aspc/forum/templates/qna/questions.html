@@ -1,28 +1,21 @@
 {% extends 'general/forum_base.html' %}
 {% block "content" %}
 <div>
-<nav>
-	<ul id="home" class="listview">
-		<li><a href="{% url "new_question" %}">Ask a question</a></li>
-	</ul>
-</nav>
-	{% if questions % }
-
+	<a href="{% url "new_question" %}"><h2>Ask a question</h2></a></li>
+	{% if questions %}
 		<p>
-			<h4>All Questions:</h4>
+			<h2>All Questions:</h2>
 		</p>
 		{% for q in questions %}
-                    <hr/>
+                    <hr>
             <div>
-            	<a href="{% url 'question' q.id %}">{{q.title}}</a>
-				<strong>Posted on:</strong> {{ q.created_ts|date:"F d, Y" }}
-			<br />
+            	<a href="{% url 'question' q.id %}"><h3>{{q.title}}</h3></a>
+				Posted on: {{ q.created_ts|date:"F d, Y" }}
 			</div>
         {% endfor %}
-    {% else % }
+    {% else %}
     	<p>No questions yet</p>
     {% endif %}
-
 </div>
 {% endblock %}
    

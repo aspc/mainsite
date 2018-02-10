@@ -2,19 +2,22 @@
 {% block "content" %}
 <div>
 	<p>
-		<h4>{{q.title}}</h4>
+		<h2>{{q.title}}</h2>
 	</p>
 	<p>{{q.text}}</p>
+	<a href="{% url "new_answer" q.id %}"><h3>Write an answer</h3></a>
 	{% with q.answers.all as answers %}
 		{% if answers %}
-			<h3> answers </h3>
-			{% for answer in answers %}
-			<p>{{answer.text}}</p>
-			{% endfor %}
+			<h2> answers </h2>
+				{% for answer in answers %}
+					<hr>
+					<div>
+						<p>{{answer.text}}</p>
+					</div>
+				{% endfor %}
 		{% else %}
 			<p>There isn't any answer for this question yet.</p>
 		{% endif %}
 	{% endwith %}
-	<a href="{% url "new_answer" q.id %}">Write an answer</a>
 </div>
 {% endblock %}
