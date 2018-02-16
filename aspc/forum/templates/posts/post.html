@@ -3,5 +3,8 @@
 	<h4>{{p.title}}</h4>
 	<strong>Posted on:</strong> {{ p.created_ts|date:"F d, Y" }}
 	<br />
-    <p>{{ p.text|linebreaksbr  }}</p>	
+    <p>{{ p.text|linebreaksbr  }}</p>
+    {% if not p.anonymous %}
+		<a href="mailto:{{ p.author.email }}">Contact the student</a>
+	{% endif %}	
 </div>
