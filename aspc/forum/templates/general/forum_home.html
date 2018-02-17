@@ -6,9 +6,23 @@
                 <ul id="home" class="listview">
                     <li><a href="{% url "all_posts" %}">General Forum</a></li>
                     <li><a href="{% url "all_questions" %}">Q & A section</a></li>
-                    <li><a href="{% url "all_questions" %}">Resources</a></li>
+                    <li><a href="{% url "resources" %}">Resources</a></li>
                 </ul>
             </nav>
+            <div id="new_review_form">
+                <h2> Search for tags...</h2>
+                <form action="{{ action }}" method="POST">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        {% if field.label == 'Search page' %}
+                            <p> Search in general forum or Q&A</p>
+                        {% endif %}
+                        {{ field }}
+                        {{ field.errors }}
+                    {% endfor %}
+                <input id="submit" class="mh-search-button" type="submit" value="Search &rarr;" />
+                </form>
+            </div>
     {% else %}
     <p>Pomona students, <a href="{% url 'aspc.auth2.views.login' %}?next={{ absolute_uri|urlencode:"" }}">log in</a> to see the financial aid forum.</p>
     <p>5C students, we want you to be able to use this app too, but your ITS departments won't let us grant you access. <a href="http://itattcc.claremont.edu/project/team/">Submit a complaint on this page</a> if you're angry!</p>

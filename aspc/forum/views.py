@@ -4,9 +4,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from aspc.forum.forms import PostForm, QuestionForm, AnswerForm
+from aspc.forum.forms import PostForm, QuestionForm, AnswerForm, SearchForm
 from aspc.forum.models import Question, Post, Answer
-#from aspc.forum.models import Therapist, MentalHealthReview
 
 class PostView(View):
     @method_decorator(login_required)
@@ -15,12 +14,6 @@ class PostView(View):
         return render(request, 'posts/new_post.html', {'form': form})
     @method_decorator(login_required)
     def post(self, request):
-        #this is for editing
-        #try:
-        #    review = MentalHealthReview.objects.get(therapist=therapist_id, reviewer=self.request.user)
-        #except MentalHealthReview.DoesNotExist:
-        #    review = None
-        # check valid?
         form = PostForm(request.POST)#, instance=review)
         if form.is_valid():
             post = form.save(commit=False)
@@ -63,23 +56,7 @@ class AnswerView(View):
             answer.save()
             form.save_m2m()
         return redirect(reverse('all_questions'))
-
-# class QuestionDetailView(View):
-#     model = Question
-#     template_name = "qna/question.html"
-
-#     def get_object(self):
-#         question = Question.objects.filter(id__exact=self.kwargs['id'])
-#         if not question:
-#             raise Http404
-#         return question
-
-#     def get_context_data(self, **kwargs):
-#         context = super(QuestionDetailView, self).get_context_data(**kwargs)
-#         question_object = get_object_or_404(Instructor, id=self.kwargs['id'])
-#         answers = Answer.objects.filter(question_id=question_object.id)
-#         context['answers'] = answers
-#         return context    
+   
 
 def showAllPosts(request):
     posts = Post.objects.all()
@@ -100,5 +77,23 @@ def post(request, post_id):
 
 
 def home(request):
-    return render(request, 'general/forum_home.html')
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            page = form.cleaned_data["search_page"]
+            tags = list(map(lambda tag: tag.name, form.cleaned_data["tags"]))
+            if (page == 'Question'):
+                questions = Question.objects.filter(tags__name__in=tags)
+                return render(request, 'qna/questions.html', {'questions': questions})
+            else:
+                posts = Post.objects.filter(tags__name__in=tags)
+                return render(request, 'posts/posts.html', {'posts' : posts})
+
+    else:
+        form = SearchForm()  
+        return render(request, 'general/forum_home.html', {'form': form})
+    return render(request, 'general/forum_home.html', {'form': form})
+
+def showResources(request):
+    return render(request, 'general/resources.html')
 

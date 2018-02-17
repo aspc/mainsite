@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib.auth.decorators import login_required
-from aspc.forum.views import home, question, post, QuestionView, AnswerView, showAllQuestions, showAllPosts, PostView
+from aspc.forum.views import home, question, post, QuestionView, AnswerView, showAllQuestions, showAllPosts, PostView, showResources
 
 urlpatterns = [
     url(r'^$', home, name="forum_home"),
@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^posts/(?P<post_id>\d+)/?$', post, name="post"),
     url(r'^posts/new/?$', login_required(PostView.as_view()), name="new_post"),
     url(r'^question/(?P<question_id>\d+)/?$', question, name="question"),
+    url(r'^resources/$', showResources, name="resources")
 ]

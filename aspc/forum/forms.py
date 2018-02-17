@@ -1,6 +1,6 @@
-from django.forms import ModelForm, CheckboxSelectMultiple
+from django.forms import Form, ModelForm, CheckboxSelectMultiple, ModelMultipleChoiceField, ChoiceField, RadioSelect
 
-from aspc.forum.models import Post, Question, Answer
+from aspc.forum.models import Post, Question, Answer, Tag
 
 
 class PostForm(ModelForm):
@@ -31,3 +31,8 @@ class AnswerForm(ModelForm):
     class Meta:
         model = Answer
         exclude = ['author','created_ts','question']
+
+class SearchForm(Form):
+    tags = ModelMultipleChoiceField(queryset=Tag.objects, widget=CheckboxSelectMultiple)
+    choices = (('Post', 'Search posts'),('Question', 'Search questions'))
+    search_page = ChoiceField(choices=choices, widget=RadioSelect)
