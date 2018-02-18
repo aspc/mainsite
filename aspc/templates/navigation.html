@@ -29,6 +29,7 @@
         <li><a href="{% url "housing_home" %}">Housing Search</a></li>
         <li><a href="{% url "sagelist" %}">SageBooks</a></li>
         <li><a href="{% url "mentalhealth_home" %}">Mental Health Review</a></li>
+        <li><a href="{% url "forum_home" %}">Financial Aid Forum</a></li>
         {% for sub in pages %}
         <li><a href="{{ sub.get_absolute_url }}">{{ sub.display_title }}</a></li>
         {% endfor %}

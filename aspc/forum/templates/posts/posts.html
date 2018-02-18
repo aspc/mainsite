@@ -1,0 +1,18 @@
+{% extends 'general/forum_base.html' %}
+{% block "content" %}
+<div>
+	<a href="{% url "new_post" %}"><h2>Write a new post!</h2></a>
+	{% if posts %}
+		<p>
+			<h2>All posts:</h2>
+		</p>
+		{% for post in posts %}
+                  <hr/>
+
+            {% include 'posts/post.html' with p=post %}
+        {% endfor %}
+    {% else %}
+    	<p>No posts yet</p>
+    {% endif %}
+</div>
+{% endblock %}
