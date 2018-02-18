@@ -1,0 +1,31 @@
+.page ol.children {
+	list-style-type: none;
+	padding: 0;
+}
+
+.page ol.children:after, .page ol.children li:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.page ol.children li {
+	display: inline-block;
+	padding: 0.5em;
+	margin: 2%;
+	width: 40%;
+	height: 5em;
+	float: left;
+	overflow: hidden;
+	font-size: 0.85em;
+}
+
+.page ol.children li > a {
+	font-size: 1.25em;
+	text-decoration: none;
+	color: #0077af;
+}
+
+.page ol.children li p {
+	font-style: italic;
+}

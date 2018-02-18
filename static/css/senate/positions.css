@@ -1,0 +1,20 @@
+.primary.positions .content ol {
+	list-style-type: none;
+	padding-left: 0;
+}
+
+.primary.positions .position > hgroup {
+	padding-bottom: 0.25em;
+	border-bottom: 1px dotted #8c8c8c;
+}
+
+.primary.positions .position > hgroup h2 {
+	margin: 0.25em 0;
+}
+
+.primary.positions .position .email {
+	margin-top: 0;
+	font-weight: normal;
+	font-style: italic;
+	margin-bottom: 0.25em;
+}

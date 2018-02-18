@@ -1,0 +1,19 @@
+@media handheld, only screen and (max-width: 767px) {
+
+	.breadcrumbs {
+		margin: 0;
+		background-color: #364e69;
+		list-style-type: none;
+		font-size: 0.8em;
+		border-radius: 0.5em 0.5em 0 0;
+	}
+
+	.breadcrumbs .title {
+		display: none;
+	}
+
+	.breadcrumbs .short_title {
+		display: inline;
+	}
+
+}

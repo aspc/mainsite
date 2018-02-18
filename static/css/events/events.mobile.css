@@ -1,0 +1,31 @@
+@media handheld, only screen and (max-width: 767px) {
+
+	#event_submission, #watched_pages {
+		width: 100%;
+	}
+
+	#facebook_event_submission, #facebook_page_submission, #manual_submission {
+		padding: 1%;
+	}
+
+	#manual_submission textarea {
+		width: 200px;
+	}
+
+
+	.event-description__link {
+		word-break: break-all;
+		-ms-word-break: break-all;
+	}
+
+	/** Override event_calendar.css styles */
+
+	.fc-header-center {
+		font-size: 14px;
+	}
+
+	.fc-header-left, .fc-header-right {
+		display: none;
+	}
+
+}
