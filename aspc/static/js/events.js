@@ -31,7 +31,7 @@ ASPC.events = function () {
 				header: {
 					left: 'prev,next today',
 					center: 'title',
-					right: 'month,week,listDay,listYear'
+					right: 'month,basicWeek,listYear'
 				},
 				minTime: ASPC.calendar_data.earliest_event_time,
 				maxTime: ASPC.calendar_data.latest_event_time + 3,
