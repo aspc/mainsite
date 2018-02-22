@@ -7,15 +7,16 @@
 
 {% block "css" %}
 	{{ block.super }}
-	<link rel="stylesheet" type="text/css" href="{% static "css/events/event_calendar.css" %}"/>
+	<link rel="stylesheet" type="text/css" href="{% static "css/events/fullcalendar.css" %}"/>
 	<link rel="stylesheet" type="text/css" href="{% static "css/events/jquery-ui-datepicker.css" %}"/>
-	<link rel="stylesheet" type="text/css" href="{% static "css/events/event_calendar.print.css" %}" media="print"/>
+	<link rel="stylesheet" type="text/css" href="{% static "css/events/fullcalendar.print.css" %}" media="print"/>
 {% endblock %}
 
 {% block "js" %}
 	{{ block.super }}
 	<script type="text/javascript" src="{% static "js/events.js" %}"></script>
-	<script type="text/javascript" src="{% static "js/lib/event_calendar.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/lib/moment.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/lib/event_calendar.js" %}"></script>
 	<script type="text/javascript" src="{% static "js/lib/jquery-ui-datepicker.min.js" %}"></script>
 	<script type="text/javascript" src="{% static "js/lib/jquery-ui-datepicker-addon.js" %}"></script>
 {% endblock %}
