@@ -12,17 +12,48 @@ ASPC.events = function () {
 	var my = {
 		self: this,
 		init_calendar: function () {
+			// ASPC backend uses reads unix time stamps (in seconds),
+			// which need to be made compatible with Moment.js,
+			// which reads unix time stamps in milliseconds
+			var events = ASPC.calendar_data.events;
+			events = events.map(function(event) {
+				event.start = moment(event.start*1000);
+				event.end = moment(event.end * 1000);
+				event.latest_event_time = moment(event.latest_event_time * 1000);
+				event.earliest_event_time = moment(event.latest_event_time * 1000);
+
+				return event;
+			});
+
+			ASPC.calendar_data.events = events;
+
 			$('#calendar').fullCalendar({
 				header: {
 					left: 'prev,next today',
 					center: 'title',
-					right: 'month,agendaWeek,agendaDay'
+					right: 'month,basicWeek,listYear'
 				},
 				minTime: ASPC.calendar_data.earliest_event_time,
 				maxTime: ASPC.calendar_data.latest_event_time + 3,
 				allDaySlot: false,
 				editable: false,
 				events: ASPC.calendar_data.events
+				/*events: [
+		        {
+		            title  : 'event1',
+		            start  : moment()
+		        },
+		        {
+		            title  : 'event2',
+		            start  : moment(),
+		            //end    : moment(),
+		        },
+		        {
+		            title  : 'event3',
+		            start  : moment(),
+		            allDay : false // will make the time show
+		        }
+		    	],*/
 			});
 		},
 		init_datepicker: function () {
@@ -113,11 +144,13 @@ ASPC.events = function () {
 	 * @description Submits a manual event
 	 */
 	my.self.submit_manual_event = function () {
+		console.log($('#manual_event_start').val())
+		console.log(moment($('#manual_event_start').val()).format('YYYY-MM-DD hh:mm a'))
 		var manual_event = {
 			event_source: 'manual',
 			name: $('#manual_event_name').val(),
-			start: $('#manual_event_start').val(),
-			end: $('#manual_event_end').val(),
+			start: moment($('#manual_event_start').val()).format('YYYY-MM-DD hh:mm a'),
+			end: moment($('#manual_event_end').val()).format('YYYY-MM-DD hh:mm a'),
 			location: $('#manual_event_location').val(),
 			description: $('#manual_event_description').val(),
 			host: $('#manual_event_host').val(),
