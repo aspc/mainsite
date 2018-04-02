@@ -1,0 +1,176 @@
+@media handheld, only screen and (max-width: 767px) {
+
+	.row#content_main {
+		background: transparent;
+		box-shadow: none;
+		-webkit-box-shadow: none;
+	}
+
+	.messages li {
+		font-size: 0.85em;
+		margin-bottom: 1em;
+		border-radius: 0.5em;
+	}
+
+	.group.primary .content {
+		margin: 0;
+		background-color: white;
+		padding: 0.33em;
+		border-radius: 0 0 0.5em 0.5em;
+		font-size: 0.9em;
+	}
+
+	.group.primary {
+		background-color: #364d68;
+		float: none;
+	}
+
+
+	.page .body {
+		padding: 0.25em;
+	}
+
+	.page ol.children {
+		padding: 0;
+		margin: 0;
+	}
+
+	.page ol.children li {
+		font-size: 0.85em;
+		width: auto;
+		display: block;
+		float: none;
+		height: auto;
+	}
+
+	.page ol.children li > a {
+		font-size: 1.25em;
+		text-decoration: none;
+		color: #0077af;
+	}
+
+	.page ol.children li p {
+		font-style: italic;
+	}
+
+
+	ul.actions li {
+		display: block;
+	}
+
+	body > .container {
+		padding: 0;
+		min-width: 0;
+	}
+
+	.row {
+		width: 100%;
+		min-width: 0;
+		margin: 0 auto;
+		overflow: visible;
+	}
+
+	.primary {
+		background-color: transparent;
+		width: 100%;
+		border-bottom: none;
+	}
+
+	.secondary {
+		width: 100%;
+	}
+
+	.fullsize {
+		display: none;
+	}
+
+	.mobile {
+		display: inline;
+	}
+
+	/* @group Group blocks */
+
+	.row, .group {
+		width: 95% !important;
+		margin: 0 auto;
+		clear: both;
+	}
+
+	.group {
+		margin-bottom: 1em;
+		border-radius: 0.5em;
+		background-color: white;
+		box-shadow: 0px 0px 4px #222;
+		-webkit-box-shadow: 0px 0px 4px #222;
+	}
+
+	.group > h1, .group > h2, .header {
+		color: white;
+		padding: 0.33em 0.5em 0.33em 0.5em;
+		padding-left: 0.5em;
+		margin-bottom: 0;
+		margin-top: 0;
+		background-color: #456284;
+		border: 0.1em solid #5477a0;
+		font-weight: normal;
+		letter-spacing: 1px;
+	}
+
+	.group > h1 {
+		border-radius: 0.5em 0.5em 0 0;
+		font-size: 0.9em;
+	}
+
+	.group > h2, .header {
+		font-size: 0.85em;
+	}
+
+	nav .group > ul, nav .group > ol, nav .group > ul > li:last-child, nav .group > ol > li:last-child {
+		border-bottom-left-radius: 0.5em;
+		border-bottom-right-radius: 0.5em;
+	}
+
+	nav .group > ul, nav .group > ol {
+		list-style-type: none;
+		padding: 0;
+		margin: 0;
+		background-color: white;
+	}
+
+	nav .group > ul > li, nav .group > ol > li, .listview > li {
+		margin: 0;
+		clear: both;
+		border-bottom: 0.1em solid black;
+		padding: 0.5em;
+		color: black;
+	}
+
+	nav .group ul li:last-child, nav .group ol li:last-child, .listview > li:last-child {
+		border-bottom: none;
+	}
+
+	nav .group > ul > li > a, nav .group > ol > li > a, .listview > li > a {
+		padding: 0.25em;
+		padding-right: 1.5em;
+		display: block;
+		height: 100%;
+		text-decoration: none;
+		color: inherit;
+		background: url(../../images/chevron.png) no-repeat 98%;
+		background-size: 0.5em;
+		font-size: 1.5em;
+	}
+
+	nav .group ul li span.note, nav .group ol li span.note {
+		background: royalblue;
+		font-size: 0.8em;
+		padding: 0.2em 0.7em;
+		border-radius: 1em;
+		float: right;
+		text-shadow: none;
+		color: white;
+	}
+
+	/* @end */
+
+}

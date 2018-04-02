@@ -1,0 +1,60 @@
+.col-md-3 {
+    float: left; width: 25%;
+}
+.col-md-9 {
+    float: left; width: 75%;
+}
+.block-out {
+    clear: both; overflow: auto;
+}
+.fill-up-with-padding {
+    width: 90%;
+    padding: 10px 10px 10px 0px;
+}
+.margin-top-10 {
+    margin-top: 10px;
+}
+
+.mh-search-bar {
+    height: 40px;
+    padding: 2px 4px;
+    font-size: 18px;
+    line-height: 1;
+    width: 80%;
+    margin-top: 10px;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+}
+
+.mh-search-button {
+    height: 45px;
+    border: 1px solid rgba(0, 0, 0, 0);
+	background-color: #0071a6;
+	color: white;
+	font-size: 1.5em;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	margin-top: 10px;
+}
+
+.mh-search-form-div {
+    margin: 20px 20px 30px 0;
+}
+
+#new_review_form li label {
+    width: 100%;
+}
+
+#new_review_form ul {
+    overflow: auto;
+}
+
+#new_review_form li {
+    float:left;
+    display:inline;
+    width: 50%;
+}

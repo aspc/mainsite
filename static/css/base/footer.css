@@ -1,0 +1,16 @@
+footer {
+	text-align: center;
+	color: #a7a7a7;
+	padding: 1em 0;
+	clear: both;
+}
+
+footer p {
+	font-size: 0.85em;
+	text-shadow: #333 0 -1px -1px;
+}
+
+footer a {
+    color: inherit;
+    text-decoration: underline;
+}

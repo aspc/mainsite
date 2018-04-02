@@ -1,0 +1,21 @@
+{% extends 'general/forum_base.html' %}
+{% block "content" %}
+<div>
+	<a href="{% url "new_question" %}"><h2>Ask a question</h2></a></li>
+	{% if questions %}
+		<p>
+			<h2>All Questions:</h2>
+		</p>
+		{% for q in questions %}
+                    <hr>
+            <div>
+            	<a href="{% url 'question' q.id %}"><h3>{{q.title}}</h3></a>
+				Posted on: {{ q.created_ts|date:"F d, Y" }}
+			</div>
+        {% endfor %}
+    {% else %}
+    	<p>No questions yet</p>
+    {% endif %}
+</div>
+{% endblock %}
+   

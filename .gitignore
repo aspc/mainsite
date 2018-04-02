@@ -14,7 +14,6 @@ media/
 vagrant/ssh_config
 vagrant/peninsula.key
 vagrant/run/
-/static/
 .idea/
 tmp/
 *.exe

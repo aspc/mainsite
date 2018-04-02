@@ -1,0 +1,276 @@
+@import url(https://fonts.googleapis.com/css?family=Permanent+Marker);
+
+form.filter ul {
+	font-size: 0.9em;
+	margin: 0;
+	background-color: #ddd;
+	color: #333;
+	padding-bottom: 0.25em;
+}
+
+form.filter ul li {
+	display: inline-block;
+	margin-bottom: 0.75em;
+}
+
+form.filter ul li label {
+	font-weight: normal;
+	display: inline;
+}
+
+form.filter ul li label:after {
+	content: "";
+}
+
+ul.results {
+	list-style-type: none;
+	padding: 0;
+}
+
+ul.results > li {
+	border-bottom: 1px solid #ddd;
+	padding-bottom: 1em;
+}
+
+ul.results > li:last-child {
+	border-bottom: none;
+	padding-bottom: 0;
+}
+
+ul.results > li:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+/* @end */
+
+.content h2 {
+	margin-bottom: 0.25em;
+}
+
+.content h3.accepts {
+	font-weight: normal;
+	font-size: 1em;
+	margin-top: 0;
+	color: #555;
+}
+
+.content .main_info {
+	float: left;
+	width: 60%;
+	font-size: 0.9em;
+}
+
+.content .body {
+	clear: both;
+}
+
+.main_info .contact, .main_info .address {
+	color: #555;
+	margin: 0;
+}
+
+.main_info .address {
+	margin-bottom: 0.33em;
+}
+
+/* @group Hours and payment info */
+
+.content .hours_payment {
+	font-size: 0.9em;
+	width: 37%;
+	float: right;
+	background-color: #eef6ff;
+	margin: 0;
+	border: 1px solid #8eb4f1;
+}
+
+.hours_payment dl {
+	margin: 0;
+	width: 90%;
+	clear: both;
+	padding: 5%;
+}
+
+.hours_payment dl dt {
+	width: 43%;
+	float: left;
+	clear: left;
+	padding: 0; margin: 0;
+	margin-bottom: 0.5em;
+	font-weight: bold;
+}
+
+.hours_payment dl dt:after {
+	content: ":";
+}
+
+.hours_payment dl dd {
+	width: 57%;
+	float: left;
+	padding: 0; margin: 0;
+}
+
+.hours_payment dl:after {
+	content: "";
+	clear: both;
+	display: block;
+}
+
+.hours_payment p.accepts:last-child {
+	border-bottom: none;
+}
+
+.hours_payment p.accepts {
+	padding-bottom: 0.5em;
+	border-bottom: 1px dashed #6a9ed8;
+	margin: 0;
+	padding: 1em;
+	background-color: #dfeeff;
+}
+
+/* @end */
+
+/* @group Discounts */
+
+.discount {
+	border: 1px solid #ffec8a;
+	padding: 1em;
+	background-color: #fcf7e3;
+}
+
+.discount h4 {
+	margin-top: 0;
+}
+
+.discount p {
+	margin-bottom: 0;
+}
+
+/* @end */
+
+/* @group Coop Page */
+
+#coop_fountain {
+	padding-top: 1em;
+	padding-bottom: 1em;
+}
+
+#coop_fountain:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+section.coop_fountain {
+	color: #fffac9;
+	background: #222;
+	background-image: url(../../images/chalkboard_bg.png);
+}
+
+.coop_fountain .body {
+	border: 0.5em solid #674227;
+	padding: 1em;
+}
+
+.menu-col {
+	width: 31%;
+	padding-right: 1.5%;
+	float: left;
+	font-size: 0.85em;
+}
+
+.menu-col p {
+	margin: 0;
+}
+
+.menu-col li {
+	margin-bottom: 0.75em;
+}
+
+.menu-col ul {
+	list-style-type: none;
+	padding-left: 0.5em;
+}
+
+.menu-col ul ul {
+	margin: 0.5em 0;
+}
+.menu-col ol {
+	padding-left: 1.75em;
+}
+
+.coop_fountain .body h1, .coop_fountain .body .menu-col h2, #title, .coop_fountain .discount h4 {
+	text-align: center;
+	font-family: "Permanent Marker", cursive;
+	color: #ff773a;
+
+}
+
+#title {
+	font-size: 3em;
+	margin: 0;
+	color: #ff8047;
+	text-shadow: #ffc8af 1px 1px 0;
+}
+
+#title #actions {
+	display: block;
+	font-size: 0.35em;
+	text-shadow: none;
+}
+
+#title #actions a {
+	color: #df8057;
+}
+
+.body h1 {
+	font-size: 2em;
+	margin: 0;
+	margin-bottom: 0.25em;
+	padding-bottom: 0.25em;
+	border-bottom: 3px double #cdc67d;
+}
+
+.coop_fountain .discount {
+	background: transparent;
+	padding: 0;
+	border: none;
+	border-top: 1px solid #c3bd77;
+	border-bottom: 1px solid #c3bd77;
+	font-size: 0.9em;
+	margin-bottom: 1em;
+	clear: both;
+}
+
+.coop_fountain .hours_payment {
+	width: 35%;
+	float: right;
+	font-size: 0.9em;
+	margin-top: 1em;
+	margin-left: 1em;
+	margin-bottom: 1em;
+	padding-left: 1em;
+	border-left: 1px solid #c3bd77;
+}
+
+.coop_fountain .hours_payment .accepts {
+	background: transparent;
+}
+
+.coop_fountain .discount p {
+	margin: 0.5em;
+}
+
+.body .menu-col h2 {
+	font-size: 1.5em;
+	margin: 0;
+	margin-bottom: 0.5em;
+}
+
+.body:after {
+	content: "";
+	display: block;
+	clear: both;
+}

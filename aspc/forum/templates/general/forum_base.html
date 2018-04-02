@@ -1,0 +1,25 @@
+{% extends "base_page.html" %}
+
+{% load staticfiles %}
+
+{% block "page_class" %}forum{% endblock %}
+{% block "title" %}Financial Aid Forum {% block "subtitle" %}{% endblock %}{% endblock %}
+{% block "page_title" %}Financial Aid Forum {% endblock %}
+
+{% block "css" %}
+  {{ block.super }}
+	<link rel="stylesheet" type="text/css" href="{% static "css/forum/forum.css" %}"/>
+{% endblock %}
+
+{% block "mobile_css" %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static "css/mentalhealth/mentalhealth.mobile.css" %}"/>
+{% endblock %}
+
+{% block "breadcrumbs" %}
+<ol class="breadcrumbs">
+  <li><a href="{% url "forum_home" %}">Financial Aid Forum</a></li>
+  {% block "forum_breadcrumbs" %}
+  {% endblock %}
+</ol>
+{% endblock %}

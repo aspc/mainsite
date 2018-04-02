@@ -1,0 +1,72 @@
+nav#sitewide.secondary .group {
+	padding: 0.5em 1em;
+	color: #efefef;
+	background: url(../../images/translucent_shadow_left.png) repeat-y;
+	border-bottom-width: 1px;
+	border-bottom-color: #555;
+	border-bottom-style: solid;
+	border-top-width: 1px;
+	border-top-color: #777;
+	border-top-style: solid;
+}
+
+nav#sitewide h1 {
+	margin: 0;
+	font-size: 1em;
+	font-weight: normal;
+	margin: 0.25em 0;
+	color: white;
+}
+
+nav#sitewide li li {
+	font-size: 1em;
+	margin-bottom: 0.5em;
+}
+
+nav#sitewide a {
+	color: inherit;
+	text-decoration: none;
+}
+
+nav#sitewide a {
+	font-size: 0.9em;
+}
+
+nav#sitewide a:hover {
+	text-decoration: underline;
+	color: white;
+}
+
+nav#sitewide .note {
+	display: none;
+}
+
+nav#sitewide .group#food {
+	background-color: #2e735e;
+	border-top: 1px solid #36886f;
+	border-bottom: 1px solid #276351;
+}
+
+nav#sitewide .group#services {
+	background-color: #627d48;
+	border-top: 1px solid #7fa25d;
+	border-bottom: 1px solid #4f653a;
+}
+
+nav#sitewide .group#information {
+	background-color: #99851f;
+	border-top: 1px solid #b59d24;
+	border-bottom: 1px solid #796918;
+}
+
+nav#sitewide .group#senate {
+	background-color: #ab7537;
+	border-top: 1px solid #c88940;
+	border-bottom: 1px solid #92632e;
+}
+
+nav#sitewide .group#partners {
+	background-color: #8a4547;
+	border-top: 1px solid #b75b5e;
+	border-bottom: 1px solid #6e3738;
+}

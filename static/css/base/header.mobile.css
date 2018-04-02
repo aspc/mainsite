@@ -1,0 +1,41 @@
+@media handheld, only screen and (max-width: 767px) {
+
+	header#aspc_main {
+		margin-bottom: 1em;
+	}
+
+	header#aspc_main h2 {
+		border-radius: 0.5em;
+	}
+
+	header#aspc_main hgroup {
+		padding-top: 0.5em;
+		margin-bottom: 3.5em;
+	}
+
+	header#aspc_main .loginstatus {
+		position: absolute;
+		bottom: -3.7em;
+		font-size: 0.9em;
+		left: auto;
+		right: auto;
+		text-align: center;
+		width: 100%;
+	}
+
+	header#aspc_main .loginstatus__form {
+		display: inline-block;
+	}
+
+	#announcement_banner {
+		position: relative;
+		width: auto;
+		margin-bottom: 5px;
+		box-shadow: 0px 0px 2px #222;
+		-webkit-box-shadow: 0px 0px 2px #222;
+	}
+
+	#announcement_banner_placeholder {
+		display: none;
+	}
+}

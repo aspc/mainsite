@@ -1,0 +1,71 @@
+@media handheld, only screen and (max-width: 767px) {
+
+	.stream > h1 {
+		display: block;
+	}
+
+	.stream .related {
+		margin-left: 0.5em;
+	}
+
+	.stream .related ul  a, .stream .related time {
+		font-size: 0.8em;
+		color: #333;
+	}
+
+	.stream .related > time {
+		display: none;
+	}
+
+	.group.stream > ol > li {
+		padding: 0;
+		margin: 0;
+		border-bottom: 1px solid #555;
+		background-image: none;
+	}
+
+	.stream .activity {
+		margin: 0;
+		background-color: white;
+		border: none;
+		padding: 0.5em;
+		font-size: 1em;
+		margin-left: 0.5em;
+
+	}
+
+	.stream li:last-child {
+	  border-bottom-right-radius: 0.5em;
+	  border-bottom-left-radius: 0.5em;
+	}
+
+	.stream li:last-child .related {
+	  border-bottom-left-radius: 0.5em;
+	  border-bottom-right-radius: 0.5em;
+	}
+
+	.stream .activity .excerpt {
+		display: none;
+
+	}
+
+	.stream .activity > p {
+		margin: 0;
+	}
+
+	.stream .activity.post img {
+		float: none;
+		margin: 1em auto;
+		display: block;
+		max-width: 100%;
+		max-height: 9em;
+	}
+
+	.stream .activity a.read_more {
+		font-size: 0.95em;
+		position: relative;
+		right: 0;
+		bottom: 0;
+	}
+
+}

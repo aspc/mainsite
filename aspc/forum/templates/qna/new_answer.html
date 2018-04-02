@@ -1,0 +1,25 @@
+{% extends 'qna/question.html' %}
+
+
+{% block "questions_breadcrumbs" %}
+    <li>
+        <a href="{% url "search_questions" %}">Answer this question</a>
+    </li>
+    <li>Ask this question</li>
+{% endblock %}
+
+{% block "content" %}
+<div id="new_review_form">
+    <div style="margin: 20px 0;"></div>
+    <form action="{{ action }}" method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+            {{ field.label }} <br /><br />
+            {{ field }}
+            {{ field.errors }} <br /><br /><br />
+        {% endfor %}
+        <input id="submit" class="mh-search-button" type="submit" value="Submit answer &rarr;" />
+    </form>
+    <div style="margin: 20px 0;"></div>
+</div>
+{% endblock %}

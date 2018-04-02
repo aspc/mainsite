@@ -1,0 +1,27 @@
+/* @override http://localhost:8000/static/css/pages/wallpaint.css */
+
+@media screen and (min-width: 767px) {
+	section.page .content {
+	padding: 0;
+}
+
+#photo {
+	width: 100%;
+	min-height: 650px;
+	background: url(walker_wall_photo.jpg) no-repeat;
+}
+
+#info {
+	padding: 1em;
+	width: 35%;
+	max-width: 200px;
+	min-height: 650px;
+	float: right;
+	background: white;
+}
+
+.caption {
+	font-size: 0.95em;
+	color: gray;
+}	
+}

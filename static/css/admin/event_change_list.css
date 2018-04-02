@@ -1,0 +1,20 @@
+.eventstatus {
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.eventstatus.approved {
+	background-color: rgb(194, 252, 194);
+  border: 1px solid green;
+}
+
+.eventstatus.denied {
+	background-color: rgb(245, 245, 245);
+  border: 1px solid rgb(203, 203, 203);
+}
+
+.eventstatus.pending {
+  background-color: rgb(250, 216, 153);
+  border: 1px solid orange;
+}

@@ -1,0 +1,9 @@
+ol.minutes {
+  list-style-type: none;
+  padding-left: 0.5em;
+}
+
+.minutes_info h1 {
+  font-size: 1.1em;
+  font-weight: bold;
+}

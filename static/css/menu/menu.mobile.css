@@ -1,0 +1,38 @@
+@media handheld, only screen and (max-width: 767px) {
+	#dining_hall_nav {
+		border-bottom: 2px solid #364e69;
+	}
+
+	#dining_hall_nav .long_name {
+		display: none;
+	}
+
+	#dining_hall_nav .short_name {
+		display: inline;
+	}
+
+	#day_nav, #meal_header {
+		display: none;
+	}
+
+	.mobile_meal_header {
+		display: block;
+		font-weight: bold;
+	}
+
+	#frank_menu, #frary_menu, #oldenborg_menu, #cmc_menu, #scripps_menu, #pitzer_menu, #mudd_menu {
+		display: block;
+	}
+
+	#menu_table th, td {
+		display: block;
+	}
+
+	#desktop_page_title {
+		display: none;
+	}
+
+	#mobile_page_title {
+		display: block;
+	}
+}

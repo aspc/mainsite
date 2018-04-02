@@ -1,0 +1,109 @@
+header#aspc_main h1, header#aspc_main h2 {
+	font-family: Futura, "Gill Sans", Verdana, Arial;
+}
+
+header#aspc_main hgroup {
+	position: relative;
+	padding-top: 2em;
+}
+
+header#aspc_main a {
+	color: inherit;
+	text-decoration: none;
+}
+
+header#aspc_main h1, header#aspc_main h2 {
+	font-weight: normal;
+}
+
+header#aspc_main h1 {
+	color: #fff;
+	font-size: 2.85em;
+	height: 1.2em;
+	margin: 0;
+	padding-left: 4.21em;
+}
+
+header#aspc_main h2 {
+	color: #dedede;
+	font-size: 1em;
+	/*background-color: #456385;*/
+	background-color: #295384;
+	padding: 0.25em 0;
+	margin: 0;
+	padding-left: 12em;
+	box-shadow: 0px 0px 4px #222;
+	-webkit-box-shadow: 0px 0px 4px #222;
+}
+
+header#aspc_main .loginstatus {
+	position: absolute;
+	right: 0em;
+	bottom: 2.2em;
+	color: #ccc;
+}
+
+header#aspc_main .loginstatus #username:before {
+	content: "(";
+}
+
+header#aspc_main .loginstatus #username:after {
+	content: ")";
+}
+
+header#aspc_main .loginstatus a {
+	color: #6999c9;
+	text-decoration: none;
+}
+
+header#aspc_main .loginstatus input {
+	background-color: #505761;
+	border: 1px solid #8c97a8;
+	color: #ccc;
+	font-size: 1em;
+	padding: 0.4em;
+}
+
+header#aspc_main .loginstatus form {
+	float: right;
+	padding-left: 0.4em;
+	padding-bottom: 0.4em;
+}
+
+#aspc_main #logo {
+	display: inline-block;
+	width: 12em;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	background-image: url(../../images/ASPC_logo.png);
+	background-position: bottom left;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	height: 6.5em;
+}
+
+#announcement_banner {
+	position: fixed;
+	width: 100%;
+	z-index: 10;
+	padding: 8px;
+	background-color: rgb(227, 31, 31);
+	box-shadow: 0px 0px 6px #222;
+	-webkit-box-shadow: 0px 0px 6px #222;
+	text-align: center;
+}
+
+#announcement_banner a {
+	color: white;
+	font-size: 16px;
+	text-decoration: none;
+}
+
+#announcement_banner a:hover {
+	text-decoration: underline;
+}
+
+#announcement_banner_placeholder {
+	height: 35px;
+}
